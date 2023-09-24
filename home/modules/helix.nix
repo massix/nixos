@@ -38,7 +38,7 @@ in
           mouse = true;
           true-color = true;
           cursorline = true;
-          cursorcolumn = true;
+          cursorcolumn = false;
           gutters = [ "diff" "diagnostics" "line-numbers" "spacer" "spacer" ];
 
           cursor-shape = {
