@@ -81,6 +81,15 @@ in
               hash = "sha256-cCI1FDpvajt1vVPUd/WvsjX/6BJm6X1yFPjqohmo1rI=";
             };
           }
+          {
+            name = "foreign-env";
+            src = fetchFromGitHub {
+              repo = "plugin-foreign-env";
+              owner = "oh-my-fish";
+              rev = "7f0cf099ae1e1e4ab38f46350ed6757d54471de7";
+              hash = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
+            };
+          }
         ];
 
         shellAliases = {
