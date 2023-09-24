@@ -167,6 +167,7 @@ in
           ripgrep # Modern Unix `grep`
           shellcheck # Code lint Shell
           shfmt # Code format Shell
+          thefuck # Correct last command
           tldr # Modern Unix `man`
           tokei # Modern Unix `wc` for code
           wavemon # Terminal WiFi monitor
@@ -179,6 +180,18 @@ in
         "fish/conf.d/extra-001-brew.fish".text = ''
           if type -q /home/linuxbrew/.linuxbrew/bin/brew
             eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+          end
+        '';
+
+        "fish/functions/fuck.fish".text = ''
+          function fuck -d "Correct your previous console command"
+            set -l fucked_up_command $history[1]
+            env TF_SHELL=fish TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $fucked_up_command THEFUCK_ARGUMENT_PLACEHOLDER $argv | read -l unfucked_command
+            if [ "$unfucked_command" != "" ]
+              eval $unfucked_command
+              builtin history delete --exact --case-sensitive -- $fucked_up_command
+              builtin history merge
+            end
           end
         '';
 
