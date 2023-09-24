@@ -98,10 +98,7 @@ in
 
       unstable-packages = with unstable; [
         obsidian
-        fx-cast-bridge
         chromium
-        chezmoi
-        gnomeExtensions.pop-shell
         spotify
       ];
 
