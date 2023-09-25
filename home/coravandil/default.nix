@@ -1,7 +1,10 @@
 { pkgs
 , unstable
 , ...
-}: {
+}:
+let
+  mypkgs = import ../../pkgs { inherit pkgs; };
+in {
   my-modules = {
     fonts.enable = false;
     im.enable = false;
@@ -25,15 +28,35 @@
 
   programs.home-manager.enable = true;
 
-  home.packages = with unstable; [
-    kubectl
-    kubernetes-helm
-    k9s
-    podman
+  home.packages =
+  let
+    unstable-packages = with unstable; [
+      kubectl
+      kubernetes-helm
+      k9s
+      podman
 
-    # Server is started with Ubuntu
-    docker-client
-  ];
+      # Server is started with Ubuntu
+      docker-client
+    ];
+
+    other-packages = with mypkgs; [ lombok jdtls ];
+  in unstable-packages ++ other-packages;
+
+
+  programs.helix.languages = {
+    language = [
+      {
+        name = "java";
+        indent.tab-width = 2;
+        indent.unit = "  ";
+        language-server = {
+          command = "${mypkgs.jdtls}/bin/jdtls";
+          args = ["--jvm-arg=-javaagent:${mypkgs.lombok}/lombok.jar"];
+        };
+      }
+    ];
+  };
 
   systemd.user.services = {
     "podman-unix" = {
