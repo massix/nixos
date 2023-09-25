@@ -51,6 +51,12 @@
         extraModules = [ ./home/elendil ];
       };
 
+      homeConfigurations."massi@coravandil" = helpers.mkHome {
+        inherit pkgs unstable stateVersion;
+        username = "massi";
+        extraModules = [ ./home/coravandil ];
+      };
+
       nixosConfigurations."elendil" = helpers.mkSystem {
         inherit pkgs unstable stateVersion system;
         extraModules = [
