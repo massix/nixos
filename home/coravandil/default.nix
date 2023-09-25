@@ -92,21 +92,26 @@ in {
       Unit.Description = "Start Podman socket";
       Service.ExecStart = "${unstable.podman}/bin/podman system service --time=0";
       Service.RestartSec = "1min";
-      Service.Restart = ["on-failure" "on-abnormal"];
+      Service.Restart = ["on-failure"];
       Service.ExecStopPost = "rm /run/user/1000/podman/podman.sock";
       Install.WantedBy = ["default.target"];
     };
 
-    "clean-docker" = {
-      Unit.Description = "Clean Docker Daemon";
-      Service.ExecStart = "${unstable.docker-client}/bin/docker system prune -af";
+    "clean-containers" = {
+      Unit.Description = "Clean all containers";
+      Service.ExecStart = [
+        "${unstable.docker-client}/bin/docker system prune -af"
+        "${unstable.podman}/bin/podman system prune -af"
+      ];
       Service.Type = "oneshot";
+      Install.WantedBy = ["default.target"];
     };
   };
 
   systemd.user.timers = {
-    "clean-docker" = {
-      Unit.Description = "Automatically clean docker 5 minutes after boot and every working day, twice per day";
+    "clean-containers" = {
+      Unit.Description = "Trigger cleaning of containers 5 minutes after boot, twice per day during week, every hour during weekend";
+      Install.WantedBy = ["default.target"];
       Timer = {
         OnBootSec = "5min";
         OnCalendar = [
