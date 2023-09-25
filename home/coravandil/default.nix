@@ -17,6 +17,7 @@ in {
       enable = true;
       package = unstable.helix;
       configuration.unstable = true;
+      configuration.theme = "onedark";
     };
 
     git = {
