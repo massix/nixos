@@ -27,22 +27,48 @@ in {
     };
   };
 
+  programs.k9s = {
+    enable = true;
+    package = unstable.k9s;
+    settings.k9s = {
+      refreshRate = 5;
+      maxConnRetry = 10;
+      enableMouse = true;
+      logger = {
+        tail = 10000;
+        buffer = 10000;
+        textWrap = true;
+      };
+    };
+  };
+
+  xdg.configFile."fish/conf.d/alten-abbrs.fish".text = ''
+    # Handle KubeConfigs
+    abbr -a --set-cursor=MARKER skc -- set -x KUBECONFIG ~/.kube/kubeconfig-MARKER
+    abbr -a skce -- set -u KUBECONFIG
+
+    # Azure CLI
+    abbr -a acct -- az account list -o table
+    abbr -a --set-cursor=HERE accsw -- az account set --subscription "HERE"
+    abbr -a akst -- az aks list -o table
+  '';
+
   programs.home-manager.enable = true;
 
   home.packages =
   let
+    stable-packages = with pkgs; [ azure-cli ];
     unstable-packages = with unstable; [
       kubectl
       kubernetes-helm
-      k9s
       podman
+      terraform
 
       # Server is started with Ubuntu
       docker-client
     ];
-
     other-packages = with mypkgs; [ lombok jdtls ];
-  in unstable-packages ++ other-packages;
+  in unstable-packages ++ other-packages ++ stable-packages;
 
 
   programs.helix.languages = {
