@@ -85,11 +85,35 @@ in {
     ];
   };
 
+  systemd.user.startServices = "sd-switch";
+
   systemd.user.services = {
     "podman-unix" = {
       Unit.Description = "Start Podman socket";
       Service.ExecStart = "${unstable.podman}/bin/podman system service --time=0";
+      Service.RestartSec = "1min";
+      Service.Restart = ["on-failure" "on-abnormal"];
+      Service.ExecStopPost = "rm /run/user/1000/podman/podman.sock";
       Install.WantedBy = ["default.target"];
+    };
+
+    "clean-docker" = {
+      Unit.Description = "Clean Docker Daemon";
+      Service.ExecStart = "${unstable.docker-client}/bin/docker system prune -af";
+      Service.Type = "oneshot";
+    };
+  };
+
+  systemd.user.timers = {
+    "clean-docker" = {
+      Unit.Description = "Automatically clean docker 5 minutes after boot and every working day, twice per day";
+      Timer = {
+        OnBootSec = "5min";
+        OnCalendar = [
+          "Mon-Fri *-*-* 09,18:30"
+          "Sat,Sun *-*-* *:00:00"
+        ];
+      };
     };
   };
 }
