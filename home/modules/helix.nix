@@ -18,16 +18,15 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config =
+  let
+    channel = if cfg.configuration.unstable then unstable else pkgs;
+  in mkIf cfg.enable {
     home.sessionVariables = mkIf cfg.defaultEditor {
       EDITOR = "hx";
     };
 
-    home.packages =
-      let
-        channel = if cfg.configuration.unstable then unstable else pkgs;
-      in
-      with channel; [ nil rnix-lsp ];
+    home.packages = with channel; [ nil rnix-lsp nixd-nightly ];
 
     programs.helix = {
       inherit (cfg) enable package;
@@ -70,6 +69,18 @@ in
             skip-level = 1;
           };
         };
+      };
+
+      languages = {
+        language = [
+          {
+            name = "nix";
+            language-server = {
+              command = "${channel.nixd-nightly}/bin/nixd";
+              args = [];
+            };
+          }
+        ];
       };
     };
   };

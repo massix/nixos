@@ -16,6 +16,12 @@
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixd.url = "github:nix-community/nixd";
+    nixd.inputs.nixpkgs.follows = "nixpkgs";
+
+    flake-compat.url = "github:inclyc/flake-compat";
+    flake-compat.flake = false;
   };
 
   outputs =
@@ -25,6 +31,7 @@
     , nixos-hardware
     , nix-formatter-pack
     , homeage
+    , nixd
     , ...
     }:
     let
@@ -35,11 +42,17 @@
       pkgs = import nixpkgs {
         inherit system;
         config = pkgsconfig;
+        overlays = [
+          (final: prev: { nixd-nightly = nixd; })
+        ];
       };
 
       unstable = import unstablepkgs {
         inherit system;
         config = pkgsconfig;
+        overlays = [
+          (final: prev: { nixd-nightly = nixd.packages."${system}".nixd; })
+        ];
       };
 
       helpers = import ./lib { inherit home-manager nixpkgs homeage; };
