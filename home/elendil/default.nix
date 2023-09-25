@@ -108,6 +108,8 @@ in
     in
     stable-packages ++ unstable-packages ++ other-packages;
 
+  systemd.user.startServices = "sd-switch";
+
   # Automount Onedriver
   systemd.user.services = {
     "onedriver@home-massi-OneDrive" = onedriver.mkOneDriverService {
