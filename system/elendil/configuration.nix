@@ -92,6 +92,7 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -173,8 +174,6 @@ in
     enable = true;
     listenOptions = [ "unix:///var/run/docker.sock" "tcp://0.0.0.0:2375" ];
   };
-
-  virtualisation.waydroid.enable = true;
 
   system = { inherit stateVersion; };
 }
