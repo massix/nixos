@@ -62,5 +62,16 @@ in
           "result"
         ];
       };
+
+      programs.fish.shellAbbrs = mkIf config.my-modules.fish.enable {
+        g = "git";
+        gco = "git checkout";
+        gcl = "git clone";
+        gclgh = "git clone git@github.com:";
+        gcm = "git commit -m";
+        ga = "git add";
+        gd = "git diff";
+        gs = "git status";
+      };
     };
 }
