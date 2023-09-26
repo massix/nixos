@@ -49,7 +49,11 @@
 
       unstable = import unstablepkgs {
         inherit system;
-        config = pkgsconfig;
+        config.allowUnfree = true;
+        config.allowUnfreePredicate = _: true;
+        config.packageOverrides = {
+          teams-for-linux = unstable.teams-for-linux.override { pipewire = unstable.pipewire; };
+        };
         overlays = [
           (final: prev: { nixd-nightly = nixd.packages."${system}".nixd; })
         ];

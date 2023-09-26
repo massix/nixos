@@ -105,6 +105,7 @@ in
         obsidian
         chromium
         spotify
+        teams-for-linux
       ];
 
       other-packages = [
