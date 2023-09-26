@@ -60,7 +60,12 @@ in
 
   programs.firefox = {
     enable = true;
-    package = unstable.firefox-wayland;
+    package = unstable.firefox;
+  };
+
+  services.syncthing = {
+    enable = true;
+    tray.enable = true;
   };
 
   programs.kitty = {

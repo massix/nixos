@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { pkgs
 , stateVersion
+, unstable
 , ...
 }:
 let
@@ -89,6 +90,7 @@ in
 
   services.pipewire = {
     enable = true;
+    package = unstable.pipewire;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
