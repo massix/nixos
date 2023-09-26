@@ -100,6 +100,7 @@ in
         obsidian
         chromium
         spotify
+        teams
       ];
 
       other-packages = [
