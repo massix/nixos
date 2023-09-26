@@ -51,8 +51,8 @@
         inherit system;
         config.allowUnfree = true;
         config.allowUnfreePredicate = _: true;
-        config.packageOverrides = {
-          teams-for-linux = unstable.teams-for-linux.override { pipewire = unstable.pipewire; };
+        config.packageOverrides = pkgs: {
+          teams-for-linux = pkgs.teams-for-linux.override { pipewire = pkgs.pipewire; };
         };
         overlays = [
           (final: prev: { nixd-nightly = nixd.packages."${system}".nixd; })
