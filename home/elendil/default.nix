@@ -65,7 +65,7 @@ in
 
   services.syncthing = {
     enable = true;
-    tray.enable = true;
+    tray.enable = false;
   };
 
   programs.kitty = {
