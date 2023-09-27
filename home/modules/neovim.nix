@@ -95,7 +95,44 @@ in
       # Configure the colorscheme
       ".config/nvim/lua/plugins/colorscheme.lua".text = ''
         return {
-          { "LazyVim/LazyVim", opts = { colorscheme = "catppuccin" }}
+          { "catppuccin/nvim", name = "catppuccin", enabled = true, opts = { 
+            flavour = "frappe",
+            background = {
+              dark = "macchiato",
+              light = "latte"
+            },
+            dim_inactive = {
+                enabled = true
+            },
+            show_end_of_buffer = false,
+            integrations = {
+              neotree = true,
+              mini = true
+            }
+          }},
+          { "LazyVim/LazyVim", opts = { colorscheme = "catppuccin" }},
+          { "nvim-lualine/lualine.nvim", opts = { options = { theme = "catppuccin" }}},
+        }
+      '';
+
+      # Configure NeoGit
+      ".config/nvim/lua/plugins/neogit.lua".text = ''
+        return {
+          { 
+            "NeogitOrg/neogit",
+            dependencies = {
+              "nvim-lua/plenary.nvim",
+              "nvim-telescope/telescope.nvim",
+              "sindrets/diffview.nvim",
+              "ibhagwan/fzf-lua"
+            },
+
+            -- Nothing to configure
+            config = true,
+            keys = {
+              { "<leader>gs", function () require('neogit').open() end, desc = 'Open NeoGit'}
+            }
+          }
         }
       '';
 
