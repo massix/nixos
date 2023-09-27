@@ -1,0 +1,12 @@
+{
+  "formatting": {
+    "command": "nix fmt --quiet"
+  },
+  "options": {
+    "enable": true,
+    "target": {
+      "args": [],
+      "installable": "/flakeref#homeConfigurations.massi@elendil.options"
+    }
+  }
+}

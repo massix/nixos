@@ -19,71 +19,72 @@ in
   };
 
   config =
-  let
-    channel = if cfg.configuration.unstable then unstable else pkgs;
-  in mkIf cfg.enable {
-    home.sessionVariables = mkIf cfg.defaultEditor {
-      EDITOR = "hx";
-    };
+    let
+      channel = if cfg.configuration.unstable then unstable else pkgs;
+    in
+    mkIf cfg.enable {
+      home.sessionVariables = mkIf cfg.defaultEditor {
+        EDITOR = "hx";
+      };
 
-    home.packages = with channel; [ nil rnix-lsp nixd-nightly ];
+      home.packages = with channel; [ nil rnix-lsp nixd-nightly ];
 
-    programs.helix = {
-      inherit (cfg) enable package;
-      settings = {
-        inherit (cfg.configuration) theme;
-        editor = {
-          line-number = "relative";
-          mouse = true;
-          true-color = true;
-          cursorline = true;
-          cursorcolumn = false;
-          gutters = [ "diff" "diagnostics" "line-numbers" "spacer" "spacer" ];
+      programs.helix = {
+        inherit (cfg) enable package;
+        settings = {
+          inherit (cfg.configuration) theme;
+          editor = {
+            line-number = "relative";
+            mouse = true;
+            true-color = true;
+            cursorline = true;
+            cursorcolumn = false;
+            gutters = [ "diff" "diagnostics" "line-numbers" "spacer" "spacer" ];
 
-          cursor-shape = {
-            insert = "bar";
-            normal = "block";
-            select = "underline";
-          };
+            cursor-shape = {
+              insert = "bar";
+              normal = "block";
+              select = "underline";
+            };
 
-          file-picker.hidden = false;
+            file-picker.hidden = false;
 
-          statusline = {
-            left = [ "mode" "spinner" "file-modification-indicator" "version-control" ];
-            center = [ "file-name" "total-line-numbers" ];
-            right = [ "diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type" ];
-            separator = "|";
-            mode.normal = "NORMAL";
-            mode.insert = "INSERT";
-            mode.select = "SELECT";
-          };
+            statusline = {
+              left = [ "mode" "spinner" "file-modification-indicator" "version-control" ];
+              center = [ "file-name" "total-line-numbers" ];
+              right = [ "diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type" ];
+              separator = "|";
+              mode.normal = "NORMAL";
+              mode.insert = "INSERT";
+              mode.select = "SELECT";
+            };
 
-          lsp = {
-            enable = true;
-            display-messages = true;
-            display-inlay-hints = true;
-          };
+            lsp = {
+              enable = true;
+              display-messages = true;
+              display-inlay-hints = true;
+            };
 
-          indent-guides = {
-            render = false;
-            skip-level = 1;
+            indent-guides = {
+              render = false;
+              skip-level = 1;
+            };
           };
         };
-      };
 
-      languages = {
-        language = [
-          {
-            name = "nix";
-            indent.tab-width = 2;
-            indent.unit = "  ";
-            language-server = {
-              command = "${channel.nixd-nightly}/bin/nixd";
-              args = [];
-            };
-          }
-        ];
+        languages = {
+          language = [
+            {
+              name = "nix";
+              indent.tab-width = 2;
+              indent.unit = "  ";
+              language-server = {
+                command = "${channel.nixd-nightly}/bin/nixd";
+                args = [ ];
+              };
+            }
+          ];
+        };
       };
     };
-  };
 }

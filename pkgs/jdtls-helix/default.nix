@@ -1,7 +1,8 @@
 { pkgs }:
 let
-  inherit (pkgs) lib stdenv;
-in stdenv.mkDerivation {
+  inherit (pkgs) stdenv;
+in
+stdenv.mkDerivation {
   pname = "jdtls-helix-fixed";
   version = "0.0.1";
 

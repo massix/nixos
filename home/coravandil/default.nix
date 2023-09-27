@@ -4,7 +4,8 @@
 }:
 let
   mypkgs = import ../../pkgs { inherit pkgs; };
-in {
+in
+{
   my-modules = {
     fonts.enable = false;
     im.enable = false;
@@ -56,19 +57,20 @@ in {
   programs.home-manager.enable = true;
 
   home.packages =
-  let
-    stable-packages = with pkgs; [ azure-cli ];
-    unstable-packages = with unstable; [
-      kubectl
-      kubernetes-helm
-      podman
-      terraform
+    let
+      stable-packages = with pkgs; [ azure-cli ];
+      unstable-packages = with unstable; [
+        kubectl
+        kubernetes-helm
+        podman
+        terraform
 
-      # Server is started with Ubuntu
-      docker-client
-    ];
-    other-packages = with mypkgs; [ lombok jdtls ];
-  in unstable-packages ++ other-packages ++ stable-packages;
+        # Server is started with Ubuntu
+        docker-client
+      ];
+      other-packages = with mypkgs; [ lombok jdtls ];
+    in
+    unstable-packages ++ other-packages ++ stable-packages;
 
 
   programs.helix.languages = {
@@ -79,7 +81,7 @@ in {
         indent.unit = "  ";
         language-server = {
           command = "${mypkgs.jdtls}/bin/jdtls";
-          args = ["--jvm-arg=-javaagent:${mypkgs.lombok}/lombok.jar"];
+          args = [ "--jvm-arg=-javaagent:${mypkgs.lombok}/lombok.jar" ];
         };
       }
     ];
@@ -92,9 +94,9 @@ in {
       Unit.Description = "Start Podman socket";
       Service.ExecStart = "${unstable.podman}/bin/podman system service --time=0";
       Service.RestartSec = "1min";
-      Service.Restart = ["on-failure"];
+      Service.Restart = [ "on-failure" ];
       Service.ExecStopPost = "rm /run/user/1000/podman/podman.sock";
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
 
     "clean-containers" = {
@@ -104,14 +106,14 @@ in {
         "${unstable.podman}/bin/podman system prune -af"
       ];
       Service.Type = "oneshot";
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
   };
 
   systemd.user.timers = {
     "clean-containers" = {
       Unit.Description = "Trigger cleaning of containers 5 minutes after boot, twice per day during week, every hour during weekend";
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
       Timer = {
         OnBootSec = "5min";
         OnCalendar = [

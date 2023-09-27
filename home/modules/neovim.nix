@@ -52,7 +52,8 @@ let
       chmod +x $out/bin/language_server_linux_x64
     '';
   };
-in {
+in
+{
   options.my-modules.neovim = {
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
@@ -71,11 +72,16 @@ in {
       withRuby = true;
     };
 
-    home.packages = with unstable; [ 
-      stylua 
+    home.packages = with unstable; [
+      stylua
       gcc
-      lua-language-server
       wl-clipboard
+
+      # Some common language servers I don't want to install through devShells
+      lua-language-server
+      yaml-language-server
+      nodePackages.vscode-json-languageserver-bin
+      nixd-nightly
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
@@ -93,6 +99,7 @@ in {
         }
       '';
 
+      # Disable Mason since it won't work on NixOS
       ".config/nvim/lua/plugins/disabled.lua".text = ''
         return {
           -- Disable Mason since we have to handle our LSPs on our own
@@ -101,17 +108,35 @@ in {
         }
       '';
 
+      # Activate extra plugins from Lazy
       ".config/nvim/lua/plugins/extras.lua".text = ''
         -- Extra plugins from LazyVim
         return {
+          -- File Previews
           { import = "lazyvim.plugins.extras.editor.mini-files" },
+
+          -- Goodies for the UI
           { import = "lazyvim.plugins.extras.ui.mini-animate" },
           { import = "lazyvim.plugins.extras.ui.mini-starter" },
+
+          -- Project handling
           { import = "lazyvim.plugins.extras.util.project" },
+
+          -- Languages
           { import = "lazyvim.plugins.extras.lang.go" },
+          { import = "lazyvim.plugins.extras.lang.docker" },
+          { import = "lazyvim.plugins.extras.lang.java" },
+          { import = "lazyvim.plugins.extras.lang.yaml" },
+
+          -- Testing with NeoTest
+          { import = "lazyvim.plugins.extras.test.core" },
+
+          -- Debuggers Adapter
+          { import = "lazyvim.plugins.extras.dap.core" },
         }
       '';
 
+      # Enable Codeium (experimental)
       ".config/nvim/lua/plugins/codeium.lua".text = ''
 
         -- Plugin for codeium
@@ -142,6 +167,7 @@ in {
         }
       '';
 
+      # Use nixd as language server
       ".config/nvim/lua/plugins/nix.lua".text = ''
         -- Configure nixd for use with neovim-lspconfig
         local util = require 'lspconfig.util'
@@ -157,6 +183,30 @@ in {
                   single_file_support = true,
                 }
               }
+            }
+          }
+        }
+      '';
+
+      # On NixOS, the vscode-json-languageserver is called simply json-languageserver
+      ".config/nvim/lua/plugins/json_ls.lua".text = ''
+        return {
+          {
+            "neovim/nvim-lspconfig", opts = {
+              servers = {
+                jsonls = { cmd = { 'json-languageserver', '--stdio' }} 
+              }
+            }
+          }
+        }
+      '';
+
+      # Dart LS with default configuration
+      ".config/nvim/lua/plugins/dart.lua".text = ''
+        return {
+          {
+            "neovim/nvim-lspconfig", opts = {
+                servers = { dartls = {}}
             }
           }
         }

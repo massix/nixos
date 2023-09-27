@@ -1,6 +1,6 @@
 { pkgs }:
 let
-  inherit (pkgs) stdenv lib;
+  inherit (pkgs) stdenv;
 in
 stdenv.mkDerivation {
   pname = "lombok";

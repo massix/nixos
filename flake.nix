@@ -43,7 +43,7 @@
         inherit system;
         config = pkgsconfig;
         overlays = [
-          (final: prev: { nixd-nightly = nixd; })
+          (_final: _prev: { nixd-nightly = nixd; })
         ];
       };
 
@@ -52,10 +52,10 @@
         config.allowUnfree = true;
         config.allowUnfreePredicate = _: true;
         config.packageOverrides = pkgs: {
-          teams-for-linux = pkgs.teams-for-linux.override { pipewire = pkgs.pipewire; };
+          teams-for-linux = pkgs.teams-for-linux.override { inherit (pkgs) pipewire; };
         };
         overlays = [
-          (final: prev: { nixd-nightly = nixd.packages."${system}".nixd; })
+          (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
         ];
       };
 
