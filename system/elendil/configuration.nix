@@ -150,6 +150,7 @@ in
 
   programs.zsh.enable = true;
   programs.fish.enable = true;
+  programs.command-not-found.enable = false;
 
   xdg.portal = {
     enable = true;

@@ -61,6 +61,8 @@ in
     package = unstable.firefox;
   };
 
+  programs.command-not-found.enable = false;
+
   services.syncthing = {
     enable = true;
     tray.enable = false;
