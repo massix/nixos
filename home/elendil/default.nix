@@ -69,7 +69,7 @@ in
   programs.kitty = {
     enable = true;
     package = unstable.kitty;
-    theme = "One Half Dark";
+    theme = "Catppuccin-Mocha";
     shellIntegration.enableFishIntegration = true;
 
     font = {
