@@ -28,9 +28,14 @@ in
   my-modules.helix.enable = true;
   my-modules.helix.package = unstable.helix;
   my-modules.helix.configuration.unstable = true;
+  my-modules.helix.defaultEditor = false;
 
   my-modules.im.enable = true;
   my-modules.im.configuration.unstable = true;
+
+  my-modules.neovim.enable = true;
+  my-modules.neovim.configuration.unstable = true;
+  my-modules.neovim.defaultEditor = true;
 
   my-modules.git = {
     enable = true;
@@ -42,13 +47,6 @@ in
     enable = true;
     mutableExtensionsDir = true;
     package = unstable.vscode-fhs;
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = false;
   };
 
   programs.nushell = {
@@ -105,7 +103,6 @@ in
         obsidian
         chromium
         spotify
-        teams-for-linux
       ];
 
       other-packages = [

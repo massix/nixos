@@ -129,10 +129,6 @@ in
       fish
     ];
 
-    variables = {
-      EDITOR = "hx";
-    };
-
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
@@ -149,7 +145,7 @@ in
     enable = true;
     viAlias = true;
     vimAlias = true;
-    defaultEditor = false;
+    defaultEditor = true;
   };
 
   programs.zsh.enable = true;
