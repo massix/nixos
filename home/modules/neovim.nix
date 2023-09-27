@@ -167,22 +167,12 @@ in
         }
       '';
 
-      # Use nixd as language server
+      # Use nil as language server for nix
       ".config/nvim/lua/plugins/nix.lua".text = ''
-        -- Configure nixd for use with neovim-lspconfig
-        local util = require 'lspconfig.util'
-
         return {
           {
             "neovim/nvim-lspconfig", opts = {
-              servers = {
-                nixd = {
-                  cmd = { 'nixd' },
-                  filetypes = { 'nix' },
-                  root_pattern = util.root_pattern('flake.nix', '.git', '.nixd.json'),
-                  single_file_support = true,
-                }
-              }
+              servers = { nil_ls = {}}
             }
           }
         }
