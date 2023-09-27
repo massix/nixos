@@ -130,7 +130,7 @@ in
             -- Nothing to configure
             config = true,
             keys = {
-              { "<leader>gs", function () require('neogit').open() end, desc = 'Open NeoGit'}
+              { "<leader>gs", function () require('neogit').open({ kind = "replace" }) end, desc = 'Open NeoGit'}
             }
           }
         }
