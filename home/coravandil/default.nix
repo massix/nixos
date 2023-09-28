@@ -15,7 +15,7 @@ in
     };
 
     helix = {
-      enable = true;
+      enable = false;
       package = unstable.helix;
       configuration.unstable = true;
       configuration.theme = "onedark";
@@ -74,27 +74,13 @@ in
         # Server is started with Ubuntu
         docker-client
       ];
-      other-packages = with mypkgs; [ lombok jdtls ];
+      other-packages = [ ];
     in
     unstable-packages ++ other-packages ++ stable-packages;
 
 
   home.sessionVariables = {
       EDITOR = "nvim";
-  };
-
-  programs.helix.languages = {
-    language = [
-      {
-        name = "java";
-        indent.tab-width = 2;
-        indent.unit = "  ";
-        language-server = {
-          command = "${mypkgs.jdtls}/bin/jdtls";
-          args = [ "--jvm-arg=-javaagent:${mypkgs.lombok}/lombok.jar" ];
-        };
-      }
-    ];
   };
 
   systemd.user.startServices = "sd-switch";
