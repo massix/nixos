@@ -37,6 +37,7 @@
     let
       system = "x86_64-linux";
       stateVersion = "23.05";
+      mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
 
       pkgsconfig = { allowUnfree = true; };
       pkgs = import nixpkgs {
@@ -44,6 +45,7 @@
         config = pkgsconfig;
         overlays = [
           (_final: _prev: { nixd-nightly = nixd; })
+          (_final: _prev: { lombok = mypkgs.lombok; })
         ];
       };
 
@@ -56,6 +58,7 @@
         };
         overlays = [
           (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
+          (_final: _prev: { lombok = mypkgs.lombok; })
         ];
       };
 

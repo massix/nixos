@@ -82,32 +82,33 @@ in
       yaml-language-server
       nodePackages.vscode-json-languageserver-bin
       nixd-nightly
+      nil
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
-    home.file = {
+    home.file = let luaDir = ".config/nvim/lua"; in {
       # All files coming from LazyVim sources
       ".config/nvim/init.lua".source = "${lazyVim}/.config/nvim/init.lua";
       ".config/nvim/stylua.toml".source = "${lazyVim}/.config/nvim/stylua.toml";
       ".config/nvim/.neoconf.json".source = "${lazyVim}/.config/nvim/.neoconf.json";
-      ".config/nvim/lua/lazyvim/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/lazyvim/config/lazy.lua";
-      ".config/nvim/lua/plugins/example.lua".source = "${lazyVim}/.config/nvim/lua/plugins/example.lua";
-      ".config/nvim/lua/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/config/lazy.lua";
+      "${luaDir}/lazyvim/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/lazyvim/config/lazy.lua";
+      "${luaDir}/plugins/example.lua".source = "${lazyVim}/.config/nvim/lua/plugins/example.lua";
+      "${luaDir}/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/config/lazy.lua";
 
       # Configure the colorscheme
-      ".config/nvim/lua/plugins/colorscheme.lua".source = ./files/colorscheme.lua;
+      "${luaDir}/plugins/colorscheme.lua".source = ./files/colorscheme.lua;
 
       # Configure NeoGit
-      ".config/nvim/lua/plugins/neogit.lua".source = ./files/neogit.lua;
+      "${luaDir}/plugins/neogit.lua".source = ./files/neogit.lua;
 
       # Disable Mason since it won't work on NixOS
-      ".config/nvim/lua/plugins/disabled.lua".source = ./files/disabled.lua;
+      "${luaDir}/plugins/disabled.lua".source = ./files/disabled.lua;
 
       # Activate extra plugins from Lazy
-      ".config/nvim/lua/plugins/extras.lua".source = ./files/extras.lua;
+      "${luaDir}/plugins/extras.lua".source = ./files/extras.lua;
 
       # Enable Codeium (experimental) - cannot be in a separate file
-      ".config/nvim/lua/plugins/codeium.lua".text = ''
+      "${luaDir}/plugins/codeium.lua".text = ''
         -- Plugin for codeium
         return {
           {
@@ -137,13 +138,13 @@ in
       '';
 
       # Use nil as language server for nix
-      ".config/nvim/lua/plugins/nix.lua".source = ./files/nix.lua;
+      "${luaDir}/plugins/nix.lua".source = ./files/nix.lua;
 
       # On NixOS, the vscode-json-languageserver is called simply json-languageserver
-      ".config/nvim/lua/plugins/json_ls.lua".source = ./files/json_ls.lua;
+      "${luaDir}/plugins/json_ls.lua".source = ./files/json_ls.lua;
 
       # Dart LS with default configuration
-      ".config/nvim/lua/plugins/dart.lua".source = ./files/dart.lua;
+      "${luaDir}/plugins/dart.lua".source = ./files/dart.lua;
 
     };
 
