@@ -11,12 +11,12 @@
       modules = [
         homeage.homeManagerModules.homeage
         ../home/modules/base
+        ../home/modules/neovim
         ../home/modules/helix.nix
         ../home/modules/fish.nix
         ../home/modules/fonts.nix
         ../home/modules/im.nix
         ../home/modules/git.nix
-        ../home/modules/neovim.nix
       ] ++ extraModules;
     };
 

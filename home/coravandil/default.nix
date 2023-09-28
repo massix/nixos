@@ -21,6 +21,12 @@ in
       configuration.theme = "onedark";
     };
 
+    neovim = {
+      enable = true;
+      configuration.unstable = true;
+      defaultEditor = true;
+    };
+
     git = {
       enable = true;
       userEmail = "massimo.gengarelli@alten.com";
@@ -72,6 +78,10 @@ in
     in
     unstable-packages ++ other-packages ++ stable-packages;
 
+
+  home.sessionVariables = {
+      EDITOR = "nvim";
+  };
 
   programs.helix.languages = {
     language = [

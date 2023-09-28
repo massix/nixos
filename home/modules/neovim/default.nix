@@ -86,161 +86,65 @@ in
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file = {
+      # All files coming from LazyVim sources
       ".config/nvim/init.lua".source = "${lazyVim}/.config/nvim/init.lua";
       ".config/nvim/stylua.toml".source = "${lazyVim}/.config/nvim/stylua.toml";
       ".config/nvim/.neoconf.json".source = "${lazyVim}/.config/nvim/.neoconf.json";
       ".config/nvim/lua/lazyvim/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/lazyvim/config/lazy.lua";
       ".config/nvim/lua/plugins/example.lua".source = "${lazyVim}/.config/nvim/lua/plugins/example.lua";
+      ".config/nvim/lua/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/config/lazy.lua";
 
       # Configure the colorscheme
-      ".config/nvim/lua/plugins/colorscheme.lua".text = ''
-        return {
-          { "catppuccin/nvim", name = "catppuccin", enabled = true, opts = { 
-            flavour = "frappe",
-            background = {
-              dark = "macchiato",
-              light = "latte"
-            },
-            dim_inactive = {
-                enabled = true
-            },
-            show_end_of_buffer = false,
-            integrations = {
-              neotree = true,
-              mini = true
-            }
-          }},
-          { "LazyVim/LazyVim", opts = { colorscheme = "catppuccin" }},
-          { "nvim-lualine/lualine.nvim", opts = { options = { theme = "catppuccin" }}},
-        }
-      '';
+      ".config/nvim/lua/plugins/colorscheme.lua".source = ./files/colorscheme.lua;
 
       # Configure NeoGit
-      ".config/nvim/lua/plugins/neogit.lua".text = ''
-        return {
-          { 
-            "NeogitOrg/neogit",
-            dependencies = {
-              "nvim-lua/plenary.nvim",
-              "nvim-telescope/telescope.nvim",
-              "sindrets/diffview.nvim",
-              "ibhagwan/fzf-lua"
-            },
-
-            -- Nothing to configure
-            config = true,
-            enable = true,
-            keys = {
-              { "<leader>gn", function () require('neogit').open({ kind = 'replace' }) end, desc = 'Open NeoGit'}
-            }
-          }
-        }
-      '';
+      ".config/nvim/lua/plugins/neogit.lua".source = ./files/neogit.lua;
 
       # Disable Mason since it won't work on NixOS
-      ".config/nvim/lua/plugins/disabled.lua".text = ''
-        return {
-          -- Disable Mason since we have to handle our LSPs on our own
-          { "williamboman/mason-lspconfig.nvim", enabled = false },
-          { "williamboman/mason.nvim", enabled = false },
-        }
-      '';
+      ".config/nvim/lua/plugins/disabled.lua".source = ./files/disabled.lua;
 
       # Activate extra plugins from Lazy
-      ".config/nvim/lua/plugins/extras.lua".text = ''
-        -- Extra plugins from LazyVim
-        return {
-          -- File Previews
-          { import = "lazyvim.plugins.extras.editor.mini-files" },
+      ".config/nvim/lua/plugins/extras.lua".source = ./files/extras.lua;
 
-          -- Goodies for the UI
-          { import = "lazyvim.plugins.extras.ui.mini-animate" },
-          { import = "lazyvim.plugins.extras.ui.mini-starter" },
-
-          -- Project handling
-          { import = "lazyvim.plugins.extras.util.project" },
-
-          -- Languages
-          { import = "lazyvim.plugins.extras.lang.go" },
-          { import = "lazyvim.plugins.extras.lang.docker" },
-          { import = "lazyvim.plugins.extras.lang.java" },
-          { import = "lazyvim.plugins.extras.lang.yaml" },
-
-          -- Testing with NeoTest
-          { import = "lazyvim.plugins.extras.test.core" },
-
-          -- Debuggers Adapter
-          { import = "lazyvim.plugins.extras.dap.core" },
-        }
-      '';
-
-      # Enable Codeium (experimental)
+      # Enable Codeium (experimental) - cannot be in a separate file
       ".config/nvim/lua/plugins/codeium.lua".text = ''
-
         -- Plugin for codeium
         return {
           {
-            'Exafunction/codeium.nvim',
+            "Exafunction/codeium.nvim",
             dependencies = {
               "nvim-lua/plenary.nvim",
-              "hrsh7th/nvim-cmp"
+              "hrsh7th/nvim-cmp",
             },
-            config = function ()
-              require('codeium').setup({
+            config = function()
+              require("codeium").setup({
                 tools = {
-                  language_server = "${codeiumls}/bin/language_server_linux_x64"
-                }
+                  language_server = "${codeiumls}/bin/language_server_linux_x64",
+                },
               })
             end,
           },
 
           -- Register Codeium as a trusted source
           {
-            'hrsh7th/nvim-cmp',
+            "hrsh7th/nvim-cmp",
             opts = function(_, opts)
               local cmp = require("cmp")
-              opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {{ name = "codeium" }}))
-            end
+              opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "codeium" } }))
+            end,
           },
         }
       '';
 
       # Use nil as language server for nix
-      ".config/nvim/lua/plugins/nix.lua".text = ''
-        return {
-          {
-            "neovim/nvim-lspconfig", opts = {
-              servers = { nil_ls = {}}
-            }
-          }
-        }
-      '';
+      ".config/nvim/lua/plugins/nix.lua".source = ./files/nix.lua;
 
       # On NixOS, the vscode-json-languageserver is called simply json-languageserver
-      ".config/nvim/lua/plugins/json_ls.lua".text = ''
-        return {
-          {
-            "neovim/nvim-lspconfig", opts = {
-              servers = {
-                jsonls = { cmd = { 'json-languageserver', '--stdio' }} 
-              }
-            }
-          }
-        }
-      '';
+      ".config/nvim/lua/plugins/json_ls.lua".source = ./files/json_ls.lua;
 
       # Dart LS with default configuration
-      ".config/nvim/lua/plugins/dart.lua".text = ''
-        return {
-          {
-            "neovim/nvim-lspconfig", opts = {
-                servers = { dartls = {}}
-            }
-          }
-        }
-      '';
+      ".config/nvim/lua/plugins/dart.lua".source = ./files/dart.lua;
 
-      ".config/nvim/lua/config/lazy.lua".source = "${lazyVim}/.config/nvim/lua/config/lazy.lua";
     };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
