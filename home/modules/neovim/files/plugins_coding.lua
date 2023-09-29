@@ -91,8 +91,103 @@ return {
     end,
   },
 
+  -- Comments
+  { "numToStr/Comment.nvim", lazy = false, config = true },
+
+  -- Better MatchParen
   { 
-    "numToStr/Comment.nvim", lazy = false,
-    config = true  
+    "utilyre/sentiment.nvim", 
+    lazy = false,
+    config = true,
+    init = function()
+      vim.g.loaded_matchparen = 1
+    end
   },
+
+  -- Surround motion
+  { 
+    'echasnovski/mini.surround', 
+    lazy = false, 
+    version = false, 
+    config = true,
+    opts = {
+      mappings = {
+        add = "ma", -- Add surrounding in Normal and Visual modes
+        delete = "md", -- Delete surrounding
+        find = "mf", -- Find surrounding (to the right)
+        find_left = "mF", -- Find surrounding (to the left)
+        highlight = "mh", -- Highlight surrounding
+        replace = "mr", -- Replace surrounding
+        update_n_lines = "mn", -- Update `n_lines`
+      },
+    },
+  },
+
+  -- Fork of null-ls
+  {
+    'nvimtools/none-ls.nvim',
+    dependencies = {
+      'jose-elias-alvarez/null-ls.nvim', -- Only for the APIs
+      'nvim-lua/plenary.nvim'
+    },
+    event = { "BufReadPre", "BufNewFile" },
+    opts = function()
+      local nls = require("null-ls")
+      return {
+        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        sources = {
+          nls.builtins.diagnostics.fish,
+          nls.builtins.diagnostics.deadnix,
+          nls.builtins.formatting.fish_indent,
+          nls.builtins.formatting.stylua,
+          nls.builtins.formatting.shfmt,
+          nls.builtins.formatting.nixpkgs_fmt,
+          nls.builtins.code_actions.statix
+        },
+      }
+    end
+  },
+
+  -- better diagnostics list and others
+  {
+    "folke/trouble.nvim",
+    cmd = { "TroubleToggle", "Trouble" },
+    opts = { use_diagnostic_signs = true },
+    keys = {
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").previous({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Previous trouble/quickfix item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+    },
+  },
+
 }
+
