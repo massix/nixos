@@ -10,6 +10,36 @@ local spec = {
     "ibhagwan/fzf-lua"
   },
   config = true,
+
+  init = function()
+    api.nvim_create_augroup('NeogitEvents', { clear = true })
+
+    local create_autocmd = function(pattern, callback)
+      api.nvim_create_autocmd('User', {
+        pattern = pattern,
+        group = group,
+        callback = callback
+      })
+    end
+
+    create_autocmd('NeogitPushComplete', function() 
+      Util.info('Push Complete')
+      require('neogit').close()
+    end)
+
+    create_autocmd('NeogitPullComplete', function()
+      Util.info('Pull Complete')
+    end)
+
+    create_autocmd('NeogitFetchComplete', function()
+      Util.info('Fetch Complete')
+    end)
+
+    create_autocmd('NeogitStatusRefreshed', function()
+      Util.info('Neogit status refreshed')
+    end)
+
+  end,
   keys = {
     { 
       "<leader>gg", 
