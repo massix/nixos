@@ -23,9 +23,8 @@ in
     };
 
     home.packages = with unstable; [
-      stylua
-      gcc
-      wl-clipboard
+      gcc # Needed for treesitter
+      wl-clipboard # To interact with the clipboard
 
       # Some common language servers I don't want to install through devShells
       lua-language-server
