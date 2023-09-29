@@ -1,7 +1,8 @@
-{ stdenv, pkgs, lib }:
+{ pkgs, lib }:
 let
   inherit (lib) stdenvNoCC;
-in {
+in
+{
   codeiumls = stdenvNoCC.mkDerivation rec {
     pname = "codeium-ls";
     version = "1.2.90";

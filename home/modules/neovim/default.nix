@@ -2,7 +2,8 @@
 let
   cfg = config.my-modules.neovim;
   inherit (lib) mkEnableOption mkIf;
-in {
+in
+{
   options.my-modules.neovim = {
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
@@ -36,27 +37,28 @@ in {
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
-    let
-      nvimHome = ".config/nvim";
-      plugins = "${nvimHome}/lua/plugins";
-    in {
-      "${nvimHome}/lua/util/nix.lua".text = ''
-        -- Some variables that are injected automatically by nix
-        return {
-          nvimHome = "${nvimHome}"
-        }
-      '';
+      let
+        nvimHome = ".config/nvim";
+        plugins = "${nvimHome}/lua/plugins";
+      in
+      {
+        "${nvimHome}/lua/util/nix.lua".text = ''
+          -- Some variables that are injected automatically by nix
+          return {
+            nvimHome = "${nvimHome}"
+          }
+        '';
 
-      "${nvimHome}/lua/util/defaults.lua".source = ./files/util_defaults.lua;
+        "${nvimHome}/lua/util/defaults.lua".source = ./files/util_defaults.lua;
 
-      "${nvimHome}/init.lua".source = ./files/init.lua;
-      "${nvimHome}/lua/config/options.lua".source = ./files/config_options.lua;
-      "${nvimHome}/lua/config/keymaps.lua".source = ./files/config_keymaps.lua;
+        "${nvimHome}/init.lua".source = ./files/init.lua;
+        "${nvimHome}/lua/config/options.lua".source = ./files/config_options.lua;
+        "${nvimHome}/lua/config/keymaps.lua".source = ./files/config_keymaps.lua;
 
-      "${plugins}/colorscheme.lua".source = ./files/plugins_colorscheme.lua;
-      "${plugins}/editor.lua".source = ./files/plugins_editor.lua;
-      "${plugins}/git.lua".source = ./files/plugins_git.lua;
-    };
+        "${plugins}/colorscheme.lua".source = ./files/plugins_colorscheme.lua;
+        "${plugins}/editor.lua".source = ./files/plugins_editor.lua;
+        "${plugins}/git.lua".source = ./files/plugins_git.lua;
+      };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
       EMACS = "${config.programs.neovim.finalPackage}/bin/nvim";

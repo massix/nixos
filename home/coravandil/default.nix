@@ -2,9 +2,6 @@
 , unstable
 , ...
 }:
-let
-  mypkgs = import ../../pkgs { inherit pkgs; };
-in
 {
   my-modules = {
     fonts.enable = false;
@@ -80,7 +77,7 @@ in
 
 
   home.sessionVariables = {
-      EDITOR = "nvim";
+    EDITOR = "nvim";
   };
 
   systemd.user.startServices = "sd-switch";
