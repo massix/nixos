@@ -4,6 +4,29 @@ local Util = require('util.defaults')
 -- Here all the plugins for the editor
 return
 {
+  -- Better `vim.notify()`
+  {
+    "rcarriga/nvim-notify",
+    keys = {
+      {
+        "<leader>un",
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
+        desc = "Dismiss all Notifications",
+      },
+    },
+    opts = {
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
+  },
+
   -- which-key
   {
     "folke/which-key.nvim",
@@ -25,7 +48,13 @@ return
         ["<leader>L"] = { "<cmd>Lazy<cr>", "Lazy" },
         ["<leader>s"] = { name = "+search" },
         ["<leader>g"] = { name = "+git" },
-        ["<leader>f"] = { name = "+files" }
+        ["<leader>f"] = { name = "+file" },
+        ["<leader>b"] = { name = "+buffer" },
+        ["<leader>u"] = { name = "+misc" },
+        ["<leader>x"] = { name = "+list" },
+        ["<leader>q"] = { name = "+quit" },
+        ["<leader>w"] = { name = "+window" },
+        ["<leader><tab>"] = { name = "+tab" },
       })
     end
   },
@@ -516,5 +545,55 @@ return
         extensions = { "nvim-tree", "lazy" },
       }
     end,
+  },
+
+  -- This is what powers LazyVim's fancy-looking
+  -- tabs, which include filetype icons and close buttons.
+  {
+    "akinsho/bufferline.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+    },
+    dependencies = {
+      -- buffer remove
+      {
+        "echasnovski/mini.bufremove",
+        -- stylua: ignore
+        keys = {
+          { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
+          { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+        },
+      },
+    },
+    opts = {
+      options = {
+        -- stylua: ignore
+        close_command = function(n) require("mini.bufremove").delete(n, false) end,
+        -- stylua: ignore
+        right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+        diagnostics = "nvim_lsp",
+        always_show_bufferline = true,
+        separator_style = "slant",
+        name_formatter = function(buf)
+          return buf.bufnr .. " " .. buf.name
+        end,
+        diagnostics_indicator = function(_, _, diag)
+          local icons = require('util.defaults').icons.diagnostics
+          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+            .. (diag.warning and icons.Warn .. diag.warning or "")
+          return vim.trim(ret)
+        end,
+        color_icons = true,
+        offsets = {
+          {
+            filetype = "NvimTree",
+            text = "File Explorer",
+            text_align = "left",
+          },
+        },
+      },
+    },
   },
 }

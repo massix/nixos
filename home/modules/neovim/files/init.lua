@@ -51,5 +51,8 @@ require("lazy").setup({
   }
 }, opts)
 
+-- Keymaps
+require('config.keymaps')
+
 -- Theme has to be the last thing
 require('tokyonight').load()

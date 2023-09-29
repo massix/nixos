@@ -51,9 +51,11 @@ in {
 
       "${nvimHome}/init.lua".source = ./files/init.lua;
       "${nvimHome}/lua/config/options.lua".source = ./files/config_options.lua;
+      "${nvimHome}/lua/config/keymaps.lua".source = ./files/config_keymaps.lua;
 
       "${plugins}/colorscheme.lua".source = ./files/plugins_colorscheme.lua;
       "${plugins}/editor.lua".source = ./files/plugins_editor.lua;
+      "${plugins}/git.lua".source = ./files/plugins_git.lua;
     };
 
     home.sessionVariables = mkIf cfg.defaultEditor {

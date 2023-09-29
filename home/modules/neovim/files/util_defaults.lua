@@ -1,7 +1,61 @@
 local M = {}
 
+local Util = require('lazy.core.util')
+
 M.root_patterns = { ".git", "lua" }
---
+
+---@param silent boolean?
+---@param values? {[1]:any, [2]:any}
+function M.toggle(option, silent, values)
+  if values then
+    if vim.opt_local[option]:get() == values[1] then
+      vim.opt_local[option] = values[2]
+    else
+      vim.opt_local[option] = values[1]
+    end
+    return Util.info("Set " .. option .. " to " .. vim.opt_local[option]:get(), { title = "Option" })
+  end
+  vim.opt_local[option] = not vim.opt_local[option]:get()
+  if not silent then
+    if vim.opt_local[option]:get() then
+      Util.info("Enabled " .. option, { title = "Option" })
+    else
+      Util.warn("Disabled " .. option, { title = "Option" })
+    end
+  end
+end
+
+local nu = { number = true, relativenumber = true }
+function M.toggle_number()
+  if vim.opt_local.number:get() or vim.opt_local.relativenumber:get() then
+    nu = { number = vim.opt_local.number:get(), relativenumber = vim.opt_local.relativenumber:get() }
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    Util.warn("Disabled line numbers", { title = "Option" })
+  else
+    vim.opt_local.number = nu.number
+    vim.opt_local.relativenumber = nu.relativenumber
+    Util.info("Enabled line numbers", { title = "Option" })
+  end
+end
+
+local enabled = true
+function M.toggle_diagnostics()
+  enabled = not enabled
+  if enabled then
+    vim.diagnostic.enable()
+    Util.info("Enabled diagnostics", { title = "Diagnostics" })
+  else
+    vim.diagnostic.disable()
+    Util.warn("Disabled diagnostics", { title = "Diagnostics" })
+  end
+end
+
+---@param plugin string
+function M.has(plugin)
+  return require("lazy.core.config").spec.plugins[plugin] ~= nil
+end
+
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -19,6 +73,17 @@ function M.fg(name)
   local fg = hl and hl.fg or hl.foreground
   return fg and { fg = string.format("#%06x", fg) }
 end
+
+---@param fn fun()
+function M.on_very_lazy(fn)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      fn()
+    end,
+  })
+end
+
 
 -- this will return a function that calls telescope.
 -- cwd will default to lazyvim.util.get_root
