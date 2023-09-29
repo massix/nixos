@@ -22,6 +22,9 @@
 
     flake-compat.url = "github:inclyc/flake-compat";
     flake-compat.flake = false;
+
+    nix-direnv.url = "github:nix-community/nix-direnv";
+    nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -32,6 +35,7 @@
     , nix-formatter-pack
     , homeage
     , nixd
+    , nix-direnv
     , ...
     }:
     let
@@ -45,7 +49,8 @@
         config = pkgsconfig;
         overlays = [
           (_final: _prev: { nixd-nightly = nixd; })
-          (_final: _prev: { lombok = mypkgs.lombok; })
+          (_final: _prev: { inherit (mypkgs) lombok; })
+          nix-direnv.overlay
         ];
       };
 
@@ -58,7 +63,8 @@
         };
         overlays = [
           (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
-          (_final: _prev: { lombok = mypkgs.lombok; })
+          (_final: _prev: { inherit (mypkgs) lombok; })
+          nix-direnv.overlay
         ];
       };
 

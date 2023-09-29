@@ -61,6 +61,22 @@ in
     package = unstable.firefox;
   };
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config = {
+      global.disable_stdin = true;
+      global.strict_env = true;
+
+      whitelist.prefix = let home = "/home/massi"; in [
+        "${home}/dev"
+        "${home}/Development"
+        "${home}/.config/nvim"
+        "${home}/.config/nixos"
+      ];
+    };
+  };
+
   programs.command-not-found.enable = false;
 
   services.syncthing = {
