@@ -92,6 +92,15 @@
         ];
       };
 
+      devShells."${system}".default = pkgs.mkShell {
+        packages = with pkgs; [
+          deadnix
+          nixpkgs-fmt
+          statix
+          stylua
+        ];
+      };
+
       formatter.${system} = nix-formatter-pack.lib.mkFormatter {
         inherit pkgs;
         config.tools = {
