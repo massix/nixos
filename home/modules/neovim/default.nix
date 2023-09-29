@@ -58,6 +58,7 @@ in
         "${plugins}/colorscheme.lua".source = ./files/plugins_colorscheme.lua;
         "${plugins}/editor.lua".source = ./files/plugins_editor.lua;
         "${plugins}/git.lua".source = ./files/plugins_git.lua;
+        "${plugins}/coding.lua".source = ./files/plugins_coding.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
