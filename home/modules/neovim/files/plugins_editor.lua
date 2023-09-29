@@ -45,7 +45,11 @@ return
     init = function()
       local wk = require('which-key')
       wk.register({
-        ["<leader>L"] = { "<cmd>Lazy<cr>", "Lazy" },
+        -- Lazy Handling
+        ["<leader>l"] = { name = "+lazy" },
+        ["<leader>ll"] = { "<cmd>Lazy<cr>", "UI" },
+        ["<leader>lh"] = { "<cmd>Lazy health<cr>", "HealthCheck" },
+
         ["<leader>s"] = { name = "+search" },
         ["<leader>g"] = { name = "+git" },
         ["<leader>f"] = { name = "+file" },
