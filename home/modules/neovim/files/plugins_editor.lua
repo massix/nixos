@@ -59,6 +59,7 @@ return
         ["<leader>q"] = { name = "+quit" },
         ["<leader>w"] = { name = "+window" },
         ["<leader><tab>"] = { name = "+tab" },
+        ["<leader>n"] = { name = "+nix" },
       })
     end
   },

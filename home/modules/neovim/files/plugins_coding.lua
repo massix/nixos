@@ -126,8 +126,8 @@ return {
   -- Fork of null-ls
   {
     'nvimtools/none-ls.nvim',
+    name = 'null-ls',
     dependencies = {
-      'jose-elias-alvarez/null-ls.nvim', -- Only for the APIs
       'nvim-lua/plenary.nvim'
     },
     event = { "BufReadPre", "BufNewFile" },
@@ -188,6 +188,16 @@ return {
       },
     },
   },
+
+  {
+    'figsoda/nix-develop.nvim',
+    cmd = { "NixDevelop", "NixShell" },
+    lazy = true,
+    keys = {
+      { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
+      { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
+    },
+  }
 
 }
 
