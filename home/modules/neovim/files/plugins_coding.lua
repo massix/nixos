@@ -90,4 +90,9 @@ return {
       end
     end,
   },
+
+  { 
+    "numToStr/Comment.nvim", lazy = false,
+    config = true  
+  },
 }
