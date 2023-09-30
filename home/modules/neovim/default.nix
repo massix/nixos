@@ -39,25 +39,30 @@ in
       let
         nvimHome = ".config/nvim";
         plugins = "${nvimHome}/lua/plugins";
+        config = "${nvimHome}/lua/config";
+        util = "${nvimHome}/lua/util";
       in
       {
-        "${nvimHome}/lua/util/nix.lua".text = ''
+        # Misc files
+        "${util}/nix.lua".text = ''
           -- Some variables that are injected automatically by nix
           return {
             nvimHome = "${nvimHome}"
           }
         '';
 
-        "${nvimHome}/lua/util/defaults.lua".source = ./files/util_defaults.lua;
+        "${util}/defaults.lua".source = ./files/util/defaults.lua;
 
+        # Init and start-up options 
         "${nvimHome}/init.lua".source = ./files/init.lua;
-        "${nvimHome}/lua/config/options.lua".source = ./files/config_options.lua;
-        "${nvimHome}/lua/config/keymaps.lua".source = ./files/config_keymaps.lua;
+        "${config}/options.lua".source = ./files/config/options.lua;
+        "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
 
-        "${plugins}/colorscheme.lua".source = ./files/plugins_colorscheme.lua;
-        "${plugins}/editor.lua".source = ./files/plugins_editor.lua;
-        "${plugins}/git.lua".source = ./files/plugins_git.lua;
-        "${plugins}/coding.lua".source = ./files/plugins_coding.lua;
+        # Plugins configurations
+        "${plugins}/colorscheme.lua".source = ./files/plugins/colorscheme.lua;
+        "${plugins}/editor.lua".source = ./files/plugins/editor.lua;
+        "${plugins}/git.lua".source = ./files/plugins/git.lua;
+        "${plugins}/coding.lua".source = ./files/plugins/coding.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {

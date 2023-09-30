@@ -1,5 +1,41 @@
 local load_textobjects = false
 
+-- Get all available formatters for current buffer (specified by buffer number)
+local function get_formatters(bufnr)
+  local ft = vim.bo[bufnr].filetype
+
+  -- Check if we have a formatter for null_ls, they have higher priority
+  local null_ls = package.loaded['null-ls'] and require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') or {}
+
+  local ret = {
+    active = {},
+    available = {},
+    null_ls = null_ls,
+  }
+
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+
+  -- Helper function
+  local supports_formatting = function(client)
+    if client.config and client.config.capabilities and client.config.capabilities.documentFormattingProvider == false then
+      return false
+    end
+    return client.supports_method("textDocument/formatting") or client.supports_method("textDocument/rangeFormatting")
+  end
+
+  for _, client in ipairs(clients) do
+    if supports_formatting(client) then
+      if (#null_ls > 0 and client.name == "null-ls") or #null_ls == 0 then
+        table.insert(ret.active, client)
+      else
+        table.insert(ret.available, client)
+      end
+    end
+  end
+
+  return ret
+end
+
 return {
   -- Treesitter is a new parser generator tool that we can
   -- use in Neovim to power faster and more accurate
@@ -242,7 +278,36 @@ return {
       -- Similar to .vscode things
       { 'folke/neoconf.nvim', cmd = 'Neoconf', config = false, dependencies = { 'nvim-lspconfig' } },
       { 'folke/neodev.nvim', opts = {} },
+
+      -- Completion engine for lsp
       { 'hrsh7th/cmp-nvim-lsp', config = true },
+    },
+  },
+
+
+  -- Snippet engine
+  {
+    'L3MON4D3/LuaSnip',
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
+    keys = {
+      {
+        "<C-tab>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<C-Tab>"
+        end,
+        expr = true, silent = true, mode = "i",
+      },
+      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
 
@@ -257,7 +322,7 @@ return {
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
       { 'hrsh7th/nvim-cmp' },
-      { 'L3MON4D3/LuaSnip' },
+      { 'L3MON4D3/LuaSnip' }
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -267,6 +332,10 @@ return {
       return {
         completion = {
           completeopt = "menu,menuone,noinsert",
+        },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
         },
         snippet = {
           expand = function(args)
@@ -280,10 +349,10 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<tab>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<S-Tab>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+            select = false,
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
