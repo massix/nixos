@@ -92,12 +92,14 @@
         ];
       };
 
-      devShells."${system}".default = pkgs.mkShell {
-        packages = with pkgs; [
-          deadnix
-          nixpkgs-fmt
-          statix
-          stylua
+      devShells."${system}".default = unstable.mkShell {
+        packages = with unstable; [
+          deadnix /* dead code for nix */
+          nixpkgs-fmt /* Formatter for nix */
+          statix /* Static analyzer for nix */
+          stylua /* Formatter for lua */
+          nil /* language server for nix */
+          lua-language-server /* language server for lua */
         ];
       };
 
