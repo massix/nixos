@@ -1,4 +1,3 @@
-local Util = require('lazy.core.util')
 local api = vim.api
 
 local spec = {
@@ -14,7 +13,7 @@ local spec = {
 
     -- Reload Nvimtree automatically
     init = function()
-      api.nvim_create_augroup('NeogitEvents', { clear = true })
+      local group = api.nvim_create_augroup('NeogitEvents', { clear = true })
 
       local create_autocmd = function(pattern, callback)
         api.nvim_create_autocmd('User', {
@@ -24,7 +23,7 @@ local spec = {
         })
       end
 
-      create_autocmd('NeogitPushComplete', function() 
+      create_autocmd('NeogitPushComplete', function()
         require('nvim-tree.api').git.reload()
         require('neogit').close()
       end)
@@ -43,24 +42,24 @@ local spec = {
 
     end,
     keys = {
-      { 
-        "<leader>gg", 
-        function() require('neogit').open() end, 
-        desc = "Open Neogit" 
+      {
+        "<leader>gg",
+        function() require('neogit').open() end,
+        desc = "Open Neogit"
       },
-      { 
-        "<leader>gC", 
-        function() require('neogit').open({ "commit" }) end, 
-        desc = "Open Neogit commit" 
+      {
+        "<leader>gC",
+        function() require('neogit').open({ "commit" }) end,
+        desc = "Open Neogit commit"
       },
     }
   },
 
   -- Git blame info
-  { 
-    'f-person/git-blame.nvim', 
-    version = false, 
-    config = true, 
+  {
+    'f-person/git-blame.nvim',
+    version = false,
+    config = true,
     event = { "BufReadPre", "BufNewFile" },
     keys = {
       { "<leader>gB", "<cmd>GitBlameToggle<cr>", desc = "Toggle Git blame" }
@@ -68,11 +67,11 @@ local spec = {
   },
 
   -- Git signs
-  { 
-    'lewis6991/gitsigns.nvim', 
-    version = false, 
-    config = true, 
-    event = { "BufReadPre", "BufNewFile" } 
+  {
+    'lewis6991/gitsigns.nvim',
+    version = false,
+    config = true,
+    event = { "BufReadPre", "BufNewFile" }
   }
 
 }

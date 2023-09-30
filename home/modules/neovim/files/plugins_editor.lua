@@ -31,10 +31,6 @@ return
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
     opts = {
       key_labels = {
         ["<space>"] = "SPC",
@@ -43,6 +39,8 @@ return
       }
     },
     init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
       local wk = require('which-key')
       wk.register({
         -- Lazy Handling
@@ -73,7 +71,7 @@ return
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       hijack_cursor = true,
-      view = { 
+      view = {
         side = 'right',
         width = 50
       },
@@ -487,8 +485,8 @@ return
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local icons = require("util.defaults").icons
-      local Util = require("util.defaults")
+      local icons = require('util.defaults').icons
+      local Util = require('util.defaults')
 
       return {
         options = {

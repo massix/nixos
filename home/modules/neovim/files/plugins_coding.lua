@@ -9,7 +9,6 @@ return {
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    version = false,
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -27,7 +26,6 @@ return {
       { "<c-space>", desc = "Increment selection" },
       { "<bs>", desc = "Decrement selection", mode = "x" },
     },
-    ---@type TSConfig
     opts = {
       highlight = { enable = true },
       indent = { enable = true },
@@ -59,7 +57,6 @@ return {
         },
       },
     },
-    ---@param opts TSConfig
     config = function(_, opts)
       if type(opts.ensure_installed) == "table" then
         ---@type table<string, boolean>
@@ -95,8 +92,8 @@ return {
   { "numToStr/Comment.nvim", lazy = false, config = true },
 
   -- Better MatchParen
-  { 
-    "utilyre/sentiment.nvim", 
+  {
+    "utilyre/sentiment.nvim",
     lazy = false,
     config = true,
     init = function()
@@ -105,20 +102,20 @@ return {
   },
 
   -- Surround motion
-  { 
-    'echasnovski/mini.surround', 
-    lazy = false, 
-    version = false, 
+  {
+    'echasnovski/mini.surround',
+    lazy = false,
+    version = false,
     config = true,
     opts = {
       mappings = {
-        add = "ma", -- Add surrounding in Normal and Visual modes
-        delete = "md", -- Delete surrounding
-        find = "mf", -- Find surrounding (to the right)
-        find_left = "mF", -- Find surrounding (to the left)
-        highlight = "mh", -- Highlight surrounding
-        replace = "mr", -- Replace surrounding
-        update_n_lines = "mn", -- Update `n_lines`
+        add = 'ma', -- Add surrounding in Normal and Visual modes
+        delete = 'md', -- Delete surrounding
+        find = 'mf', -- Find surrounding (to the right)
+        find_left = 'mF', -- Find surrounding (to the left)
+        highlight = 'mh', -- Highlight surrounding
+        replace = 'mr', -- Replace surrounding
+        update_n_lines = 'mn', -- Update `n_lines`
       },
     },
   },
@@ -189,15 +186,18 @@ return {
     },
   },
 
+  -- Enter nix develop automagically
   {
     'figsoda/nix-develop.nvim',
     cmd = { "NixDevelop", "NixShell" },
     lazy = true,
+    ft = { 'nix' },
     keys = {
-      { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
-      { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
+      { '<leader>nd', '<cmd>NixDevelop<cr>', desc = 'Nix Develop' },
+      { '<leader>ns', '<cmd>NixShell<cr>', desc = 'Nix Shell' },
     },
-  }
+  },
+
   -- lspconfig
   {
     'neovim/nvim-lspconfig',
