@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 local opt = vim.opt
+local api = vim.api
 
 opt.autowrite = true -- Enable auto write
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
@@ -50,6 +51,13 @@ if vim.fn.has("nvim-0.9.0") == 1 then
   opt.splitkeep = "screen"
   opt.shortmess:append({ C = true })
 end
+
+-- Highlight yanked text
+api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 250 })
+  end,
+})
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
