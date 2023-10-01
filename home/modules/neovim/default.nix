@@ -25,13 +25,6 @@ in
     home.packages = with unstable; [
       gcc # Needed for treesitter
       wl-clipboard # To interact with the clipboard
-
-      # Some common language servers I don't want to install through devShells
-      lua-language-server
-      yaml-language-server
-      nodePackages.vscode-json-languageserver-bin
-      nixd-nightly
-      nil
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work

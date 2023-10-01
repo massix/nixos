@@ -473,4 +473,70 @@ return {
       },
     },
   },
+
+  -- jdtls
+  {
+    "mfussenegger/nvim-jdtls",
+    lazy = true,
+    ft = { "java" },
+    dependencies = { "neovim/nvim-lspconfig" },
+    opts = {},
+    config = function(_, _)
+      local fname = vim.api.nvim_buf_get_name(0)
+      local root_dir = require("lspconfig.server_configurations.jdtls").default_config.root_dir
+
+      local project_name = function(rdir)
+        return rdir and vim.fs.basename(rdir)
+      end
+      --
+      -- Where are the config and workspace dirs for a project?
+      local jdtls_config_dir = function(prname)
+        return vim.fn.stdpath("cache") .. "/jdtls/" .. prname .. "/config"
+      end
+
+      local jdtls_workspace_dir = function(prname)
+        return vim.fn.stdpath("cache") .. "/jdtls/" .. prname .. "/workspace"
+      end
+
+      local jdtls_options = {
+        cmd = {
+          "jdt-language-server",
+
+          "-configuration",
+          jdtls_config_dir(project_name(root_dir(fname))),
+          "-data",
+          jdtls_workspace_dir(project_name(root_dir(fname))),
+        },
+
+        root_dir = root_dir(fname),
+      }
+
+      -- Create autocommand to attach to all the java filetypes
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "java" },
+        callback = function()
+          require("jdtls").start_or_attach(jdtls_options)
+        end,
+      })
+
+      -- Create some more bindings once the LSP is attached
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+          if client and client.name == "jdtls" then
+            local wk = require("which-key")
+            wk.register({
+              ["<leader>cx"] = { name = "+extract" },
+              ["<leader>cxv"] = { require("jdtls").extract_variable_all, "Extract Variable" },
+              ["<leader>cxc"] = { require("jdtls").extract_constant, "Extract Constant" },
+              ["gs"] = { require("jdtls").super_implementation, "Goto Super" },
+              ["gS"] = { require("jdtls.tests").goto_subjects, "Goto Subjects" },
+              ["<leader>co"] = { require("jdtls").organize_imports, "Organize Imports" },
+            }, { mode = "n", buffer = args.buf })
+          end
+        end,
+      })
+    end,
+  },
 }
