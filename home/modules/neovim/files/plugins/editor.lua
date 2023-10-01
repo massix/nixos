@@ -734,7 +734,8 @@ return {
 
   {
     "levouh/tint.nvim",
-    lazy = false,
+    event = "VeryLazy",
+    opts = {}
   },
 
   {
