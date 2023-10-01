@@ -1,6 +1,21 @@
 local M = {}
 
-local Util = require('lazy.core.util')
+local Util = require("lazy.core.util")
+
+M.auto_format = false
+
+function M.toggle_autoformat()
+  M.auto_format = not M.auto_format
+  if M.auto_format then
+    vim.notify("Autoformat enabled", vim.log.levels.INFO)
+  else
+    vim.notify("Autoformat disabled", vim.log.levels.INFO)
+  end
+end
+
+function M.has_autoformat()
+  return M.auto_format
+end
 
 M.root_patterns = { ".git", "lua" }
 
@@ -83,7 +98,6 @@ function M.on_very_lazy(fn)
     end,
   })
 end
-
 
 -- this will return a function that calls telescope.
 -- cwd will default to lazyvim.util.get_root

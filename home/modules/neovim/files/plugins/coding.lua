@@ -1,40 +1,5 @@
 local load_textobjects = false
-
--- Get all available formatters for current buffer (specified by buffer number)
-local function get_formatters(bufnr)
-  local ft = vim.bo[bufnr].filetype
-
-  -- Check if we have a formatter for null_ls, they have higher priority
-  local null_ls = package.loaded['null-ls'] and require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') or {}
-
-  local ret = {
-    active = {},
-    available = {},
-    null_ls = null_ls,
-  }
-
-  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
-
-  -- Helper function
-  local supports_formatting = function(client)
-    if client.config and client.config.capabilities and client.config.capabilities.documentFormattingProvider == false then
-      return false
-    end
-    return client.supports_method("textDocument/formatting") or client.supports_method("textDocument/rangeFormatting")
-  end
-
-  for _, client in ipairs(clients) do
-    if supports_formatting(client) then
-      if (#null_ls > 0 and client.name == "null-ls") or #null_ls == 0 then
-        table.insert(ret.active, client)
-      else
-        table.insert(ret.available, client)
-      end
-    end
-  end
-
-  return ret
-end
+local util_defaults = require("util.defaults")
 
 return {
   -- Treesitter is a new parser generator tool that we can
@@ -134,34 +99,34 @@ return {
     config = true,
     init = function()
       vim.g.loaded_matchparen = 1
-    end
+    end,
   },
 
   -- Surround motion
   {
-    'echasnovski/mini.surround',
+    "echasnovski/mini.surround",
     lazy = false,
     version = false,
     config = true,
     opts = {
       mappings = {
-        add = 'ma', -- Add surrounding in Normal and Visual modes
-        delete = 'md', -- Delete surrounding
-        find = 'mf', -- Find surrounding (to the right)
-        find_left = 'mF', -- Find surrounding (to the left)
-        highlight = 'mh', -- Highlight surrounding
-        replace = 'mr', -- Replace surrounding
-        update_n_lines = 'mn', -- Update `n_lines`
+        add = "ma", -- Add surrounding in Normal and Visual modes
+        delete = "md", -- Delete surrounding
+        find = "mf", -- Find surrounding (to the right)
+        find_left = "mF", -- Find surrounding (to the left)
+        highlight = "mh", -- Highlight surrounding
+        replace = "mr", -- Replace surrounding
+        update_n_lines = "mn", -- Update `n_lines`
       },
     },
   },
 
   -- Fork of null-ls
   {
-    'nvimtools/none-ls.nvim',
-    name = 'null-ls',
+    "nvimtools/none-ls.nvim",
+    name = "null-ls",
     dependencies = {
-      'nvim-lua/plenary.nvim'
+      "nvim-lua/plenary.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
@@ -175,10 +140,10 @@ return {
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
           nls.builtins.formatting.nixpkgs_fmt,
-          nls.builtins.code_actions.statix
+          -- nls.builtins.code_actions.statix,
         },
       }
-    end
+    end,
   },
 
   -- better diagnostics list and others
@@ -224,70 +189,81 @@ return {
 
   -- Enter nix develop automagically
   {
-    'figsoda/nix-develop.nvim',
+    "figsoda/nix-develop.nvim",
     cmd = { "NixDevelop", "NixShell" },
     lazy = true,
-    ft = { 'nix' },
+    ft = { "nix" },
     keys = {
-      { '<leader>nd', '<cmd>NixDevelop<cr>', desc = 'Nix Develop' },
-      { '<leader>ns', '<cmd>NixShell<cr>', desc = 'Nix Shell' },
+      { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
+      { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
     },
   },
 
   -- lspconfig
   {
-    'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
-    cmd = { 'LspInfo' },
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    cmd = { "LspInfo" },
     version = false,
     config = function()
-      local lspconfig = require('lspconfig')
-      lspconfig.nil_ls.setup {}
-      lspconfig.lua_ls.setup {
-        on_init = function(client)
-          local path = client.workspace_folders[1].name
-          if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
-            client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
-              Lua = {
-                runtime = {
-                  -- Tell the language server which version of Lua you're using
-                  -- (most likely LuaJIT in the case of Neovim)
-                  version = 'LuaJIT'
-                },
-                -- Make the server aware of Neovim runtime files
-                workspace = {
-                  checkThirdParty = false,
-                  library = {
-                    vim.env.VIMRUNTIME
-                    -- "${3rd}/luv/library"
-                    -- "${3rd}/busted/library",
-                  }
-                  -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                  -- library = vim.api.nvim_get_runtime_file("", true)
-                }
-              }
-            })
+      -- Make sure we load neoconf and neodev before configuring the lsp
+      require("neoconf").setup()
+      require("neodev").setup()
 
-            client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-          end
-          return true
-        end
-      }
+      local lspconfig = require("lspconfig")
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      lspconfig.nil_ls.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.jsonls.setup({
+        capabilities = capabilities,
+        settings = {
+          json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+          jsonc = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      })
+
+      lspconfig.yamlls.setup({
+        settings = {
+          yaml = {
+            schemaStore = {
+              -- You must disable built-in schemaStore support if you want to use
+              -- this plugin and its advanced options like `ignore`.
+              enable = false,
+              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+              url = "",
+            },
+            schemas = require("schemastore").yaml.schemas(),
+          },
+        },
+      })
     end,
     dependencies = {
       -- Similar to .vscode things
-      { 'folke/neoconf.nvim', cmd = 'Neoconf', config = false, dependencies = { 'nvim-lspconfig' } },
-      { 'folke/neodev.nvim', opts = {} },
+      { "folke/neoconf.nvim" },
+      { "folke/neodev.nvim" },
 
       -- Completion engine for lsp
-      { 'hrsh7th/cmp-nvim-lsp', config = true },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "b0o/schemastore.nvim" },
     },
   },
 
-
   -- Snippet engine
   {
-    'L3MON4D3/LuaSnip',
+    "L3MON4D3/LuaSnip",
     dependencies = {
       "rafamadriz/friendly-snippets",
       config = function()
@@ -304,43 +280,62 @@ return {
         function()
           return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<C-Tab>"
         end,
-        expr = true, silent = true, mode = "i",
+        expr = true,
+        silent = true,
+        mode = "i",
       },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+      {
+        "<tab>",
+        function()
+          require("luasnip").jump(1)
+        end,
+        mode = "s",
+      },
+      {
+        "<s-tab>",
+        function()
+          require("luasnip").jump(-1)
+        end,
+        mode = { "i", "s" },
+      },
     },
   },
 
   -- completion engine
   {
-    'hrsh7th/nvim-cmp',
+    "hrsh7th/nvim-cmp",
     version = false,
-    event = 'InsertEnter',
+    event = "InsertEnter",
     dependencies = {
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-cmdline' },
-      { 'hrsh7th/nvim-cmp' },
-      { 'L3MON4D3/LuaSnip' }
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-path" },
+      { "hrsh7th/cmp-cmdline" },
+      { "hrsh7th/nvim-cmp" },
+      { "L3MON4D3/LuaSnip" },
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
+
+      ---@diagnostic disable-next-line: redefined-local
       local defaults = require("cmp.config.default")()
 
       return {
         completion = {
-          completeopt = "menu,menuone,noinsert",
+          completeopt = "menu,menuone,noinsert,noselect",
         },
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
         },
+        view = {
+          docs_auto_open = true,
+        },
         snippet = {
           expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end
+            require("luasnip").lsp_expand(args.body)
+          end,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -349,11 +344,8 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<tab>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-Tab>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = false,
-          }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<Tab>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = false }),
+          ["<S-Tab>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
@@ -361,9 +353,10 @@ return {
           { name = "path" },
           { name = "cmdline" },
         }),
+        preselect = cmp.PreselectMode.None,
         formatting = {
           format = function(_, item)
-            local icons = require("util.defaults").icons.kinds
+            local icons = util_defaults.icons.kinds
             if icons[item.kind] then
               item.kind = icons[item.kind] .. item.kind
             end
@@ -379,5 +372,105 @@ return {
       }
     end,
   },
-}
 
+  -- LSP Interactions
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    opts = {
+      hover = {
+        open_cmd = "!xdg-open",
+      },
+      lightbulb = {
+        virtual_text = true,
+      },
+      outline = {
+        win_position = "left",
+      },
+      finder = {
+        default = "ref+def+impl",
+      },
+      ui = {
+        code_action = util_defaults.icons.diagnostics.Hint,
+        border = "single",
+      },
+    },
+    keys = {
+      -- Leader prefixed
+      { "<leader>cpD", "<cmd>Lspsaga peek_definition<cr>", desc = "Peek definition" },
+      { "<leader>cgD", "<cmd>Lspsaga goto_definition<cr>", desc = "Goto definition" },
+      { "<leader>cpd", "<cmd>Lspsaga peek_type_definition<cr>", desc = "Peek type definition" },
+      { "<leader>cgd", "<cmd>Lspsaga goto_type_definition<cr>", desc = "Goto type definition" },
+      { "<leader>cf", "<cmd>Lspsaga finder<cr>", desc = "See references/implementations" },
+      { "<leader>ch", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
+      { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Code outline" },
+      { "<leader>ca", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
+
+      -- goto things
+      { "gpD", "<cmd>Lspsaga peek_definition<cr>", desc = "Peek definition" },
+      { "gD", "<cmd>Lspsaga goto_definition<cr>", desc = "Goto definition" },
+      { "gpd", "<cmd>Lspsaga peek_type_definition<cr>", desc = "Peek type definition" },
+      { "gd", "<cmd>Lspsaga goto_type_definition<cr>", desc = "Goto type definition" },
+
+      -- Misc
+      { "K", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
+    },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>c"] = { name = "+code" },
+        ["<leader>cp"] = { name = "+peek" },
+        ["<leader>cg"] = { name = "+goto" },
+        ["gp"] = { name = "+peek" },
+      })
+    end,
+  },
+
+  -- Formatter
+  {
+    "stevearc/conform.nvim",
+    event = "BufEnter",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        nix = { "nixpkgs-fmt" },
+      },
+      format_on_save = function(_)
+        if util_defaults.has_autoformat() then
+          return { lsp_fallback = true }
+        else
+          return
+        end
+      end,
+      format_after_save = function(_)
+        if util_defaults.has_autoformat() then
+          return { lsp_fallback = true, async = true }
+        else
+          return
+        end
+      end,
+    },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>cF"] = { name = "+format" },
+      })
+    end,
+    keys = {
+      {
+        "<leader>cFf",
+        function()
+          require("conform").format({ lsp_fallback = true })
+        end,
+        desc = "Format Document",
+      },
+      {
+        "<leader>cFt",
+        function()
+          util_defaults.toggle_autoformat()
+        end,
+        desc = "Toggle Autoformatting",
+      },
+    },
+  },
+}

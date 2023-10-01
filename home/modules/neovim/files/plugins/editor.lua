@@ -1,9 +1,8 @@
 local api = vim.api
-local Util = require('util.defaults')
+local Util = require("util.defaults")
 
 -- Here all the plugins for the editor
-return
-{
+return {
   -- Better `vim.notify()`
   {
     "rcarriga/nvim-notify",
@@ -36,12 +35,12 @@ return
         ["<space>"] = "SPC",
         ["<cr>"] = "RET",
         ["<tab>"] = "TAB",
-      }
+      },
     },
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
-      local wk = require('which-key')
+      local wk = require("which-key")
       wk.register({
         -- Lazy Handling
         ["<leader>l"] = { name = "+lazy" },
@@ -59,7 +58,7 @@ return
         ["<leader><tab>"] = { name = "+tab" },
         ["<leader>n"] = { name = "+nix" },
       })
-    end
+    end,
   },
 
   -- nvim tree file explorer
@@ -72,14 +71,14 @@ return
     opts = {
       hijack_cursor = true,
       view = {
-        side = 'right',
-        width = 50
+        side = "right",
+        width = 50,
       },
       renderer = {
-        icons =  { show = { modified = true }},
-        highlight_modified = 'all'
+        icons = { show = { modified = true } },
+        highlight_modified = "all",
       },
-      modified = { enable = true }
+      modified = { enable = true },
     },
     keys = {
       { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Focus the explorer" },
@@ -100,14 +99,17 @@ return
     init = function()
       api.nvim_create_autocmd(
         { "WinScrolled", "VimResized", "QuitPre" },
-        { pattern = '*', command = [[silent! lua require('scrollbar').show()]] })
+        { pattern = "*", command = [[silent! lua require('scrollbar').show()]] }
+      )
       api.nvim_create_autocmd(
         { "WinEnter", "FocusGained" },
-        { pattern = '*', command = [[silent! lua require('scrollbar').show()]] })
+        { pattern = "*", command = [[silent! lua require('scrollbar').show()]] }
+      )
       api.nvim_create_autocmd(
         { "WinLeave", "FocusLost", "BufLeave", "BufWinLeave" },
-        { pattern = '*', command = [[silent! lua require('scrollbar').clear()]] })
-    end
+        { pattern = "*", command = [[silent! lua require('scrollbar').clear()]] }
+      )
+    end,
   },
 
   -- Smooth Scrolling
@@ -118,8 +120,8 @@ return
     opts = {
       extra_keymaps = true,
       extended_keymaps = true,
-      override_keymaps = true
-    }
+      override_keymaps = true,
+    },
   },
 
   -- Command Palette (TODO: configure this)
@@ -133,12 +135,12 @@ return
       },
       which_key = {
         auto_register = true,
-        do_binding = false
-      }
+        do_binding = false,
+      },
     },
     keys = {
-      { "<leader><space>", "<cmd>Legendary<cr>", desc = "Legendary" }
-    }
+      { "<leader><space>", "<cmd>Legendary<cr>", desc = "Legendary" },
+    },
   },
 
   -- Fuzzy finder
@@ -150,7 +152,7 @@ return
     dependencies = {
       "nvim-lua/plenary.nvim",
       "BurntSushi/ripgrep",
-      "sharkdp/fd"
+      "sharkdp/fd",
     },
     keys = {
       { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
@@ -272,7 +274,6 @@ return
           },
         },
       }
-
     end,
   },
 
@@ -282,15 +283,15 @@ return
     lazy = true,
     init = function()
       vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' }})
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.select(...)
       end
 
       vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' }})
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.input(...)
       end
-    end
+    end,
   },
 
   -- Noice
@@ -315,26 +316,79 @@ return
               { find = "; before #%d+" },
             },
           },
-          view = "mini"
+          view = "mini",
         },
       },
       presets = {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
-        inc_rename = true
-      }
+        inc_rename = true,
+      },
     },
 
     keys = {
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = {"i", "n", "s"} },
-      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
-    }
+      {
+        "<S-Enter>",
+        function()
+          require("noice").redirect(vim.fn.getcmdline())
+        end,
+        mode = "c",
+        desc = "Redirect Cmdline",
+      },
+      {
+        "<leader>snl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<leader>snh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<leader>sna",
+        function()
+          require("noice").cmd("all")
+        end,
+        desc = "Noice All",
+      },
+      {
+        "<leader>snd",
+        function()
+          require("noice").cmd("dismiss")
+        end,
+        desc = "Dismiss All",
+      },
+      {
+        "<c-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<c-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Scroll backward",
+        mode = { "i", "n", "s" },
+      },
+    },
   },
 
   -- Dashboard
@@ -378,24 +432,26 @@ return
         vim.cmd.close()
         vim.api.nvim_create_autocmd("User", {
           pattern = "AlphaReady",
-          callback = function() require('lazy').show() end
+          callback = function()
+            require("lazy").show()
+          end,
         })
       end
 
-      require('alpha').setup(dashboard.opts)
+      require("alpha").setup(dashboard.opts)
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "LazyVimStarted",
         callback = function()
-          local stats = require('lazy').stats()
+          local stats = require("lazy").stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          local nix = require('util.nix')
+          local nix = require("util.nix")
 
           dashboard.section.footer.val = "NeoVim started in " .. ms .. "ms from " .. nix.nvimHome
           pcall(vim.cmd.AlphaRedraw)
-        end
+        end,
       })
-    end
+    end,
   },
 
   -- indent guides for Neovim
@@ -475,7 +531,7 @@ return
         separator = " ",
         highlight = true,
         depth_limit = 5,
-        icons = require('util.defaults').icons.kinds,
+        icons = require("util.defaults").icons.kinds,
       }
     end,
   },
@@ -485,8 +541,8 @@ return
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local icons = require('util.defaults').icons
-      local Util = require('util.defaults')
+      local icons = require("util.defaults").icons
+      local Util = require("util.defaults")
 
       return {
         options = {
@@ -592,7 +648,7 @@ return
           return buf.bufnr .. " " .. buf.name
         end,
         diagnostics_indicator = function(_, _, diag)
-          local icons = require('util.defaults').icons.diagnostics
+          local icons = require("util.defaults").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
             .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
@@ -657,6 +713,28 @@ return
     keys = {
       { "]]", desc = "Next Reference" },
       { "[[", desc = "Prev Reference" },
+    },
+  },
+
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+  -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
+
+  {
+    "sunjon/shade.nvim",
+    lazy = false,
+    opts = {
+      overlay_opacity = 80,
     },
   },
 }
