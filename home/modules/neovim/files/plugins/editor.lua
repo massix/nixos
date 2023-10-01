@@ -413,6 +413,8 @@ return {
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert<CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles<CR>"),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep<CR>"),
+        dashboard.button("e", " " .. " Edit Nixos Configuration", ":cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"),
+        dashboard.button("d", " " .. " Load Nix Environment", ":NixDevelop<CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
       }
 
@@ -727,6 +729,29 @@ return {
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
+
+  {
+    "levouh/tint.nvim",
+    lazy = false,
+  },
+
+  {
+    "ziontee113/icon-picker.nvim",
+    cmd = { "IconPickerNormal", "IconPickerYank", "IconPickerInsert" },
+    opts = {
+      disable_legacy_commands = true,
+    },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>I"] = { name = "+icons" },
+      })
+    end,
+    keys = {
+      { "<leader>Ii", "<cmd>IconPickerNormal<cr>", desc = "Icon Picker" },
+      { "<C-i>", mode = "i", "<cmd>IconPickerInsert<cr>", desc = "Icon Picker (insert)" },
     },
   },
 }
