@@ -25,11 +25,11 @@ require("lazy").setup({
   -- All plugins are lazy by default
   defaults = {
     lazy = true,
-    version = false
+    version = false,
   },
 
   -- Install a colorscheme
-  install = { colorscheme = { "tokyonight", "habamax" }},
+  install = { colorscheme = { "tokyonight", "habamax" } },
 
   -- Enable checker for updating plugins
   checker = { enabled = true },
@@ -46,13 +46,13 @@ require("lazy").setup({
         "tohtml",
         "tutor",
         "zipPlugin",
-      }
-    }
-  }
+      },
+    },
+  },
 }, opts)
 
 -- Keymaps
-require('config.keymaps')
+require("config.keymaps")
 
 -- Theme has to be the last thing
-require('tokyonight').load()
+require("tokyonight").load()

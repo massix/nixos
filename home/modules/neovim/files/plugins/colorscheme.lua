@@ -5,7 +5,7 @@ return {
     lazy = true,
     name = "tokyonight",
     opts = {
-      style = "moon"
+      style = "moon",
     },
   },
 }
