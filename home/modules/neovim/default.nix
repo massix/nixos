@@ -23,14 +23,16 @@ in
       withRuby = true;
     };
 
-    home.packages = 
-    let 
-      basePackages = with unstable; [ gcc wl-clipboard ]; 
-      javaPackages = if cfg.languages.java then with unstable; [
-        vscode-extensions.vscjava.vscode-java-debug     
-        vscode-extensions.vscjava.vscode-java-test
-      ] else [];
-    in basePackages ++ javaPackages;
+    home.packages =
+      let
+        basePackages = with unstable; [ gcc wl-clipboard ];
+        javaPackages =
+          if cfg.languages.java then with unstable; [
+            vscode-extensions.vscjava.vscode-java-debug
+            vscode-extensions.vscjava.vscode-java-test
+          ] else [ ];
+      in
+      basePackages ++ javaPackages;
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
