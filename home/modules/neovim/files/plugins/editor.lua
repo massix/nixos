@@ -354,4 +354,34 @@ return {
       { "<C-i>", mode = "i", "<cmd>IconPickerInsert<cr>", desc = "Icon Picker (insert)" },
     },
   },
+
+  -- Better MatchParen
+  {
+    "utilyre/sentiment.nvim",
+    lazy = false,
+    config = true,
+    init = function()
+      vim.g.loaded_matchparen = 1
+    end,
+  },
+
+  -- Surround motion
+  {
+    "echasnovski/mini.surround",
+    lazy = false,
+    version = false,
+    config = true,
+    opts = {
+      mappings = {
+        add = "ma", -- Add surrounding in Normal and Visual modes
+        delete = "md", -- Delete surrounding
+        find = "mf", -- Find surrounding (to the right)
+        find_left = "mF", -- Find surrounding (to the left)
+        highlight = "mh", -- Highlight surrounding
+        replace = "mr", -- Replace surrounding
+        update_n_lines = "mn", -- Update `n_lines`
+      },
+    },
+  },
+
 }
