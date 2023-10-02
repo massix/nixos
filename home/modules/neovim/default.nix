@@ -77,6 +77,7 @@ in
         "${plugins}/lualine.lua".source = ./files/plugins/lualine.lua;
         "${plugins}/ui.lua".source = ./files/plugins/ui.lua;
         "${plugins}/dap.lua".source = ./files/plugins/dap.lua;
+        "${plugins}/neotest.lua".source = ./files/plugins/neotest.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
