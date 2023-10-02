@@ -413,7 +413,11 @@ return {
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert<CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles<CR>"),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep<CR>"),
-        dashboard.button("e", " " .. " Edit Nixos Configuration", ":cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"),
+        dashboard.button(
+          "e",
+          " " .. " Edit Nixos Configuration",
+          ":cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"
+        ),
         dashboard.button("d", " " .. " Load Nix Environment", ":NixDevelop<CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
       }
@@ -514,43 +518,19 @@ return {
   -- ui components
   { "MunifTanjim/nui.nvim", lazy = true },
 
-  -- lsp symbol navigation for lualine. This shows where
-  -- in the code structure you are - within functions, classes,
-  -- etc - in the statusline.
-  {
-    "SmiteshP/nvim-navic",
-    lazy = true,
-    init = function()
-      vim.g.navic_silence = true
-      require("util.defaults").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, buffer)
-        end
-      end)
-    end,
-    opts = function()
-      return {
-        separator = " ",
-        highlight = true,
-        depth_limit = 5,
-        icons = require("util.defaults").icons.kinds,
-      }
-    end,
-  },
-
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local icons = require("util.defaults").icons
-      local Util = require("util.defaults")
+      local icons = Util.icons
 
       return {
         options = {
           theme = "auto",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+          icons_enabled = true,
         },
         sections = {
           lualine_a = { "mode" },
@@ -567,8 +547,6 @@ return {
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 1 } },
             {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
               "filename",
               path = 1,
               symbols = { modified = "  ", readonly = "  ", unnamed = "  " },
@@ -598,11 +576,11 @@ return {
               color = Util.fg("Constant"),
             },
             -- stylua: ignore
-            --{
-            --  function() return "  " .. require("dap").status() end,
-            --  cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-            --  color = Util.fg("Debug"),
-            --},
+            {
+             function() return "  " .. require("dap").status() end,
+             cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
+             color = Util.fg("Debug"),
+            },
             { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
             {
               "diff",
@@ -623,13 +601,12 @@ return {
             end,
           },
         },
-        extensions = { "nvim-tree", "lazy" },
+        extensions = { "nvim-tree", "lazy", "trouble" },
       }
     end,
   },
 
-  -- This is what powers LazyVim's fancy-looking
-  -- tabs, which include filetype icons and close buttons.
+  -- Fancy tabs and buffers
   {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
@@ -746,7 +723,7 @@ return {
   {
     "levouh/tint.nvim",
     event = "VeryLazy",
-    opts = {}
+    opts = {},
   },
 
   {
