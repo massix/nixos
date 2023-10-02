@@ -34,6 +34,7 @@ return {
         "bash",
         "fish",
         "html",
+        "java",
         "javascript",
         "jsdoc",
         "json",
@@ -179,7 +180,17 @@ return {
     config = function()
       -- Make sure we load neoconf and neodev before configuring the lsp
       require("neoconf").setup()
-      require("neodev").setup()
+      local neodev_opts = {}
+
+      if require("util.nix").dapConfigured then
+        neodev_opts = {
+          library = {
+            plugins = { "nvim-dap-ui" },
+            types = true,
+          },
+        }
+      end
+      require("neodev").setup(neodev_opts)
 
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -469,10 +480,13 @@ return {
         return vim.fn.stdpath("cache") .. "/jdtls/" .. prname .. "/workspace"
       end
 
+      local jdtls = require("jdtls")
+      local jdtls_tests = require("jdtls.tests")
+      local jdtls_dap = require("jdtls.dap")
+
       local jdtls_options = {
         cmd = {
           "jdt-language-server",
-
           "-configuration",
           jdtls_config_dir(project_name(root_dir(fname))),
           "-data",
@@ -480,34 +494,57 @@ return {
         },
 
         root_dir = root_dir(fname),
+        init_options = {
+          bundles = {},
+        },
       }
 
       -- Create autocommand to attach to all the java filetypes
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "java" },
         callback = function()
-          require("jdtls").start_or_attach(jdtls_options)
+          jdtls.start_or_attach(jdtls_options)
         end,
       })
 
+      --
       -- Create some more bindings once the LSP is attached
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local client = vim.lsp.get_client_by_id(args.data.client_id)
+          local wk = require("which-key")
 
           if client and client.name == "jdtls" then
-            local wk = require("which-key")
             wk.register({
               ["<leader>cx"] = { name = "+extract" },
-              ["<leader>cxv"] = { require("jdtls").extract_variable_all, "Extract Variable" },
-              ["<leader>cxc"] = { require("jdtls").extract_constant, "Extract Constant" },
-              ["gs"] = { require("jdtls").super_implementation, "Goto Super" },
-              ["gS"] = { require("jdtls.tests").goto_subjects, "Goto Subjects" },
-              ["<leader>co"] = { require("jdtls").organize_imports, "Organize Imports" },
+              ["<leader>cxv"] = { jdtls.extract_variable_all, "Extract Variable" },
+              ["<leader>cxc"] = { jdtls.extract_constant, "Extract Constant" },
+              ["gs"] = { jdtls.super_implementation, "Goto Super" },
+              ["gS"] = { jdtls_tests.goto_subjects, "Goto Subjects" },
+              ["<leader>co"] = { jdtls.organize_imports, "Organize Imports" },
             }, { mode = "n", buffer = args.buf })
+
+            local nix_config = require("util.nix")
+            if nix_config.dapConfigured then
+              vim.list_extend(jdtls_options.init_options.bundles, nix_config.jdtls.bundles)
+
+              -- Configure dap for java
+              jdtls.setup_dap({ hotcodereplace = "auto", config_overrides = {} })
+              jdtls_dap.setup_dap_main_class_configs()
+
+              wk.register({
+                ["<leader>t"] = { name = "+test" },
+                ["<leader>tt"] = { jdtls_dap.test_class, "Run All Test" },
+                ["<leader>tr"] = { jdtls_dap.test_nearest_method, "Run Nearest Test" },
+                ["<leader>tT"] = { jdtls_dap.pick_test, "Run Test" },
+              }, { mode = "n", buffer = args.buf })
+            end
           end
         end,
       })
+
+      -- Avoid race condition by attaching for the first time here
+      jdtls.start_or_attach(jdtls_options)
     end,
   },
 }

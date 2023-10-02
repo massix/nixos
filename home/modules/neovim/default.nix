@@ -8,6 +8,7 @@ in
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
     configuration.unstable = mkEnableOption "Install from the unstable channel";
+    languages.java = mkEnableOption "Install the DAP and Test adapters for Java";
   };
 
   config = {
@@ -22,10 +23,14 @@ in
       withRuby = true;
     };
 
-    home.packages = with unstable; [
-      gcc # Needed for treesitter
-      wl-clipboard # To interact with the clipboard
-    ];
+    home.packages = 
+    let 
+      basePackages = with unstable; [ gcc wl-clipboard ]; 
+      javaPackages = if cfg.languages.java then with unstable; [
+        vscode-extensions.vscjava.vscode-java-debug     
+        vscode-extensions.vscjava.vscode-java-test
+      ] else [];
+    in basePackages ++ javaPackages;
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
@@ -39,8 +44,20 @@ in
         # Misc files
         "${util}/nix.lua".text = ''
           -- Some variables that are injected automatically by nix
+          local bundles = {}
+
+          ${if cfg.languages.java then ''
+          table.insert(bundles, vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft*.java"))
+          vim.list_extend(
+            bundles, 
+            vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
+          )
+          '' else "-- No bundles for DAP or test"}
+
           return {
-            nvimHome = "${nvimHome}"
+            nvimHome = "${nvimHome}",
+            dapConfigured = ${if cfg.languages.java then "true" else "false"},
+            jdtls = { bundles = bundles },
           }
         '';
 
@@ -59,6 +76,7 @@ in
         "${plugins}/alpha.lua".source = ./files/plugins/alpha.lua;
         "${plugins}/lualine.lua".source = ./files/plugins/lualine.lua;
         "${plugins}/ui.lua".source = ./files/plugins/ui.lua;
+        "${plugins}/dap.lua".source = ./files/plugins/dap.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
