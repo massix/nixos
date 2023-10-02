@@ -1,0 +1,19 @@
+{
+  "[nix]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "jkillian.custom-local-formatters",
+    "editor.formatOnSave": true
+  },
+
+  "[lua]": {
+    "editor.tabSize": 2
+  },
+
+  "customLocalFormatters.formatters": [
+    {
+       "command": "nixpkgs-fmt",
+       "languages": ["nix"]
+    }
+  ],
+}
