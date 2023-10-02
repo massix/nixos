@@ -122,6 +122,7 @@ in
         obsidian
         chromium
         spotify
+        just
       ];
 
       other-packages = [
