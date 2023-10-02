@@ -56,6 +56,9 @@ in
         "${plugins}/editor.lua".source = ./files/plugins/editor.lua;
         "${plugins}/git.lua".source = ./files/plugins/git.lua;
         "${plugins}/coding.lua".source = ./files/plugins/coding.lua;
+        "${plugins}/alpha.lua".source = ./files/plugins/alpha.lua;
+        "${plugins}/lualine.lua".source = ./files/plugins/lualine.lua;
+        "${plugins}/ui.lua".source = ./files/plugins/ui.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
