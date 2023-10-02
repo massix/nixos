@@ -88,7 +88,7 @@ in
   programs.kitty = {
     enable = true;
     package = unstable.kitty;
-    theme = "Catppuccin-Mocha";
+    theme = "Tokyo Night Moon";
     shellIntegration.enableFishIntegration = true;
 
     font = {
