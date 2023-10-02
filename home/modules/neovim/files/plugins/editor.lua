@@ -565,12 +565,23 @@ return {
                 hint = icons.diagnostics.Hint,
               },
             },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
-            -- stylua: ignore
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 1 } },
             {
               function() return require("nvim-navic").get_location() end,
               cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+              "filename",
+              path = 1,
+              symbols = { modified = "  ", readonly = "  ", unnamed = "  " },
+              --- @param str string
+              fmt = function(str)
+                --- @type string
+                local fn = vim.fn.expand("%:~:.")
+
+                if vim.startswith(fn, "jdt://") then
+                  return fn:gsub("?.*$", "")
+                end
+                return str
+              end,
             },
           },
           lualine_x = {
