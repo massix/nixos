@@ -50,6 +50,7 @@ in
             dockerfile-language-server-nodejs /* language server for docker */
             yaml-language-server /* language server for yaml */
             helm-ls /* language server for helm */
+            nodePackages_latest.typescript-language-server /* language server for typescript */
           ] else [];
       in
       basePackages ++ javaPackages ++ languageServers;

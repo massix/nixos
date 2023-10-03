@@ -54,6 +54,7 @@ return {
         "query",
         "regex",
         "terraform",
+        "typescript",
         "vim",
         "yaml",
       },
@@ -250,6 +251,10 @@ return {
       })
 
       lspconfig.helm_ls.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.tsserver.setup({
         capabilities = capabilities,
       })
 
