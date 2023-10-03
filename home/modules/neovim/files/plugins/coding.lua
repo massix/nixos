@@ -32,6 +32,7 @@ return {
       indent = { enable = true },
       ensure_installed = {
         "bash",
+        "dockerfile",
         "fish",
         "html",
         "java",
@@ -46,6 +47,7 @@ return {
         "nix",
         "query",
         "regex",
+        "terraform",
         "vim",
         "yaml",
       },
@@ -231,6 +233,33 @@ return {
           },
         },
       })
+
+      lspconfig.terraformls.setup({
+        capabilities = capabilities
+      })
+
+      lspconfig.dockerls.setup({
+        capabilities = capabilities
+      })
+
+      lspconfig.helm_ls.setup({
+        capabilities = capabilities
+      })
+
+      -- If there are both yamlls and helm_ls, then detach yamlls
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "helm",
+        group = vim.api.nvim_create_augroup("Helm", { clear = true }),
+        callback = function(args)
+          local clients = vim.lsp.get_active_clients({ bufnr = args.buf })
+          for _, client in ipairs(clients) do
+            if client.name == "yamlls" and vim.lsp.buf_is_attached(args.buf, client.id) then
+              vim.lsp.buf_detach_client(args.buf, client.id)
+              break
+            end
+          end
+        end,
+      })
     end,
     dependencies = {
       -- Similar to .vscode things
@@ -240,6 +269,7 @@ return {
       -- Completion engine for lsp
       { "hrsh7th/cmp-nvim-lsp" },
       { "b0o/schemastore.nvim" },
+      { "towolf/vim-helm" }
     },
   },
 
