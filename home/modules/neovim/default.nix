@@ -9,6 +9,7 @@ in
     defaultEditor = mkEnableOption "Use nvim as default editor";
     configuration.unstable = mkEnableOption "Install from the unstable channel";
     languages.java = mkEnableOption "Install the DAP and Test adapters for Java";
+    languages.auto = mkEnableOption "Install the Language Servers automatically";
   };
 
   config = {
@@ -31,8 +32,27 @@ in
             vscode-extensions.vscjava.vscode-java-debug
             vscode-extensions.vscjava.vscode-java-test
           ] else [ ];
+        languageServers =
+          if cfg.languages.auto then with unstable; [
+            # NIX
+            deadnix /* dead code for nix */
+            nixpkgs-fmt /* Formatter for nix */
+            statix /* Static analyzer for nix */
+            nil /* language server for nix */
+
+            # LUA
+            stylua /* Formatter for lua */
+            lua-language-server /* language server for lua */
+
+            terraform-ls /* language server for terraform */
+            jdt-language-server /* language server for java */
+            vscode-langservers-extracted /* language server for json */
+            dockerfile-language-server-nodejs /* language server for docker */
+            yaml-language-server /* language server for yaml */
+            helm-ls /* language server for helm */
+          ] else [];
       in
-      basePackages ++ javaPackages;
+      basePackages ++ javaPackages ++ languageServers;
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =

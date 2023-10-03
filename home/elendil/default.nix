@@ -37,6 +37,7 @@ in
   my-modules.neovim.configuration.unstable = true;
   my-modules.neovim.defaultEditor = true;
   my-modules.neovim.languages.java = true;
+  my-modules.neovim.languages.auto = true;
 
   my-modules.git = {
     enable = true;
