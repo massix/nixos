@@ -21,6 +21,11 @@ return {
           load_textobjects = true
         end,
       },
+      {
+        "IndianBoy42/tree-sitter-just",
+        lazy = false,
+        config = false,
+      },
     },
     cmd = { "TSUpdateSync" },
     keys = {
@@ -39,6 +44,7 @@ return {
         "javascript",
         "jsdoc",
         "json",
+        "just",
         "lua",
         "luadoc",
         "luap",
@@ -73,6 +79,7 @@ return {
           return true
         end, opts.ensure_installed)
       end
+      require("tree-sitter-just").setup({})
       require("nvim-treesitter.configs").setup(opts)
 
       if load_textobjects then
@@ -235,15 +242,15 @@ return {
       })
 
       lspconfig.terraformls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
 
       lspconfig.dockerls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
 
       lspconfig.helm_ls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
 
       -- If there are both yamlls and helm_ls, then detach yamlls
@@ -269,7 +276,7 @@ return {
       -- Completion engine for lsp
       { "hrsh7th/cmp-nvim-lsp" },
       { "b0o/schemastore.nvim" },
-      { "towolf/vim-helm" }
+      { "towolf/vim-helm" },
     },
   },
 
