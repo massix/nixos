@@ -373,9 +373,10 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "buffer" },
+          { name = "codeium" },
           { name = "path" },
           { name = "cmdline" },
+          { name = "buffer" },
         }),
         preselect = cmp.PreselectMode.None,
         formatting = {

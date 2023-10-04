@@ -2,6 +2,30 @@
 let
   cfg = config.my-modules.neovim;
   inherit (lib) mkEnableOption mkIf;
+
+  # Codeium Language Server
+  codeium-ls = pkgs.stdenvNoCC.mkDerivation rec {
+    pname = "codeium-ls";
+    version = "1.2.90";
+
+    nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
+
+    src = builtins.fetchurl {
+      url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_linux_x64.gz";
+      sha256 = "sha256:0mb1b9jflzhr40n2zhmd4d1s9n1siq89bghn295arhl7grk41mwy";
+    };
+
+    dontBuild = true;
+    dontUnpack = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out/bin
+      gunzip -d -c -f $src > $out/bin/codeium-ls_server_linux_x64
+      chmod +x $out/bin/codeium-ls_server_linux_x64
+    '';
+
+  };
 in
 {
   options.my-modules.neovim = {
@@ -51,6 +75,7 @@ in
             yaml-language-server /* language server for yaml */
             helm-ls /* language server for helm */
             nodePackages_latest.typescript-language-server /* language server for typescript */
+            codeium-ls /* language server for codeium */
           ] else [];
       in
       basePackages ++ javaPackages ++ languageServers;
@@ -81,6 +106,7 @@ in
             nvimHome = "${nvimHome}",
             dapConfigured = ${if cfg.languages.java then "true" else "false"},
             jdtls = { bundles = bundles },
+            codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
           }
         '';
 
@@ -103,6 +129,7 @@ in
         "${plugins}/neotest.lua".source = ./files/plugins/neotest.lua;
         "${plugins}/toggleterm.lua".source = ./files/plugins/toggleterm.lua;
         "${plugins}/hardtime.lua".source = ./files/plugins/hardtime.lua;
+        "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
