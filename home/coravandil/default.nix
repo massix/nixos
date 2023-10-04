@@ -22,6 +22,10 @@
       enable = true;
       configuration.unstable = true;
       defaultEditor = true;
+      languages = {
+        auto = true;
+        java = true;
+      };
     };
 
     git = {
@@ -59,6 +63,22 @@
 
   programs.home-manager.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config = {
+      global.disable_stdin = true;
+      global.strict_env = true;
+
+      whitelist.prefix = let home = "/home/massi"; in [
+        "${home}/dev"
+        "${home}/Development"
+        "${home}/.config/nvim"
+        "${home}/.config/nixos"
+      ];
+    };
+  };
+
   home.packages =
     let
       stable-packages = with pkgs; [ azure-cli ];
@@ -67,6 +87,7 @@
         kubernetes-helm
         podman
         terraform
+        just
 
         # Server is started with Ubuntu
         docker-client
