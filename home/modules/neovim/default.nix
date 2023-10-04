@@ -76,7 +76,7 @@ in
             helm-ls /* language server for helm */
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
-          ] else [];
+          ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;
 
