@@ -101,6 +101,7 @@ in
         "${plugins}/ui.lua".source = ./files/plugins/ui.lua;
         "${plugins}/dap.lua".source = ./files/plugins/dap.lua;
         "${plugins}/neotest.lua".source = ./files/plugins/neotest.lua;
+        "${plugins}/toggleterm.lua".source = ./files/plugins/toggleterm.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
