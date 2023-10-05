@@ -19,6 +19,7 @@ return {
         "lazy",
         "qf",
         "netrw",
+        "help",
       },
     },
     keys = {
