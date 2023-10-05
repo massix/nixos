@@ -1,4 +1,5 @@
 -- Debug adapters for NeoVim
+local nix = require("util.nix")
 
 --- @type LazyPluginSpec[]
 return {
@@ -14,7 +15,7 @@ return {
     end,
 
     dependencies = {
-      --
+
       -- fancy UI for the debugger
       {
         "rcarriga/nvim-dap-ui",
@@ -49,6 +50,68 @@ return {
       {
         "theHamsta/nvim-dap-virtual-text",
         opts = {},
+      },
+
+      -- Configuration for Javascript
+      {
+        "mxsdev/nvim-dap-vscode-js",
+        ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        lazy = true,
+        opts = {
+          node_path = nix.nodePath,
+          debugger_path = nix.vsCodeJsDebug,
+          debugger_cmd = { nix.nodePath, nix.vsCodeJsDebug .. "/src/vsDebugServer.js" },
+          adapters = {
+            "pwa-node",
+            "pwa-chrome",
+            "pwa-msedge",
+            "node-terminal",
+            "pwa-extensionHost",
+            "node",
+            "chrome",
+          },
+        },
+        config = function(_, opts)
+          require("dap-vscode-js").setup(opts)
+
+          for _, language in ipairs({ "javascript", "javascriptreact", "typescript", "typescriptreact" }) do
+            require("dap").configurations[language] = {
+              {
+                type = "pwa-node",
+                request = "launch",
+                name = "Launch current file in new node process (" .. language .. ")",
+                cwd = vim.fn.getcwd(),
+                args = { "${file}" },
+                sourceMaps = true,
+                protocol = "inspector",
+              },
+              {
+                type = "pwa-node",
+                request = "attach",
+                name = "Attach",
+                processId = require("dap.utils").pick_process,
+                cwd = "${workspaceFolder}",
+              },
+
+              -- Jest configuration
+              {
+                type = "pwa-node",
+                request = "launch",
+                name = "Debug Jest Tests",
+                -- trace = true, -- include debugger info
+                runtimeExecutable = "node",
+                runtimeArgs = {
+                  "./node_modules/jest/bin/jest.js",
+                  "--runInBand",
+                },
+                rootPath = "${workspaceFolder}",
+                cwd = "${workspaceFolder}",
+                console = "integratedTerminal",
+                internalConsoleOptions = "neverOpen",
+              },
+            }
+          end
+        end,
       },
     },
 
