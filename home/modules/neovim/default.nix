@@ -2,6 +2,7 @@
 let
   cfg = config.my-modules.neovim;
   inherit (lib) mkEnableOption mkIf;
+  inherit (pkgs) buildNpmPackage;
 
   # Codeium Language Server
   codeium-ls = pkgs.stdenvNoCC.mkDerivation rec {
@@ -24,7 +25,44 @@ let
       gunzip -d -c -f $src > $out/bin/codeium-ls_server_linux_x64
       chmod +x $out/bin/codeium-ls_server_linux_x64
     '';
+  };
+  vscode-js-debug = buildNpmPackage rec {
+    pname = "vscode-js-debug";
+    version = "1.83.0";
 
+    nativeBuildInputs = with pkgs; [
+      nodePackages.gulp-cli
+      python311
+      pkg-config
+    ];
+
+    buildInputs = with pkgs; [ libsecret ];
+
+    patches = [ ./patches/patch-packages-json.patch ];
+
+    src = pkgs.fetchFromGitHub {
+      owner = "microsoft";
+      repo = pname;
+      rev = "v${version}";
+      hash = "sha256-a8Ih58EAL7YlKAXG8XigfCbLmvQh7aI2GLuS2VI1WC8=";
+    };
+
+    npmDepsHash = "sha256-FcHgCcw638Xqi+FeIIpbVnv4AFmL7Nad4TwMEprQq3k=";
+
+    dontNpmBuild = true;
+
+    buildPhase = ''
+      runHook preBuild
+      gulp clean compile vsDebugServerBundle:webpack-bundle
+      runHook postBuild
+    '';
+
+    npmInstallFlags = "--omit=dev";
+
+    installPhase = ''
+      mkdir $out
+      mv dist $out/${pname}
+    '';
   };
 in
 {
@@ -50,7 +88,11 @@ in
 
     home.packages =
       let
-        basePackages = with unstable; [ gcc wl-clipboard ];
+        basePackages = with unstable; [
+          gcc
+          wl-clipboard
+          nodejs
+        ];
         javaPackages =
           if cfg.languages.java then with unstable; [
             vscode-extensions.vscjava.vscode-java-debug
@@ -76,6 +118,7 @@ in
             helm-ls /* language server for helm */
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
+            vscode-js-debug /* language server for javascript */
           ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;
@@ -107,6 +150,8 @@ in
             dapConfigured = ${if cfg.languages.java then "true" else "false"},
             jdtls = { bundles = bundles },
             codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
+            vsCodeJsDebug = "${vscode-js-debug}/vscode-js-debug",
+            nodePath = "${pkgs.nodejs}/bin/node",
           }
         '';
 
