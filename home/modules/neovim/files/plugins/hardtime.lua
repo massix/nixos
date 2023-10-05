@@ -20,6 +20,15 @@ return {
         "qf",
         "netrw",
         "help",
+
+        -- DAP-UI Buffers
+        "dapui_scopes",
+        "dapui_breakpoints",
+        "dapui_stacks",
+        "dapui_watches",
+        "dapui_debugpoints",
+        "dapui_console",
+        "dap_repl",
       },
     },
     keys = {
