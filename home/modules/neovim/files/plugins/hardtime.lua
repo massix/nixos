@@ -3,6 +3,7 @@ return {
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     event = { "BufEnter" },
+    enabled = false,
     init = function()
       local wk = require("which-key")
       wk.register({
@@ -20,6 +21,9 @@ return {
         "qf",
         "netrw",
         "help",
+
+        -- Saga
+        "sagafinder",
 
         -- DAP-UI Buffers
         "dapui_scopes",

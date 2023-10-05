@@ -5,9 +5,10 @@ return {
     opts = {
       float_opts = { border = "double" },
       winbar = { enabled = true },
-      shade_terminals = false,
       open_mapping = false,
       insert_mappings = false,
+      shade_terminals = true,
+      autochdir = true,
     },
     config = true,
     lazy = false,
