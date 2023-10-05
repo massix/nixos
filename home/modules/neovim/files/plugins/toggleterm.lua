@@ -7,7 +7,7 @@ return {
       winbar = { enabled = true },
       shade_terminals = false,
       open_mapping = false,
-      insert_mappings = false
+      insert_mappings = false,
     },
     config = true,
     lazy = false,
