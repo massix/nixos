@@ -3,13 +3,19 @@ return {
     "akinsho/toggleterm.nvim",
     version = "*",
     opts = {
-      float_opts = { border = "curved" },
+      float_opts = { border = "double" },
       winbar = { enabled = true },
+      shade_terminals = false,
+      open_mapping = false,
+      insert_mappings = false
     },
+    config = true,
+    lazy = false,
+    cmd = { "ToggleTerm" },
     init = function()
       local wk = require("which-key")
       wk.register({
-        ["<C-\\>"] = { name = "+terminal" },
+        ["<c-\\>"] = { name = "+terminal" },
       })
 
       vim.api.nvim_create_autocmd("TermOpen", {
@@ -38,22 +44,16 @@ return {
         end,
       })
     end,
+
+    -- stylua: ignore
     keys = {
-      {
-        "<C-\\>t",
-        "<cmd>ToggleTerm direction=horizontal name=Terminal<CR>",
-        desc = "Toggle default terminal",
-      },
-      {
-        "<C-\\><C-\\>",
-        function()
-          vim.cmd([[:ToggleTerm direction=horizontal name=Terminal]])
-        end,
-        desc = "Toggle default terminal",
-      },
-      { "<C-\\>f", "<cmd>ToggleTerm direction=float name=Terminal<CR>", desc = "Toggle floating terminal" },
-      { "<C-\\>a", "<cmd>ToggleTermToggleAll<CR>", desc = "Toggle all terminals" },
-      { "<C-\\>s", "<cmd>TermSelect<CR>", desc = "Select terminal" },
+      { "<c-\\><c-\\>", [[<cmd>execute v:count . "ToggleTerm direction=horizontal"<CR>]], desc = "Toggle default terminal", silent = true },
+      { "<c-\\>t", [[<cmd>execute v:count . "ToggleTerm direction=horizontal"<CR>]], desc = "Toggle default terminal", silent = true },
+      { "<c-\\>f", [[<cmd>execute v:count . "ToggleTerm direction=float"<CR>]], desc = "Toggle floating terminal", silent = true },
+      { "<c-\\>a", "<cmd>ToggleTermToggleAll<CR>", desc = "Toggle all terminals", silent = true },
+      { "<c-\\>s", "<cmd>TermSelect<CR>", desc = "Select terminal", silent = true },
+      { "<c-\\>S", [[<cmd>execute "ToggleTermSendCurrentLine ". v:count<CR>]], desc = "Send current line to terminal" },
+      { "<c-\\>S", [[<cmd>execute "ToggleTermSendVisualSelection " . v:count<CR>]], mode = { "v" }, desc = "Send visual selection to terminal" },
     },
   },
 }
