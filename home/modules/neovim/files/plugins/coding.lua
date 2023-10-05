@@ -97,6 +97,13 @@ return {
           end
         end
       end
+
+      -- Once treesitter loaded, we can change the foldmethod
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+      -- Only fold when we need
+      vim.opt.foldenable = false
     end,
   },
 
