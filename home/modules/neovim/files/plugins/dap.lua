@@ -30,18 +30,23 @@ return {
         opts = {},
         config = function(_, opts)
           -- setup dap config by VsCode launch.json file
-          -- require("dap.ext.vscode").load_launchjs()
+          require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "javascript", "typescript" } })
           local dap = require("dap")
           local dapui = require("dapui")
+          local nvimtree = require("nvim-tree.api").tree
           dapui.setup(opts)
+
           dap.listeners.after.event_initialized["dapui_config"] = function()
+            nvimtree.close()
             dapui.open({})
           end
           dap.listeners.before.event_terminated["dapui_config"] = function()
             dapui.close({})
+            nvimtree.open()
           end
           dap.listeners.before.event_exited["dapui_config"] = function()
             dapui.close({})
+            nvimtree.open()
           end
         end,
       },
@@ -80,7 +85,7 @@ return {
                 type = "pwa-node",
                 request = "launch",
                 name = "Launch current file in new node process (" .. language .. ")",
-                cwd = vim.fn.getcwd(),
+                cwd = "${workspaceFolder}",
                 args = { "${file}" },
                 sourceMaps = true,
                 protocol = "inspector",
@@ -134,6 +139,7 @@ return {
       { "<leader>ds", function() require("dap").session() end, desc = "Session" },
       { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
       { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, { [ "pwa-node" ] = {"javascript", "typescript"}}) end, desc = "Load Launch JSON" },
     },
 
     config = function()

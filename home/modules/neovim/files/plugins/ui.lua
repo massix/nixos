@@ -238,7 +238,7 @@ return {
         local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
 
         return buftype == "terminal" or buftype == "nofile" or buftype == "prompt" or floating
-      end
+      end,
     },
   },
 }
