@@ -53,6 +53,7 @@ return {
         "nix",
         "query",
         "regex",
+        "rust",
         "terraform",
         "typescript",
         "vim",
@@ -265,6 +266,22 @@ return {
         capabilities = capabilities,
       })
 
+      lspconfig.rust_analyzer.setup({
+        capabilities = capabilities,
+      })
+
+      -- Enable the command CargoReload when editing Rust
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "rust",
+        group = vim.api.nvim_create_augroup("RustLsp", { clear = true }),
+        callback = function()
+          local wk = require('which-key')
+          wk.register({
+            ["<leader>cR"] = { "<cmd>CargoReload<CR>", desc = "Cargo Reload" }
+          })
+        end
+      })
+
       -- If there are both yamlls and helm_ls, then detach yamlls
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "helm",
@@ -342,7 +359,6 @@ return {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
-      { "hrsh7th/nvim-cmp" },
       { "L3MON4D3/LuaSnip" },
     },
     opts = function()

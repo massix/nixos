@@ -119,6 +119,7 @@ in
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
             vscode-js-debug /* language server for javascript */
+            rust-analyzer /* language server for rust */
           ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;
