@@ -94,7 +94,7 @@ in
 
     font = {
       package = unstable.nerdfonts;
-      name = "Iosevka NerdFont";
+      name = "FiraCode Nerd Font";
       size = 11;
     };
 
@@ -108,6 +108,8 @@ in
 
       background_opacity = "0.8";
       dynamic_background_opacity = true;
+
+      disable_ligatures = "cursor";
     };
   };
 
