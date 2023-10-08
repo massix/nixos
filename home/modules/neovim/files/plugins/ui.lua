@@ -231,6 +231,7 @@ return {
   {
     "levouh/tint.nvim",
     event = "VeryLazy",
+    enabled = false,
     opts = {
       window_ignore_function = function(winid)
         local bufid = vim.api.nvim_win_get_buf(winid)

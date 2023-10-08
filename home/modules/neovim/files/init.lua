@@ -55,4 +55,5 @@ require("lazy").setup({
 require("config.keymaps")
 
 -- Theme has to be the last thing
-require("tokyonight").load()
+-- require("tokyonight").load()
+vim.cmd([[colorscheme catppuccin]])
