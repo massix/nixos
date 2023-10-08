@@ -96,7 +96,7 @@ in
     kitty = {
       enable = true;
       package = unstable.kitty;
-      theme = "Tokyo Night Moon";
+      theme = "Catppuccin-Mocha";
       shellIntegration.enableFishIntegration = true;
 
       font = {
@@ -113,7 +113,7 @@ in
         tab_bar_style = "powerline";
         tab_bar_align = "left";
 
-        background_opacity = "0.8";
+        background_opacity = "0.9";
         dynamic_background_opacity = true;
 
         disable_ligatures = "cursor";
