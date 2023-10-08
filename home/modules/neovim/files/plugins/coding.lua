@@ -197,18 +197,18 @@ return {
     version = false,
     config = function()
       -- Make sure we load neoconf and neodev before configuring the lsp
-      require("neoconf").setup()
-      local neodev_opts = {}
-
-      if require("util.nix").dapConfigured then
-        neodev_opts = {
-          library = {
-            plugins = { "nvim-dap-ui" },
-            types = true,
-          },
-        }
-      end
-      require("neodev").setup(neodev_opts)
+      -- require("neoconf").setup()
+      -- local neodev_opts = {}
+      --
+      -- if require("util.nix").dapConfigured then
+      --   neodev_opts = {
+      --     library = {
+      --       plugins = { "nvim-dap-ui" },
+      --       types = true,
+      --     },
+      --   }
+      -- end
+      -- require("neodev").setup(neodev_opts)
 
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -300,7 +300,7 @@ return {
     dependencies = {
       -- Similar to .vscode things
       { "folke/neoconf.nvim" },
-      { "folke/neodev.nvim" },
+      -- { "folke/neodev.nvim" },
 
       -- Completion engine for lsp
       { "hrsh7th/cmp-nvim-lsp" },

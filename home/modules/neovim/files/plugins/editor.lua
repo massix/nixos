@@ -70,6 +70,7 @@ return {
     "mrjones2014/legendary.nvim",
     priority = 10000,
     lazy = false,
+    enabled = false,
     opts = {
       lazy_nvim = {
         auto_register = true,
