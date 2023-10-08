@@ -10,6 +10,12 @@ local spec = {
       "ibhagwan/fzf-lua",
     },
     config = true,
+    opts = {
+      console_timeout = 15000,
+      status = {
+        recent_commit_count = 50,
+      },
+    },
 
     -- Reload Nvimtree automatically
     init = function()
