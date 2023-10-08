@@ -5,12 +5,14 @@ return {
     lazy = true,
     dependencies = {
       { "andy-bell101/neotest-java" },
+      { "rouge8/neotest-rust", lazy = true, config = false },
     },
     config = function(_, _)
       vim.notify("Loading Neotest", vim.log.levels.INFO)
       require("neotest").setup({
         adapters = {
           -- require("neotest-java"), -- Disabled because not compatible yet
+          require("neotest-rust"),
         },
       })
     end,

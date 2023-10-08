@@ -120,6 +120,7 @@ in
             codeium-ls /* language server for codeium */
             vscode-js-debug /* language server for javascript */
             rust-analyzer /* language server for rust */
+            cargo-nextest /* test runner for rust */
           ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;
