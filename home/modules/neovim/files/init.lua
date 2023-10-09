@@ -28,6 +28,10 @@ require("lazy").setup({
     version = false,
   },
 
+  ui = {
+    border = "double",
+  },
+
   -- Install a colorscheme
   install = { colorscheme = { "tokyonight", "habamax" } },
 
