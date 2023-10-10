@@ -100,16 +100,15 @@ in
           ] else [ ];
         languageServers =
           if cfg.languages.auto then with unstable; [
-            # NIX
+            /* Formatters and analyzers */
             deadnix /* dead code for nix */
             nixpkgs-fmt /* Formatter for nix */
             statix /* Static analyzer for nix */
-            nil /* language server for nix */
-
-            # LUA
             stylua /* Formatter for lua */
-            lua-language-server /* language server for lua */
 
+            /* Language servers */
+            nil /* language server for nix */
+            lua-language-server /* language server for lua */
             terraform-ls /* language server for terraform */
             jdt-language-server /* language server for java */
             vscode-langservers-extracted /* language server for json */
@@ -118,8 +117,13 @@ in
             helm-ls /* language server for helm */
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
-            vscode-js-debug /* language server for javascript */
             rust-analyzer /* language server for rust */
+
+            /* Debuggers */
+            vscode-js-debug /* debugger for javascript */
+            vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
+
+            /* Test runners */
             cargo-nextest /* test runner for rust */
           ] else [ ];
       in
@@ -154,6 +158,7 @@ in
             codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
             vsCodeJsDebug = "${vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
+            rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
           }
         '';
 
@@ -177,6 +182,7 @@ in
         "${plugins}/toggleterm.lua".source = ./files/plugins/toggleterm.lua;
         "${plugins}/hardtime.lua".source = ./files/plugins/hardtime.lua;
         "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
+        "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {

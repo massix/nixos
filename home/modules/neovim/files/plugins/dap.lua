@@ -20,13 +20,13 @@ return {
       {
         "rcarriga/nvim-dap-ui",
       -- stylua: ignore
-      keys = {
-        ---@diagnostic disable-next-line: missing-fields
-        { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+        keys = {
+          ---@diagnostic disable-next-line: missing-fields
+          { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
 
-        ---@diagnostic disable-next-line: missing-fields
-        { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-      },
+          ---@diagnostic disable-next-line: missing-fields
+          { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+        },
         opts = {},
         config = function(_, opts)
           -- setup dap config by VsCode launch.json file
@@ -142,8 +142,14 @@ return {
       { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, { [ "pwa-node" ] = {"javascript", "typescript"}}) end, desc = "Load Launch JSON" },
     },
 
+    opts = {},
     config = function()
       vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+      local extension_path = nix.rustDebugger .. "/share/vscode/extensions/vadimcn.vscode-lldb"
+
+      local codelldb_path = extension_path .. "/adapter/codelldb"
+      local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
+      local dap = require("dap")
 
       for name, sign in pairs(require("util.defaults").icons.dap) do
         sign = type(sign) == "table" and sign or { sign }
@@ -152,6 +158,16 @@ return {
           { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
         )
       end
+
+      dap.adapters.codelldb = {
+        type = "server",
+        host = "127.0.0.1",
+        port = 3500,
+        executable = {
+          command = codelldb_path,
+          args = { "--port", "3500", "--liblldb", liblldb_path },
+        },
+      }
     end,
   },
 }
