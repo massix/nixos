@@ -102,7 +102,7 @@ in
       font = {
         package = unstable.nerdfonts;
         name = "FantasqueSansM Nerd Font";
-        size = 11;
+        size = 12;
       };
 
       settings = {
