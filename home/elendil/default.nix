@@ -101,7 +101,7 @@ in
 
       font = {
         package = unstable.nerdfonts;
-        name = "FiraCode Nerd Font";
+        name = "FantasqueSansM Nerd Font";
         size = 11;
       };
 
