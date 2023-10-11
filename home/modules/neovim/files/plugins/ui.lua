@@ -27,6 +27,7 @@ return {
   {
     "karb94/neoscroll.nvim",
     lazy = false,
+    enabled = false,
 
     opts = {
       extra_keymaps = true,
