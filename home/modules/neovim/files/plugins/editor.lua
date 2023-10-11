@@ -255,7 +255,7 @@ return {
             end,
           },
           opts = { skip = true },
-        }
+        },
       },
       presets = {
         bottom_search = true,

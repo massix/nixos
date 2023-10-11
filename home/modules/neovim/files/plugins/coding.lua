@@ -144,7 +144,7 @@ return {
           -- Code Actions --
           nls.builtins.code_actions.statix,
           nls.builtins.code_actions.gitsigns,
-          nls.builtins.code_actions.refactoring
+          nls.builtins.code_actions.refactoring,
         },
       }
     end,

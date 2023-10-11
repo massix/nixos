@@ -7,15 +7,20 @@ return {
       { "andy-bell101/neotest-java" },
       { "rouge8/neotest-rust", lazy = true, config = false },
     },
-    config = function(_, _)
-      vim.notify("Loading Neotest", vim.log.levels.INFO)
-      require("neotest").setup({
+    opts = function()
+      return {
         adapters = {
-          -- require("neotest-java"), -- Disabled because not compatible yet
           require("neotest-rust"),
         },
-      })
+        output_panel = {
+          open = "aboveleft vsplit | resize 15",
+        },
+        summary = {
+          open = "aboveleft vsplit | vertical resize 50",
+        },
+      }
     end,
+    config = true,
     -- stylua: ignore
     keys = {
       ---@diagnostic disable-next-line: missing-fields
