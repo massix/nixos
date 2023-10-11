@@ -25,7 +25,12 @@ in
 
     fish = {
       enable = true;
-      configuration.unstable = true;
+      configuration = {
+        unstable = true;
+        extraShellAbbrs = {
+          j = "just";
+        };
+      };
     };
 
     helix = {
