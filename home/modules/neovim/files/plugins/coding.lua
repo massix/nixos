@@ -117,20 +117,34 @@ return {
     name = "null-ls",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "ThePrimeagen/refactoring.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local nls = require("null-ls")
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        notify_format = nil,
         sources = {
+          -- Diagnostics --
           nls.builtins.diagnostics.fish,
           nls.builtins.diagnostics.deadnix,
+          nls.builtins.diagnostics.ansiblelint,
+          nls.builtins.diagnostics.gitlint,
+          nls.builtins.diagnostics.hadolint,
+          nls.builtins.diagnostics.terraform_validate,
+          nls.builtins.diagnostics.tfsec,
+
+          -- Formatting --
           nls.builtins.formatting.fish_indent,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
           nls.builtins.formatting.nixpkgs_fmt,
-          -- nls.builtins.code_actions.statix,
+
+          -- Code Actions --
+          nls.builtins.code_actions.statix,
+          nls.builtins.code_actions.gitsigns,
+          nls.builtins.code_actions.refactoring
         },
       }
     end,
@@ -197,18 +211,18 @@ return {
     version = false,
     config = function()
       -- Make sure we load neoconf and neodev before configuring the lsp
-      -- require("neoconf").setup()
-      -- local neodev_opts = {}
-      --
-      -- if require("util.nix").dapConfigured then
-      --   neodev_opts = {
-      --     library = {
-      --       plugins = { "nvim-dap-ui" },
-      --       types = true,
-      --     },
-      --   }
-      -- end
-      -- require("neodev").setup(neodev_opts)
+      require("neoconf").setup()
+      local neodev_opts = {}
+
+      if require("util.nix").dapConfigured then
+        neodev_opts = {
+          library = {
+            plugins = { "nvim-dap-ui" },
+            types = true,
+          },
+        }
+      end
+      require("neodev").setup(neodev_opts)
 
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -284,7 +298,7 @@ return {
     dependencies = {
       -- Similar to .vscode things
       { "folke/neoconf.nvim" },
-      -- { "folke/neodev.nvim" },
+      { "folke/neodev.nvim" },
 
       -- Completion engine for lsp
       { "hrsh7th/cmp-nvim-lsp" },

@@ -105,6 +105,7 @@ in
             nixpkgs-fmt /* Formatter for nix */
             statix /* Static analyzer for nix */
             stylua /* Formatter for lua */
+            tfsec /* Static analyzer for terraform */
 
             /* Language servers */
             nil /* language server for nix */
@@ -125,6 +126,10 @@ in
 
             /* Test runners */
             cargo-nextest /* test runner for rust */
+
+            /* Linters */
+            gitlint /* linter for git commit messages */
+            hadolint /* linter for Dockerfiles */
           ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;
