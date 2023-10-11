@@ -101,8 +101,8 @@ in
 
       font = {
         package = unstable.nerdfonts;
-        name = "FantasqueSansM Nerd Font";
-        size = 12;
+        name = "JetBrainsMono Nerd Font";
+        size = 11;
       };
 
       settings = {
