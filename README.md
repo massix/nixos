@@ -1,3 +1,5 @@
+![Nix and Lua Linting](https://github.com/massix/nixos/actions/workflows/lint-lua-nix.yml/badge.svg)
+
 # Massi's NixOS Configuration
 
 Welcome to my personal NixOS configuration.  This repository has been made mostly
