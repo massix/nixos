@@ -2,18 +2,18 @@ name: Linters and static analyzers
 run-name: Linters for nix 
 on: [ push, pull_request ]
 jobs:
-  Explore-Github-Actions:
+  Lint-Nix-And-Lua:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Load Nix Configuration
       uses: aldoborrero/use-nix-action@v2
-    - name: Run linter
+    - name: Lint nix
       run: statix check
-    - name: Find dead code
+    - name: Find nix dead code
       run: deadnix -f
-    - name: luacheck-runner
+    - name: Check Lua files
       uses: nebularg/actions-luacheck@v1
       with:
         files: ./home/modules/neovim/files
