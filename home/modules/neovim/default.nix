@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable, ... }:
+{ config, lib, pkgs, unstable, master, ... }:
 let
   cfg = config.my-modules.neovim;
   inherit (lib) mkEnableOption mkIf;
@@ -122,7 +122,7 @@ in
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
-            vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
+            master.vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
 
             /* Test runners */
             cargo-nextest /* test runner for rust */
@@ -163,7 +163,7 @@ in
             codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
             vsCodeJsDebug = "${vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
-            rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
+            rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
           }
         '';
 

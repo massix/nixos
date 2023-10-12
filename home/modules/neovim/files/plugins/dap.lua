@@ -162,10 +162,10 @@ return {
       dap.adapters.codelldb = {
         type = "server",
         host = "127.0.0.1",
-        port = 3500,
+        port = "${port}",
         executable = {
           command = codelldb_path,
-          args = { "--port", "3500", "--liblldb", liblldb_path },
+          args = { "--port", "${port}", "--liblldb", liblldb_path },
         },
       }
     end,
