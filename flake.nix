@@ -101,6 +101,7 @@
           nil /* language server for nix */
           lua-language-server /* language server for lua */
           vscode-langservers-extracted /* language server for json */
+          lua54Packages.luacheck /* linter for lua */
         ];
       };
 

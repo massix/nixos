@@ -1,4 +1,3 @@
-local api = vim.api
 local Util = require("util.defaults")
 
 -- Here all the plugins for the editor

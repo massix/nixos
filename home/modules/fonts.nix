@@ -22,7 +22,7 @@ in
 
   config =
     let
-      stable_font_list = with pkgs; [ ] ++
+      stable_font_list = with pkgs;
         (if cfg.families.noto-fonts then [
           noto-fonts
           noto-fonts-cjk
@@ -39,7 +39,7 @@ in
           nerdfonts
         ] else [ ]);
 
-      unstable_font_list = with unstable; [ ] ++
+      unstable_font_list = with unstable;
         (if cfg.families.noto-fonts then [
           noto-fonts
           noto-fonts-cjk

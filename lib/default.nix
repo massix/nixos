@@ -25,6 +25,6 @@
     nixpkgs.lib.nixosSystem {
       inherit pkgs system;
       specialArgs = { inherit unstable stateVersion; };
-      modules = [ ] ++ extraModules;
+      modules = extraModules;
     };
 }
