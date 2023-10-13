@@ -146,7 +146,7 @@ in
 
       unstable-packages = with unstable; [
         obsidian
-        chromium
+        google-chrome-dev
         spotify
         just
       ];
