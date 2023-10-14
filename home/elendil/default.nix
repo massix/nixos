@@ -106,7 +106,7 @@ in
 
       font = {
         package = unstable.nerdfonts;
-        name = "JetBrainsMono Nerd Font";
+        name = "CaskaydiaCove Nerd Font";
         size = 11;
       };
 
