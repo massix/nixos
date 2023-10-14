@@ -3,8 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-
     unstablepkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    /* Warning: packages from this repo are subject to change rapidly!. */
+    masterpkgs.url = "github:NixOS/nixpkgs/master";
 
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +38,7 @@
     , homeage
     , nixd
     , nix-direnv
+    , masterpkgs
     , ...
     }:
     let
@@ -68,17 +71,25 @@
         ];
       };
 
+      master = import masterpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
+      };
+
       helpers = import ./lib { inherit home-manager nixpkgs homeage; };
     in
     {
       homeConfigurations."massi@elendil" = helpers.mkHome {
-        inherit pkgs unstable stateVersion;
+        inherit pkgs unstable stateVersion master;
         username = "massi";
         extraModules = [ ./home/elendil ];
       };
 
       homeConfigurations."massi@coravandil" = helpers.mkHome {
-        inherit pkgs unstable stateVersion;
+        inherit pkgs unstable stateVersion master;
         username = "massi";
         extraModules = [ ./home/coravandil ];
       };

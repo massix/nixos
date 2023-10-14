@@ -4,9 +4,9 @@
 , ...
 }: {
   mkHome =
-    { pkgs, unstable, stateVersion, username, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
+    { pkgs, unstable, master, stateVersion, username, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit unstable stateVersion username; };
+      extraSpecialArgs = { inherit unstable master stateVersion username; };
 
       modules = [
         homeage.homeManagerModules.homeage

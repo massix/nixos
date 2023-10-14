@@ -93,6 +93,22 @@
         "type": "github"
       }
     },
+    "masterpkgs": {
+      "locked": {
+        "lastModified": 1697112781,
+        "narHash": "sha256-97JRQh6eeGbxY46P+FMH8krowXQE3IV2WynE7MkW89Y=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ea05d48289b457fbd75e3b9ac43dda5212f3a7c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nix-direnv": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -244,6 +260,7 @@
         "flake-compat": "flake-compat",
         "home-manager": "home-manager",
         "homeage": "homeage",
+        "masterpkgs": "masterpkgs",
         "nix-direnv": "nix-direnv",
         "nix-formatter-pack": "nix-formatter-pack",
         "nixd": "nixd",

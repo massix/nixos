@@ -147,7 +147,6 @@ return {
       vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
       local extension_path = nix.rustDebugger .. "/share/vscode/extensions/vadimcn.vscode-lldb"
 
-      local codelldb_path = extension_path .. "/adapter/codelldb"
       local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
       local dap = require("dap")
 
@@ -162,10 +161,10 @@ return {
       dap.adapters.codelldb = {
         type = "server",
         host = "127.0.0.1",
-        port = 3500,
+        port = "${port}",
         executable = {
-          command = codelldb_path,
-          args = { "--port", "3500", "--liblldb", liblldb_path },
+          command = nix.rustWrapper,
+          args = { "--port", "${port}", "--liblldb", liblldb_path },
         },
       }
     end,

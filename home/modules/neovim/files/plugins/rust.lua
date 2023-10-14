@@ -10,7 +10,6 @@ return {
       local nix = require("util.nix")
       local extension_path = nix.rustDebugger .. "/share/vscode/extensions/vadimcn.vscode-lldb"
 
-      local codelldb_path = extension_path .. "/adapter/codelldb"
       local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
 
       return {
@@ -18,7 +17,7 @@ return {
           executor = require("rust-tools.executors.toggleterm"),
         },
         dap = {
-          adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+          adapter = require("rust-tools.dap").get_codelldb_adapter(nix.rustWrapper, liblldb_path),
         },
       }
     end,

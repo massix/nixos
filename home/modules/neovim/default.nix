@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable, ... }:
+{ config, lib, pkgs, unstable, master, username, ... }:
 let
   cfg = config.my-modules.neovim;
   inherit (lib) mkEnableOption mkIf;
@@ -122,7 +122,7 @@ in
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
-            vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
+            master.vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
 
             /* Test runners */
             cargo-nextest /* test runner for rust */
@@ -163,7 +163,8 @@ in
             codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
             vsCodeJsDebug = "${vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
-            rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
+            rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
+            rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
           }
         '';
 
@@ -188,6 +189,15 @@ in
         "${plugins}/hardtime.lua".source = ./files/plugins/hardtime.lua;
         "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
         "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
+
+        /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
+        "${nvimHome}/lldb-wrapper.sh" = {
+          executable = true;
+          text = ''
+            #!/usr/bin/env bash
+            exec ${master.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
+          '';
+        };
       };
 
     home.sessionVariables = mkIf cfg.defaultEditor {
