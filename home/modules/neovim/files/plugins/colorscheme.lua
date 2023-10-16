@@ -30,5 +30,18 @@ return {
         which_key = true,
       },
     },
+
+    {
+      "ribru17/bamboo.nvim",
+      lazy = false,
+      priority = 10000,
+      opts = {
+        style = "vulgaris",
+      },
+      config = function(_, opts)
+        require("bamboo").setup(opts)
+        require("bamboo").load()
+      end,
+    },
   },
 }
