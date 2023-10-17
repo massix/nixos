@@ -101,13 +101,13 @@ in
     kitty = {
       enable = true;
       package = unstable.kitty;
-      theme = "Catppuccin-Mocha";
+      theme = "Gruvbox Dark";
       shellIntegration.enableFishIntegration = true;
 
       font = {
         package = unstable.nerdfonts;
-        name = "CaskaydiaCove Nerd Font";
-        size = 11;
+        name = "M+CodeLat Nerd Font";
+        size = 10;
       };
 
       settings = {
@@ -149,6 +149,7 @@ in
         google-chrome
         spotify
         just
+        powertop
       ];
 
       other-packages = [
