@@ -166,18 +166,6 @@ in
       inherit (onedriver) onedriver;
       inherit (pkgs) fuse;
     };
-
-    # Apparently it's a big source of memory leaks...
-    # "fx-cast-bridge" = {
-    #   Unit.Description = "fx-cast for firefox";
-    #   Install.WantedBy = [ "graphical-session.target" ];
-    #   Service = {
-    #     ExecStart = "${unstable.fx-cast-bridge}/bin/fx_cast_bridge -d";
-    #     Restart = "on-abnormal";
-    #     RestartSec = "3";
-    #     RestartForceExitStatus = "2";
-    #   };
-    # };
   };
 
   xdg = {
@@ -186,7 +174,7 @@ in
 
     desktopEntries =
       let
-        chromeFlags = "--enable-features=VaapiVideoEncoder,VaapiVideoDecoder,TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --disable-features=WaylandFractionalScaleV1";
+        chromeFlags = "--enable-features=VaapiVideoEncoder,VaapiVideoDecoder,TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --disable-video-capture-use-gpu-memory-buffer --enable-native-gpu-memory-buffers --use-gl=angle --use-angle=gl";
         chromeBin = "${unstable.google-chrome}/bin/google-chrome-stable";
       in
       {
