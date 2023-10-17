@@ -97,6 +97,7 @@
       nixosConfigurations."elendil" = helpers.mkSystem {
         inherit pkgs unstable stateVersion system;
         extraModules = [
+          nixos-hardware.nixosModules.microsoft-surface-pro-intel
           nixos-hardware.nixosModules.microsoft-surface-common
           ./system/elendil/configuration.nix
           ./system/elendil/hardware-configuration.nix

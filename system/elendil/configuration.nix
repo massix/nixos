@@ -19,16 +19,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
-
   # Basic Nix configuration
   nix = {
     gc.automatic = true;
@@ -114,7 +104,7 @@ in
   users.users.massi = {
     isNormalUser = true;
     description = "Massimo Gengarelli";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "surface-control" ];
     shell = pkgs.fish;
   };
 
