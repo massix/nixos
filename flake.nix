@@ -14,7 +14,7 @@
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
     nix-formatter-pack.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=cb4dc98f776ddb6af165e6f06b2902efe31ca67a";
+    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=fb6af288f6cf0f00d3af60cf9d5110433b954565";
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
