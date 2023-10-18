@@ -39,8 +39,12 @@ in
 
       programs.fzf = {
         enable = true;
-        package = channel.fzf;
+        # package = channel.fzf;
+        enableBashIntegration = false;
+        enableZshIntegration = false;
+        enableFishIntegration = true;
       };
+
       programs.fish = {
         enable = true;
         package = channel.fish;
@@ -116,63 +120,61 @@ in
       };
 
       # A modern Linux experience
-      home.packages =
-        let channel = if cfg.configuration.unstable then unstable else pkgs;
-        in with channel; [
-          asciinema # Terminal recorder
-          bmon # Modern Unix `iftop`
-          bat # Modern Unix `cat`
-          btop # Modern Unix `htop`
-          butler # Terminal Itch.io API client
-          chafa # Terminal image viewer
-          cheat # Modern Unix `man`
-          chroma # Code syntax highlighter
-          curlie # Terminal HTTP client
-          dconf2nix # Nix code from Dconf files
-          difftastic # Modern Unix `diff`
-          dogdns # Modern Unix `dig`
-          dua # Modern Unix `du`
-          duf # Modern Unix `df`
-          du-dust # Modern Unix `du`
-          entr # Modern Unix `watch`
-          eza # Modern Unix `ls`
-          fast-cli # Terminal fast.com
-          fd # Modern Unix `find`
-          glow # Terminal Markdown renderer
-          gping # Modern Unix `ping`
-          hexyl # Modern Unix `hexedit`
-          httpie # Terminal HTTP client
-          hyperfine # Terminal benchmarking
-          iperf3 # Terminal network benchmarking
-          iw # Terminal WiFi info
-          jpegoptim # Terminal JPEG optimizer
-          jiq # Modern Unix `jq`
-          lazygit # Terminal Git client
-          libva-utils # Terminal VAAPI info
-          lurk # Modern Unix `strace`
-          mdp # Terminal Markdown presenter
-          moar # Modern Unix `less`
-          mtr # Modern Unix `traceroute`
-          ncdu # Modern Unix `du`
-          netdiscover # Modern Unix `arp`
-          nethogs # Modern Unix `iftop`
-          nixpkgs-review # Nix code review
-          nurl # Nix URL fetcher
-          nyancat # Terminal rainbow spewing feline
-          speedtest-go # Terminal speedtest.net
-          optipng # Terminal PNG optimizer
-          procs # Modern Unix `ps`
-          quilt # Terminal patch manager
-          ranger # Terminal file manager
-          ripgrep # Modern Unix `grep`
-          shellcheck # Code lint Shell
-          shfmt # Code format Shell
-          thefuck # Correct last command
-          tldr # Modern Unix `man`
-          tokei # Modern Unix `wc` for code
-          wavemon # Terminal WiFi monitor
-          yq-go # Terminal `jq` for YAML
-        ];
+      home.packages = with channel; [
+        asciinema # Terminal recorder
+        bmon # Modern Unix `iftop`
+        bat # Modern Unix `cat`
+        btop # Modern Unix `htop`
+        butler # Terminal Itch.io API client
+        chafa # Terminal image viewer
+        cheat # Modern Unix `man`
+        chroma # Code syntax highlighter
+        curlie # Terminal HTTP client
+        dconf2nix # Nix code from Dconf files
+        difftastic # Modern Unix `diff`
+        dogdns # Modern Unix `dig`
+        dua # Modern Unix `du`
+        duf # Modern Unix `df`
+        du-dust # Modern Unix `du`
+        entr # Modern Unix `watch`
+        eza # Modern Unix `ls`
+        fast-cli # Terminal fast.com
+        fd # Modern Unix `find`
+        glow # Terminal Markdown renderer
+        gping # Modern Unix `ping`
+        hexyl # Modern Unix `hexedit`
+        httpie # Terminal HTTP client
+        hyperfine # Terminal benchmarking
+        iperf3 # Terminal network benchmarking
+        iw # Terminal WiFi info
+        jpegoptim # Terminal JPEG optimizer
+        jiq # Modern Unix `jq`
+        lazygit # Terminal Git client
+        libva-utils # Terminal VAAPI info
+        lurk # Modern Unix `strace`
+        mdp # Terminal Markdown presenter
+        moar # Modern Unix `less`
+        mtr # Modern Unix `traceroute`
+        ncdu # Modern Unix `du`
+        netdiscover # Modern Unix `arp`
+        nethogs # Modern Unix `iftop`
+        nixpkgs-review # Nix code review
+        nurl # Nix URL fetcher
+        nyancat # Terminal rainbow spewing feline
+        speedtest-go # Terminal speedtest.net
+        optipng # Terminal PNG optimizer
+        procs # Modern Unix `ps`
+        quilt # Terminal patch manager
+        ranger # Terminal file manager
+        ripgrep # Modern Unix `grep`
+        shellcheck # Code lint Shell
+        shfmt # Code format Shell
+        thefuck # Correct last command
+        tldr # Modern Unix `man`
+        tokei # Modern Unix `wc` for code
+        wavemon # Terminal WiFi monitor
+        yq-go # Terminal `jq` for YAML
+      ];
 
       # Some useful extra scripts
       xdg.configFile = {
@@ -203,4 +205,3 @@ in
       };
     };
 }
-
