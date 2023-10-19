@@ -11,4 +11,6 @@ return {
   },
   lazy = true,
   event = { "BufEnter" },
+  enabled = false,
 }
+

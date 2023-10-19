@@ -69,14 +69,16 @@ return {
     "mrjones2014/legendary.nvim",
     priority = 10000,
     lazy = false,
-    enabled = false,
+    enabled = true,
     opts = {
-      lazy_nvim = {
-        auto_register = true,
-      },
-      which_key = {
-        auto_register = true,
-        do_binding = false,
+      extensions = {
+        lazy_nvim = true,
+        which_key = {
+          auto_register = true,
+          do_binding = false,
+          use_groups = true,
+        },
+        nvim_tree = true,
       },
     },
     keys = {
