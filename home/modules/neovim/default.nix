@@ -106,6 +106,7 @@ in
             statix /* Static analyzer for nix */
             stylua /* Formatter for lua */
             tfsec /* Static analyzer for terraform */
+            nodePackages.purs-tidy /* Formatter for purescript */
 
             /* Language servers */
             nil /* language server for nix */
@@ -119,6 +120,7 @@ in
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
             rust-analyzer /* language server for rust */
+            nodePackages.purescript-language-server /* language server for purescript */
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
@@ -189,6 +191,7 @@ in
         "${plugins}/hardtime.lua".source = ./files/plugins/hardtime.lua;
         "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
         "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
+        "${plugins}/purescript.lua".source = ./files/plugins/purescript.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {

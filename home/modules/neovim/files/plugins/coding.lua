@@ -280,6 +280,10 @@ return {
         capabilities = capabilities,
       })
 
+      lspconfig.purescriptls.setup({
+        capabilities = capabilities,
+      })
+
       -- If there are both yamlls and helm_ls, then detach yamlls
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "helm",
@@ -480,6 +484,7 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         nix = { "nixpkgs-fmt" },
+        purescript = { "purs-tidy" },
       },
       format_on_save = function(_)
         if util_defaults.has_autoformat() then
