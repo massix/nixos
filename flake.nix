@@ -27,6 +27,8 @@
 
     nix-direnv.url = "github:nix-community/nix-direnv";
     nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
+
+    easy-purescript.url = "github:justinwoo/easy-purescript-nix";
   };
 
   outputs =
@@ -39,12 +41,14 @@
     , nixd
     , nix-direnv
     , masterpkgs
+    , easy-purescript
     , ...
     }:
     let
       system = "x86_64-linux";
       stateVersion = "23.05";
       mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
+      ep = easy-purescript.packages."${system}";
 
       pkgsconfig = { allowUnfree = true; };
       pkgs = import nixpkgs {
@@ -67,6 +71,7 @@
         overlays = [
           (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
           (_final: _prev: { inherit (mypkgs) lombok; })
+          (_final: _prev: { inherit (ep) purescript-language-server purs-tidy; })
           nix-direnv.overlay
         ];
       };
@@ -103,18 +108,29 @@
           ./system/elendil/hardware-configuration.nix
         ];
       };
+      devShells."${system}" = {
 
-      devShells."${system}".default = unstable.mkShell {
-        packages = with unstable; [
-          deadnix /* dead code for nix */
-          nixpkgs-fmt /* Formatter for nix */
-          statix /* Static analyzer for nix */
-          stylua /* Formatter for lua */
-          nil /* language server for nix */
-          lua-language-server /* language server for lua */
-          vscode-langservers-extracted /* language server for json */
-          lua54Packages.luacheck /* linter for lua */
-        ];
+        default = unstable.mkShell {
+          packages = with unstable; [
+            deadnix /* dead code for nix */
+            nixpkgs-fmt /* Formatter for nix */
+            statix /* Static analyzer for nix */
+            stylua /* Formatter for lua */
+            nil /* language server for nix */
+            lua-language-server /* language server for lua */
+            vscode-langservers-extracted /* language server for json */
+            lua54Packages.luacheck /* linter for lua */
+          ];
+        };
+
+        /* Useful shell to kickstart a new project */
+        purescript = unstable.mkShell {
+          packages = with ep; [
+            spago
+            purs
+            unstable.nodejs
+          ];
+        };
       };
 
       formatter.${system} = nix-formatter-pack.lib.mkFormatter {

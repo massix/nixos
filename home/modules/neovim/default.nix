@@ -106,7 +106,7 @@ in
             statix /* Static analyzer for nix */
             stylua /* Formatter for lua */
             tfsec /* Static analyzer for terraform */
-            nodePackages.purs-tidy /* Formatter for purescript */
+            purs-tidy /* Formatter for purescript */
 
             /* Language servers */
             nil /* language server for nix */
@@ -120,7 +120,7 @@ in
             nodePackages_latest.typescript-language-server /* language server for typescript */
             codeium-ls /* language server for codeium */
             rust-analyzer /* language server for rust */
-            nodePackages.purescript-language-server /* language server for purescript */
+            purescript-language-server /* language server for purescript */
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
