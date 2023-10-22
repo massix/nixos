@@ -1,5 +1,4 @@
-local nix = require("util.nix")
-
+---@type LazyPluginSpec
 return {
   "Exafunction/codeium.nvim",
   dependencies = {
@@ -7,10 +6,10 @@ return {
     "hrsh7th/nvim-cmp",
   },
   opts = {
-    tools = { language_server = nix.codeiumLs },
+    tools = { language_server = require("util.nix").codeium },
   },
   lazy = true,
-  event = { "BufEnter" },
-  enabled = false,
+  event = { "VeryLazy" },
+  config = true,
 }
 

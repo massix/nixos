@@ -162,7 +162,7 @@ in
             nvimHome = "${nvimHome}",
             dapConfigured = ${if cfg.languages.java then "true" else "false"},
             jdtls = { bundles = bundles },
-            codeiumLs = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
+            codeium = "${codeium-ls}/bin/codeium-ls_server_linux_x64",
             vsCodeJsDebug = "${vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
