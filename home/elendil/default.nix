@@ -102,7 +102,11 @@ in
       enable = true;
       package = unstable.kitty;
       theme = "Gruvbox Dark";
-      shellIntegration.enableFishIntegration = true;
+
+      shellIntegration = {
+        mode = "enabled";
+        enableFishIntegration = true;
+      };
 
       font = {
         package = unstable.nerdfonts;
@@ -120,6 +124,7 @@ in
 
         background_opacity = "0.9";
         dynamic_background_opacity = true;
+        enable_audio_bell = false;
 
         disable_ligatures = "cursor";
       };
