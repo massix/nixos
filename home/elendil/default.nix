@@ -101,7 +101,7 @@ in
     kitty = {
       enable = true;
       package = unstable.kitty;
-      theme = "Gruvbox Dark";
+      theme = "Tokyo Night Storm";
 
       shellIntegration = {
         mode = "enabled";
@@ -110,7 +110,7 @@ in
 
       font = {
         package = unstable.nerdfonts;
-        name = "M+CodeLat Nerd Font";
+        name = "FantasqueSansM Nerd Font";
         size = 10;
       };
 
