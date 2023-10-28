@@ -133,12 +133,12 @@
         };
 
         /* Starter shell for haskell */
-        haskell = with unstable; unstable.mkShell {
-          packages = [ 
-            cabal-install 
-            ghc 
-            stack 
-          ]; 
+        haskell = with unstable; mkShell {
+          packages = [
+            cabal-install
+            ghc
+            stack
+          ];
         };
       };
 
