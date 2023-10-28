@@ -2,6 +2,7 @@
 , lib
 , modulesPath
 , pkgs
+, unstable
 , ...
 }: {
   imports = [
@@ -44,6 +45,10 @@
       vaapiVdpau
       libvdpau-va-gl
     ];
+  };
+
+  hardware.bluetooth = with unstable; {
+    package = bluez.override { withExperimental = true; };
   };
 
   services.auto-cpufreq = {
