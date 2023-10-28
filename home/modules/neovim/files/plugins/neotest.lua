@@ -6,11 +6,13 @@ return {
     dependencies = {
       { "andy-bell101/neotest-java" },
       { "rouge8/neotest-rust", lazy = true, config = false },
+      { "mrcjkb/neotest-haskell" },
     },
     opts = function()
       return {
         adapters = {
           require("neotest-rust"),
+          require("neotest-haskell"),
         },
         output_panel = {
           open = "aboveleft vsplit | resize 15",

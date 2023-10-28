@@ -121,10 +121,14 @@ in
             codeium-ls /* language server for codeium */
             rust-analyzer /* language server for rust */
             purescript-language-server /* language server for purescript */
+            haskell-language-server /* language server for haskell */
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
             master.vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
+            haskellPackages.haskell-debug-adapter /* debugger for haskell */
+            haskellPackages.haskell-dap /* dap interface for haskell */
+            haskellPackages.ghci-dap /* dap interface for haskell-ghci */
 
             /* Test runners */
             cargo-nextest /* test runner for rust */
@@ -192,6 +196,7 @@ in
         "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
         "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
         "${plugins}/purescript.lua".source = ./files/plugins/purescript.lua;
+        "${plugins}/haskell.lua".source = ./files/plugins/haskell.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {

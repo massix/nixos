@@ -40,6 +40,7 @@ return {
         "dhall",
         "dockerfile",
         "fish",
+        "haskell",
         "html",
         "java",
         "javascript",

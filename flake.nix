@@ -131,6 +131,15 @@
             unstable.nodejs
           ];
         };
+
+        /* Starter shell for haskell */
+        haskell = with unstable; unstable.mkShell {
+          packages = [ 
+            cabal-install 
+            ghc 
+            stack 
+          ]; 
+        };
       };
 
       formatter.${system} = nix-formatter-pack.lib.mkFormatter {
