@@ -125,7 +125,7 @@ in
         bmon # Modern Unix `iftop`
         bat # Modern Unix `cat`
         btop # Modern Unix `htop`
-        butler # Terminal Itch.io API client
+        # butler # Terminal Itch.io API client
         chafa # Terminal image viewer
         cheat # Modern Unix `man`
         chroma # Code syntax highlighter
