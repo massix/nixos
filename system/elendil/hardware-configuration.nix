@@ -57,7 +57,7 @@
       let
         governor = "powersave";
         scaling_min_freq = "400000";
-        scaling_max_freq.charger = "2800000";
+        scaling_max_freq.charger = "3900000";
         scaling_max_freq.battery = "1400000";
         turbo.charger = "always";
         turbo.battery = "never";
@@ -95,11 +95,11 @@
 
       [AC]
       Update_Rate_s: 5
-      PL1_Tdp_W: 16
+      PL1_Tdp_W: 28
       PL1_Duration_s: 28
       PL2_Tdp_W: 44
       PL2_Duration_S: 0.002
-      Trip_Temp_C: 75
+      Trip_Temp_C: 80
       HWP_Mode: True
       cTDP: 0
       Disable_BDPROCHOT: True
