@@ -136,6 +136,9 @@ in
             /* Linters */
             gitlint /* linter for git commit messages */
             hadolint /* linter for Dockerfiles */
+
+            /* Tools */
+            haskellPackages.hoogle /* Hoogle search tool */
           ] else [ ];
       in
       basePackages ++ javaPackages ++ languageServers;

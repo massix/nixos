@@ -10,12 +10,17 @@ return {
     ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
     version = "^2",
     init = function()
-      _ = require("dap")
       vim.g.haskell_tools = {
         tools = {
-          repl = {
-            handler = "toggleterm",
-          },
+          codeLens = { autoRefresh = true, },
+          hoogle = { mode = "telescope-local", },
+          hover = { enable = true, },
+          definition = { hoogle_signature_fallback = true, },
+          repl = { handler = "toggleterm", },
+        },
+        dap = {
+          cmd = { "haskell-debug-adapter", "--hackage-version=0.0.33.0" },
+          auto_discover = true,
         },
       }
     end,
@@ -26,6 +31,7 @@ return {
       })
 
       require("telescope").load_extension("ht")
+      require("telescope").load_extension("hoogle")
     end,
     keys = {
       {
