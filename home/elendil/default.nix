@@ -155,6 +155,7 @@ in
         spotify
         just
         powertop
+        microsoft-edge
       ];
 
       other-packages = [
