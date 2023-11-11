@@ -151,11 +151,13 @@ in
 
       unstable-packages = with unstable; [
         obsidian
-        google-chrome
         spotify
         just
         powertop
         microsoft-edge
+
+        # Only for Teams PWA
+        google-chrome
       ];
 
       other-packages = [
@@ -179,7 +181,7 @@ in
     enable = true;
     mime.enable = true;
 
-    desktopEntries =
+    /* desktopEntries =
       let
         chromeFlags = "--enable-features=VaapiVideoEncoder,VaapiVideoDecoder,TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --disable-video-capture-use-gpu-memory-buffer --enable-native-gpu-memory-buffers --use-gl=angle --use-angle=gl";
         chromeBin = "${unstable.google-chrome}/bin/google-chrome-stable";
@@ -206,6 +208,6 @@ in
           icon = "chrome-cifhbcnohmdccbgoicgdjpfamggdegmo-Default";
           terminal = false;
         };
-      };
+      }; */
   };
 }

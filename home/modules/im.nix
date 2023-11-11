@@ -15,8 +15,6 @@ in
         channel = if cfg.configuration.unstable then unstable else pkgs;
       in
       with channel; [
-        telegram-desktop
-        whatsapp-for-linux
         webcord
       ];
   };
