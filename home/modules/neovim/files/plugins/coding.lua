@@ -483,10 +483,17 @@ return {
     "stevearc/conform.nvim",
     event = "BufEnter",
     opts = {
+      formatters = {
+        purstidy = {
+          command = "purs-tidy",
+          args = "format",
+          stdin = true,
+        },
+      },
       formatters_by_ft = {
         lua = { "stylua" },
         nix = { "nixpkgs-fmt" },
-        purescript = { "purs-tidy" },
+        purescript = { "purstidy" },
       },
       format_on_save = function(_)
         if util_defaults.has_autoformat() then
