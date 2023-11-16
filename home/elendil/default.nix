@@ -19,6 +19,8 @@ in
         extra = with unstable; [
           mplus-outline-fonts.githubRelease
           proggyfonts
+          monaspace
+          meslo-lg
         ];
       };
     };
@@ -108,9 +110,9 @@ in
         enableFishIntegration = true;
       };
 
+      # -> == <- >>= =<< != >= <=
       font = {
-        package = unstable.nerdfonts;
-        name = "FantasqueSansM Nerd Font";
+        name = "Monaspace Radon";
         size = 10;
       };
 
@@ -180,6 +182,55 @@ in
   xdg = {
     enable = true;
     mime.enable = true;
+
+    # Patch to allow Kitty to use Monaspace font
+    configFile."fontconfig/conf.d/99-monaspace-monospace.conf".text = ''
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+      <!-- https://sw.kovidgoyal.net/kitty/faq/#kitty-is-not-able-to-use-my-favorite-font -->
+      <fontconfig>
+        <match target="scan">
+          <test name="family"><string>Monaspace Argon Var</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Argon</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Krypton Var</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Krypton</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Neon Var</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Neon</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Radon Var</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Radon</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Xenon Var</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+        <match target="scan">
+          <test name="family"><string>Monaspace Xenon</string></test>
+          <edit name="spacing"><int>100</int></edit>
+        </match>
+      </fontconfig>
+    '';
 
     /* desktopEntries =
       let
