@@ -60,7 +60,7 @@ return {
       -- Configuration for Javascript
       {
         "mxsdev/nvim-dap-vscode-js",
-        ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "purescript" },
         lazy = true,
         opts = {
           node_path = nix.nodePath,
