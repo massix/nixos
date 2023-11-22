@@ -106,7 +106,7 @@ in
             statix /* Static analyzer for nix */
             stylua /* Formatter for lua */
             tfsec /* Static analyzer for terraform */
-            purs-tidy /* Formatter for purescript */
+            purs-tidy-bin.purs-tidy-0_10_0 /* Formatter for purescript */
 
             /* Language servers */
             nil /* language server for nix */

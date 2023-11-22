@@ -28,7 +28,7 @@
     nix-direnv.url = "github:nix-community/nix-direnv";
     nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
 
-    easy-purescript.url = "github:justinwoo/easy-purescript-nix";
+    purescript-overlay.url = "github:thomashoneyman/purescript-overlay";
   };
 
   outputs =
@@ -41,14 +41,13 @@
     , nixd
     , nix-direnv
     , masterpkgs
-    , easy-purescript
+    , purescript-overlay
     , ...
     }:
     let
       system = "x86_64-linux";
       stateVersion = "23.05";
       mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
-      ep = easy-purescript.packages."${system}";
 
       pkgsconfig = { allowUnfree = true; };
       pkgs = import nixpkgs {
@@ -58,6 +57,7 @@
           (_final: _prev: { nixd-nightly = nixd; })
           (_final: _prev: { inherit (mypkgs) lombok; })
           nix-direnv.overlay
+          purescript-overlay.overlays.default
         ];
       };
 
@@ -71,8 +71,8 @@
         overlays = [
           (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
           (_final: _prev: { inherit (mypkgs) lombok; })
-          (_final: _prev: { inherit (ep) purescript-language-server purs-tidy; })
           nix-direnv.overlay
+          purescript-overlay.overlays.default
         ];
       };
 
@@ -125,10 +125,10 @@
 
         /* Useful shell to kickstart a new project */
         purescript = unstable.mkShell {
-          packages = with ep; [
-            spago
+          packages = with unstable; [
+            spago-unstable
             purs
-            unstable.nodejs
+            nodejs
           ];
         };
 
