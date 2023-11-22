@@ -5,14 +5,14 @@ in
 {
   onedriver = buildGoModule rec {
     pname = "onedriver";
-    version = "0.13.0-2";
+    version = "0.14.1";
     enableParallelBuilding = true;
 
     src = fetchFromGitHub {
       owner = "jstaf";
       repo = "onedriver";
       rev = "v${version}";
-      hash = "sha256-Bcjgmx9a4pTRhkzR3tbOB6InjvuH71qomv4t+nRNc+w=";
+      hash = "sha256-mA5otgqXQAw2UYUOJaC1zyJuzEu2OS/pxmjJnWsVdxs=";
     };
 
     vendorHash = "sha256-OOiiKtKb+BiFkoSBUQQfqm4dMfDW3Is+30Kwcdg8LNA=";
@@ -37,7 +37,7 @@ in
     ];
 
     buildInputs = with pkgs; [
-      webkitgtk
+      webkitgtk_4_1
       glib
       fuse
     ];
@@ -51,14 +51,14 @@ in
 
     postInstall = ''
       echo "Running postInstall"
-      install -Dm644 ./resources/onedriver.svg $out/share/icons/onedriver/onedriver.svg
-      install -Dm644 ./resources/onedriver.png $out/share/icons/onedriver/onedriver.png
-      install -Dm644 ./resources/onedriver-128.png $out/share/icons/onedriver/onedriver-128.png
+      install -Dm644 ./pkg/resources/onedriver.svg $out/share/icons/onedriver/onedriver.svg
+      install -Dm644 ./pkg/resources/onedriver.png $out/share/icons/onedriver/onedriver.png
+      install -Dm644 ./pkg/resources/onedriver-128.png $out/share/icons/onedriver/onedriver-128.png
 
-      install -Dm644 ./resources/onedriver.desktop $out/share/applications/onedriver.desktop
+      install -Dm644 ./pkg/resources/onedriver.desktop $out/share/applications/onedriver.desktop
 
       mkdir -p $out/share/man/man1
-      installManPage ./resources/onedriver.1
+      installManPage ./pkg/resources/onedriver.1
 
       substituteInPlace $out/share/applications/onedriver.desktop \
         --replace "/usr/bin/onedriver-launcher" "$out/bin/onedriver-launcher" \
