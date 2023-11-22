@@ -112,11 +112,15 @@ in
 
       # -> == <- >>= =<< != >= <=
       font = {
-        name = "Monaspace Radon";
+        name = "Monaspace Argon";
         size = 10;
       };
 
       settings = {
+        italic_font = "Monaspace Radon";
+        bold_italic_font = "Monaspace Radon";
+        bold_font = "Monaspace Argon";
+
         cursor_shape = "beam";
         cursor_beam_thickness = "2.0";
         scrollback_lines = 10000;
