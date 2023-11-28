@@ -161,6 +161,7 @@ in
         just
         powertop
         microsoft-edge
+        pbpctrl
 
         # Only for Teams PWA
         google-chrome
