@@ -13,7 +13,16 @@ let
   ];
 in
 {
-  imports = [ ./hardware-configuration.nix ];
+  disabledModules = [
+    "services/desktops/pipewire/pipewire.nix"
+    "services/desktops/pipewire/wireplumber.nix"
+  ];
+
+  imports = [
+    ./hardware-configuration.nix
+    <nixos-unstable/nixos/modules/services/desktops/pipewire/pipewire.nix>
+    <nixos-unstable/nixos/modules/services/desktops/pipewire/wireplumber.nix>
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

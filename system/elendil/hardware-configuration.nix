@@ -48,6 +48,13 @@
   };
 
   hardware.bluetooth = with unstable; {
+    settings = {
+      General = {
+        Experimental = true;
+        ControllerMode = "dual";
+      };
+      Policy.AutoEnable = true;
+    };
     package = bluez.override { withExperimental = true; };
   };
 
