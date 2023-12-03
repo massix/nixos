@@ -107,6 +107,7 @@ in
             stylua /* Formatter for lua */
             tfsec /* Static analyzer for terraform */
             purs-tidy-bin.purs-tidy-0_10_0 /* Formatter for purescript */
+            haskellPackages.ormolu /* Formatter for haskell */
 
             /* Language servers */
             nil /* language server for nix */
@@ -122,6 +123,26 @@ in
             rust-analyzer /* language server for rust */
             purescript-language-server /* language server for purescript */
             haskell-language-server /* language server for haskell */
+
+            /* Extensions for HLS */
+            haskellPackages.ghcide
+            haskellPackages.hls-eval-plugin
+            haskellPackages.hls-class-plugin
+            haskellPackages.hls-hlint-plugin
+            haskellPackages.hls-cabal-plugin
+            haskellPackages.hls-retrie-plugin
+            haskellPackages.hls-rename-plugin
+            haskellPackages.hls-ormolu-plugin
+            haskellPackages.hls-pragmas-plugin
+            haskellPackages.hls-refactor-plugin
+            haskellPackages.hls-code-range-plugin
+            haskellPackages.hls-module-name-plugin
+            haskellPackages.hls-call-hierarchy-plugin
+            haskellPackages.hls-explicit-fixity-plugin
+            haskellPackages.hls-explicit-imports-plugin
+            haskellPackages.hls-overloaded-record-dot-plugin
+            haskellPackages.hls-qualify-imported-names-plugin
+            haskellPackages.hls-explicit-record-fields-plugin
 
             /* Debuggers */
             vscode-js-debug /* debugger for javascript */
