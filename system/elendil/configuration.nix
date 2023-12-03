@@ -117,12 +117,6 @@ in
     shell = pkgs.fish;
   };
 
-  # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreePredicate = _: true;
-  };
-
   environment = {
     systemPackages = with pkgs; [
       wget
@@ -167,7 +161,7 @@ in
     wlr.enable = true;
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji

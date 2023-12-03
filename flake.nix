@@ -2,13 +2,13 @@
   description = "Elendil configuration via Flakes";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     unstablepkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     /* Warning: packages from this repo are subject to change rapidly!. */
     masterpkgs.url = "github:NixOS/nixpkgs/master";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
@@ -46,7 +46,7 @@
     }:
     let
       system = "x86_64-linux";
-      stateVersion = "23.05";
+      stateVersion = "23.11";
       mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
 
       pkgsconfig = { allowUnfree = true; };
@@ -56,7 +56,7 @@
         overlays = [
           (_final: _prev: { nixd-nightly = nixd; })
           (_final: _prev: { inherit (mypkgs) lombok; })
-          nix-direnv.overlay
+          nix-direnv.overlays.default
           purescript-overlay.overlays.default
         ];
       };
@@ -68,7 +68,7 @@
         overlays = [
           (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
           (_final: _prev: { inherit (mypkgs) lombok; })
-          nix-direnv.overlay
+          nix-direnv.overlays.default
           purescript-overlay.overlays.default
         ];
       };
