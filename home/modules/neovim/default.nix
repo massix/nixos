@@ -7,13 +7,13 @@ let
   # Codeium Language Server
   codeium-ls = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "codeium-ls";
-    version = "1.4.21";
+    version = "1.4.22";
 
     nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
     src = builtins.fetchurl {
       url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_linux_x64.gz";
-      sha256 = "sha256:0zvhhwmx3z4mknk0lw8fid7177ma3c6yc7c7clj9mgyrcb5r47c1";
+      sha256 = "sha256:0sqj00if3d3n4yni9rfllszhfzczawv1d0yxxfkf2jvidj49wfwr";
     };
 
     dontBuild = true;
