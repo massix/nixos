@@ -163,14 +163,12 @@ return {
       options = {
         -- stylua: ignore
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
-        -- stylua: ignore
-        right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+        right_mouse_command = nil,
+        numbers = 'ordinal',
         diagnostics = "nvim_lsp",
-        always_show_bufferline = true,
-        separator_style = "slant",
-        name_formatter = function(buf)
-          return buf.bufnr .. " " .. buf.name
-        end,
+        always_show_bufferline = false,
+        separator_style = "thick",
+        show_tab_indicators = true,
         diagnostics_indicator = function(_, _, diag)
           local icons = require("util.defaults").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
@@ -178,6 +176,10 @@ return {
           return vim.trim(ret)
         end,
         color_icons = true,
+        indicator = {
+          icon = '▎',
+          style = 'icon',
+        },
         offsets = {
           {
             filetype = "NvimTree",
