@@ -113,7 +113,7 @@ in
   users.users.massi = {
     isNormalUser = true;
     description = "Massimo Gengarelli";
-    extraGroups = [ "networkmanager" "wheel" "docker" "surface-control" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "surface-control" "video" ];
     shell = pkgs.fish;
   };
 
