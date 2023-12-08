@@ -28,7 +28,7 @@ let
   };
   vscode-js-debug = buildNpmPackage rec {
     pname = "vscode-js-debug";
-    version = "1.83.0";
+    version = "1.85.0";
 
     nativeBuildInputs = with pkgs; [
       nodePackages.gulp-cli
@@ -44,10 +44,10 @@ let
       owner = "microsoft";
       repo = pname;
       rev = "v${version}";
-      hash = "sha256-a8Ih58EAL7YlKAXG8XigfCbLmvQh7aI2GLuS2VI1WC8=";
+      hash = "sha256-mBXH3tqoiu3HIo1oZdQCD7Mq8Tvkt2DXfcoXb7KEgXE=";
     };
 
-    npmDepsHash = "sha256-FcHgCcw638Xqi+FeIIpbVnv4AFmL7Nad4TwMEprQq3k=";
+    npmDepsHash = "sha256-O2P+sHDjQm9bef4oUNBab0khTdR/nUDyhalSoxj0JL0=";
 
     dontNpmBuild = true;
 
