@@ -122,14 +122,14 @@ in
 
       # -> == <- >>= =<< != >= <=
       font = {
-        name = "Monaspace Argon";
+        name = "Monaspace Neon";
         size = 10;
       };
 
       settings = {
         italic_font = "Monaspace Radon";
         bold_italic_font = "Monaspace Radon";
-        bold_font = "Monaspace Argon";
+        bold_font = "Monaspace Neon";
 
         cursor_shape = "beam";
         cursor_beam_thickness = "2.0";
