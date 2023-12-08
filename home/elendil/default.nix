@@ -175,6 +175,7 @@ in
 
         # Only for Teams PWA
         google-chrome
+        libsForQt5.kdenlive
       ];
 
       other-packages = [
