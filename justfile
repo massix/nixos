@@ -13,7 +13,7 @@ default: switch
   {{ stylua }} .
 
 @system:
-  sudo {{ nixch }} update nixos-unstable
+  sudo {{ nixch }} --update nixos-unstable
   sudo {{ nixosrb }} switch --impure
 
 @switch:

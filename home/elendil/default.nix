@@ -62,6 +62,16 @@ in
       userEmail = "massimo.gengarelli@gmail.com";
       configuration.unstable = true;
     };
+
+    zellij = {
+      enable = true;
+      configuration = {
+        autoAttach = false;
+        autoExit = false;
+        unstable = true;
+        enableFishIntegration = true;
+      };
+    };
   };
 
   programs = {

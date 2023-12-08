@@ -17,6 +17,7 @@
         ../home/modules/fonts.nix
         ../home/modules/im.nix
         ../home/modules/git.nix
+        ../home/modules/zellij.nix
       ] ++ extraModules;
     };
 
