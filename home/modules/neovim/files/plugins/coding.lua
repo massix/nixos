@@ -435,11 +435,16 @@ return {
       hover = {
         open_cmd = "!xdg-open",
       },
+      code_action = {
+        show_server_name = true,
+        extend_gitsigns = true,
+      },
       lightbulb = {
         virtual_text = true,
       },
       outline = {
         win_position = "left",
+        close_after_jump = true,
       },
       finder = {
         default = "ref+def+impl",
@@ -468,11 +473,16 @@ return {
 
       -- Misc
       { "K", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
+
+      -- Diagnostics Quickjumps
+      { "<leader>cdp", "<cmd>Lspsaga diagnostic_jump_prev<cr>", desc = "Previous diagnostic" },
+      { "<leader>cdn", "<cmd>Lspsaga diagnostic_jump_next<cr>", desc = "Next diagnostic" },
     },
     init = function()
       local wk = require("which-key")
       wk.register({
         ["<leader>c"] = { name = "+code" },
+        ["<leader>cd"] = { name = "+diagnostics" },
         ["<leader>cp"] = { name = "+peek" },
         ["<leader>cg"] = { name = "+goto" },
         ["gp"] = { name = "+peek" },

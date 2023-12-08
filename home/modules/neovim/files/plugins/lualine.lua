@@ -1,3 +1,21 @@
+local function codeium_status()
+  if not package.loaded["cmp"] then
+    print("cmp not loaded")
+    return nil
+  end
+
+  for _, s in ipairs(require("cmp").core.sources) do
+    if s.name == "codeium" and s.source:is_available() then
+      if s.status == s.SourceStatus.FETCHING then
+        return "Pending"
+      end
+      return "OK"
+    end
+  end
+
+  return nil
+end
+
 return {
   -- statusline
   {
@@ -47,13 +65,23 @@ return {
           lualine_x = {
             -- stylua: ignore
             {
+              function() return icons.kinds.Codeium .. " " .. codeium_status() end,
+              cond = function() return codeium_status() ~= nil end,
+              color = Util.fg("Special"),
+            },
+            -- stylua: ignore
+            {
+              ---@diagnostic disable-next-line: undefined-field
               function() return require("noice").api.status.command.get() end,
+              ---@diagnostic disable-next-line: undefined-field
               cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
               color = Util.fg("Statement"),
             },
             -- stylua: ignore
             {
+              ---@diagnostic disable-next-line: undefined-field
               function() return require("noice").api.status.mode.get() end,
+              ---@diagnostic disable-next-line: undefined-field
               cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
               color = Util.fg("Constant"),
             },

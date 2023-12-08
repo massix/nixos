@@ -96,7 +96,7 @@ return {
       "nvim-lua/plenary.nvim",
       "BurntSushi/ripgrep",
       "sharkdp/fd",
-      "luc-tielen/telescope_hoogle"
+      "luc-tielen/telescope_hoogle",
     },
     keys = {
       { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },

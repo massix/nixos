@@ -157,6 +157,7 @@ in
             /* Linters */
             gitlint /* linter for git commit messages */
             hadolint /* linter for Dockerfiles */
+            haskellPackages.hlint /* linter for haskell */
 
             /* Tools */
             haskellPackages.hoogle /* Hoogle search tool */

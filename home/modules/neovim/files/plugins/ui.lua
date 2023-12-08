@@ -164,7 +164,7 @@ return {
         -- stylua: ignore
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
         right_mouse_command = nil,
-        numbers = 'ordinal',
+        numbers = "ordinal",
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         separator_style = "thick",
@@ -177,8 +177,8 @@ return {
         end,
         color_icons = true,
         indicator = {
-          icon = '▎',
-          style = 'icon',
+          icon = "▎",
+          style = "icon",
         },
         offsets = {
           {

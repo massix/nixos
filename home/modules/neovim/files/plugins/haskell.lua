@@ -8,15 +8,15 @@ return {
     },
     lazy = true,
     ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
-    version = "^2",
+    version = "^3",
     init = function()
       vim.g.haskell_tools = {
         tools = {
-          codeLens = { autoRefresh = true, },
-          hoogle = { mode = "telescope-local", },
-          hover = { enable = true, },
-          definition = { hoogle_signature_fallback = true, },
-          repl = { handler = "toggleterm", },
+          codeLens = { autoRefresh = true },
+          hoogle = { mode = "telescope-local" },
+          hover = { enable = true },
+          definition = { hoogle_signature_fallback = true },
+          repl = { handler = "toggleterm" },
         },
         dap = {
           cmd = { "haskell-debug-adapter", "--hackage-version=0.0.33.0" },
