@@ -40,6 +40,7 @@ in
       package = unstable.helix;
       configuration.unstable = true;
       defaultEditor = false;
+      configuration.theme = "tokyonight_storm";
     };
 
     im = {
