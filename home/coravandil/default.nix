@@ -20,12 +20,12 @@
 
     neovim = {
       enable = true;
-      configuration.unstable = true;
+      configuration.package = unstable.neovim-unwrapped;
       defaultEditor = true;
-      languages = {
-        auto = true;
-        java = true;
-      };
+    };
+
+    coding = {
+      enable = true;
     };
 
     git = {

@@ -25,6 +25,25 @@ in
       };
     };
 
+    coding = {
+      enable = true;
+      unstable = true;
+      languages = {
+        haskell = true;
+        purescript = true;
+        racket = true;
+        nix = true;
+        terraform = true;
+        javascript = true;
+        lua = true;
+        rust = true;
+        java = true;
+        json = true;
+        yaml = true;
+        misc = true;
+      };
+    };
+
     fish = {
       enable = true;
       configuration = {
@@ -50,12 +69,8 @@ in
 
     neovim = {
       enable = true;
-      configuration.unstable = true;
+      configuration.package = unstable.neovim-nightly;
       defaultEditor = true;
-      languages = {
-        java = true;
-        auto = true;
-      };
     };
 
     git = {
@@ -65,7 +80,7 @@ in
     };
 
     zellij = {
-      enable = true;
+      enable = false;
       configuration = {
         autoAttach = false;
         autoExit = false;
@@ -158,6 +173,10 @@ in
     tray.enable = false;
   };
 
+  home.sessionVariables = {
+    EMACS = "${unstable.emacs-unstable}/bin/emacs";
+  };
+
   home.packages =
     let
       stable-packages = with pkgs; [
@@ -177,6 +196,10 @@ in
         # Only for Teams PWA
         google-chrome
         libsForQt5.kdenlive
+
+        # TODO: make a module out of this
+        emacs-unstable
+        emacsPackages.vterm
       ];
 
       other-packages = [

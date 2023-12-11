@@ -1,6 +1,16 @@
 {
   description = "Elendil configuration via Flakes";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     unstablepkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -29,6 +39,10 @@
     nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
 
     purescript-overlay.url = "github:thomashoneyman/purescript-overlay";
+
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
   outputs =
@@ -42,43 +56,41 @@
     , nix-direnv
     , masterpkgs
     , purescript-overlay
+    , neovim-nightly
+    , emacs-overlay
     , ...
     }:
     let
       system = "x86_64-linux";
       stateVersion = "23.11";
       mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
+      overlays = [
+        (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
+        (_final: _prev: {
+          inherit (mypkgs) lombok codeium-ls vscode-js-debug;
+        })
+        nix-direnv.overlays.default
+        purescript-overlay.overlays.default
+        neovim-nightly.overlays.default
+        emacs-overlay.overlays.default
+      ];
 
-      pkgsconfig = { allowUnfree = true; };
+      config = {
+        allowUnfree = true;
+        allowUnfreePredicate = _: true;
+        permittedInsecurePackages = [ "electron-25.9.0" ];
+      };
+
       pkgs = import nixpkgs {
-        inherit system;
-        config = pkgsconfig;
-        overlays = [
-          (_final: _prev: { nixd-nightly = nixd; })
-          (_final: _prev: { inherit (mypkgs) lombok; })
-          nix-direnv.overlays.default
-          purescript-overlay.overlays.default
-        ];
+        inherit system overlays config;
       };
 
       unstable = import unstablepkgs {
-        inherit system;
-        config.allowUnfree = true;
-        config.allowUnfreePredicate = _: true;
-        overlays = [
-          (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
-          (_final: _prev: { inherit (mypkgs) lombok; })
-          nix-direnv.overlays.default
-          purescript-overlay.overlays.default
-        ];
+        inherit system overlays config;
       };
 
       master = import masterpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          allowUnfreePredicate = _: true;
-        };
+        inherit system overlays config;
       };
 
       helpers = import ./lib { inherit home-manager nixpkgs homeage; };
@@ -121,8 +133,8 @@
         };
 
         /* Useful shell to kickstart a new project */
-        purescript = unstable.mkShell {
-          packages = with unstable; [
+        purescript = with unstable; mkShell {
+          packages = [
             spago-unstable
             purs
             nodejs

@@ -39,6 +39,7 @@ in
       keep-outputs = true;
       keep-derivations = true;
       warn-dirty = true;
+      trusted-users = [ "root" "massi" ];
     };
   };
 
@@ -130,6 +131,7 @@ in
       file
       cntr
       fish
+      cachix
     ];
 
     sessionVariables = {
