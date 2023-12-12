@@ -154,6 +154,16 @@ return {
     end,
   },
 
+  -- highlights TODO and similar comments
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+    config = function(_, opts)
+      require("todo-comments").setup(opts)
+    end,
+  },
+
   -- better diagnostics list and others
   {
     "folke/trouble.nvim",
@@ -365,8 +375,31 @@ return {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
+      { "hrsh7th/cmp-nvim-lsp-document-symbol" },
+      { "hrsh7th/cmp-nvim-lsp-signature-help" },
       { "L3MON4D3/LuaSnip" },
     },
+    config = function(_, opts)
+      local cmp = require("cmp")
+      cmp.setup(opts)
+
+      -- cmdline
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp_document_symbol" },
+          { { name = "buffer" } },
+        }),
+      })
+
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+          { name = "cmdline" },
+        })
+      })
+    end,
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
@@ -403,6 +436,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "codeium" },
+          { name = "nvim_lsp_signature_help" },
           { name = "path" },
           { name = "cmdline" },
           { name = "buffer" },

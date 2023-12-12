@@ -84,6 +84,8 @@ in
         "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
         "${plugins}/purescript.lua".source = ./files/plugins/purescript.lua;
         "${plugins}/haskell.lua".source = ./files/plugins/haskell.lua;
+        "${plugins}/iron.lua".source = ./files/plugins/iron.lua;
+        "${plugins}/obsidian.lua".source = ./files/plugins/obsidian.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {

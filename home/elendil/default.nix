@@ -143,8 +143,8 @@ in
       };
 
       settings = {
-        italic_font = "Monaspace Radon";
-        bold_italic_font = "Monaspace Radon";
+        italic_font = "Monaspace Neon";
+        bold_italic_font = "Monaspace Neon";
         bold_font = "Monaspace Neon";
 
         cursor_shape = "beam";

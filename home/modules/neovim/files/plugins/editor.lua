@@ -86,6 +86,31 @@ return {
     },
   },
 
+  -- Easily edit files and folders
+  {
+    "stevearc/oil.nvim",
+    lazy = true,
+    opts = {
+      default_file_explorer = true,
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
+
+      view_options = {
+        show_hidden = true,
+      },
+    },
+    config = function(_, opts)
+      require("oil").setup(opts)
+    end,
+    keys = {
+      { "<leader>fo", [[<cmd>Oil<CR>]], desc = "Open Oil in current directory" },
+    },
+  },
+
   -- Fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
