@@ -20,6 +20,7 @@ return {
             nix = { command = { "nix", "repl" } },
             racket = { command = { "racket" } },
             purescript = { command = { "spago", "repl" } },
+            elvish = { command = { "elvish" } },
 
             -- Use Haskell-Tools to start a REPL
             haskell = {
