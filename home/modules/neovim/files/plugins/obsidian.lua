@@ -16,6 +16,26 @@ return {
       ["<leader>O"] = { name = "+obsidian" },
       ["<leader>Ow"] = { name = "+workspace" },
     })
+
+    local group = vim.api.nvim_create_augroup("ObsidianSwitchWorkspace", { clear = true })
+    local starts_with = function(str, start)
+      return string.sub(str, 1, string.len(start)) == start
+    end
+
+    -- Switch workspace when opening a file inside a specific vault
+    vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+      pattern = { "*.md", "*.markdown" },
+      group = group,
+      callback = function(args)
+        local obsidian = require("obsidian")
+        local current_workspace = obsidian.get_client().current_workspace.name
+        if starts_with(args.file, obsidianWork) and current_workspace ~= "Work" then
+          vim.api.nvim_cmd({ cmd = "ObsidianWorkspace", args = { "Work" } }, { output = false })
+        elseif starts_with(args.file, obsidianPersonal) and current_workspace ~= "Personal" then
+          vim.api.nvim_cmd({ cmd = "ObsidianWorkspace", args = { "Personal" } }, { output = false })
+        end
+      end,
+    })
   end,
 
   opts = {
@@ -30,7 +50,7 @@ return {
       },
     },
 
-    detect_cwd = true,
+    detect_cwd = false,
 
     completion = {
       nvim_cmp = true,
@@ -45,6 +65,7 @@ return {
 
     finder = "telescope.nvim",
   },
+
   keys = {
     { "<leader>Oww", [[<cmd>ObsidianWorkspace Work<cr>]], desc = "Open Work Vault" },
     { "<leader>Owp", [[<cmd>ObsidianWorkspace Personal<cr>]], desc = "Open Personal Vault" },
@@ -54,5 +75,6 @@ return {
     { "<leader>Of", [[<cmd>ObsidianQuickSwitch<cr>]], desc = "Quick switch" },
     { "<leader>O/", [[<cmd>ObsidianSearch<cr>]], desc = "Search in Obsidian" },
     { "<leader>Ot", [[<cmd>ObsidianTemplate<cr>]], desc = "Add template" },
+    { "<leader>On", [[<cmd>ObsidianToday<cr>]], desc = "Open today's note" },
   },
 }
