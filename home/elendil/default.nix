@@ -315,34 +315,5 @@ in
         </match>
       </fontconfig>
     '';
-
-    /* desktopEntries =
-      let
-        chromeFlags = "--enable-features=VaapiVideoEncoder,VaapiVideoDecoder,TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland --disable-video-capture-use-gpu-memory-buffer --enable-native-gpu-memory-buffers --use-gl=angle --use-angle=gl";
-        chromeBin = "${unstable.google-chrome}/bin/google-chrome-stable";
-      in
-      {
-        ## Google Chrome fix for Wayland and Gnome 44
-        google-chrome-fixed = {
-          name = "Google Chrome Fixed";
-          genericName = "Web Browser";
-          exec = "${chromeBin} ${chromeFlags}";
-          type = "Application";
-          icon = "google-chrome";
-          startupNotify = true;
-          terminal = false;
-          categories = [ "Application" "Network" "WebBrowser" ];
-          mimeType = [ "text/html" "text/xml" ];
-        };
-
-        ## PWA for Microsoft Teams
-        microsoft-teams = {
-          name = "Microsoft Teams Fixed";
-          genericName = "Communication";
-          exec = "${chromeBin} ${chromeFlags} --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo --profile-directory=Default";
-          icon = "chrome-cifhbcnohmdccbgoicgdjpfamggdegmo-Default";
-          terminal = false;
-        };
-      }; */
   };
 }
