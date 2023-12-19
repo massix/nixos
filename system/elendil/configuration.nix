@@ -86,6 +86,20 @@ in
     xkbVariant = "intl";
   };
 
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        id = ["*"];
+        settings = {
+          main = {
+            capslock = "overload(control, esc)";
+          };
+        };
+      };
+    };
+  };
+
   # Configure console keymap
   console.keyMap = "us-acentos";
 
