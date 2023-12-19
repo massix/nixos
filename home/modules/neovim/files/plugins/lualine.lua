@@ -63,6 +63,10 @@ return {
             },
           },
           lualine_x = {
+            {
+              "overseer",
+              colored = true
+            },
             -- stylua: ignore
             {
               function() return icons.kinds.Codeium .. " " .. codeium_status() end,

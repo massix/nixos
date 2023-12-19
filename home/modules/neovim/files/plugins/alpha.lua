@@ -6,28 +6,25 @@ return {
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       local logo = [[
-        .        :    :::.     .::::::.  .::::::. :::  .,::      .:.::::.     .:.
-        ;;,.    ;;;   ;;`;;   ;;;`    ` ;;;`    ` ;;;  `;;;,  .,;;`;.  ,;'  ,;'
-        [[[[, ,[[[[, ,[[ '[[, '[==/[[[[,'[==/[[[[,[[[    '[[,,[['   [nn[, ,[[.od8b
-        $$$$$$$$"$$$c$$$cc$$$c  '''    $  '''    $$$$     Y$$$P    $"   $c$$$"  "$$
-        888 Y88" 888o888   888,88b    dP 88b    dP888   oP"``"Yo,  Yb,_,8P Y8b,,d8P
-        MMM  M'  "MMMYMM   ""`  "YMmMY"   "YMmMY" MMM,m"       "Mm, "YMP"   "YMP"
+                                        ,e,               ,d8 8b,    e88",8,  
+        888 888 8e   ,"Y88b  dP"Y  dP"Y  "       Y8b Y8Y  "Y8 8P"   d888  "   
+        888 888 88b "8" 888 C88b  C88b  888       Y8b Y   ,d8 8b,  C8888 88e  
+        888 888 888 ,ee 888  Y88D  Y88D 888      e Y8b   C888 888D  Y888 888D 
+        888 888 888 "88 888 d,dP  d,dP  888     d8b Y8b   "Y8 8P"    "88 88"  
+                                            888                               
       ]]
 
       dashboard.section.header.val = vim.split(logo, "\n")
+      -- stylua: ignore
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files<CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert<CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles<CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep<CR>"),
-        dashboard.button(
-          "e",
-          " " .. " Edit Nixos Configuration",
-          ":cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"
-        ),
-        dashboard.button("d", " " .. " Load Nix Environment", ":NixDevelop<CR>"),
-        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+        dashboard.button("f", " " .. " Find file", "<CMD> Telescope find_files<CR>"),
+        dashboard.button("l", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
+        dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
+        dashboard.button("W", " " .. " Choose Work Obsidian", "<CMD> cd ~/Documents/Obsidian Work/ <BAR> NvimTreeOpen <CR>"),
+        dashboard.button("P", " " .. " Choose Personal Obsidian", "<CMD> cd ~/Documents/Obsidian Personal/ <BAR> NvimTreeOpen <CR>"),
+        dashboard.button("e", " " .. " Edit Nixos Configuration", "<CMD> cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"),
+        dashboard.button("d", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
+        dashboard.button("q", " " .. " Quit", "<CMD> qa<CR>"),
       }
 
       for _, button in ipairs(dashboard.section.buttons.val) do

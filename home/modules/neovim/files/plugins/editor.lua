@@ -23,9 +23,9 @@ return {
       max_width = function()
         return math.floor(vim.o.columns * 0.75)
       end,
-      render = "compact",
+      render = "default",
       stages = "slide",
-      top_down = false,
+      top_down = true,
     },
   },
 
@@ -130,6 +130,7 @@ return {
 
       -- find
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>.", Util.telescope("files"), desc = "Find Files (root dir)" },
       { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
       { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
@@ -271,6 +272,19 @@ return {
           },
           view = "mini",
         },
+
+        -- TS-Action spams a lot
+        {
+          filter = {
+            event = "notify",
+            kind = "info",
+            any = {
+              { find = "No node found at cursor", }
+            },
+          },
+          opts = { skip = true },
+        },
+
         {
           -- Skip messages from null-ls
           filter = {
@@ -415,15 +429,21 @@ return {
     lazy = false,
     version = false,
     config = true,
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["gs"] = { name = "+surround" },
+      })
+    end,
     opts = {
       mappings = {
-        add = "ma", -- Add surrounding in Normal and Visual modes
-        delete = "md", -- Delete surrounding
-        find = "mf", -- Find surrounding (to the right)
-        find_left = "mF", -- Find surrounding (to the left)
-        highlight = "mh", -- Highlight surrounding
-        replace = "mr", -- Replace surrounding
-        update_n_lines = "mn", -- Update `n_lines`
+        add = "gsa", -- Add surrounding in Normal and Visual modes
+        delete = "gsd", -- Delete surrounding
+        find = "gsf", -- Find surrounding (to the right)
+        find_left = "gsF", -- Find surrounding (to the left)
+        highlight = "gsh", -- Highlight surrounding
+        replace = "gsr", -- Replace surrounding
+        update_n_lines = "gsn", -- Update `n_lines`
       },
     },
   },

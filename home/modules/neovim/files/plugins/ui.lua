@@ -3,6 +3,7 @@ return {
   {
     "Xuyuanp/scrollbar.nvim",
     lazy = false,
+    enabled = false,
 
     -- Register auto commands
     init = function()
@@ -47,7 +48,7 @@ return {
       hijack_cursor = true,
       view = {
         side = "right",
-        width = 50,
+        width = 45,
       },
       renderer = {
         icons = { show = { modified = true } },
@@ -243,6 +244,48 @@ return {
 
         return buftype == "terminal" or buftype == "nofile" or buftype == "prompt" or floating
       end,
+    },
+  },
+
+  -- Golden ratio split
+  {
+    "nvim-focus/focus.nvim",
+    version = false,
+    enabled = true,
+    lazy = false,
+    init = function()
+      -- Do not resize `nofile' buffers
+      local group = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
+      local ignore_buftypes = { "nofile", "terminal", "prompt", "popup" }
+      local ignore_filetypes = { "NvimTree", "OverseerList" }
+      vim.api.nvim_create_autocmd("WinEnter", {
+        group = group,
+        callback = function(_)
+          if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
+            vim.w.focus_disable = true
+          else
+            vim.w.focus_disable = false
+          end
+        end,
+        desc = "Disable focus for nofile buffers",
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        callback = function(_)
+          if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
+            vim.b.focus_disable = true
+          else
+            vim.b.focus_disable = false
+          end
+        end,
+        desc = "Disable focus for terminal, prompt, popup, and NvimTree",
+      })
+    end,
+    opts = {
+      ui = {
+        signcolumn = false,
+      },
     },
   },
 }

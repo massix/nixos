@@ -33,7 +33,10 @@ return {
       { "<bs>", desc = "Decrement selection", mode = "x" },
     },
     opts = {
-      highlight = { enable = true },
+      highlight = { 
+        enable = true,
+        additional_vim_regex_highlighting = { "org" },
+      },
       indent = { enable = true },
       ensure_installed = {
         "bash",
@@ -55,6 +58,7 @@ return {
         "markdown",
         "markdown_inline",
         "nix",
+        "org",
         "purescript",
         "query",
         "racket",
@@ -109,8 +113,8 @@ return {
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-      -- Only fold when we need
-      vim.opt.foldenable = false
+      vim.opt.foldenable = true
+      vim.opt.foldlevel = 99
     end,
   },
 
@@ -124,6 +128,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "ThePrimeagen/refactoring.nvim",
+      "ckolkey/ts-node-action",
     },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
@@ -149,8 +154,8 @@ return {
 
           -- Code Actions --
           nls.builtins.code_actions.statix,
-          nls.builtins.code_actions.gitsigns,
           nls.builtins.code_actions.refactoring,
+          nls.builtins.code_actions.ts_node_action,
         },
       }
     end,
@@ -394,12 +399,12 @@ return {
         }),
       })
 
-      cmp.setup.cmdline(':', {
+      cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "path" },
           { name = "cmdline" },
-        })
+        }),
       })
     end,
     opts = function()
@@ -437,8 +442,9 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "codeium" },
           { name = "nvim_lsp_signature_help" },
+          { name = "codeium" },
+          { name = "orgmode" },
           { name = "path" },
           { name = "cmdline" },
           { name = "buffer" },
@@ -672,5 +678,22 @@ return {
       -- Avoid race condition by attaching for the first time here
       jdtls.start_or_attach(jdtls_options)
     end,
+  },
+
+  -- Overseer
+  {
+    "stevearc/overseer.nvim",
+    opts = {},
+    lazy = true,
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<C-c>o"] = { name = "+overseer" },
+      })
+    end,
+    keys = {
+      { "<C-c>or", [[<cmd>OverseerRun<cr>]], desc = "Overseer Run" },
+      { "<C-c>ot", [[<cmd>OverseerToggle<cr>]], desc = "Overseer Toggle" },
+    },
   },
 }
