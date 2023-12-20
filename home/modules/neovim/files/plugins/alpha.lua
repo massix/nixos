@@ -5,6 +5,8 @@ return {
     event = "VimEnter",
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
+      -- stylua: ignore
+      -- luacheck: ignore
       local logo = [[
                                         ,e,               ,d8 8b,    e88",8,  
         888 888 8e   ,"Y88b  dP"Y  dP"Y  "       Y8b Y8Y  "Y8 8P"   d888  "   
