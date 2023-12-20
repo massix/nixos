@@ -34,7 +34,14 @@ return {
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch" },
+          lualine_b = {
+            { "branch" },
+            {
+              function()
+                return orgmode.statusline()
+              end,
+            },
+          },
           lualine_c = {
             {
               "diagnostics",
@@ -65,7 +72,7 @@ return {
           lualine_x = {
             {
               "overseer",
-              colored = true
+              colored = true,
             },
             -- stylua: ignore
             {

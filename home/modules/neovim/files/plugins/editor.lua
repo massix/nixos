@@ -279,7 +279,7 @@ return {
             event = "notify",
             kind = "info",
             any = {
-              { find = "No node found at cursor", }
+              { find = "No node found at cursor" },
             },
           },
           opts = { skip = true },

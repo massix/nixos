@@ -237,6 +237,13 @@ in
         microsoft-edge
         pbpctrl
 
+        # for image.nvim
+        imagemagick
+        luajitPackages.magick
+
+        # document conversion
+        pandoc
+
         # Only for Teams PWA
         google-chrome
         libsForQt5.kdenlive
