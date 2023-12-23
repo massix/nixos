@@ -40,6 +40,7 @@ return {
               function()
                 return orgmode.statusline()
               end,
+              color = Util.fg("Special"),
             },
           },
           lualine_c = {

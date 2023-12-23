@@ -13,13 +13,25 @@ return {
     end,
     opts = {
       org_agenda_files = { "~/org/**/*" },
+      org_todo_keywords = { "TODO(t)", "NEXT(n)", "PROGRESS(p)", "|", "DONE(d)", "NOTVALID(i)" },
       org_default_notes_file = "~/org/refile.org",
       org_indent_mode = "virtual_indent",
-      win_split_mode = "float",
+      win_split_mode = "horizontal",
       win_border = "rounded",
       org_hide_leading_stars = true,
       org_hide_emphasis_markers = true,
       org_log_into_drawer = "LOGBOOK",
+      org_startup_folded = "content",
+      org_capture_templates = {
+        t = {
+          description = "Task",
+          template = "* TODO %?\n%u",
+        },
+        r = {
+          description = "Random note",
+          template = "* %?\n%u",
+        },
+      },
       ui = {
         virtual_indent = {
           handler = nil,

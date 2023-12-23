@@ -244,6 +244,9 @@ in
         # document conversion
         pandoc
 
+        # pdflatex
+        texlive.combined.scheme-small
+
         # Only for Teams PWA
         google-chrome
         libsForQt5.kdenlive
