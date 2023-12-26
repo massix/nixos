@@ -1,4 +1,4 @@
-local util = require("util.nix");
+local util = require("util.nix")
 
 return {
   {
