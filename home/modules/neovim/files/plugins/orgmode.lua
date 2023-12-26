@@ -1,3 +1,5 @@
+local util = require("util.nix");
+
 return {
   {
     "nvim-orgmode/orgmode",
@@ -39,10 +41,27 @@ return {
       },
     },
   },
+
+  {
+    "michaelb/sniprun",
+    lazy = false,
+    version = "v1.3.9",
+    opts = {
+      binary_path = util.sniprun,
+
+      interpreter_options = {
+        OrgMode_original = {
+          use_on_filetypes = { "org" },
+        },
+      },
+    },
+  },
+
   {
     "3rd/image.nvim",
     lazy = false,
   },
+
   {
     "nvim-neorg/neorg",
     lazy = false,

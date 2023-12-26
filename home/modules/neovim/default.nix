@@ -1,6 +1,7 @@
 { config, lib, unstable, master, username, ... }:
 let
   cfg = config.my-modules.neovim;
+  inherit (unstable) rustPlatform fetchFromGitHub;
   inherit (lib) mkEnableOption mkPackageOption mkIf;
   nvimLangs = map
     ({ code, hash }: unstable.stdenvNoCC.mkDerivation rec {
@@ -25,6 +26,20 @@ let
     }) [{ code = "it"; hash = "sha256-2AczkD6DbVN5DAq4wcLyn2Y8oqd67ns4Guprh2KudBM="; }
     { code = "fr"; hash = "sha256-q/uXArmNiHwXWs5Y8as5cz3AjQO2dNkU9WNE74bmO2E="; }
     { code = "en"; hash = "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA="; }];
+  sniprun = rustPlatform.buildRustPackage rec {
+    pname = "sniprun";
+    version = "1.3.9";
+
+    src = fetchFromGitHub {
+      owner = "michaelb";
+      repo = "sniprun";
+      sha256 = "sha256-g2zPGAJIjMDWn8FCsuRPZyYHDk+ZHCd04lGlYHvb4OI=";
+      rev = "v${version}";
+    };
+
+    cargoSha256 = "sha256-cCBNAEDjgSyZG1NfsKXijaNFqOplXR4nmjwzvx7TaQE=";
+    doCheck = false;
+  };
 in
 {
   options.my-modules.neovim = {
@@ -92,6 +107,7 @@ in
             nodePath = "${unstable.nodejs}/bin/node",
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
+            sniprun = "${sniprun}/bin/sniprun",
           }
         '';
 
