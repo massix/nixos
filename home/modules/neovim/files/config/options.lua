@@ -4,7 +4,6 @@ vim.g.maplocalleader = "\\"
 
 local opt = vim.opt
 local api = vim.api
-local cmd = vim.cmd
 
 opt.autowrite = true -- Enable auto write
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
