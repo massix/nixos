@@ -18,7 +18,6 @@ return {
     },
     config = function(_, opts)
       require("tokyonight").setup(opts)
-      require("tokyonight").load()
     end,
   },
 
@@ -50,14 +49,47 @@ return {
       "ribru17/bamboo.nvim",
       lazy = false,
       priority = 10000,
-      enabled = false,
+      enabled = true,
       opts = {
         style = "vulgaris",
       },
       config = function(_, opts)
         require("bamboo").setup(opts)
-        require("bamboo").load()
       end,
+    },
+
+    {
+      "rebelot/kanagawa.nvim",
+      lazy = false,
+      priority = 10000,
+      enabled = true,
+    },
+
+    {
+      "baliestri/aura-theme",
+      lazy = false,
+      priority = 10000,
+      enabled = true,
+      opts = {},
+      config = function(plugin)
+        vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
+      end,
+    },
+
+    {
+      "savq/melange-nvim",
+      lazy = false,
+      priority = 10000,
+      enabled = true,
+      config = false,
+    },
+
+    {
+      "luisiacc/gruvbox-baby",
+      lazy = false,
+      priority = 10000,
+      enabled = true,
+      config = false,
     },
   },
 }
