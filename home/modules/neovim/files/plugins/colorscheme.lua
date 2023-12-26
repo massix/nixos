@@ -1,4 +1,3 @@
--- Install TokyoNight colorscheme
 return {
   {
     "folke/tokyonight.nvim",
@@ -26,9 +25,9 @@ return {
     lazy = false,
     priority = 10000,
     name = "catppuccin",
-    enabled = false,
+    enabled = true,
     opts = {
-      flavour = "mocha",
+      flavour = "frappe",
       term_colors = true,
       dim_inactive = {
         enabled = true,
@@ -44,52 +43,52 @@ return {
         which_key = true,
       },
     },
+  },
 
-    {
-      "ribru17/bamboo.nvim",
-      lazy = false,
-      priority = 10000,
-      enabled = true,
-      opts = {
-        style = "vulgaris",
-      },
-      config = function(_, opts)
-        require("bamboo").setup(opts)
-      end,
+  {
+    "ribru17/bamboo.nvim",
+    lazy = false,
+    priority = 10000,
+    enabled = true,
+    opts = {
+      style = "vulgaris",
     },
+    config = function(_, opts)
+      require("bamboo").setup(opts)
+    end,
+  },
 
-    {
-      "rebelot/kanagawa.nvim",
-      lazy = false,
-      priority = 10000,
-      enabled = true,
-    },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 10000,
+    enabled = true,
+  },
 
-    {
-      "baliestri/aura-theme",
-      lazy = false,
-      priority = 10000,
-      enabled = true,
-      opts = {},
-      config = function(plugin)
-        vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
-      end,
-    },
+  {
+    "baliestri/aura-theme",
+    lazy = false,
+    priority = 10000,
+    enabled = true,
+    opts = {},
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
+    end,
+  },
 
-    {
-      "savq/melange-nvim",
-      lazy = false,
-      priority = 10000,
-      enabled = true,
-      config = false,
-    },
+  {
+    "savq/melange-nvim",
+    lazy = false,
+    priority = 10000,
+    enabled = true,
+    config = false,
+  },
 
-    {
-      "luisiacc/gruvbox-baby",
-      lazy = false,
-      priority = 10000,
-      enabled = true,
-      config = false,
-    },
+  {
+    "luisiacc/gruvbox-baby",
+    lazy = false,
+    priority = 10000,
+    enabled = true,
+    config = false,
   },
 }
