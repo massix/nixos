@@ -37,35 +37,6 @@ return {
     },
   },
 
-  -- nvim tree file explorer
-  {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    lazy = false,
-
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      hijack_cursor = true,
-      view = {
-        side = "right",
-        width = 45,
-      },
-      renderer = {
-        icons = { show = { modified = true } },
-        highlight_modified = "all",
-      },
-      modified = { enable = true },
-    },
-    keys = {
-      { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Focus the explorer" },
-      { "<leader>fE", "<cmd>NvimTreeFocus<cr>", desc = "Focus the explorer" },
-      { "<leader>fc", "<cmd>NvimTreeClose<cr>", desc = "Close the explorer" },
-      { "<leader>fx", "<cmd>NvimTreeFindFile<cr>", desc = "Focus current file in explorer" },
-      { "<leader>f+", "<cmd>NvimTreeResize +5<cr>", desc = "Increment explorer width" },
-      { "<leader>f-", "<cmd>NvimTreeResize -5<cr>", desc = "Decrement explorer width" },
-    },
-  },
-
   -- Dressing (better vim ui)
   {
     "stevearc/dressing.nvim",
@@ -95,7 +66,6 @@ return {
           "help",
           "alpha",
           "dashboard",
-          "neo-tree",
           "Trouble",
           "lazy",
           "notify",
@@ -124,7 +94,6 @@ return {
           "help",
           "alpha",
           "dashboard",
-          "neo-tree",
           "Trouble",
           "lazy",
           "notify",
@@ -183,7 +152,6 @@ return {
         },
         offsets = {
           {
-            filetype = "NvimTree",
             text = "File Explorer",
             text_align = "left",
           },
@@ -257,7 +225,7 @@ return {
       -- Do not resize `nofile' buffers
       local group = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
       local ignore_buftypes = { "nofile", "terminal", "prompt", "popup" }
-      local ignore_filetypes = { "NvimTree", "OverseerList" }
+      local ignore_filetypes = { "OverseerList" }
       vim.api.nvim_create_autocmd("WinEnter", {
         group = group,
         callback = function(_)

@@ -16,7 +16,6 @@ return {
         "NeogitCommitView",
         "NeogitLogView",
         "NeogitDiffView",
-        "NvimTree",
         "lazy",
         "qf",
         "netrw",

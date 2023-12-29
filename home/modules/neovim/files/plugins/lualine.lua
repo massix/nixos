@@ -123,7 +123,7 @@ return {
             end,
           },
         },
-        extensions = { "nvim-tree", "lazy", "trouble" },
+        extensions = { "lazy", "trouble" },
       }
     end,
   },

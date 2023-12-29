@@ -78,7 +78,6 @@ return {
           do_binding = false,
           use_groups = true,
         },
-        nvim_tree = true,
       },
     },
     keys = {
@@ -86,28 +85,19 @@ return {
     },
   },
 
-  -- Easily edit files and folders
+  -- Mini.files
   {
-    "stevearc/oil.nvim",
-    lazy = true,
+    "echasnovski/mini.files",
+    version = false,
     opts = {
-      default_file_explorer = true,
-      columns = {
-        "icon",
-        "permissions",
-        "size",
-        "mtime",
-      },
-
-      view_options = {
-        show_hidden = true,
+      windows = {
+        preview = true,
+        width_preview = 30,
       },
     },
-    config = function(_, opts)
-      require("oil").setup(opts)
-    end,
     keys = {
-      { "<leader>fo", [[<cmd>Oil<CR>]], desc = "Open Oil in current directory" },
+      ---@diagnostic disable-next-line: undefined-global
+      { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files" },
     },
   },
 

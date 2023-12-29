@@ -22,10 +22,8 @@ return {
         dashboard.button("f", " " .. " Find file", "<CMD> Telescope find_files<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
         dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
-        dashboard.button("W", " " .. " Choose Work Obsidian", "<CMD> cd ~/Documents/Obsidian Work/ <BAR> NvimTreeOpen <CR>"),
-        dashboard.button("P", " " .. " Choose Personal Obsidian", "<CMD> cd ~/Documents/Obsidian Personal/ <BAR> NvimTreeOpen <CR>"),
-        dashboard.button("e", " " .. " Edit Nixos Configuration", "<CMD> cd ~/.config/nixos<cr> <BAR> e ~/.config/nixos/flake.nix<CR>"),
-        dashboard.button("d", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
+        dashboard.button("e", " " .. " Open org", "<CMD> cd ~/org <BAR> e ./index.org<CR>"),
+        dashboard.button("n", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
         dashboard.button("q", " " .. " Quit", "<CMD> qa<CR>"),
       }
 

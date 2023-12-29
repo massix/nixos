@@ -33,20 +33,16 @@ return {
           require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "javascript", "typescript" } })
           local dap = require("dap")
           local dapui = require("dapui")
-          local nvimtree = require("nvim-tree.api").tree
           dapui.setup(opts)
 
           dap.listeners.after.event_initialized["dapui_config"] = function()
-            nvimtree.close()
             dapui.open({})
           end
           dap.listeners.before.event_terminated["dapui_config"] = function()
             dapui.close({})
-            nvimtree.open()
           end
           dap.listeners.before.event_exited["dapui_config"] = function()
             dapui.close({})
-            nvimtree.open()
           end
         end,
       },

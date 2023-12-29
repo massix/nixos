@@ -6,8 +6,19 @@ return {
     enabled = true,
     lazy = false,
     dependencies = {
-      { "akinsho/org-bullets.nvim", config = true, lazy = false },
-      { "lukas-reineke/headlines.nvim", config = true, lazy = false },
+      { "akinsho/org-bullets.nvim", config = true, lazy = false, },
+      { "lukas-reineke/headlines.nvim", config = true, lazy = false, },
+      {
+        "lyz-code/telescope-orgmode.nvim",
+        config = function()
+          require("telescope").load_extension("orgmode")
+        end,
+        lazy = false,
+        keys = {
+          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org files" },
+        },
+      },
+
     },
     config = function(_, opts)
       require("orgmode").setup_ts_grammar()

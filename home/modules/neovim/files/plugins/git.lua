@@ -20,31 +20,13 @@ local spec = {
     -- Reload Nvimtree automatically
     init = function()
       local group = api.nvim_create_augroup("NeogitEvents", { clear = true })
-
-      local create_autocmd = function(pattern, callback)
-        api.nvim_create_autocmd("User", {
-          pattern = pattern,
-          group = group,
-          callback = callback,
-        })
-      end
-
-      create_autocmd("NeogitPushComplete", function()
-        require("nvim-tree.api").git.reload()
-        require("neogit").close()
-      end)
-
-      create_autocmd("NeogitPullComplete", function()
-        require("nvim-tree.api").git.reload()
-      end)
-
-      create_autocmd("NeogitFetchComplete", function()
-        require("nvim-tree.api").git.reload()
-      end)
-
-      create_autocmd("NeogitStatusRefreshed", function()
-        require("nvim-tree.api").git.reload()
-      end)
+      api.nvim_create_autocmd("User", {
+        group = group,
+        pattern = "NeogitPushComplete",
+        callback = function()
+          require("neogit").close()
+        end,
+      })
     end,
     keys = {
       {
