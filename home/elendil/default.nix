@@ -198,7 +198,7 @@ in
         tab_bar_style = "powerline";
         tab_bar_align = "left";
 
-        background_opacity = "0.9";
+        background_opacity = "1";
         dynamic_background_opacity = true;
         enable_audio_bell = false;
 
@@ -236,6 +236,7 @@ in
         powertop
         microsoft-edge
         pbpctrl
+        gtk-engine-murrine
 
         # for image.nvim
         imagemagick
