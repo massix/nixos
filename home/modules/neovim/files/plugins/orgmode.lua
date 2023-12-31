@@ -6,8 +6,8 @@ return {
     enabled = true,
     lazy = false,
     dependencies = {
-      { "akinsho/org-bullets.nvim", config = true, lazy = false, },
-      { "lukas-reineke/headlines.nvim", config = true, lazy = false, },
+      { "akinsho/org-bullets.nvim", config = true, lazy = false },
+      { "lukas-reineke/headlines.nvim", config = true, lazy = false },
       {
         "lyz-code/telescope-orgmode.nvim",
         config = function()
@@ -18,15 +18,28 @@ return {
           { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org files" },
         },
       },
-
     },
     config = function(_, opts)
       require("orgmode").setup_ts_grammar()
       require("orgmode").setup(opts)
     end,
     opts = {
-      org_agenda_files = { "~/org/**/*" },
-      org_todo_keywords = { "TODO(t)", "NEXT(n)", "PROGRESS(p)", "|", "DONE(d)", "NOTVALID(i)" },
+      org_agenda_files = {
+        "~/org/index.org",
+        "~/org/refile.org",
+        "~/org/mobile-refile.org",
+        "~/org/work.org",
+      },
+      org_todo_keywords = {
+        "TODO(t)",
+        "NEXT(n)",
+        "PROGRESS(p)",
+        "WAITING(w)",
+        "|",
+        "DONE(d)",
+        "CANCELLED(c)",
+        "DELEGATED(D)",
+      },
       org_default_notes_file = "~/org/refile.org",
       org_indent_mode = "virtual_indent",
       win_split_mode = "horizontal",
@@ -34,20 +47,35 @@ return {
       org_hide_leading_stars = true,
       org_hide_emphasis_markers = true,
       org_log_into_drawer = "LOGBOOK",
-      org_startup_folded = "content",
+      org_startup_folded = "inherit",
       org_capture_templates = {
         t = {
           description = "Task",
           template = "* TODO %?\n%u",
+          headline = "Tasks",
+          target = "~/org/refile.org",
         },
         r = {
           description = "Random note",
           template = "* %?\n%u",
+          headline = "Notes",
+          target = "~/org/refile.org",
+        },
+        m = {
+          description = "Meeting minutes",
+          template = "* %<%Y-%m-%d> %?\n%u\n** Participants\n** Topics",
+          headline = "Meetings",
+          target = "~/org/work.org",
         },
       },
       ui = {
         virtual_indent = {
           handler = nil,
+        },
+      },
+      mappings = {
+        org = {
+          org_toggle_checkbox = "<C-l>",
         },
       },
     },
