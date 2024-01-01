@@ -238,10 +238,6 @@ in
         pbpctrl
         gtk-engine-murrine
 
-        # for image.nvim
-        imagemagick
-        luajitPackages.magick
-
         # document conversion
         pandoc
 

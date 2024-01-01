@@ -94,11 +94,6 @@ return {
   },
 
   {
-    "3rd/image.nvim",
-    lazy = false,
-  },
-
-  {
     "nvim-neorg/neorg",
     lazy = false,
     enabled = false,
