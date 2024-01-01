@@ -25,10 +25,7 @@ return {
     end,
     opts = {
       org_agenda_files = {
-        "~/org/index.org",
-        "~/org/refile.org",
-        "~/org/mobile-refile.org",
-        "~/org/work.org",
+        "~/org/**/*.org"
       },
       org_todo_keywords = {
         "TODO(t)",
@@ -75,7 +72,7 @@ return {
       },
       mappings = {
         org = {
-          org_toggle_checkbox = "<C-l>",
+          org_toggle_checkbox = "<C-p>",
         },
       },
     },
