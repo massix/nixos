@@ -64,6 +64,7 @@ in
       withNodeJs = true;
       withPython3 = true;
       withRuby = true;
+      extraLuaPackages = ps: [ ps.magick ];
     };
 
 
