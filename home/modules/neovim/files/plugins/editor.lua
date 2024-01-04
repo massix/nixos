@@ -437,4 +437,54 @@ return {
       },
     },
   },
+
+  -- Zen-Mode
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      window = {
+        width = 80,
+        height = 1,
+        options = {
+          number = false,
+          relativenumber = false,
+          signcolumn = "no",
+          cursorline = false,
+          foldcolumn = "0",
+        },
+      },
+      plugins = {
+        kitty = {
+          enabled = true,
+          font = "+2",
+        },
+        gitsigns = { enabled = true, },
+        options = {
+          enabled = true,
+          ruler = true,
+          showcmd = true
+        },
+      },
+    },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        [ "<leader>z" ] = { name = "+zen" },
+      });
+    end,
+    commands = { "ZenMode" },
+    keys = {
+      { "<leader>zz", "<CMD>ZenMode<CR>", desc = "Start Zen Mode" },
+    },
+  },
+
+  -- Dim inactive portions of code
+  {
+    "folke/twilight.nvim",
+    lazy = false,
+    opts = {},
+    keys = {
+      { "<leader>zt", "<CMD>Twilight<CR>", desc = "Toggle Twilight" },
+    },
+  }
 }
