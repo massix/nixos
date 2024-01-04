@@ -203,6 +203,9 @@ in
         enable_audio_bell = false;
 
         disable_ligatures = "cursor";
+
+        allow_remote_control = true;
+        listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
       };
     };
 
