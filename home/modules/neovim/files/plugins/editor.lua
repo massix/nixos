@@ -97,7 +97,13 @@ return {
     },
     keys = {
       ---@diagnostic disable-next-line: undefined-global
-      { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files" },
+      {
+        "<leader>fo",
+        function()
+          MiniFiles.open()
+        end,
+        desc = "Open Files",
+      },
     },
   },
 
@@ -458,19 +464,19 @@ return {
           enabled = true,
           font = "+2",
         },
-        gitsigns = { enabled = true, },
+        gitsigns = { enabled = true },
         options = {
           enabled = true,
           ruler = true,
-          showcmd = true
+          showcmd = true,
         },
       },
     },
     init = function()
       local wk = require("which-key")
       wk.register({
-        [ "<leader>z" ] = { name = "+zen" },
-      });
+        ["<leader>z"] = { name = "+zen" },
+      })
     end,
     commands = { "ZenMode" },
     keys = {
@@ -486,5 +492,5 @@ return {
     keys = {
       { "<leader>zt", "<CMD>Twilight<CR>", desc = "Toggle Twilight" },
     },
-  }
+  },
 }

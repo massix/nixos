@@ -25,7 +25,7 @@ return {
     end,
     opts = {
       org_agenda_files = {
-        "~/org/**/*.org"
+        "~/org/**/*.org",
       },
       org_todo_keywords = {
         "TODO(t)",
