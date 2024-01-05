@@ -64,7 +64,7 @@ return {
     end,
   },
 
-  -- Command Palette (TODO: configure this)
+  -- Command Palette
   {
     "mrjones2014/legendary.nvim",
     priority = 10000,
@@ -377,6 +377,7 @@ return {
     },
   },
 
+  -- Flash.nvim
   {
     "folke/flash.nvim",
     event = "VeryLazy",
@@ -391,6 +392,7 @@ return {
     },
   },
 
+  -- Icon Picker
   {
     "ziontee113/icon-picker.nvim",
     cmd = { "IconPickerNormal", "IconPickerYank", "IconPickerInsert" },
@@ -587,6 +589,32 @@ return {
       { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds", },
       { "zM", function() require("ufo").closeAllFolds() end, desc = "Close all folds", },
       { "zp", function() require('ufo').peekFoldedLinesUnderCursor() end, desc = "Preview fold", },
+    },
+  },
+
+  -- Code biscuits
+  {
+    "code-biscuits/nvim-biscuits",
+    event = "BufEnter",
+    opts = {
+      on_events = { "InsertLeave", "CursorHoldI" },
+      max_length = 4,
+      trim_by_words = true,
+      default_config = {
+        prefix_string = " ",
+      },
+      language_config = {
+        org = { disabled = true },
+      },
+    },
+    keys = {
+      {
+        "<leader>cb",
+        function()
+          require("nvim-biscuits").toggle_biscuits()
+        end,
+        desc = "Toggle biscuits",
+      },
     },
   },
 }
