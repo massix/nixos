@@ -23,6 +23,7 @@ return {
         dashboard.button("l", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
         dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
         dashboard.button("e", " " .. " Open org", "<CMD> cd ~/org <BAR> e ./index.org<CR>"),
+        dashboard.button("h", " " .. " Open project", "<CMD> Telescope projects<CR>"),
         dashboard.button("n", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
         dashboard.button("q", " " .. " Quit", "<CMD> qa<CR>"),
       }
