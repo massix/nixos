@@ -22,6 +22,16 @@ return {
     config = function(_, opts)
       require("orgmode").setup_ts_grammar()
       require("orgmode").setup(opts)
+
+      -- Disable column in orgagenda
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = { "orgagenda" },
+        callback = function()
+          vim.opt_local.foldcolumn = "0"
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
+        end,
+      })
     end,
     opts = {
       org_agenda_files = {
