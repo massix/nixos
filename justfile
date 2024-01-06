@@ -16,6 +16,10 @@ default: switch
   sudo {{ nixch }} --update nixos-unstable
   sudo {{ nixosrb }} switch --impure
 
+@update: && system
+  {{ nix }} flake update
+  {{ home_manager }} switch
+
 @switch:
   {{ home_manager }} switch
 
