@@ -402,7 +402,7 @@ return {
     init = function()
       local wk = require("which-key")
       wk.register({
-        ["<leader>I"] = { name = "+icons" },
+        ["<leader>I"] = { name = "+insert" },
       })
     end,
     keys = {

@@ -693,4 +693,22 @@ return {
       { "<C-c>ot", [[<cmd>OverseerToggle<cr>]], desc = "Overseer Toggle" },
     },
   },
+
+  -- ScratchPad
+  {
+    "LintaoAmons/scratch.nvim",
+    lazy = true,
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        [ "<leader>cs" ] = { "+scratch" },
+      })
+    end,
+    keys = {
+      { "<leader>csn", [[<CMD>Scratch<CR>]], desc = "Create new scratch" },
+      { "<leader>cso", [[<CMD>ScratchOpen<CR>]], desc = "Open existing scratch" },
+      { "<leader>css", [[<CMD>ScratchOpenFzf<CR>]], desc = "Search in scratches" },
+      { "<leader>csp", [[<CMD>ScratchPad<CR>]], desc = "Open ScratchPad" },
+    },
+  },
 }

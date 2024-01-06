@@ -103,4 +103,17 @@ return {
       },
     },
   },
+
+  {
+    "HakonHarnes/img-clip.nvim",
+    event = "BufEnter",
+    opts = {
+      default = {
+        dir_path = "resources",
+      },
+    },
+    keys = {
+      { "<leader>Ip", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
+    },
+  },
 }
