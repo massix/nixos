@@ -55,7 +55,7 @@ return {
       org_hide_leading_stars = true,
       org_hide_emphasis_markers = true,
       org_log_into_drawer = "LOGBOOK",
-      org_startup_folded = "inherit",
+      org_startup_folded = "content",
       org_capture_templates = {
         t = {
           description = "Task",
