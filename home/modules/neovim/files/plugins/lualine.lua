@@ -125,10 +125,15 @@ return {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
+          -- stylua: ignore
           lualine_z = {
-            function()
-              return " " .. os.date("%R")
-            end,
+            {
+              function() return require("pomodoro").statusline() end,
+              cond = function()
+                return package.loaded["pomodoro"] and require("pomodoro").statusline() ~= nil
+              end,
+            },
+            { function() return " " .. os.date("%R") end, }
           },
         },
         extensions = { "lazy", "trouble" },

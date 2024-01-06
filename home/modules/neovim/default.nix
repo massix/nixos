@@ -138,6 +138,7 @@ in
         "${plugins}/iron.lua".source = ./files/plugins/iron.lua;
         "${plugins}/obsidian.lua".source = ./files/plugins/obsidian.lua;
         "${plugins}/orgmode.lua".source = ./files/plugins/orgmode.lua;
+        "${plugins}/pomodoro.lua".source = ./files/plugins/pomodoro.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {
