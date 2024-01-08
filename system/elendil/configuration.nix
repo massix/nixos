@@ -94,6 +94,7 @@ in
         settings = {
           main = {
             capslock = "overload(control, esc)";
+            leftcontrol = "overload(control, esc)";
           };
         };
       };
