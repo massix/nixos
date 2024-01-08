@@ -30,6 +30,7 @@ return {
           vim.opt_local.foldcolumn = "0"
           vim.opt_local.number = false
           vim.opt_local.relativenumber = false
+          vim.opt_local.signcolumn = "no"
         end,
       })
     end,
@@ -55,7 +56,7 @@ return {
       org_hide_leading_stars = true,
       org_hide_emphasis_markers = true,
       org_log_into_drawer = "LOGBOOK",
-      org_startup_folded = "content",
+      org_startup_folded = "inherit",
       org_capture_templates = {
         t = {
           description = "Task",
@@ -115,5 +116,13 @@ return {
     keys = {
       { "<leader>Ip", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
     },
+  },
+
+  -- mkdnflow for 2nd brain and markdown navigation
+  {
+    "jakewvincent/mkdnflow.nvim",
+    opts = {},
+    ft = "markdown",
+    lazy = true
   },
 }

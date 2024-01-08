@@ -6,6 +6,11 @@ return {
     opts = {
       manual_mode = false,
       detection_methods = { "lsp", "pattern" },
+      exclude_dirs = {
+        "/home/massi",
+        "${HOME}",
+        "~",
+      },
       patterns = {
         ".git",
         "_darcs",

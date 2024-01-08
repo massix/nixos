@@ -128,7 +128,16 @@ return {
           -- stylua: ignore
           lualine_z = {
             {
-              function() return require("pomodoro").statusline() end,
+              function()
+                --- @type string
+                local status = require("pomodoro").statusline()
+                if status:find("inactive") then
+                  return ""
+                else
+                  return status
+                end
+              end,
+
               cond = function()
                 return package.loaded["pomodoro"] and require("pomodoro").statusline() ~= nil
               end,

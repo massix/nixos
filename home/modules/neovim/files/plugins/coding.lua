@@ -691,6 +691,8 @@ return {
     keys = {
       { "<C-c>or", [[<cmd>OverseerRun<cr>]], desc = "Overseer Run" },
       { "<C-c>ot", [[<cmd>OverseerToggle<cr>]], desc = "Overseer Toggle" },
+      { "<C-c>oq", [[<cmd>OverseerQuickAction<cr>]], desc = "Overseer Quick Action" },
+      { "<C-c>ob", [[<cmd>OverseerBuild<cr>]], desc = "Overseer Build" },
     },
   },
 
