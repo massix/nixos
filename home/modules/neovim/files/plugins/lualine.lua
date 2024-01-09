@@ -27,7 +27,7 @@ return {
 
       return {
         options = {
-          theme = "seoul256",
+          theme = "auto",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
           icons_enabled = true,

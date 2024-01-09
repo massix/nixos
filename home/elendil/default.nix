@@ -173,7 +173,7 @@ in
     kitty = {
       enable = true;
       package = unstable.kitty;
-      theme = "kanagawabones";
+      theme = "Catppuccin-Frappe";
 
       shellIntegration = {
         mode = "enabled";

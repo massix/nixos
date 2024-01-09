@@ -33,7 +33,7 @@ require("lazy").setup({
   },
 
   -- Install a colorscheme
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "catppuccin", "habamax" } },
 
   -- Enable checker for updating plugins
   checker = { enabled = true },
@@ -59,4 +59,4 @@ require("lazy").setup({
 require("config.keymaps")
 
 vim.cmd([[language en_US.utf8]])
-vim.cmd([[colorscheme kanagawa]])
+vim.cmd([[colorscheme catppuccin]])
