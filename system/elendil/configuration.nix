@@ -89,12 +89,19 @@ in
   services.keyd = {
     enable = true;
     keyboards = {
+      gaming = {
+        ids = [ "1ea7:0907" ];
+        settings = {
+          main = {
+            leftcontrol = "overload(control, esc)";
+          };
+        };
+      };
       default = {
         ids = [ "*" ];
         settings = {
           main = {
             capslock = "overload(control, esc)";
-            leftcontrol = "overload(control, esc)";
           };
         };
       };
