@@ -443,6 +443,7 @@ return {
           { name = "nvim_lsp_signature_help" },
           { name = "codeium" },
           { name = "orgmode" },
+          { name = "mkdnflow" },
           { name = "path" },
           { name = "buffer" },
         }),
