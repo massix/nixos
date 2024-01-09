@@ -4,10 +4,15 @@ return {
   {
     "nvim-orgmode/orgmode",
     enabled = true,
-    lazy = false,
+    event = "VeryLazy",
     dependencies = {
+      { "nvim-treesitter/nvim-treesitter" },
       { "akinsho/org-bullets.nvim", config = true, lazy = false },
-      { "lukas-reineke/headlines.nvim", config = true, lazy = false },
+      {
+        "lukas-reineke/headlines.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        event = "VeryLazy",
+      },
       {
         "lyz-code/telescope-orgmode.nvim",
         config = function()
@@ -123,6 +128,6 @@ return {
     "jakewvincent/mkdnflow.nvim",
     opts = {},
     ft = "markdown",
-    lazy = true
+    lazy = true,
   },
 }
