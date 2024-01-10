@@ -234,7 +234,6 @@ in
 
       unstable-packages = with unstable; [
         obsidian
-        spotify
         just
         powertop
         microsoft-edge
