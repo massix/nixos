@@ -5,7 +5,7 @@ return {
     event = "VeryLazy",
     opts = {
       manual_mode = false,
-      detection_methods = { "lsp", "pattern" },
+      detection_methods = { "pattern", "lsp" },
       exclude_dirs = {
         "/home/massi",
         "${HOME}",
@@ -24,6 +24,12 @@ return {
         "index.org",
         "flake.nix",
         "shell.nix",
+        "cargo.toml",
+        "*.cabal",
+        "stack.yaml",
+        "spago.yaml",
+        "spago.dhall",
+        "go.mod",
       },
       datapath = vim.fn.stdpath("data"),
     },

@@ -22,9 +22,15 @@ return {
         dashboard.button("f", " " .. " Find file", "<CMD> Telescope find_files<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
         dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
-        dashboard.button("e", " " .. " Open org", "<CMD> cd ~/org <BAR> e ./index.org<CR>"),
-        dashboard.button("h", " " .. " Open project", "<CMD> Telescope projects<CR>"),
+        dashboard.button("h", " " .. " Load project", "<CMD> Telescope projects<CR>"),
         dashboard.button("n", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
+        dashboard.button("e", " " .. " Org Index", "<CMD> cd ~/org <BAR> e ./index.org<CR>"),
+        dashboard.button("m", " " .. " Agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5 })<CR>]]),
+        dashboard.button("w", " " .. " Work agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5, filters = "+work" })<CR>]]),
+        dashboard.button("W", " " .. " Personal agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5, filters = "+personal" })<CR>]]),
+        dashboard.button("l", "✓ " .. " Todos", [[<CMD> lua require("orgmode.api.agenda").todos()<CR>]]),
+        dashboard.button("t", " " .. " Work todos", [[<CMD> lua require("orgmode.api.agenda").todos( { filters = "+work" })<CR>]]),
+        dashboard.button("T", " " .. " Personal todos", [[<CMD> lua require("orgmode.api.agenda").todos( { filters = "+personal" })<CR>]]),
         dashboard.button("q", " " .. " Quit", "<CMD> qa<CR>"),
       }
 
