@@ -127,8 +127,25 @@ return {
   -- mkdnflow for 2nd brain and markdown navigation
   {
     "jakewvincent/mkdnflow.nvim",
-    opts = {},
     ft = "markdown",
     lazy = true,
+    opts = {
+      modules = {
+        cmp = true,
+      },
+      wrap = true,
+      links = {
+        style = "markdown",
+        transform_explicit = function(text)
+          text = text:gsub(" ", "-")
+          text = text:lower()
+          return text
+        end,
+      },
+      new_file_template = {
+        use_template = true,
+        template = "# {{ title }}"
+      },
+    },
   },
 }
