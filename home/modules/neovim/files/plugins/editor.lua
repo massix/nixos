@@ -522,6 +522,8 @@ return {
           filetypes = { "norg" },
         },
       },
+      window_overlap_clear_enabled = true,
+      editor_only_render_when_focused = true,
     },
   },
 
