@@ -20,7 +20,7 @@ return {
       -- stylua: ignore
       dashboard.section.buttons.val = {
         dashboard.button("f", " " .. " Find file", "<CMD> Telescope find_files<CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
+        dashboard.button("L", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
         dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
         dashboard.button("h", " " .. " Load project", "<CMD> Telescope projects<CR>"),
         dashboard.button("n", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
