@@ -42,7 +42,7 @@ return {
     end,
     opts = {
       org_agenda_files = {
-        "~/org/**/*.org",
+        "~/org/*.org",
       },
       org_todo_keywords = {
         "TODO(t)",
@@ -52,10 +52,11 @@ return {
         "|",
         "DONE(d)",
         "CANCELLED(c)",
-        "DELEGATED(D)",
+        "DELEGATED(l)",
       },
       org_default_notes_file = "~/org/refile.org",
-      org_indent_mode = "virtual_indent",
+      org_agenda_text_search_extra_files = { "agenda-archives" },
+      org_indent_mode = "noindent",
       org_tags_column = 0,
       win_split_mode = "horizontal",
       win_border = "rounded",
@@ -91,6 +92,8 @@ return {
       mappings = {
         org = {
           org_toggle_checkbox = "<C-p>",
+          org_forward_heading_same_level = "<leader>]",
+          org_backward_heading_same_level = "<leader>[",
         },
       },
     },

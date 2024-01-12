@@ -70,5 +70,8 @@ return {
         end,
       })
     end,
+    keys = {
+      { "<leader>A", "<cmd> Alpha<CR>", desc = "Alpha Dashboard" },
+    },
   },
 }
