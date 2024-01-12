@@ -9,7 +9,6 @@ local spec = {
       { "sindrets/diffview.nvim", lazy = false, },
       { "ibhagwan/fzf-lua", lazy = false },
     },
-    version = false,
     opts = {
       disable_hint = false,
       disable_signs = false,
@@ -20,7 +19,7 @@ local spec = {
       },
       graph_style = "unicode",
       signs = {
-        hunk = { " ", " " },
+        hunk = { "", "" },
         item = { " ", " " },
         section = { " ", " " },
       },
@@ -30,17 +29,14 @@ local spec = {
       },
     },
     config = function(_, opts)
-      local ng = require("neogit")
-      ng.setup(opts)
-
-      -- Reload Nvimtree automatically
+      require("neogit").setup(opts)
       local group = api.nvim_create_augroup("NeogitEvents", { clear = true })
 
       api.nvim_create_autocmd("User", {
         group = group,
         pattern = "NeogitPushComplete",
         callback = function()
-          ng.close()
+          require("neogit").close()
         end,
       })
     end,

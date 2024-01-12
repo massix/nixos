@@ -1,42 +1,4 @@
 return {
-  -- Scrollbar
-  {
-    "Xuyuanp/scrollbar.nvim",
-    lazy = false,
-    enabled = false,
-
-    -- Register auto commands
-    init = function()
-      local api = vim.api
-
-      api.nvim_create_autocmd(
-        { "WinScrolled", "VimResized", "QuitPre" },
-        { pattern = "*", command = [[silent! lua require('scrollbar').show()]] }
-      )
-      api.nvim_create_autocmd(
-        { "WinEnter", "FocusGained" },
-        { pattern = "*", command = [[silent! lua require('scrollbar').show()]] }
-      )
-      api.nvim_create_autocmd(
-        { "WinLeave", "FocusLost", "BufLeave", "BufWinLeave" },
-        { pattern = "*", command = [[silent! lua require('scrollbar').clear()]] }
-      )
-    end,
-  },
-
-  -- Smooth Scrolling
-  {
-    "karb94/neoscroll.nvim",
-    lazy = false,
-    enabled = false,
-
-    opts = {
-      extra_keymaps = true,
-      extended_keymaps = true,
-      override_keymaps = true,
-    },
-  },
-
   -- Dressing (better vim ui)
   {
     "stevearc/dressing.nvim",
@@ -197,21 +159,6 @@ return {
     keys = {
       { "]]", desc = "Next Reference" },
       { "[[", desc = "Prev Reference" },
-    },
-  },
-
-  {
-    "levouh/tint.nvim",
-    event = "VeryLazy",
-    enabled = false,
-    opts = {
-      window_ignore_function = function(winid)
-        local bufid = vim.api.nvim_win_get_buf(winid)
-        local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
-        local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-
-        return buftype == "terminal" or buftype == "nofile" or buftype == "prompt" or floating
-      end,
     },
   },
 

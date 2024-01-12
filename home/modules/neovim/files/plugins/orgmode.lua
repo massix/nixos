@@ -84,11 +84,6 @@ return {
           target = "~/org/work.org",
         },
       },
-      ui = {
-        virtual_indent = {
-          handler = nil,
-        },
-      },
       mappings = {
         org = {
           org_toggle_checkbox = "<C-p>",

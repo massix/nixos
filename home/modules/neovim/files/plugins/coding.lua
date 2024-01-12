@@ -25,6 +25,7 @@ return {
         "IndianBoy42/tree-sitter-just",
         lazy = false,
         config = false,
+        enabled = false,
       },
     },
     cmd = { "TSUpdateSync" },
@@ -50,7 +51,7 @@ return {
         "javascript",
         "jsdoc",
         "json",
-        "just",
+        -- "just",
         "kdl",
         "lua",
         "luadoc",
@@ -92,7 +93,7 @@ return {
           return true
         end, opts.ensure_installed)
       end
-      require("tree-sitter-just").setup({})
+      -- require("tree-sitter-just").setup({})
       require("nvim-treesitter.configs").setup(opts)
 
       if load_textobjects then
@@ -113,6 +114,11 @@ return {
       -- Once treesitter loaded, we can change the foldmethod
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+      vim.opt.foldenable = true
+      vim.opt.foldlevel = 99
+      vim.opt.foldlevelstart = 99
+      vim.opt.foldcolumn = "0"
     end,
   },
 

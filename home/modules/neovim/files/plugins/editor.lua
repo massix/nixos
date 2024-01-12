@@ -530,7 +530,10 @@ return {
   -- Better folding
   {
     "kevinhwang91/nvim-ufo",
-    dependencies = { "kevinhwang91/promise-async" },
+    dependencies = {
+      "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
+    },
     event = "BufEnter",
     opts = {
       open_fold_hl_timeout = 150,
@@ -579,14 +582,6 @@ return {
         return { "treesitter", "indent" }
       end,
     },
-    config = function(_, opts)
-      require("ufo").setup(opts)
-
-      vim.opt.foldenable = true
-      vim.opt.foldlevel = 99
-      vim.opt.foldlevelstart = 99
-      vim.opt.foldcolumn = "0"
-    end,
     -- stylua: ignore
     keys = {
       { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds", },
@@ -602,12 +597,13 @@ return {
     opts = {
       on_events = { "InsertLeave", "CursorHoldI" },
       max_length = 4,
-      trim_by_words = true,
+      trim_by_words = false,
       default_config = {
         prefix_string = " ",
       },
       language_config = {
         org = { disabled = true },
+        markdown = { disabled = true },
       },
     },
     keys = {

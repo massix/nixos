@@ -35,7 +35,10 @@ return {
         percentage = 0.30,
       },
       integrations = {
-        mini = true,
+        mini = {
+          enabled = true,
+          indentscope_color = "",
+        },
         neotest = true,
         notify = true,
         window_picker = true,
