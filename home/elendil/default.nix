@@ -69,7 +69,7 @@ in
 
     neovim = {
       enable = true;
-      configuration.package = unstable.neovim-nightly;
+      configuration.package = unstable.neovim-unwrapped;
       defaultEditor = true;
     };
 
