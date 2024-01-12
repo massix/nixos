@@ -56,7 +56,6 @@
     , nix-direnv
     , masterpkgs
     , purescript-overlay
-    , neovim-nightly
     , emacs-overlay
     , ...
     }:
@@ -71,7 +70,6 @@
         })
         nix-direnv.overlays.default
         purescript-overlay.overlays.default
-        # neovim-nightly.overlays.default
         emacs-overlay.overlays.default
       ];
 
