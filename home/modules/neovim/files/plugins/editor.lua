@@ -595,9 +595,6 @@ return {
     "code-biscuits/nvim-biscuits",
     event = "BufEnter",
     opts = {
-      on_events = { "InsertLeave", "CursorHoldI" },
-      max_length = 4,
-      trim_by_words = false,
       default_config = {
         prefix_string = " ",
       },
