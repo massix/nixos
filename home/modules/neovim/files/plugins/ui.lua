@@ -43,7 +43,7 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
+    version = "*",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
       -- symbol = "▏",
@@ -84,6 +84,7 @@ return {
       -- buffer remove
       {
         "echasnovski/mini.bufremove",
+        version = "*",
         -- stylua: ignore
         keys = {
           { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
@@ -98,7 +99,7 @@ return {
         right_mouse_command = nil,
         numbers = "ordinal",
         diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
+        always_show_bufferline = true,
         separator_style = "thick",
         show_tab_indicators = true,
         diagnostics_indicator = function(_, _, diag)
@@ -165,7 +166,6 @@ return {
   -- Golden ratio split
   {
     "nvim-focus/focus.nvim",
-    version = false,
     enabled = true,
     lazy = false,
     init = function()

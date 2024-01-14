@@ -7,7 +7,6 @@ return {
   -- syntax highlighting.
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
@@ -233,7 +232,6 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "LspInfo" },
-    version = false,
     config = function()
       -- Make sure we load neoconf and neodev before configuring the lsp
       require("neoconf").setup()
@@ -379,7 +377,6 @@ return {
   -- completion engine
   {
     "hrsh7th/nvim-cmp",
-    version = false,
     event = "InsertEnter",
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
@@ -508,7 +505,6 @@ return {
       { "<leader>cgd", "<cmd>Lspsaga goto_type_definition<cr>", desc = "Goto type definition" },
       { "<leader>cf", "<cmd>Lspsaga finder<cr>", desc = "See references/implementations" },
       { "<leader>ch", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
-      { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Code outline" },
       { "<leader>ca", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
 
       -- goto things
@@ -710,7 +706,7 @@ return {
     init = function()
       local wk = require("which-key")
       wk.register({
-        [ "<leader>cs" ] = { "+scratch" },
+        ["<leader>cs"] = { "+scratch" },
       })
     end,
     keys = {

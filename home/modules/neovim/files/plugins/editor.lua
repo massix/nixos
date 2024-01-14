@@ -88,7 +88,7 @@ return {
   -- Mini.files
   {
     "echasnovski/mini.files",
-    version = false,
+    version = "*",
     opts = {
       windows = {
         preview = true,
@@ -96,14 +96,38 @@ return {
       },
     },
     keys = {
-      ---@diagnostic disable-next-line: undefined-global
       {
         "<leader>fo",
         function()
+          ---@diagnostic disable-next-line: undefined-global
           MiniFiles.open()
         end,
         desc = "Open Files",
       },
+    },
+  },
+
+  -- Oil
+  {
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>fm"] = { name = "+oil" },
+      })
+    end,
+    opts = {
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
+    },
+    keys = {
+      { "<leader>fmo", "<cmd>Oil<cr>", desc = "Oil" },
+      { "<leader>fmf", "<cmd>Oil --float<cr>", desc = "Oil (float)" },
     },
   },
 
@@ -425,8 +449,8 @@ return {
   -- Surround motion
   {
     "echasnovski/mini.surround",
+    version = "*",
     lazy = false,
-    version = false,
     config = true,
     init = function()
       local wk = require("which-key")
@@ -512,7 +536,7 @@ return {
           clear_in_insert_mode = false,
           download_remote_images = true,
           only_render_image_at_cursor = false,
-          filetypes = { "markdown", "vimwiki", "org" },
+          filetypes = { "markdown", "vimwiki" },
         },
         neorg = {
           enabled = true,
@@ -595,6 +619,10 @@ return {
     "code-biscuits/nvim-biscuits",
     event = "BufEnter",
     opts = {
+      show_on_start = false,
+      cursor_line_only = true,
+      on_events = { "CursorHoldI", "InsertLeave" },
+      trim_by_words = false,
       default_config = {
         prefix_string = " ",
       },
@@ -628,5 +656,152 @@ return {
     config = function(_, opts)
       require("better_escape").setup(opts)
     end,
+  },
+
+  -- Code outline and navigation
+  {
+    "stevearc/aerial.nvim",
+    opts = {
+      layout = {
+        default_direction = "prefer_left",
+        placement = "edge",
+      },
+
+      highlight_on_hover = true,
+      show_guides = true,
+    },
+    -- Optional dependencies
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    keys = {
+      { "<leader>co", "<cmd>AerialToggle<cr>", desc = "Open outline" },
+      { "<leader>cn", "<cmd>AerialNavToggle<cr>", desc = "Open float outline" },
+    },
+  },
+
+  -- Highlight ranges
+  {
+    "winston0410/range-highlight.nvim",
+    dependencies = { "winston0410/cmd-parser.nvim" },
+    event = { "BufEnter", "BufWinEnter" },
+    opts = {},
+  },
+
+  -- buffer switcher
+  {
+    "matbme/JABS.nvim",
+    cmd = "JABSOpen",
+    main = "jabs",
+    opts = {
+      relative = "cursor",
+      border = "rounded",
+      split_filename = true,
+      symbols = {
+        current = "󰄾",
+        split = "",
+        alternate = "⫝",
+        hidden = "󰘓",
+        locked = "",
+        ro = "",
+        edited = "",
+        terminal = "",
+        default_file = "",
+        terminal_symbol = "",
+      },
+    },
+    keys = {
+      { "<leader>bj", "<cmd>JABSOpen<cr>", desc = "JABS Open" },
+    },
+  },
+
+  -- Confirm before leaving Neovim
+  {
+    "yutkat/confirm-quit.nvim",
+    event = "CmdlineEnter",
+    opts = {
+      overwrite_q_command = false,
+    },
+    config = function(_, opts)
+      require("confirm-quit").setup(opts)
+      vim.cmd([[
+        function! s:solely_in_cmd(command)
+          return (getcmdtype() == ':' && getcmdline() ==# a:command)
+        endfunction
+
+        cnoreabbrev <expr> q <SID>solely_in_cmd('q') ? 'ConfirmQuit' : 'q'
+        cnoreabbrev <expr> qa <SID>solely_in_cmd('qa') ? 'ConfirmQuitAll' : 'qa'
+        cnoreabbrev <expr> qq <SID>solely_in_cmd('qq') ? 'quit' : 'qq'
+        cnoreabbrev <expr> wq <SID>solely_in_cmd('wq') ? 'w <bar> ConfirmQuit' : 'wq'
+        cnoreabbrev <expr> wqa <SID>solely_in_cmd('wqa') ? 'wall <bar> ConfirmQuitAll' : 'wqa'
+      ]])
+    end,
+  },
+
+  -- Better tab scoping
+  {
+    "tiagovla/scope.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  -- Trailspaces and stuff
+  {
+    "echasnovski/mini.trailspace",
+    version = "*",
+    event = { "BufEnter", "BufWinEnter" },
+    opts = {
+      only_in_normal_buffers = true,
+    },
+    config = function(_, opts)
+      require("mini.trailspace").setup(opts)
+      vim.g.remove_trailspaces = true
+
+      function _G.Toggle_trailspaces()
+        if vim.g.remove_trailspaces then
+          vim.notify("Disabling automatic trim of whitespaces")
+          vim.g.remove_trailspaces = false
+        else
+          vim.notify("Enabling automatic trim of whitespaces")
+          vim.g.remove_trailspaces = true
+        end
+      end
+
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>cw",
+        ":lua Toggle_trailspaces()<CR>",
+        { noremap = true, desc = "Toggle Trailspaces" }
+      )
+
+      local group = vim.api.nvim_create_augroup("TrimWhitespaces", { clear = true })
+      vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+        group = group,
+        pattern = "*",
+        callback = function()
+          if vim.g.remove_trailspaces and vim.bo.buftype == "" then
+            ---@diagnostic disable-next-line: undefined-global
+            MiniTrailspace.trim()
+          end
+        end,
+      })
+    end,
+  },
+
+  -- Autopairs
+  {
+    "echasnovski/mini.pairs",
+    version = "*",
+    event = { "BufEnter", "BufWinEnter" },
+    opts = {},
+  },
+
+  -- Move selection
+  {
+    "echasnovski/mini.move",
+    version = "*",
+    event = { "BufEnter", "BufWinEnter" },
+    opts = {},
   },
 }

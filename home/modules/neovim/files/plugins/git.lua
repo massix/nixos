@@ -6,7 +6,7 @@ local spec = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
-      { "sindrets/diffview.nvim", lazy = false, },
+      { "sindrets/diffview.nvim", lazy = false },
       { "ibhagwan/fzf-lua", lazy = false },
     },
     opts = {
@@ -20,8 +20,8 @@ local spec = {
       graph_style = "unicode",
       signs = {
         hunk = { "", "" },
-        item = { " ", " " },
-        section = { " ", " " },
+        item = { " ", " " },
+        section = { " ", " " },
       },
       integrations = {
         telescope = true,
