@@ -94,6 +94,9 @@ return {
         preview = true,
         width_preview = 30,
       },
+      options = {
+        use_as_default_explorer = false,
+      },
     },
     keys = {
       {
@@ -118,6 +121,8 @@ return {
       })
     end,
     opts = {
+      default_file_explorer = true,
+      constrain_cursor = "name",
       columns = {
         "icon",
         "permissions",
