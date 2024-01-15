@@ -29,7 +29,7 @@ require("lazy").setup({
   },
 
   ui = {
-    border = "double",
+    border = "rounded",
   },
 
   -- Install a colorscheme
@@ -45,7 +45,6 @@ require("lazy").setup({
         "gzip",
         "matchit",
         "matchparen",
-        "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",

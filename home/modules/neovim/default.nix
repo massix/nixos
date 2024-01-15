@@ -95,7 +95,7 @@ in
 
           table.insert(bundles, vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft*.java"))
           vim.list_extend(
-            bundles, 
+            bundles,
             vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
           )
 
@@ -114,7 +114,7 @@ in
 
         "${util}/defaults.lua".source = ./files/util/defaults.lua;
 
-        # Init and start-up options 
+        # Init and start-up options
         "${nvimHome}/init.lua".source = ./files/init.lua;
         "${config}/options.lua".source = ./files/config/options.lua;
         "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
