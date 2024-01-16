@@ -89,13 +89,14 @@ return {
   {
     "echasnovski/mini.files",
     version = "*",
+    event = "VeryLazy",
     opts = {
       windows = {
         preview = true,
         width_preview = 30,
       },
       options = {
-        use_as_default_explorer = false,
+        use_as_default_explorer = true,
       },
     },
     keys = {
@@ -121,7 +122,7 @@ return {
       })
     end,
     opts = {
-      default_file_explorer = true,
+      default_file_explorer = false,
       constrain_cursor = "name",
       columns = {
         "icon",

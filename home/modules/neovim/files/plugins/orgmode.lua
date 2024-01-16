@@ -185,4 +185,14 @@ return {
       vim.api.nvim_set_keymap( "n", "<leader>Iv", ":lua Toggle_Venn()<CR>", { noremap = true, desc = "Toggle Venn Mode" })
     end,
   },
+
+  -- orgwiki
+  {
+    "ranjithshegde/orgWiki.nvim",
+    ft = { "org" },
+    opts = {
+      wiki_path = { "~/org/knowledge/azure/" },
+      diary_path = "~/org/diary/",
+    },
+  },
 }
