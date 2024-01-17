@@ -50,6 +50,8 @@ in
         unstable = true;
         extraShellAbbrs = {
           j = "just";
+          tf = "terraform";
+          g = "git";
         };
       };
     };

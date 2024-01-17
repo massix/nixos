@@ -81,8 +81,8 @@ in
             src = fetchFromGitHub {
               repo = "tide";
               owner = "ilancosman";
-              rev = "51b0f37307c7bcfa38089c2eddaad0bbb2e20c64";
-              hash = "sha256-cCI1FDpvajt1vVPUd/WvsjX/6BJm6X1yFPjqohmo1rI=";
+              rev = "v6.1.1";
+              hash = "sha256-ZyEk/WoxdX5Fr2kXRERQS1U1QHH3oVSyBQvlwYnEYyc=";
             };
           }
           {
