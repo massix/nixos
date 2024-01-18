@@ -32,47 +32,36 @@ return {
       require("telescope").load_extension("ht")
       require("telescope").load_extension("hoogle")
     end,
+    -- stylua: ignore
     keys = {
       {
         "<leader>cHc",
-        function()
-          vim.lsp.codelens.run()
-        end,
+        function() vim.lsp.codelens.run() end,
         desc = "Refresh Codelens",
       },
       {
         "<leader>cHs",
-        function()
-          require("haskell-tools").hoogle.hoogle_signature()
-        end,
+        function() require("haskell-tools").hoogle.hoogle_signature() end,
         desc = "Hoogle Signature",
       },
       {
         "<leader>cHR",
-        function()
-          require("haskell-tools").repl.toggle()
-        end,
+        function() require("haskell-tools").repl.toggle() end,
         desc = "Toggle REPL for current package",
       },
       {
         "<leader>cHr",
-        function()
-          require("haskell-tools").repl.toggle(vim.api.nvim_buf_get_name(0))
-        end,
+        function() require("haskell-tools").repl.toggle(vim.api.nvim_buf_get_name(0)) end,
         desc = "Toggle REPL for current buffer",
       },
       {
         "<leader>cHq",
-        function()
-          require("haskell-tools").repl.quit()
-        end,
+        function() require("haskell-tools").repl.quit() end,
         desc = "Quit REPL",
       },
       {
         "<leader>cHe",
-        function()
-          require("haskell-tools").lsp.buf_eval_all()
-        end,
+        function() require("haskell-tools").lsp.buf_eval_all() end,
         desc = "Evaluate snippet",
       },
     },
