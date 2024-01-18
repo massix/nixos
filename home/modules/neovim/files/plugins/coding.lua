@@ -414,7 +414,6 @@ return {
           { name = "path" },
         }),
       })
-
     end,
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -437,7 +436,7 @@ return {
           docs_auto_open = true,
           docs = {
             auto_open = true,
-          }
+          },
         },
         snippet = {
           expand = function(args)
@@ -464,7 +463,7 @@ return {
         }, {
           { name = "codeium" },
           { name = "buffer" },
-          { name = "conventionalcommits", },
+          { name = "conventionalcommits" },
         }),
 
         preselect = cmp.PreselectMode.None,
