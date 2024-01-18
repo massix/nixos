@@ -1,5 +1,3 @@
-local api = vim.api
-
 local spec = {
   {
     "NeogitOrg/neogit",

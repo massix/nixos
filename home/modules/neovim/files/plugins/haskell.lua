@@ -8,23 +8,22 @@ return {
     },
     lazy = true,
     ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
-    version = "^3",
-    init = function()
-      vim.g.haskell_tools = {
-        tools = {
-          codeLens = { autoRefresh = true },
-          hoogle = { mode = "telescope-local" },
-          hover = { enable = true },
-          definition = { hoogle_signature_fallback = true },
-          repl = { handler = "toggleterm" },
-        },
-        dap = {
-          cmd = { "haskell-debug-adapter", "--hackage-version=0.0.33.0" },
-          auto_discover = true,
-        },
-      }
-    end,
-    config = function()
+    opts = {
+      tools = {
+        codeLens = { autoRefresh = true },
+        hoogle = { mode = "telescope-local" },
+        hover = { enable = true },
+        definition = { hoogle_signature_fallback = true },
+        repl = { handler = "toggleterm" },
+      },
+      dap = {
+        cmd = { "haskell-debug-adapter --hackage-version=0.0.33.0" },
+        auto_discover = true,
+      },
+    },
+    config = function(_, opts)
+      vim.g.haskell_tools = opts
+
       local wk = require("which-key")
       wk.register({
         ["<leader>cH"] = { name = "+haskell" },
