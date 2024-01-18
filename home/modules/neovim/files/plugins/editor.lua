@@ -534,6 +534,7 @@ return {
     "3rd/image.nvim",
     lazy = false,
     event = "VeryLazy",
+    enabled = false, -- too many issues for now :(
     opts = {
       backend = "kitty",
       integrations = {
