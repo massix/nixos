@@ -130,6 +130,7 @@ in
         codeium-ls /* language server for codeium */
         gitlint /* linter for git commit messages */
         hadolint /* linter for Dockerfiles */
+        marksman /* language server for markdown */
       ];
     in
     {

@@ -307,6 +307,10 @@ return {
         capabilities = capabilities,
       })
 
+      lspconfig.marksman.setup({
+        capabilities = capabilities,
+      })
+
       -- If there are both yamlls and helm_ls, then detach yamlls
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "helm",
