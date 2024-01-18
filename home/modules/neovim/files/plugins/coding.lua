@@ -389,14 +389,16 @@ return {
       { "hrsh7th/cmp-cmdline" },
       { "hrsh7th/cmp-nvim-lsp-document-symbol" },
       { "hrsh7th/cmp-nvim-lsp-signature-help" },
+      { "JMarkin/cmp-diag-codes" },
+      { "davidsierradz/cmp-conventionalcommits" },
       { "L3MON4D3/LuaSnip" },
     },
     config = function(_, opts)
       local cmp = require("cmp")
       cmp.setup(opts)
 
-      -- cmdline
-      cmp.setup.cmdline("/", {
+      -- search
+      cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "nvim_lsp_document_symbol" },
@@ -404,13 +406,15 @@ return {
         }),
       })
 
+      -- cmdline
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
-          { name = "path" },
           { name = "cmdline" },
+          { name = "path" },
         }),
       })
+
     end,
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -420,8 +424,10 @@ return {
       local defaults = require("cmp.config.default")()
 
       return {
+        enabled = true,
         completion = {
-          completeopt = "menu,menuone,noinsert,noselect",
+          completeopt = "menuone,noinsert,noselect,preview",
+          keyword_length = 1,
         },
         window = {
           completion = cmp.config.window.bordered(),
@@ -429,6 +435,9 @@ return {
         },
         view = {
           docs_auto_open = true,
+          docs = {
+            auto_open = true,
+          }
         },
         snippet = {
           expand = function(args)
@@ -451,11 +460,16 @@ return {
           { name = "mkdnflow" },
           { name = "orgmode" },
           { name = "path" },
+          { name = "diag-codes", option = { in_comment = true } },
+        }, {
           { name = "codeium" },
           { name = "buffer" },
+          { name = "conventionalcommits", },
         }),
+
         preselect = cmp.PreselectMode.None,
         formatting = {
+          expandable_indicator = true,
           format = function(_, item)
             local icons = util_defaults.icons.kinds
             if icons[item.kind] then
@@ -463,6 +477,12 @@ return {
             end
             return item
           end,
+        },
+        matching = {
+          disallow_fuzzy_matching = false,
+          disallow_fullfuzzy_matching = false,
+          disallow_partial_matching = false,
+          disallow_prefix_unmatching = false,
         },
         experimental = {
           ghost_text = {
