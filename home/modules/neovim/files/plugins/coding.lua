@@ -42,6 +42,7 @@ return {
         "bash",
         "dhall",
         "dockerfile",
+        "elisp",
         "elvish",
         "fish",
         "haskell",
@@ -93,6 +94,20 @@ return {
           return true
         end, opts.ensure_installed)
       end
+
+      -- Add elisp grammar
+      ---@diagnostic disable-next-line: inject-field
+      require("nvim-treesitter.parsers").get_parser_configs().elisp = {
+        install_info = {
+          url = "https://github.com/Wilfred/tree-sitter-elisp",
+          files = { "src/parser.c" },
+          branch = "main",
+          generate_requires_npm = false,
+          requires_generate_from_grammar = false,
+        },
+        filetype = "elisp",
+      }
+
       -- require("tree-sitter-just").setup({})
       require("nvim-treesitter.configs").setup(opts)
 
