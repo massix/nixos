@@ -66,6 +66,7 @@ return {
         "regex",
         "rust",
         "terraform",
+        "toml",
         "typescript",
         "vim",
         "yaml",
