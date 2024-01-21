@@ -21,6 +21,7 @@ in
           proggyfonts
           monaspace
           meslo-lg
+          ibm-plex
         ];
       };
     };
@@ -184,14 +185,14 @@ in
 
       # -> == <- >>= =<< != >= <=
       font = {
-        name = "Monaspace Neon";
+        name = "IBM Plex Mono";
         size = 10;
       };
 
       settings = {
-        italic_font = "Monaspace Neon";
-        bold_italic_font = "Monaspace Neon";
-        bold_font = "Monaspace Neon";
+        italic_font = "IBM Plex Mono";
+        bold_italic_font = "IBM Plex Mono";
+        bold_font = "IBM Plex Mono";
 
         cursor_shape = "beam";
         cursor_beam_thickness = "2.0";
