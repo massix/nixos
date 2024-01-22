@@ -66,7 +66,7 @@
       overlays = [
         (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
         (_final: _prev: {
-          inherit (mypkgs) lombok codeium-ls vscode-js-debug;
+          inherit (mypkgs) lombok codeium-ls vscode-js-debug spotube;
         })
         nix-direnv.overlays.default
         purescript-overlay.overlays.default

@@ -251,7 +251,9 @@ in
 
         # Only for Teams PWA
         google-chrome
-        libsForQt5.kdenlive
+
+        spotify
+        spotube
 
         # TODO: make a module out of this
         emacs-unstable
