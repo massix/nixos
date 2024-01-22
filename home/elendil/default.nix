@@ -186,7 +186,7 @@ in
       # -> == <- >>= =<< != >= <=
       font = {
         name = "IBM Plex Mono";
-        size = 10;
+        size = 9;
       };
 
       settings = {
