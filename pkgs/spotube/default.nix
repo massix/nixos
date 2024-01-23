@@ -4,39 +4,40 @@ let
   version = "3.4.0";
 
   src = pkgs.fetchurl {
-    url = "https://github.com/KRTirtho/spotube/releases/download/v3.4.0/spotube-linux-${version}-x86_64.tar.xz";
+    url = "https://github.com/KRTirtho/spotube/releases/download/v${version}/spotube-linux-${version}-x86_64.tar.xz";
     name = "spotube-linux-${version}-x86_64.tar.xz";
     sha256 = "sha256-vTK3aWM1Aly3yCNEpQS0y+4dHTjsn2VWJAI9Sk518rg=";
   };
+
+  buildInputs = with pkgs; [
+    atk
+    cairo
+    ffmpeg_4
+    fontconfig
+    gdk-pixbuf
+    glib
+    gtk3
+    harfbuzz
+    jsoncpp
+    libappindicator-gtk3
+    libass
+    libdbusmenu-gtk3
+    libepoxy
+    libnotify
+    libsecret
+    mpv
+    pango
+  ];
 in
 stdenv.mkDerivation {
   pname = "spotube";
-  inherit version src;
+  inherit version src buildInputs;
 
   nativeBuildInputs = with pkgs; [
     makeWrapper
     patchelf
+    stdenv.cc.cc.lib
     wrapGAppsHook
-  ];
-
-  buildInputs = with pkgs; [
-    mpv-unwrapped
-    libappindicator-gtk3
-    libsecret
-    jsoncpp
-    libnotify
-    libass
-    gtk3
-    glib
-    cairo
-    pango
-    ffmpeg_4
-    harfbuzz
-    atk
-    libepoxy
-    gdk-pixbuf
-    libdbusmenu-gtk3
-    fontconfig
   ];
 
   unpackPhase = ''
@@ -58,31 +59,16 @@ stdenv.mkDerivation {
   '';
 
   postFixup = ''
-    patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" $out/dist/spotube
+    patchelf \
+      --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+      --set-rpath ${lib.makeLibraryPath [ stdenv.cc.cc ]} \
+      $out/dist/spotube
     makeWrapper $out/dist/spotube $out/bin/spotube \
-      --set LD_LIBRARY_PATH ${lib.makeLibraryPath [
-        pkgs.jsoncpp
-        pkgs.libnotify
-        pkgs.libass
-        pkgs.pango
-        pkgs.cairo
-        pkgs.mpv-unwrapped
-        pkgs.glib
-        pkgs.gtk3
-        pkgs.ffmpeg_4
-        pkgs.libsecret
-        pkgs.libappindicator-gtk3
-        pkgs.harfbuzz
-        pkgs.atk
-        pkgs.libepoxy
-        pkgs.gdk-pixbuf
-        pkgs.libdbusmenu-gtk3
-        pkgs.fontconfig
-      ]} \
-      --suffix LD_LIBRARY_PATH : "$out/dist/lib" \
-      --prefix LD_LIBRARY_PATH : "${stdenv.cc.cc.lib}/lib"
+      --set LD_LIBRARY_PATH ${lib.makeLibraryPath buildInputs} \
+      --suffix LD_LIBRARY_PATH : $out/dist/lib
   '';
 
   doCheck = false;
+  dontBuild = true;
 }
 
