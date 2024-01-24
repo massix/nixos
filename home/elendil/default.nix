@@ -258,6 +258,8 @@ in
         # TODO: make a module out of this
         emacs-unstable
         emacsPackages.vterm
+
+        gnomeExtensions.gsconnect
       ];
 
       other-packages = [
