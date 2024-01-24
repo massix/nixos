@@ -15,18 +15,19 @@ in
     enable = mkEnDef "Enable coding goodies" false;
     unstable = mkEnDef "Use unstable channel" true;
     languages = {
+      c_sharp = mkEnDef "Enable C# tooling" false;
       haskell = mkEnDef "Enable Haskell tooling" false;
+      java = mkEnDef "Enable Java tooling" false;
+      javascript = mkEnDef "Enable Javascript tooling" false;
+      json = mkEnDef "Enable JSON tooling" false;
+      lua = mkEnDef "Enable LUA tooling" false;
+      misc = mkEnDef "Enable other stuff (git, docker, ...)" false;
+      nix = mkEnDef "Enable Nix tooling" false;
       purescript = mkEnDef "Enable Purescript tooling" false;
       racket = mkEnDef "Enable racket tooling" false;
-      nix = mkEnDef "Enable Nix tooling" false;
-      terraform = mkEnDef "Enable Terraform tooling" false;
-      javascript = mkEnDef "Enable Javascript tooling" false;
-      lua = mkEnDef "Enable LUA tooling" false;
       rust = mkEnDef "Enable Rust tooling" false;
-      java = mkEnDef "Enable Java tooling" false;
-      json = mkEnDef "Enable JSON tooling" false;
+      terraform = mkEnDef "Enable Terraform tooling" false;
       yaml = mkEnDef "Enable YAML tooling" false;
-      misc = mkEnDef "Enable other stuff (git, docker, ...)" false;
     };
   };
 
@@ -38,6 +39,10 @@ in
         gcc
         wl-clipboard
         nodejs
+      ];
+
+      c_sharpTooling = with channel; [
+        omnisharp-roslyn
       ];
 
       haskellTooling = with channel; [
@@ -136,6 +141,7 @@ in
     {
       home.packages =
         baseTooling ++
+        (whenT cfg.languages.c_sharp c_sharpTooling) ++
         (whenT cfg.languages.haskell haskellTooling) ++
         (whenT cfg.languages.purescript purescriptTooling) ++
         (whenT cfg.languages.racket racketTooling) ++

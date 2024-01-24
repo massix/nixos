@@ -40,6 +40,7 @@ return {
       indent = { enable = true },
       ensure_installed = {
         "bash",
+        "c_sharp",
         "dhall",
         "dockerfile",
         "elisp",
@@ -325,6 +326,14 @@ return {
 
       lspconfig.marksman.setup({
         capabilities = capabilities,
+      })
+
+      lspconfig.omnisharp.setup({
+        cmd = { "OmniSharp" },
+        capabilities = capabilities,
+        enable_roslyn_analyzers = true,
+        organize_imports_on_format = true,
+        enable_import_completion = true,
       })
 
       -- If there are both yamlls and helm_ls, then detach yamlls

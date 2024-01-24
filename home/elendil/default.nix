@@ -30,18 +30,19 @@ in
       enable = true;
       unstable = true;
       languages = {
+        c_sharp = true;
         haskell = true;
-        purescript = true;
-        racket = true;
-        nix = true;
-        terraform = true;
         javascript = true;
-        lua = true;
-        rust = true;
         java = true;
         json = true;
-        yaml = true;
+        lua = true;
         misc = true;
+        nix = true;
+        purescript = true;
+        racket = true;
+        rust = true;
+        terraform = true;
+        yaml = true;
       };
     };
 
