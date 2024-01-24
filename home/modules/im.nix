@@ -16,6 +16,8 @@ in
       in
       with channel; [
         webcord
+        whatsapp-for-linux
+        telegram-desktop
       ];
   };
 }
