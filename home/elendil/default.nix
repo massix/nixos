@@ -22,6 +22,7 @@ in
           monaspace
           meslo-lg
           ibm-plex
+          recursive
         ];
       };
     };
@@ -186,15 +187,11 @@ in
 
       # -> == <- >>= =<< != >= <=
       font = {
-        name = "IBM Plex Mono";
+        name = "Rec Mono Casual";
         size = 9;
       };
 
       settings = {
-        italic_font = "IBM Plex Mono";
-        bold_italic_font = "IBM Plex Mono";
-        bold_font = "IBM Plex Mono";
-
         cursor_shape = "beam";
         cursor_beam_thickness = "2.0";
         scrollback_lines = 10000;
