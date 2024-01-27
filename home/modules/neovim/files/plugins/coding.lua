@@ -338,25 +338,31 @@ return {
       })
 
       lspconfig.omnisharp.setup({
-        cmd = {
-          "OmniSharp",
-          "--languageserver",
-          "--hostPID",
-          tostring(vim.fn.getpid()),
-        },
-        -- Do not forgwt to set in omnisharp.json
-        -- {
-        --     "RoslynExtensionsOptions": {
-        --   "enableDecompilationSupport": true
-        --   }
-        -- }
+        cmd = { "OmniSharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
         handlers = {
-          [ "textDocument/definition" ] = require("omnisharp_extended").handlwr
+          ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
-        capabilities = capabilities,
+        -- capabilities = capabilities,
         enable_roslyn_analyzers = true,
         organize_imports_on_format = true,
         enable_import_completion = true,
+        enable_editorconfig_support = true,
+      })
+
+      -- When using C# the Lspsaga go_to_definitions does not work, we have to rely on omnisharp_extended
+      local c_sharp_group = vim.api.nvim_create_augroup("CSharp", { clear = true })
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = "cs",
+        group = c_sharp_group,
+        callback = function()
+          vim.api.nvim_buf_set_keymap(
+            0,
+            "n",
+            "gD",
+            "<cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<CR>",
+            { desc = "C# Goto definition" }
+          )
+        end,
       })
 
       -- If there are both yamlls and helm_ls, then detach yamlls

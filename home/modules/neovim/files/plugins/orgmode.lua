@@ -9,12 +9,6 @@ return {
       { "nvim-treesitter/nvim-treesitter" },
       { "akinsho/org-bullets.nvim", config = true, lazy = false },
       {
-        "lukas-reineke/headlines.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-        lazy = false,
-        event = "VeryLazy",
-      },
-      {
         "lyz-code/telescope-orgmode.nvim",
         config = function()
           require("telescope").load_extension("orgmode")
@@ -49,6 +43,7 @@ return {
         "NEXT(n)",
         "PROGRESS(p)",
         "WAITING(w)",
+        "MEET(m)",
         "|",
         "DONE(d)",
         "CANCELLED(c)",
@@ -78,10 +73,10 @@ return {
           headline = "Notes",
           target = "~/org/refile.org",
         },
-        m = {
-          description = "Meeting minutes",
-          template = "* %<%Y-%m-%d> %?\n%u\n** Participants\n** Topics",
-          headline = "Meetings",
+        c = {
+          description = "Work calendar entry",
+          template = "* MEET %?\nSCHEDULED: %T\n",
+          headline = "Calendar",
           target = "~/org/work.org",
         },
       },
@@ -91,6 +86,16 @@ return {
           org_forward_heading_same_level = "<leader>]",
           org_backward_heading_same_level = "<leader>[",
         },
+      },
+      notifications = {
+        enabled = true,
+        cron_enabled = false,
+        reminder_time = { 15, 10, 5, 0 },
+      },
+      org_todo_keyword_faces = {
+        WAITING = ":foreground #ffee93",
+        MEET = ":foreground #fce1e4 :weight bold :underline on",
+        NEXT = ":foreground #d4afb9",
       },
     },
   },

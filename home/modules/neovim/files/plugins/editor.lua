@@ -767,10 +767,10 @@ return {
 
       function _G.Toggle_trailspaces()
         if vim.g.remove_trailspaces then
-          vim.notify("Disabling automatic trim of whitespaces")
+          vim.notify("Disabling automatic trim of whitespaces", vim.log.levels.INFO)
           vim.g.remove_trailspaces = false
         else
-          vim.notify("Enabling automatic trim of whitespaces")
+          vim.notify("Enabling automatic trim of whitespaces", vim.log.levels.INFO)
           vim.g.remove_trailspaces = true
         end
       end
@@ -778,7 +778,7 @@ return {
       vim.api.nvim_set_keymap(
         "n",
         "<leader>cw",
-        ":lua Toggle_trailspaces()<CR>",
+        "<cmd>lua Toggle_trailspaces()<CR>",
         { noremap = true, desc = "Toggle Trailspaces" }
       )
 
@@ -810,5 +810,26 @@ return {
     version = "*",
     event = { "BufEnter", "BufWinEnter" },
     opts = {},
+  },
+
+  -- Headlines
+  {
+    "lukas-reineke/headlines.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    ft = { "org", "norg", "markdown" },
+    opts = {
+      markdown = {
+        fat_headlines = false,
+      },
+      org = {
+        fat_headlines = false,
+      },
+      norg = {
+        fat_headlines = false,
+      },
+      rmd = {
+        fat_headlines = false,
+      },
+    },
   },
 }
