@@ -249,6 +249,15 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "LspInfo" },
+    dependencies = {
+      -- Similar to .vscode things
+      { "folke/neoconf.nvim" },
+      { "folke/neodev.nvim" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "b0o/schemastore.nvim" },
+      { "towolf/vim-helm" },
+      { "Hoffs/omnisharp-extended-lsp.nvim" },
+    },
     config = function()
       -- Make sure we load neoconf and neodev before configuring the lsp
       require("neoconf").setup()
@@ -329,7 +338,21 @@ return {
       })
 
       lspconfig.omnisharp.setup({
-        cmd = { "OmniSharp" },
+        cmd = {
+          "OmniSharp",
+          "--languageserver",
+          "--hostPID",
+          tostring(vim.fn.getpid()),
+        },
+        -- Do not forgwt to set in omnisharp.json
+        -- {
+        --     "RoslynExtensionsOptions": {
+        --   "enableDecompilationSupport": true
+        --   }
+        -- }
+        handlers = {
+          [ "textDocument/definition" ] = require("omnisharp_extended").handlwr
+        },
         capabilities = capabilities,
         enable_roslyn_analyzers = true,
         organize_imports_on_format = true,
@@ -351,16 +374,6 @@ return {
         end,
       })
     end,
-    dependencies = {
-      -- Similar to .vscode things
-      { "folke/neoconf.nvim" },
-      { "folke/neodev.nvim" },
-
-      -- Completion engine for lsp
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "b0o/schemastore.nvim" },
-      { "towolf/vim-helm" },
-    },
   },
 
   -- Snippet engine
