@@ -85,29 +85,23 @@ return {
     },
   },
 
-  -- Mini.files
+  -- Triptych is a file browser inspired by ranger
   {
-    "echasnovski/mini.files",
-    version = "*",
-    event = "VeryLazy",
+    "simonmclean/triptych.nvim",
+    cmd = { "Triptych" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
     opts = {
-      windows = {
-        preview = true,
-        width_preview = 30,
-      },
       options = {
-        use_as_default_explorer = true,
+        line_numbers = {
+          enabled = false,
+        },
       },
     },
     keys = {
-      {
-        "<leader>fo",
-        function()
-          ---@diagnostic disable-next-line: undefined-global
-          MiniFiles.open()
-        end,
-        desc = "Open Files",
-      },
+      { "<leader>fo", "<cmd>Triptych<cr>", desc = "Triptych file browser" },
     },
   },
 
@@ -142,7 +136,6 @@ return {
     "nvim-telescope/telescope.nvim",
     event = "VeryLazy",
     cmd = "Telescope",
-
     dependencies = {
       "nvim-lua/plenary.nvim",
       "BurntSushi/ripgrep",
@@ -164,7 +157,7 @@ return {
 
       -- git
       { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+      { "<leader>gS", "<cmd>Telescope git_status<CR>", desc = "status" },
 
       -- search
       { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
@@ -252,7 +245,7 @@ return {
       end
 
       return {
-        defaults = {
+        defaults = vim.tbl_extend("force", require("telescope.themes").get_ivy(), {
           prompt_prefix = " ",
           selection_caret = " ",
           mappings = {
@@ -270,7 +263,7 @@ return {
               ["q"] = actions.close,
             },
           },
-        },
+        }),
       }
     end,
   },

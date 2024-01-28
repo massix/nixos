@@ -547,7 +547,7 @@ return {
       },
       code_action = {
         show_server_name = true,
-        extend_gitsigns = true,
+        extend_gitsigns = false,
       },
       lightbulb = {
         virtual_text = true,
@@ -570,9 +570,11 @@ return {
       { "<leader>cgD", "<cmd>Lspsaga goto_definition<cr>", desc = "Goto definition" },
       { "<leader>cpd", "<cmd>Lspsaga peek_type_definition<cr>", desc = "Peek type definition" },
       { "<leader>cgd", "<cmd>Lspsaga goto_type_definition<cr>", desc = "Goto type definition" },
+
       { "<leader>cf", "<cmd>Lspsaga finder<cr>", desc = "See references/implementations" },
       { "<leader>ch", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
       { "<leader>ca", "<cmd>Lspsaga code_action<cr>", desc = "Code action" },
+      { "<leader>cr", "<cmd>Lspsaga rename<cr>", desc = "LSP Rename" },
 
       -- goto things
       { "gpD", "<cmd>Lspsaga peek_definition<cr>", desc = "Peek definition" },
@@ -583,9 +585,13 @@ return {
       -- Misc
       { "K", "<cmd>Lspsaga hover_doc<cr>", desc = "Hover" },
 
-      -- Diagnostics Quickjumps
+      -- Diagnostics
       { "<leader>cdp", "<cmd>Lspsaga diagnostic_jump_prev<cr>", desc = "Previous diagnostic" },
       { "<leader>cdn", "<cmd>Lspsaga diagnostic_jump_next<cr>", desc = "Next diagnostic" },
+      { "<leader>cdw", "<cmd>Lspsaga show_workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
+      { "<leader>cdb", "<cmd>Lspsaga show_buf_diagnostics<cr>", desc = "Buffer diagnostics" },
+      { "<leader>cdl", "<cmd>Lspsaga show_line_diagnostics<cr>", desc = "Line diagnostics" },
+      { "<leader>cdc", "<cmd>Lspsaga show_cursor_diagnostics<cr>", desc = "Line diagnostics" },
     },
     init = function()
       local wk = require("which-key")

@@ -42,17 +42,26 @@ local spec = {
     "lewis6991/gitsigns.nvim",
     opts = {
       current_line_blame = true,
-      current_line_blame_opts = {
-        delay = 500,
-      },
-      current_line_blame_formatter_opts = {
-        relative_time = true,
-      },
     },
     event = { "BufReadPre", "BufNewFile" },
     keys = {
-      { "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle Git blame" },
+      {
+        "<leader>gB",
+        "<cmd>Gitsigns toggle_current_line_blame<cr>",
+        desc = "Toggle Git blame",
+      },
+      { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview Hunk" },
+      { "<leader>gP", "<cmd>Gitsigns preview_hunk_inline<cr>", desc = "Preview Hunk (inline)" },
+      { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk" },
+      { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Stage Hunk" },
     },
+  },
+
+  -- Easily copy shareable links for different platforms
+  {
+    "linrongbin16/gitlinker.nvim",
+    cmd = { "GitLink" },
+    opts = {},
   },
 }
 

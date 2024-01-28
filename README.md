@@ -2,6 +2,21 @@
 
 # Massi's NixOS Configuration
 
+<!--toc:start-->
+- [Massi's NixOS Configuration](#massis-nixos-configuration)
+  - [Elendil's Configuration](#elendils-configuration)
+  - [Coravandil's Configuration](#coravandils-configuration)
+  - [Users](#users)
+  - [Home Manager Modules](#home-manager-modules)
+    - [Base](#base)
+    - [Fish](#fish)
+    - [Fonts](#fonts)
+    - [Helix](#helix)
+    - [IM](#im)
+    - [Coding](#coding)
+    - [NeoVim](#neovim)
+<!--toc:end-->
+
 Welcome to my personal NixOS configuration.  This repository has been made mostly
 for testing out what NixOS can do and see how I can leverage on the paradigm of
 immutable systems in order to build the _perfect_ configuration (at least for my own needs).
@@ -35,7 +50,6 @@ Two users are currently configured: `massi@elendil` and `massi@coravandil`. Sinc
 the two users share most of the things, I created reusable home-manager modules
 to easily configure them.
 
-
 ## Home Manager Modules
 I have created multiple modules for the users.
 
@@ -56,7 +70,32 @@ the fontconfig.
 This is the module for the `helix` editor.
 
 ### IM
-A module that simply installs `whatsapp`, `telegram` and `discord`
+A module that simply installs `whatsapp`, `telegram` and `discord`. In the future I
+will most probably add some serious email client, since the GNOME's integrated
+one isn't **that** useful.
+
+### Coding
+Adds a lot of useful stuff for developers, like language servers, linters,
+formatters and such. This stuff is mostly then re-used by the [NeoVim](#neovim) module
+to provide *Intellisense*, automatic formatting, integration with LSPs, etc.
+For now, the following languages are supported:
+  * C#
+  * Haskell
+  * Java
+  * Javascript (and Typescript)
+  * Json/Yaml via VSCode's LSP
+  * Lua
+  * Nix
+  * Purescript
+  * Racket
+  * Rust
+  * Terraform
+
+On top of that, some other useful LSPs are installed:
+  * Dockerfile Language Server
+  * Helm Language Server
+  * Codeium AI Language Server
+  * Marksman for Markdown editing
 
 ### NeoVim
 This is the most complex and unstable module I wrote, the idea was to port my
@@ -64,3 +103,4 @@ whole nvim configuration (which was quite old since I switched to VSCode) to
 the Nix ecosystem, make it immutable and such. It is kinda working right now,
 there are still a couple of bugs that I have to fix but it can be used for Java
 development without any issues.
+
