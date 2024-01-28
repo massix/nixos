@@ -172,7 +172,7 @@ return {
       -- Do not resize `nofile' buffers
       local group = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
       local ignore_buftypes = { "nofile", "terminal", "prompt", "popup" }
-      local ignore_filetypes = { "OverseerList" }
+      local ignore_filetypes = { "OverseerList", "sagaoutline" }
       vim.api.nvim_create_autocmd("WinEnter", {
         group = group,
         callback = function(_)

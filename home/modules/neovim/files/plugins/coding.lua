@@ -555,6 +555,7 @@ return {
       outline = {
         win_position = "left",
         close_after_jump = true,
+        auto_preview = false,
       },
       finder = {
         default = "ref+def+impl",
