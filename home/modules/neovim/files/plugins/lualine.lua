@@ -110,6 +110,14 @@ return {
               end,
               icon = ' ',
             },
+            -- Get current nix shell
+            {
+              function()
+                return vim.env.IN_NIX_SHELL
+              end,
+              cond = function() return vim.env.IN_NIX_SHELL ~= nil end,
+              icon = ' ',
+            },
             { "branch" },
             {
               -- FIXME: this can be done in a better way probably
