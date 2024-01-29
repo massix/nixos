@@ -44,17 +44,23 @@ local spec = {
       current_line_blame = true,
     },
     event = { "BufReadPre", "BufNewFile" },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        [ "<leader>g" ] = { mode = "v", name = "+git" },
+      })
+    end,
     keys = {
       {
         "<leader>gB",
         "<cmd>Gitsigns toggle_current_line_blame<cr>",
         desc = "Toggle Git blame",
       },
-      { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview Hunk" },
-      { "<leader>gP", "<cmd>Gitsigns preview_hunk_inline<cr>", desc = "Preview Hunk (inline)" },
-      { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk" },
-      { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Stage Hunk" },
-      { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset Hunk" },
+      { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview hunk" },
+      { "<leader>gP", "<cmd>Gitsigns preview_hunk_inline<cr>", desc = "Preview hunk (inline)" },
+      { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage hunk", mode = { "n", "v" } },
+      { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Undo stage Hunk" },
+      { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset hunk", mode = { "n", "v" } },
     },
   },
 
