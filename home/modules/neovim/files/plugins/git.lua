@@ -54,6 +54,7 @@ local spec = {
       { "<leader>gP", "<cmd>Gitsigns preview_hunk_inline<cr>", desc = "Preview Hunk (inline)" },
       { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage Hunk" },
       { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Stage Hunk" },
+      { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset Hunk" },
     },
   },
 
