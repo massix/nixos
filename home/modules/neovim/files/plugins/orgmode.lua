@@ -2,7 +2,8 @@ local util = require("util.nix")
 
 return {
   {
-    "nvim-orgmode/orgmode",
+    "massix/orgmode",
+    branch = "feat/repeat_to_state",
     enabled = true,
     event = "VeryLazy",
     dependencies = {
@@ -165,7 +166,7 @@ return {
       -- FIXME: probably not the best solution
       function _G.Toggle_Venn()
         if vim.g.venn_enabled == false then
-          vim.notify("Enabling Venn mode")
+          vim.notify("Enabling Venn mode", vim.log.levels.INFO)
           vim.g.venn_enabled = true
 
           vim.opt_local.virtualedit = "all"
@@ -175,7 +176,7 @@ return {
           vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", { noremap = true })
           vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true })
         else
-          vim.notify("Disabling Venn mode")
+          vim.notify("Disabling Venn mode", vim.log.levels.INFO)
           vim.g.venn_enabled = false
 
           vim.opt_local.virtualedit = "none"
@@ -188,7 +189,7 @@ return {
       end
 
       -- stylua: ignore
-      vim.api.nvim_set_keymap( "n", "<leader>Iv", ":lua Toggle_Venn()<CR>", { noremap = true, desc = "Toggle Venn Mode" })
+      vim.api.nvim_set_keymap( "n", "<leader>Iv", "<cmd>lua Toggle_Venn()<CR>", { noremap = true, desc = "Toggle Venn Mode" })
     end,
   },
 }
