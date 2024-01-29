@@ -232,12 +232,21 @@ return {
     },
   },
 
+  -- Direnv support
+  {
+    "direnv/direnv.vim",
+    lazy = false,
+    config = false,
+    init = function()
+      -- Stop spamming! I already have the lualine
+      vim.g.direnv_silent_load = 1
+    end,
+  },
+
   -- Enter nix develop automagically
   {
     "figsoda/nix-develop.nvim",
-    cmd = { "NixDevelop", "NixShell" },
-    lazy = true,
-    ft = { "nix" },
+    opts = {},
     keys = {
       { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
       { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
