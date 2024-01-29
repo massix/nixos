@@ -29,12 +29,39 @@ return {
         options = {
           theme = "auto",
           globalstatus = true,
-          disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+          disabled_filetypes = {
+            statusline = {
+              "dashboard",
+              "alpha"
+            }
+          },
           icons_enabled = true,
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
         },
         sections = {
           lualine_a = {
-            { "mode" },
+            {
+              "mode",
+              fmt = function(str)
+                local conversion = {
+                  [ "normal" ] = "NRM",
+                  [ "insert" ] = "INS",
+                  [ "visual" ] = "VIS",
+                  [ "v-line" ] = "VLN",
+                  [ "v-block" ] = "VBL",
+                  [ "terminal" ] = "TRM",
+                  [ "command" ] = "CMD",
+                  [ "replace" ] = "RPL",
+                }
+
+                if vim.g.venn_enabled then
+                  return "VNN"
+                else
+                  return conversion[str:lower()]
+                end
+              end,
+            },
             {
               function()
                 local status = require("better_escape").waiting
@@ -50,6 +77,39 @@ return {
             },
           },
           lualine_b = {
+            -- Get current LSPs
+            {
+              function()
+                local msg = 'No LSP'
+                local bufnr = vim.api.nvim_get_current_buf()
+                local bufft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+                local clients = {}
+
+                -- filter out null-ls
+                for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+                  if client.name ~= "null-ls" then
+                    table.insert(clients, client)
+                  end
+                end
+
+                if next(clients) == nil then
+                  return msg
+                end
+
+                for _, client in ipairs(clients) do
+                  local filetypes = client.config.filetypes
+                    if filetypes and vim.fn.index(filetypes, bufft) ~= -1 then
+                      local ret = client.name
+                      if #clients > 1 then
+                        ret = ret .. "+"
+                      end
+                      return ret
+                    end
+                end
+                return msg
+              end,
+              icon = ' ',
+            },
             { "branch" },
             {
               -- FIXME: this can be done in a better way probably
