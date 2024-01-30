@@ -172,6 +172,25 @@ return {
 
       dap.adapters.ghc = dap.adapters.haskell
       dap.configurations.haskell = dap.configurations.ghc
+
+      dap.adapters.coreclr = {
+        type = "executable",
+        command = "netcoredbg",
+        args = {"--interpreter=vscode"}
+      }
+
+      dap.adapters.netcoredbg = dap.adapters.coreclr
+
+      dap.configurations.cs = {
+        {
+          type = "coreclr",
+          name = "launch - netcoredbg",
+          request = "launch",
+          program = function()
+              return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+          end,
+        },
+      }
     end,
   },
 }

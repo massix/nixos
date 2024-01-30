@@ -43,6 +43,7 @@ in
 
       c_sharpTooling = with channel; [
         omnisharp-roslyn
+        netcoredbg
       ];
 
       haskellTooling = with channel; [
