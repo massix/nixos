@@ -87,21 +87,18 @@ return {
 
   -- Triptych is a file browser inspired by ranger
   {
-    "simonmclean/triptych.nvim",
-    cmd = { "Triptych" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
+    "echasnovski/mini.files",
+    version = "*",
+    event = "VeryLazy",
     opts = {
-      options = {
-        line_numbers = {
-          enabled = false,
-        },
+      windows = {
+        preview = true,
+        width_preview = 30,
       },
-    },
-    keys = {
-      { "<leader>fo", "<cmd>Triptych<cr>", desc = "Triptych file browser" },
+      use_as_default_explorer = true,
+
+      ---@diagnostic disable-next-line: undefined-global
+      { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files", },
     },
   },
 
