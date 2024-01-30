@@ -4,15 +4,17 @@ return {
     "nvim-neotest/neotest",
     lazy = true,
     dependencies = {
-      { "andy-bell101/neotest-java" },
-      { "rouge8/neotest-rust", lazy = true, config = false },
-      { "mrcjkb/neotest-haskell" },
+      { "andy-bell101/neotest-java", config = function() end, },
+      { "rouge8/neotest-rust", config = function() end, },
+      { "mrcjkb/neotest-haskell", config = function() end, },
+      { "Issafalcon/neotest-dotnet", config = function() end, }
     },
     opts = function()
       return {
         adapters = {
           require("neotest-rust"),
           require("neotest-haskell"),
+          require("neotest-dotnet"),
         },
         output_panel = {
           open = "aboveleft vsplit | resize 15",
