@@ -85,7 +85,7 @@ return {
     },
   },
 
-  -- Triptych is a file browser inspired by ranger
+  -- Mini.files is an excellent file browser
   {
     "echasnovski/mini.files",
     version = "*",
@@ -95,11 +95,15 @@ return {
         preview = true,
         width_preview = 30,
       },
-      use_as_default_explorer = true,
+      options = {
+        use_as_default_explorer = true,
+      }
+    },
 
+    keys = {
       ---@diagnostic disable-next-line: undefined-global
       { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files", },
-    },
+    }
   },
 
   -- Oil
