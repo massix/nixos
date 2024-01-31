@@ -2,18 +2,13 @@ return {
   -- Dressing (better vim ui)
   {
     "stevearc/dressing.nvim",
-    lazy = true,
-    init = function()
-      vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.select(...)
-      end
-
-      vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.input(...)
-      end
-    end,
+    event = "VeryLazy",
+    opts = {
+      select = {
+        backend = { "telescope" },
+        telescope = require("telescope.themes").get_ivy(),
+      },
+    },
   },
 
   -- indent guides for Neovim
