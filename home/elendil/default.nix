@@ -178,7 +178,7 @@ in
     kitty = {
       enable = true;
       package = unstable.kitty;
-      theme = "Catppuccin-Frappe";
+      theme = "Catppuccin-Mocha";
 
       shellIntegration = {
         mode = "enabled";
