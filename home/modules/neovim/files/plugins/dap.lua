@@ -135,7 +135,10 @@ return {
       { "<leader>ds", function() require("dap").session() end, desc = "Session" },
       { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
       { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
-      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, { [ "pwa-node" ] = {"javascript", "typescript"}}) end, desc = "Load Launch JSON" },
+      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, {
+        ["pwa-node"] = {"javascript", "typescript"},
+        ["coreclr"] = {"cs"},
+      }) end, desc = "Load Launch JSON" },
     },
 
     opts = {},
