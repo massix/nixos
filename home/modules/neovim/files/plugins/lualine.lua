@@ -32,12 +32,12 @@ return {
           disabled_filetypes = {
             statusline = {
               "dashboard",
-              "alpha"
-            }
+              "alpha",
+            },
           },
           icons_enabled = true,
-          section_separators = { left = '', right = '' },
-          component_separators = { left = '', right = '' },
+          section_separators = { left = "", right = "" },
+          component_separators = { left = "", right = "" },
         },
         sections = {
           lualine_a = {
@@ -45,14 +45,14 @@ return {
               "mode",
               fmt = function(str)
                 local conversion = {
-                  [ "normal" ] = "NRM",
-                  [ "insert" ] = "INS",
-                  [ "visual" ] = "VIS",
-                  [ "v-line" ] = "VLN",
-                  [ "v-block" ] = "VBL",
-                  [ "terminal" ] = "TRM",
-                  [ "command" ] = "CMD",
-                  [ "replace" ] = "RPL",
+                  ["normal"] = "NRM",
+                  ["insert"] = "INS",
+                  ["visual"] = "VIS",
+                  ["v-line"] = "VLN",
+                  ["v-block"] = "VBL",
+                  ["terminal"] = "TRM",
+                  ["command"] = "CMD",
+                  ["replace"] = "RPL",
                 }
 
                 if vim.g.venn_enabled then
@@ -80,9 +80,9 @@ return {
             -- Get current LSPs
             {
               function()
-                local msg = 'No LSP'
+                local msg = "No LSP"
                 local bufnr = vim.api.nvim_get_current_buf()
-                local bufft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+                local bufft = vim.api.nvim_buf_get_option(bufnr, "filetype")
                 local clients = {}
 
                 -- filter out null-ls
@@ -98,25 +98,27 @@ return {
 
                 for _, client in ipairs(clients) do
                   local filetypes = client.config.filetypes
-                    if filetypes and vim.fn.index(filetypes, bufft) ~= -1 then
-                      local ret = client.name
-                      if #clients > 1 then
-                        ret = ret .. "+"
-                      end
-                      return ret
+                  if filetypes and vim.fn.index(filetypes, bufft) ~= -1 then
+                    local ret = client.name
+                    if #clients > 1 then
+                      ret = ret .. "+"
                     end
+                    return ret
+                  end
                 end
                 return msg
               end,
-              icon = ' ',
+              icon = " ",
             },
             -- Get current nix shell
             {
               function()
                 return vim.env.IN_NIX_SHELL
               end,
-              cond = function() return vim.env.IN_NIX_SHELL ~= nil end,
-              icon = ' ',
+              cond = function()
+                return vim.env.IN_NIX_SHELL ~= nil
+              end,
+              icon = " ",
             },
             { "branch" },
             {

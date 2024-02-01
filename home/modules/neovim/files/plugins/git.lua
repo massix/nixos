@@ -47,7 +47,7 @@ local spec = {
     init = function()
       local wk = require("which-key")
       wk.register({
-        [ "<leader>g" ] = { mode = "v", name = "+git" },
+        ["<leader>g"] = { mode = "v", name = "+git" },
       })
     end,
     keys = {

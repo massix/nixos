@@ -176,7 +176,7 @@ return {
       dap.adapters.coreclr = {
         type = "executable",
         command = "netcoredbg",
-        args = {"--interpreter=vscode"}
+        args = { "--interpreter=vscode" },
       }
 
       dap.adapters.netcoredbg = dap.adapters.coreclr
@@ -187,7 +187,7 @@ return {
           name = "launch - netcoredbg",
           request = "launch",
           program = function()
-              return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+            return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
           end,
         },
       }

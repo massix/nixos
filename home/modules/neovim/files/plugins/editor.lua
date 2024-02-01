@@ -99,13 +99,15 @@ return {
       },
       options = {
         use_as_default_explorer = true,
-      }
+      },
     },
 
+    -- stylua: ignore
     keys = {
       ---@diagnostic disable-next-line: undefined-global
       { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files", },
     }
+,
   },
 
   -- Oil

@@ -4,10 +4,10 @@ return {
     "nvim-neotest/neotest",
     lazy = true,
     dependencies = {
-      { "andy-bell101/neotest-java", config = function() end, },
-      { "rouge8/neotest-rust", config = function() end, },
-      { "mrcjkb/neotest-haskell", config = function() end, },
-      { "Issafalcon/neotest-dotnet", config = function() end, }
+      { "andy-bell101/neotest-java", config = function() end },
+      { "rouge8/neotest-rust", config = function() end },
+      { "mrcjkb/neotest-haskell", config = function() end },
+      { "Issafalcon/neotest-dotnet", config = function() end },
     },
     opts = function()
       return {
