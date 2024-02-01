@@ -398,10 +398,25 @@ return {
   {
     "nvim-pack/nvim-spectre",
     cmd = "Spectre",
-    opts = { open_cmd = "noswapfile vnew" },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>S"] = { name = "+spectre" },
+      })
+    end,
+    opts = {
+      open_cmd = "noswapfile vnew",
+      live_update = true,
+      is_open_target_win = true,
+      is_insert_mode = true,
+      is_block_ui_break = true,
+    },
     -- stylua: ignore
     keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+      { "<leader>So", function() require("spectre").toggle() end, desc = "Toggle Spectre" },
+      { "<leader>Sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search current word", mode = "v" },
+      { "<leader>Sw", function() require("spectre").open_visual() end, desc = "Search current word", mode = "n" },
+      { "<leader>Sp", function() require("spectre").open_file_search({ select_word = true }) end, desc = "Search on current file" },
     },
   },
 
