@@ -1,5 +1,17 @@
 -- Debug adapters for NeoVim
 local nix = require("util.nix")
+local json_transforms = {
+  ["pwa-node"] = { "javascript", "typescript" },
+  ["pwa-chrome"] = { "javascript", "typescript" },
+  ["pwa-msedge"] = { "javascript", "typescript" },
+  ["node-terminal"] = { "javascript", "typescript" },
+  ["pwa-extensionHost"] = { "javascript", "typescript" },
+  ["node"] = { "javascript", "typescript" },
+  ["chrome"] = { "javascript", "typescript" },
+  ["coreclr"] = { "cs" },
+  ["ghc"] = { "haskell" },
+  ["codelldb"] = { "rust", "c", "cpp" },
+}
 
 --- @type LazyPluginSpec[]
 return {
@@ -29,8 +41,6 @@ return {
         },
         opts = {},
         config = function(_, opts)
-          -- setup dap config by VsCode launch.json file
-          require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "javascript", "typescript" } })
           local dap = require("dap")
           local dapui = require("dapui")
           dapui.setup(opts)
@@ -135,10 +145,7 @@ return {
       { "<leader>ds", function() require("dap").session() end, desc = "Session" },
       { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
       { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
-      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, {
-        ["pwa-node"] = {"javascript", "typescript"},
-        ["coreclr"] = {"cs"},
-      }) end, desc = "Load Launch JSON" },
+      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, json_transforms) end, desc = "Load Launch JSON" },
     },
 
     opts = {},
@@ -148,6 +155,9 @@ return {
 
       local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
       local dap = require("dap")
+      --
+      -- setup dap config by VsCode launch.json file
+      require("dap.ext.vscode").load_launchjs(nil, json_transforms)
 
       for name, sign in pairs(require("util.defaults").icons.dap) do
         sign = type(sign) == "table" and sign or { sign }
@@ -167,14 +177,11 @@ return {
         },
       }
 
-      dap.adapters.haskell = {
+      dap.adapters.ghc = {
         type = "executable",
         command = "haskell-debug-adapter",
         args = { "--hackage-version=0.0.33.0" },
       }
-
-      dap.adapters.ghc = dap.adapters.haskell
-      dap.configurations.haskell = dap.configurations.ghc
 
       dap.adapters.coreclr = {
         type = "executable",
@@ -182,15 +189,13 @@ return {
         args = { "--interpreter=vscode" },
       }
 
-      dap.adapters.netcoredbg = dap.adapters.coreclr
-
       dap.configurations.cs = {
         {
           type = "coreclr",
           name = "launch - netcoredbg",
           request = "launch",
           program = function()
-            return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+            return vim.fn.input("Path to DLL: ", vim.fn.getcwd() .. "/bin/Debug/", "file")
           end,
         },
       }
