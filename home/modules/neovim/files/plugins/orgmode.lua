@@ -8,13 +8,16 @@ return {
     event = "VeryLazy",
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
-      { "akinsho/org-bullets.nvim", config = true, lazy = false },
+      {
+        "akinsho/org-bullets.nvim",
+        config = true,
+        ft = { "org" },
+      },
       {
         "lyz-code/telescope-orgmode.nvim",
         config = function()
           require("telescope").load_extension("orgmode")
         end,
-        lazy = false,
         keys = {
           { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org files" },
         },
@@ -23,10 +26,12 @@ return {
     config = function(_, opts)
       require("orgmode").setup_ts_grammar()
       require("orgmode").setup(opts)
+      local group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
 
       -- Disable column in orgagenda
       vim.api.nvim_create_autocmd("Filetype", {
         pattern = { "orgagenda" },
+        group = group,
         callback = function()
           vim.opt_local.foldcolumn = "0"
           vim.opt_local.number = false
