@@ -48,6 +48,7 @@ return {
         "fish",
         "haskell",
         "html",
+        "http",
         "java",
         "javascript",
         "jsdoc",
