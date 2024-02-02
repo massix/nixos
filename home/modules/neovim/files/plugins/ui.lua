@@ -167,7 +167,16 @@ return {
       -- Do not resize `nofile' buffers
       local group = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
       local ignore_buftypes = { "nofile", "terminal", "prompt", "popup" }
-      local ignore_filetypes = { "OverseerList", "sagaoutline" }
+      local ignore_filetypes = {
+        "OverseerList",
+        "sagaoutline",
+        "dap-repl",
+        "dapui-watches",
+        "dapui-stacks",
+        "dapui-breakpoints",
+        "dapui-scope",
+        "dapui-console",
+      }
       vim.api.nvim_create_autocmd("WinEnter", {
         group = group,
         callback = function(_)
@@ -189,7 +198,7 @@ return {
             vim.b.focus_disable = false
           end
         end,
-        desc = "Disable focus for terminal, prompt, popup, and NvimTree",
+        desc = "Disable focus for given filetypes",
       })
     end,
     opts = {
