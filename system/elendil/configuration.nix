@@ -129,6 +129,19 @@ in
     wireplumber.enable = true;
   };
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      StrictModes = false;
+      AllowUsers = [ "massi" ];
+    };
+    banner = ''
+      You are now on the NixOS box. Be careful!
+    '';
+    allowSFTP = false;
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
