@@ -19,11 +19,13 @@ return {
         callback = function(args)
           vim.api.nvim_buf_set_keymap(args.buf, "n", "<leader>R", "", { desc = "+rest" })
           vim.api.nvim_buf_set_keymap(args.buf, "n", "<leader>Rr", "<Plug>RestNvim<CR>", { desc = "Run request" })
-          vim.api.nvim_buf_set_keymap(args.buf, "n", "<leader>Rp", "<Plug>RestNvimPreview<CR>", { desc = "Preview request" })
-          vim.api.nvim_buf_set_keymap(args.buf, "n", "<leader>RR", "<Plug>RestNvimLast<CR>", { desc = "Rerun last request" })
+          -- stylua: ignore
+          vim.api.nvim_buf_set_keymap( args.buf, "n", "<leader>Rp", "<Plug>RestNvimPreview<CR>", { desc = "Preview request" })
+          -- stylua: ignore
+          vim.api.nvim_buf_set_keymap( args.buf, "n", "<leader>RR", "<Plug>RestNvimLast<CR>", { desc = "Rerun last request" }
+          )
         end,
       })
     end,
-  }
+  },
 }
-

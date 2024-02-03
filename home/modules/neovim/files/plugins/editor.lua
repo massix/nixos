@@ -430,8 +430,8 @@ return {
       modes = {
         search = {
           enabled = false,
-        }
-      }
+        },
+      },
     },
   -- stylua: ignore
     keys = {
