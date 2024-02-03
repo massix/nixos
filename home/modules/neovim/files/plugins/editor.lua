@@ -645,6 +645,7 @@ return {
   {
     "code-biscuits/nvim-biscuits",
     event = "BufEnter",
+    enabled = false,
     opts = {
       show_on_start = false,
       cursor_line_only = true,
