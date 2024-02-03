@@ -55,7 +55,7 @@
       };
       Policy.AutoEnable = true;
     };
-    package = bluez.override { withExperimental = true; };
+    package = bluez.override { enableExperimental = true; };
   };
 
   services.auto-cpufreq = {
