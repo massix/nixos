@@ -189,6 +189,8 @@ return {
         args = { "--interpreter=vscode" },
       }
 
+      dap.adapters.netcoredbg = dap.adapters.coreclr
+
       dap.configurations.cs = {
         {
           type = "coreclr",
