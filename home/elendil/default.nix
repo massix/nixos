@@ -172,6 +172,28 @@ in
     home-manager.enable = true;
   };
 
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Catppuccin-Mocha-Compact-Pink-Dark";
+      package = unstable.catppuccin-gtk.override {
+        accents = [ "pink" ];
+        size = "compact";
+        tweaks = [ "rimless" "float" ];
+        variant = "mocha";
+      };
+    };
+    iconTheme = {
+      name = "Papirus";
+      package = unstable.papirus-icon-theme;
+    };
+    cursorTheme = {
+      name = "Catppuccin-Mocha-Mauve-Cursors";
+      package = unstable.catppuccin-cursors.mochaMauve;
+      size = 32;
+    };
+  };
+
   services.syncthing = {
     enable = true;
     tray.enable = false;
