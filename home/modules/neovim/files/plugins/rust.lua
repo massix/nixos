@@ -1,6 +1,7 @@
 --- @type LazyPluginSpec[]
 
 -- Configuration for Rust-Tools
+-- TODO: move to rustaceans.nvim asap
 return {
   {
     "simrat39/rust-tools.nvim",
