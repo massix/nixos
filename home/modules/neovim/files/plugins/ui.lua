@@ -158,11 +158,15 @@ return {
     },
   },
 
+  -- Reactive HLGroups
   {
     "rasulomaroff/reactive.nvim",
-    event = { "VimEnter" },
+    event = "VimEnter",
     opts = {
-      load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
+      load = {
+        "catppuccin-mocha-cursor",
+        "catppuccin-mocha-cursorline"
+      },
     },
     config = function(_, opts)
       require("reactive").setup(opts)
@@ -181,6 +185,7 @@ return {
     end,
   },
 
+  -- Internal statusline
   {
     "b0o/incline.nvim",
     dependencies = {
