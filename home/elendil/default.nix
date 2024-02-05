@@ -132,48 +132,48 @@ in
     };
 
     kitty =
-    let
-      font = "Rec Mono Casual";
-      italic_font = "${font} Italic";
-      bold_italic_font = "${font} Bold Italic";
-      bold_font = "${font} Bold";
-    in
-    {
-      enable = true;
-      package = unstable.kitty;
-      theme = "Catppuccin-Mocha";
+      let
+        font = "Rec Mono Casual";
+        italic_font = "${font} Italic";
+        bold_italic_font = "${font} Bold Italic";
+        bold_font = "${font} Bold";
+      in
+      {
+        enable = true;
+        package = unstable.kitty;
+        theme = "Catppuccin-Mocha";
 
-      shellIntegration = {
-        mode = "enabled";
-        enableFishIntegration = true;
+        shellIntegration = {
+          mode = "enabled";
+          enableFishIntegration = true;
+        };
+
+        # -> == <- >>= =<< != >= <=
+        font = {
+          name = font;
+          size = 9;
+        };
+
+        settings = {
+          inherit italic_font bold_italic_font bold_font;
+
+          cursor_shape = "beam";
+          cursor_beam_thickness = "2.0";
+          scrollback_lines = 10000;
+
+          tab_bar_style = "powerline";
+          tab_bar_align = "left";
+
+          background_opacity = "1";
+          dynamic_background_opacity = true;
+          enable_audio_bell = false;
+
+          disable_ligatures = "cursor";
+
+          allow_remote_control = true;
+          listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
+        };
       };
-
-      # -> == <- >>= =<< != >= <=
-      font = {
-        name = font;
-        size = 9;
-      };
-
-      settings = {
-        inherit italic_font bold_italic_font bold_font;
-
-        cursor_shape = "beam";
-        cursor_beam_thickness = "2.0";
-        scrollback_lines = 10000;
-
-        tab_bar_style = "powerline";
-        tab_bar_align = "left";
-
-        background_opacity = "1";
-        dynamic_background_opacity = true;
-        enable_audio_bell = false;
-
-        disable_ligatures = "cursor";
-
-        allow_remote_control = true;
-        listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
-      };
-    };
 
     command-not-found.enable = false;
 

@@ -165,7 +165,7 @@ return {
     opts = {
       load = {
         "catppuccin-mocha-cursor",
-        "catppuccin-mocha-cursorline"
+        "catppuccin-mocha-cursorline",
       },
     },
     config = function(_, opts)
