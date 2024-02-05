@@ -281,8 +281,8 @@ return {
           },
         }
       end
-      require("neodev").setup(neodev_opts)
 
+      require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -435,15 +435,16 @@ return {
   -- completion engine
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    event = "VeryLazy",
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
+      { "hrsh7th/cmp-calc" },
       { "hrsh7th/cmp-nvim-lsp-document-symbol" },
       { "hrsh7th/cmp-nvim-lsp-signature-help" },
-      { "JMarkin/cmp-diag-codes" },
+      { "hrsh7th/cmp-emoji" },
       { "davidsierradz/cmp-conventionalcommits" },
       { "L3MON4D3/LuaSnip" },
     },
@@ -456,7 +457,6 @@ return {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
           { name = "nvim_lsp_document_symbol" },
-          { { name = "buffer" } },
         }),
       })
 
@@ -468,7 +468,22 @@ return {
           { name = "path" },
         }),
       })
+
+      -- Setup conventionalcommits for gitcommit files
+      local group = vim.api.nvim_create_augroup("CmpExtra", { clear = true })
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = { "gitcommit", "NeogitCommitMessage" },
+        group = group,
+        callback = function()
+          require("cmp").setup.buffer({
+            sources = require("cmp").config.sources({
+              { name = "conventionalcommits" },
+            }),
+          })
+        end,
+      })
     end,
+
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
@@ -480,7 +495,6 @@ return {
         enabled = true,
         completion = {
           completeopt = "menuone,noinsert,noselect,preview",
-          keyword_length = 1,
         },
         window = {
           completion = cmp.config.window.bordered(),
@@ -513,11 +527,11 @@ return {
           { name = "mkdnflow" },
           { name = "orgmode" },
           { name = "path" },
-          { name = "diag-codes", option = { in_comment = true } },
-        }, {
           { name = "codeium" },
+          { name = "emoji" },
+          { name = "calc" },
+        }, {
           { name = "buffer" },
-          { name = "conventionalcommits" },
         }),
 
         preselect = cmp.PreselectMode.None,
