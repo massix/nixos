@@ -131,7 +131,14 @@ in
       };
     };
 
-    kitty = {
+    kitty =
+    let
+      font = "Rec Mono Casual";
+      italic_font = "${font} Italic";
+      bold_italic_font = "${font} Bold Italic";
+      bold_font = "${font} Bold";
+    in
+    {
       enable = true;
       package = unstable.kitty;
       theme = "Catppuccin-Mocha";
@@ -143,11 +150,13 @@ in
 
       # -> == <- >>= =<< != >= <=
       font = {
-        name = "Rec Mono Casual";
+        name = font;
         size = 9;
       };
 
       settings = {
+        inherit italic_font bold_italic_font bold_font;
+
         cursor_shape = "beam";
         cursor_beam_thickness = "2.0";
         scrollback_lines = 10000;
