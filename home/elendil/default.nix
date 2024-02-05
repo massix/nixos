@@ -181,6 +181,21 @@ in
     home-manager.enable = true;
   };
 
+  # FIXME: extensions have been manually installed, modify this part to
+  # guarantee that the `user-theme` extension is installed and enabled.
+  # This means migrating all the current installed extensions to this
+  # system.
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      enable-hot-corners = false;
+    };
+
+    "org/gnome/shell/extensions/user-theme" = {
+      name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+    };
+  };
+
   gtk = {
     enable = true;
     theme = {
