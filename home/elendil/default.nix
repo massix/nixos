@@ -184,9 +184,9 @@ in
   gtk = {
     enable = true;
     theme = {
-      name = "Catppuccin-Mocha-Compact-Pink-Dark";
+      name = "Catppuccin-Mocha-Compact-Mauve-Dark";
       package = unstable.catppuccin-gtk.override {
-        accents = [ "pink" ];
+        accents = [ "mauve" ];
         size = "compact";
         tweaks = [ "rimless" "float" ];
         variant = "mocha";
