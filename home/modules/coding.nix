@@ -138,6 +138,7 @@ in
         hadolint /* linter for Dockerfiles */
         marksman /* language server for markdown */
         commitlint /* linter for commit messages */
+        cocogitto /* autogenerate changelogs */
       ];
     in
     {
