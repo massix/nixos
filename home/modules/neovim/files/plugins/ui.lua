@@ -158,56 +158,6 @@ return {
     },
   },
 
-  -- Golden ratio split
-  {
-    "nvim-focus/focus.nvim",
-    enabled = true,
-    lazy = false,
-    init = function()
-      -- Do not resize `nofile' buffers
-      local group = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
-      local ignore_buftypes = { "nofile", "terminal", "prompt", "popup" }
-      local ignore_filetypes = {
-        "OverseerList",
-        "sagaoutline",
-        "dap-repl",
-        "dapui-watches",
-        "dapui-stacks",
-        "dapui-breakpoints",
-        "dapui-scope",
-        "dapui-console",
-      }
-      vim.api.nvim_create_autocmd("WinEnter", {
-        group = group,
-        callback = function(_)
-          if vim.tbl_contains(ignore_buftypes, vim.bo.buftype) then
-            vim.w.focus_disable = true
-          else
-            vim.w.focus_disable = false
-          end
-        end,
-        desc = "Disable focus for nofile buffers",
-      })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        group = group,
-        callback = function(_)
-          if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-            vim.b.focus_disable = true
-          else
-            vim.b.focus_disable = false
-          end
-        end,
-        desc = "Disable focus for given filetypes",
-      })
-    end,
-    opts = {
-      ui = {
-        signcolumn = false,
-      },
-    },
-  },
-
   {
     "rasulomaroff/reactive.nvim",
     event = { "VimEnter" },
