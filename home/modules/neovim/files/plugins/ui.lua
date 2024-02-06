@@ -70,10 +70,12 @@ return {
   -- Fancy tabs and buffers
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    event = { "BufEnter", "BufWinEnter" },
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+      { "<leader>bC", "<CMD>BufferLineCloseOthers<CR>", desc = "Close other buffers" },
+      { "<leader>b<CR>", "<CMD>BufferLinePick<CR>", desc = "Pick buffer" },
     },
     dependencies = {
       -- buffer remove
@@ -87,35 +89,32 @@ return {
         },
       },
     },
-    opts = {
-      options = {
-        -- stylua: ignore
-        close_command = function(n) require("mini.bufremove").delete(n, false) end,
-        right_mouse_command = nil,
-        numbers = "ordinal",
-        diagnostics = "nvim_lsp",
-        always_show_bufferline = true,
-        separator_style = "thick",
-        show_tab_indicators = true,
-        diagnostics_indicator = function(_, _, diag)
-          local icons = require("util.defaults").icons.diagnostics
-          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-            .. (diag.warning and icons.Warn .. diag.warning or "")
-          return vim.trim(ret)
-        end,
-        color_icons = true,
-        indicator = {
-          icon = "▎",
-          style = "icon",
-        },
-        offsets = {
-          {
-            text = "File Explorer",
-            text_align = "left",
+    opts = function()
+      return {
+        highlights = require("catppuccin.groups.integrations.bufferline").get(),
+        options = {
+          -- stylua: ignore
+          close_command = function(n) require("mini.bufremove").delete(n, false) end,
+          right_mouse_command = nil,
+          numbers = "ordinal",
+          diagnostics = "nvim_lsp",
+          always_show_bufferline = true,
+          separator_style = "thick",
+          show_tab_indicators = true,
+          diagnostics_indicator = function(_, _, diag)
+            local icons = require("util.defaults").icons.diagnostics
+            local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+              .. (diag.warning and icons.Warn .. diag.warning or "")
+            return vim.trim(ret)
+          end,
+          color_icons = true,
+          indicator = {
+            icon = "▎",
+            style = "icon",
           },
-        },
-      },
-    },
+        }
+      }
+    end,
   },
 
   -- Automatically highlights other instances of the word under your cursor.
