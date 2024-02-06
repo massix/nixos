@@ -9,23 +9,31 @@ return {
       })
     end,
     dependencies = {
-      { "andy-bell101/neotest-java", config = function() end },
-      { "rouge8/neotest-rust", config = function() end },
-      { "mrcjkb/neotest-haskell", config = function() end },
-      { "Issafalcon/neotest-dotnet", config = function() end },
+      { "andy-bell101/neotest-java" },
+      { "rouge8/neotest-rust" },
+      { "mrcjkb/neotest-haskell" },
+      { "massix/neotest-dotnet", branch = "fix/custom-attributes" },
     },
     opts = function()
       return {
         adapters = {
           require("neotest-rust"),
           require("neotest-haskell"),
-          require("neotest-dotnet"),
+          require("neotest-dotnet")({
+            custom_attributes = {
+              xunit = { "SkippableEnvironmentFact" },
+            },
+            discovery_root = "solution",
+          }),
         },
         output_panel = {
-          open = "aboveleft vsplit | resize 15",
+          open = "botright split | resize 15",
         },
         summary = {
           open = "aboveleft vsplit | vertical resize 50",
+        },
+        discovery = {
+          concurrent = 2,
         },
       }
     end,
