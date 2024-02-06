@@ -21,8 +21,8 @@ return {
     init = function()
       local wk = require("which-key")
       wk.register({
-        ["<leader>d"] = { name = "+debug" },
-        ["<leader>da"] = { name = "+adapters" },
+        ["<C-c>d"] = { name = "+debug" },
+        ["<C-c>da"] = { name = "+adapters" },
       })
     end,
 
@@ -34,10 +34,10 @@ return {
       -- stylua: ignore
         keys = {
           ---@diagnostic disable-next-line: missing-fields
-          { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+          { "<C-c>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
 
           ---@diagnostic disable-next-line: missing-fields
-          { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+          { "<C-c>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
         },
         opts = {},
         config = function(_, opts)
@@ -129,23 +129,23 @@ return {
     --- @type any[]
     -- stylua: ignore
     keys = {
-      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-      { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
-      { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-      { "<leader>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
-      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
-      { "<leader>dj", function() require("dap").down() end, desc = "Down" },
-      { "<leader>dk", function() require("dap").up() end, desc = "Up" },
-      { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-      { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
-      { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
-      { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
-      { "<leader>ds", function() require("dap").session() end, desc = "Session" },
-      { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
-      { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
-      { "<leader>dJ", function() require("dap.ext.vscode").load_launchjs(nil, json_transforms) end, desc = "Load Launch JSON" },
+      { "<C-c>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+      { "<C-c>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+      { "<C-c>dc", function() require("dap").continue() end, desc = "Continue" },
+      { "<C-c>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+      { "<C-c>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
+      { "<C-c>di", function() require("dap").step_into() end, desc = "Step Into" },
+      { "<C-c>dj", function() require("dap").down() end, desc = "Down" },
+      { "<C-c>dk", function() require("dap").up() end, desc = "Up" },
+      { "<C-c>dl", function() require("dap").run_last() end, desc = "Run Last" },
+      { "<C-c>do", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<C-c>dO", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<C-c>dp", function() require("dap").pause() end, desc = "Pause" },
+      { "<C-c>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+      { "<C-c>ds", function() require("dap").session() end, desc = "Session" },
+      { "<C-c>dt", function() require("dap").terminate() end, desc = "Terminate" },
+      { "<C-c>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+      { "<C-c>dJ", function() require("dap.ext.vscode").load_launchjs(nil, json_transforms) end, desc = "Load Launch JSON" },
     },
 
     opts = {},
