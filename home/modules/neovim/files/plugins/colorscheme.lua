@@ -30,6 +30,7 @@ return {
       flavour = "mocha",
       term_colors = true,
       transparent_background = true,
+      show_end_of_buffer = false,
       dim_inactive = {
         enabled = true,
         shade = "dark",
