@@ -112,7 +112,7 @@ return {
             icon = "▎",
             style = "icon",
           },
-        }
+        },
       }
     end,
   },

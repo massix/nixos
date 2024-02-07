@@ -96,7 +96,7 @@ return {
         opts = {
           position = "center",
           hl = "AlphaFooter",
-        }
+        },
       }
 
       local fortune = {
