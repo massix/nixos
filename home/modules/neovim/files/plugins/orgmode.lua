@@ -19,7 +19,7 @@ return {
           require("telescope").load_extension("orgmode")
         end,
         keys = {
-          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org files" },
+          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org header" },
         },
       },
     },
