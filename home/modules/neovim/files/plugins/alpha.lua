@@ -4,60 +4,122 @@ return {
     "goolord/alpha-nvim",
     event = "VimEnter",
     opts = function()
-      local dashboard = require("alpha.themes.dashboard")
+      local dashboard = require("alpha.themes.theta")
+      local api = require("alpha.themes.dashboard")
+
       -- stylua: ignore
       -- luacheck: ignore
       local logo = [[
-                                  _
-        88888b   d888b  888b  88 8P 888888    88888b    888     888b  88 88  d888b 88
-        88   88 88   88 88`8b 88      88      88   88  88 88    88`8b 88 88 88   ` 88
-        88   88 88   88 88 88 88      88      88888P  88   88   88 88 88 88 88     88
-        88   88 88   88 88 `8b88      88      88     d8888888b  88 `8b88 88 88   , ""
-        88888P   `888P  88  `888      88      88     88     `8b 88  `888 88  `888P 88
+                                        _
+          88888b   d888b  888b  88 8P 888888    88888b    888     888b  88 88  d888b 88
+          88   88 88   88 88`8b 88      88      88   88  88 88    88`8b 88 88 88   ` 88
+          88   88 88   88 88 88 88      88      88888P  88   88   88 88 88 88 88     88
+          88   88 88   88 88 `8b88      88      88     d8888888b  88 `8b88 88 88   , ""
+          88888P   `888P  88  `888      88      88     88     `8b 88  `888 88  `888P 88
 
-                                  nnnmmm
-                   \||\       ;;;;%%%@@@@@@       \ //,        You're on Neovim now!
-                    V|/     %;;%%%%%@@@@@@@@@@  ===Y//
-                    68=== ;;;;%%%%%%@@@@@@@@@@@@    @Y
-                    ;Y   ;;%;%%%%%%@@@@@@@@@@@@@@    Y
-                    ;Y  ;;;+;%%%%%%@@@@@@@@@@@@@@@    Y
-                    ;Y__;;;+;%%%%%%@@@@@@@@@@@@@@i;;__Y
-                   iiY"";;   "uu%@@@@@@@@@@uu"   @"";;;>
-                          Y     "UUUUUUUUU"     @@
-                          `;       ___ _       @
-                            `;.  ,====\\=.  .;'
-  You're on Nixos now!        ``""""`==\\=='
-                                     `;=====
-                                       ===            [massi_x86]
-]]
+                                        nnnmmm
+                        \||\       ;;;;%%%@@@@@@       \ //,        You're on Neovim now!
+                          V|/     %;;%%%%%@@@@@@@@@@  ===Y//
+                          68=== ;;;;%%%%%%@@@@@@@@@@@@    @Y
+                          ;Y   ;;%;%%%%%%@@@@@@@@@@@@@@    Y
+                          ;Y  ;;;+;%%%%%%@@@@@@@@@@@@@@@    Y
+                          ;Y__;;;+;%%%%%%@@@@@@@@@@@@@@i;;__Y
+                        iiY"";;   "uu%@@@@@@@@@@uu"   @"";;;>
+                                Y     "UUUUUUUUU"     @@
+                                `;       ___ _       @
+                                  `;.  ,====\\=.  .;'
+        You're on Nixos now!        ``""""`==\\=='
+                                          `;=====
+                                            ===            [massi_x86]
+      ]]
 
-      dashboard.section.header.val = vim.split(logo, "\n")
-      -- stylua: ignore
-      dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", "<CMD> Telescope find_files<CR>"),
-        dashboard.button("L", "󰒲 " .. " Lazy", "<CMD> Lazy<CR>"),
-        dashboard.button("g", " " .. " Find text", "<CMD> Telescope live_grep<CR>"),
-        dashboard.button("h", " " .. " Load project", "<CMD> Telescope projects<CR>"),
-        dashboard.button("n", " " .. " Load Nix Environment", "<CMD> NixDevelop<CR>"),
-        dashboard.button("e", " " .. " Org Folder", "<CMD> cd ~/org <BAR> e .<CR>"),
-        dashboard.button("E", " " .. " Org Index", "<CMD> cd ~/org <BAR> e ./index.org<CR>"),
-        dashboard.button("m", " " .. " Agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5 })<CR>]]),
-        dashboard.button("w", " " .. " Work agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5, filters = "+work" })<CR>]]),
-        dashboard.button("W", " " .. " Personal agenda", [[<CMD> lua require("orgmode.api.agenda").agenda({ span = 5, filters = "+personal" })<CR>]]),
-        dashboard.button("l", "✓ " .. " Todos", [[<CMD> lua require("orgmode.api.agenda").todos()<CR>]]),
-        dashboard.button("t", " " .. " Work todos", [[<CMD> lua require("orgmode.api.agenda").todos( { filters = "+work" })<CR>]]),
-        dashboard.button("T", " " .. " Personal todos", [[<CMD> lua require("orgmode.api.agenda").todos( { filters = "+personal" })<CR>]]),
-        dashboard.button("q", " " .. " Quit", "<CMD> qa<CR>"),
+      dashboard.header.val = vim.split(logo, "\n")
+      dashboard.header.opts = {
+        position = "center",
+        hl = "Exception",
       }
 
-      for _, button in ipairs(dashboard.section.buttons.val) do
-        button.opts.hl = "AlphaButtons"
-        button.opts.hl_shortcut = "AlphaShortcut"
+      -- stylua: ignore
+      dashboard.buttons.val = {
+        { type = "text", val = "Quick actions", opts = { hl = "SpecialComment", position = "center" } },
+        { type = "padding", val = 1 },
+        api.button("SPC f f", " " .. " Find file"),
+        api.button("SPC s g", " " .. " Live Grep"),
+        api.button("SPC s p", " " .. " Open project"),
+        api.button("SPC s h", " " .. " Search Help"),
+        api.button("SPC s O", " " .. " Search Org Header"),
+        api.button("SPC o a", " " .. " Org Agenda"),
+        api.button("SPC s j", "󱕸 " .. " Jumplist"),
+        api.button("SPC s M", "󰆍 " .. " Search man pages"),
+        api.button("SPC SPC", " " .. " Legendary"),
+        api.button("SPC g g", "󰊢 " .. " Neogit"),
+        api.button("SPC S o", "󰊠 " .. " Spectre"),
+        api.button("SPC p p", "󱎫 " .. " Pomodoro"),
+        api.button("SPC l l", "󰒲 " .. " Lazy UI"),
+        api.button("SPC n d", " " .. " Nix Development"),
+        { type = "padding", val = 1 },
+        api.button("SPC q q", " " .. " Quit"),
+      }
+
+      for _, value in ipairs(dashboard.buttons.val) do
+        if value.type == "button" then
+          value.opts.hl_shortcut = "Structure"
+        end
       end
 
-      dashboard.section.header.opts.hl = "AlphaHeader"
-      dashboard.section.buttons.opts.hl = "AlphaButtons"
-      dashboard.section.footer.opts.hl = "AlphaFooter"
+      local section_mru = {
+        type = "group",
+        val = {
+          {
+            type = "text",
+            val = "Recent files",
+            opts = {
+              hl = "SpecialComment",
+              shrink_margin = false,
+              position = "center",
+            },
+          },
+          { type = "padding", val = 1 },
+          {
+            type = "group",
+            val = function()
+              return { dashboard.mru(0, vim.fn.getcwd()) }
+            end,
+            opts = { shrink_margin = false },
+          },
+        },
+      }
+
+      dashboard.footer = {
+        type = "text",
+        val = "",
+        opts = {
+          position = "center",
+          hl = "AlphaFooter",
+        }
+      }
+
+      local fortune = {
+        val = require("alpha.fortune")(),
+        type = "text",
+        opts = {
+          position = "center",
+          hl = "Exception",
+        },
+      }
+
+      dashboard.config.layout = {
+        { type = "padding", val = 2 },
+        dashboard.header,
+        { type = "padding", val = 2 },
+        section_mru,
+        { type = "padding", val = 2 },
+        dashboard.buttons,
+        { type = "padding", val = 2 },
+        fortune,
+        { type = "padding", val = 2 },
+        dashboard.footer,
+      }
       return dashboard
     end,
 
@@ -72,7 +134,7 @@ return {
         })
       end
 
-      require("alpha").setup(dashboard.opts)
+      require("alpha").setup(dashboard.config)
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "LazyVimStarted",
@@ -81,8 +143,16 @@ return {
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
           local nix = require("util.nix")
 
-          dashboard.section.footer.val = "NeoVim started in " .. ms .. "ms from " .. nix.nvimHome
+          dashboard.footer.val = "NeoVim started in " .. ms .. "ms from " .. nix.nvimHome
           pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("DirChanged", {
+        pattern = "*",
+        callback = function()
+          require("alpha").redraw()
+          vim.cmd.AlphaRedraw()
         end,
       })
     end,
