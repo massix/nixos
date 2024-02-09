@@ -12,7 +12,7 @@ return {
       { "andy-bell101/neotest-java" },
       { "rouge8/neotest-rust" },
       { "mrcjkb/neotest-haskell" },
-      { "massix/neotest-dotnet", branch = "fix/custom-attributes" },
+      { "Issafalcon/neotest-dotnet" },
     },
     opts = function()
       return {
