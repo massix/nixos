@@ -5,6 +5,22 @@
 let
   mypkgs = import ../../pkgs { inherit pkgs; };
   inherit (mypkgs) onedriver;
+  gnomeBackground = pkgs.stdenvNoCC.mkDerivation {
+    pname = "gnome-background";
+    version = "0.0.1";
+
+    src = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/Gingeh/wallpapers/main/mandelbrot/mandelbrot_full_sky.png";
+      hash = "sha256-ikkZJZWTbH/8xw/h58HgLW0OuGJe8gmpfs/zX3lvrMg=";
+    };
+
+    phases = [ "installPhase" ];
+
+    installPhase = ''
+      mkdir -p $out
+      install -m0644 $src $out/background.png
+    '';
+  };
 in
 {
   my-modules = {
@@ -193,6 +209,11 @@ in
 
     "org/gnome/shell/extensions/user-theme" = {
       name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+    };
+
+    "org/gnome/desktop/background" = rec {
+      picture-uri = "${gnomeBackground}/background.png";
+      picture-uri-dark = picture-uri;
     };
   };
 
