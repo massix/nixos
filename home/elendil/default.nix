@@ -5,20 +5,21 @@
 let
   mypkgs = import ../../pkgs { inherit pkgs; };
   inherit (mypkgs) onedriver;
-  gnomeBackground = pkgs.stdenvNoCC.mkDerivation {
-    pname = "gnome-background";
+  catppuccin-backgrounds = pkgs.stdenvNoCC.mkDerivation {
+    pname = "catppuccin-backgrounds";
     version = "0.0.1";
+    nativeBuildInputs = [ pkgs.unzip ];
 
     src = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/Gingeh/wallpapers/main/mandelbrot/mandelbrot_full_sky.png";
-      hash = "sha256-ikkZJZWTbH/8xw/h58HgLW0OuGJe8gmpfs/zX3lvrMg=";
+      url = "https://github.com/Gingeh/wallpapers/archive/refs/heads/main.zip";
+      hash = "sha256-I00clrtirzZYPSxGcg5Fkv0vuFHX9uF5UcMv1JZ+7iE=";
     };
 
     phases = [ "installPhase" ];
 
     installPhase = ''
       mkdir -p $out
-      install -m0644 $src $out/background.png
+      unzip -d $out $src
     '';
   };
 in
@@ -212,8 +213,9 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${gnomeBackground}/background.png";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/windows-error.jpg";
       picture-uri-dark = picture-uri;
+      picture-options = "centered";
     };
   };
 
