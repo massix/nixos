@@ -323,6 +323,18 @@ return {
         },
       })
 
+      lspconfig.clangd.setup({
+        cmd = {
+          "clangd",
+          "--all-scopes-completion",
+          "--clang-tidy",
+          "--enable-config",
+          "--completion-style=detailed",
+          "--offset-encoding=utf-16",
+        },
+        capabilities = capabilities,
+      })
+
       lspconfig.terraformls.setup({
         capabilities = capabilities,
       })
@@ -396,38 +408,43 @@ return {
   {
     "L3MON4D3/LuaSnip",
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
+      { "rafamadriz/friendly-snippets" },
+      { "honza/vim-snippets" },
     },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
+    config = function(_, opts)
+      require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip.loaders.from_snipmate").lazy_load()
+      require("luasnip").config.set_config(opts)
+    end,
+    opts = function()
+      local types = require("luasnip.util.types")
+      return {
+        enable_autosnippets = true,
+        history = true,
+        updateevents = { "TextChanged", "TextChangedI" },
+        ext_opts = {
+          [types.choiceNode] = {
+            active = {
+              virt_text = { { "󱦱", "Error" } },
+            },
+          },
+        },
+      }
+    end,
     keys = {
       {
-        "<C-tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<C-Tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      {
-        "<tab>",
+        "<C-j>",
         function()
           require("luasnip").jump(1)
         end,
-        mode = "s",
+        mode = { "s", "i" },
       },
       {
-        "<s-tab>",
+        "<C-k>",
         function()
           require("luasnip").jump(-1)
         end,
-        mode = { "i", "s" },
+        mode = { "s", "i" },
       },
     },
   },
@@ -447,6 +464,7 @@ return {
       { "hrsh7th/cmp-emoji" },
       { "davidsierradz/cmp-conventionalcommits" },
       { "L3MON4D3/LuaSnip" },
+      { "saadparwaiz1/cmp_luasnip" },
     },
     config = function(_, opts)
       local cmp = require("cmp")
@@ -524,6 +542,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
+          { name = "luasnip" },
           { name = "mkdnflow" },
           { name = "orgmode" },
           { name = "path" },

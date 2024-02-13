@@ -48,6 +48,7 @@ in
       enable = true;
       unstable = true;
       languages = {
+        c = true;
         c_sharp = true;
         haskell = true;
         javascript = true;
@@ -72,6 +73,7 @@ in
           j = "just";
           tf = "terraform";
           g = "git";
+          mk = "make";
         };
       };
     };

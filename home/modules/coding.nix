@@ -15,6 +15,7 @@ in
     enable = mkEnDef "Enable coding goodies" false;
     unstable = mkEnDef "Use unstable channel" true;
     languages = {
+      c = mkEnDef "Enable Clang tooling" false;
       c_sharp = mkEnDef "Enable C# tooling" false;
       haskell = mkEnDef "Enable Haskell tooling" false;
       java = mkEnDef "Enable Java tooling" false;
@@ -39,6 +40,10 @@ in
         gcc
         wl-clipboard
         nodejs
+      ];
+
+      clangTooling = with channel; [
+        llvmPackages.clang-unwrapped
       ];
 
       c_sharpTooling = with channel; [
@@ -139,11 +144,14 @@ in
         marksman /* language server for markdown */
         commitlint /* linter for commit messages */
         cocogitto /* autogenerate changelogs */
+        gnumake42 /* makefile */
+        bear /* generate compilation database */
       ];
     in
     {
       home.packages =
         baseTooling ++
+        (whenT cfg.languages.c clangTooling) ++
         (whenT cfg.languages.c_sharp c_sharpTooling) ++
         (whenT cfg.languages.haskell haskellTooling) ++
         (whenT cfg.languages.purescript purescriptTooling) ++
