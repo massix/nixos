@@ -215,9 +215,9 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/windows-error.jpg";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/minimalistic/catppuccin_triangle.png";
       picture-uri-dark = picture-uri;
-      picture-options = "centered";
+      picture-options = "scaled";
     };
   };
 
@@ -228,7 +228,7 @@ in
       package = unstable.catppuccin-gtk.override {
         accents = [ "mauve" ];
         size = "compact";
-        tweaks = [ "rimless" "float" ];
+        tweaks = [ ];
         variant = "mocha";
       };
     };
