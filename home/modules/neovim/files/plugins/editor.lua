@@ -113,7 +113,10 @@ return {
   -- Oil
   {
     "stevearc/oil.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+      { "SirZenith/oil-vcs-status" },
+    },
     init = function()
       local wk = require("which-key")
       wk.register({
@@ -123,6 +126,9 @@ return {
     opts = {
       default_file_explorer = false,
       constrain_cursor = "name",
+      win_options = {
+        signcolumn = "yes:2",
+      },
       columns = {
         "icon",
         "permissions",
@@ -690,6 +696,7 @@ return {
   {
     "stevearc/aerial.nvim",
     opts = {
+      backends = { "lsp", "treesitter", "markdown", "man" },
       layout = {
         default_direction = "prefer_left",
         placement = "edge",
