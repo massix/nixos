@@ -254,6 +254,19 @@ return {
     },
   },
 
+  -- yaml and json ls companion
+  {
+    "someone-stole-my-name/yaml-companion.nvim",
+    dependencies = {
+      { "neovim/nvim-lspconfig" },
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+    },
+    event = { "VeryLazy" },
+    config = false,
+  },
+
+
   -- lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -285,6 +298,18 @@ return {
       require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local cfg = require("yaml-companion").setup({
+        lspconfig = {
+          capabilities = capabilities,
+          ---@param bufnr integer
+          on_attach = function(_, bufnr)
+            local wk = require("which-key")
+            wk.register({
+              ["<leader>cS"] = { "<cmd>Telescope yaml_schema<CR>", "Switch YAML schema", { buffer = bufnr } },
+            })
+          end,
+        },
+      })
 
       lspconfig.nil_ls.setup({
         capabilities = capabilities,
@@ -308,20 +333,7 @@ return {
         },
       })
 
-      lspconfig.yamlls.setup({
-        settings = {
-          yaml = {
-            schemaStore = {
-              -- You must disable built-in schemaStore support if you want to use
-              -- this plugin and its advanced options like `ignore`.
-              enable = false,
-              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-              url = "",
-            },
-            schemas = require("schemastore").yaml.schemas(),
-          },
-        },
-      })
+      lspconfig.yamlls.setup(cfg)
 
       lspconfig.clangd.setup({
         cmd = {
@@ -329,10 +341,25 @@ return {
           "--all-scopes-completion",
           "--clang-tidy",
           "--enable-config",
+          "--header-insertion=iwyu",
+          "--import-insertions",
           "--completion-style=detailed",
           "--offset-encoding=utf-16",
+          "--background-index",
+          "--pch-storage=memory",
         },
         capabilities = capabilities,
+        ---@param bufnr integer
+        on_attach = function(_, bufnr)
+          local wk = require("which-key")
+          wk.register({
+            ["<leader>cS"] = {
+              "<cmd>ClangdSwitchSourceHeader<cr>",
+              "Switch source and headers (C/C++)",
+              { buffer = bufnr, mode = "n" },
+            },
+          })
+        end,
       })
 
       lspconfig.terraformls.setup({
