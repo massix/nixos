@@ -1,8 +1,39 @@
 { config, lib, unstable, master, username, ... }:
 let
   cfg = config.my-modules.neovim;
-  inherit (unstable) rustPlatform fetchFromGitHub;
+  inherit (unstable) rustPlatform fetchFromGitHub stdenv fetchurl;
   inherit (lib) mkEnableOption mkPackageOption mkIf;
+  ghostServer = stdenv.mkDerivation rec {
+    pname = "ghost-server";
+    version = "0.5.2";
+    src = fetchurl {
+      url = "https://github.com/subnut/nvim-ghost.nvim/releases/download/v${version}/nvim-ghost-linux.tar.gz";
+      hash = "sha256-uv+O6pq1FrNEdFrxn9Jts9ybv2szeN+kdxHeV1FZ8nY=";
+    };
+
+    nativeBuildInputs = with unstable; [ makeWrapper patchelf stdenv.cc.cc.lib ];
+    buildInputs = with unstable; [ zlib ];
+
+    unpackPhase = ''
+      mkdir -p ./ghost-server
+      tar xzf $src -C ./ghost-server
+    '';
+
+    installPhase = ''
+      mkdir -p $out/bin
+      cp ./ghost-server/nvim-ghost-binary $out/bin/nvim-ghost-binary-unwrapped
+      cp ./ghost-server/nvim-ghost-binary.version $out/bin/nvim-ghost-binary.version
+      patchelf \
+        --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+        --set-rpath ${lib.makeLibraryPath [ stdenv.cc.cc ]} \
+        $out/bin/nvim-ghost-binary-unwrapped
+      makeWrapper $out/bin/nvim-ghost-binary-unwrapped $out/bin/nvim-ghost-binary \
+        --set LD_LIBRARY_PATH ${lib.makeLibraryPath buildInputs}
+    '';
+
+    dontConfigure = true;
+    dontBuild = true;
+  };
   nvimLangs = map
     ({ code, hash }: unstable.stdenvNoCC.mkDerivation rec {
       pname = "neovim-spell-${code}";
@@ -109,6 +140,7 @@ in
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
             sniprun = "${sniprun}/bin/sniprun",
+            ghostServer = "${ghostServer}/bin/nvim-ghost-binary",
           }
         '';
 
@@ -141,6 +173,7 @@ in
         "${plugins}/pomodoro.lua".source = ./files/plugins/pomodoro.lua;
         "${plugins}/project.lua".source = ./files/plugins/project.lua;
         "${plugins}/rest.lua".source = ./files/plugins/rest.lua;
+        "${plugins}/ghost.lua".source = ./files/plugins/ghost.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {
