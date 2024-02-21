@@ -901,4 +901,17 @@ return {
       vim.keymap.set({ "n", "x", "o" }, "ge", subword_hops.backward_end)
     end,
   },
+
+  -- Table mode for creating tables
+  {
+    "dhruvasagar/vim-table-mode",
+    event = { "BufEnter", "BufWinEnter" },
+    init = function()
+      vim.g.table_mode_syntax = 0
+      require("which-key").register({
+        ["<leader>t"] = { name = "+table" },
+      })
+    end,
+    config = false,
+  },
 }

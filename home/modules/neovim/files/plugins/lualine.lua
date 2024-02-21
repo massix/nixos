@@ -36,8 +36,21 @@ return {
         sections = {
           lualine_a = {
             {
+              function()
+                if vim.g.venn_enabled then
+                  return "VNN"
+                ---@diagnostic disable-next-line: undefined-field
+                elseif vim.b.table_mode_active == 1 then
+                  return "TBL"
+                end
+              end,
+              cond = function()
+                return vim.g.venn_enabled or (vim.b.table_mode_active == 1)
+              end,
+            },
+            {
               "mode",
-              fmt = function(str)
+              fmt = function(input_string)
                 local conversion = {
                   ["normal"] = "NRM",
                   ["insert"] = "INS",
@@ -49,11 +62,7 @@ return {
                   ["replace"] = "RPL",
                 }
 
-                if vim.g.venn_enabled then
-                  return "VNN"
-                else
-                  return conversion[str:lower()]
-                end
+                return conversion[input_string:lower()]
               end,
             },
             {
