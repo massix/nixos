@@ -125,7 +125,8 @@ return {
     end,
     opts = {
       default_file_explorer = false,
-      constrain_cursor = "name",
+      constrain_cursor = "editable",
+      experimental_watch_for_changes = true,
       win_options = {
         signcolumn = "yes:2",
       },
@@ -878,8 +879,7 @@ return {
     config = function()
       local neowords = require("neowords")
       local p = neowords.pattern_presets
-      local subword_hops =
-        neowords.get_word_hops(
+      local subword_hops = neowords.get_word_hops(
         p.snake_case,
         p.camel_case,
         p.upper_case,
@@ -893,7 +893,9 @@ return {
         "\\v\\)+",
         "\\v\\{+",
         "\\v\\}+",
-        "\\v$+")
+        "\\v$+",
+        "\\v\\=+"
+      )
 
       vim.keymap.set({ "n", "x", "o" }, "w", subword_hops.forward_start)
       vim.keymap.set({ "n", "x", "o" }, "e", subword_hops.forward_end)
