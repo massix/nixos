@@ -37,7 +37,21 @@ return {
         },
       }
     end,
-    config = true,
+    config = function(_, opts)
+      require("neotest").setup(opts)
+
+      -- bind "q" to quit summary
+      local group = vim.api.nvim_create_augroup("NeoTestCustom", { clear = true })
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = "neotest-summary",
+        group = group,
+        callback = function()
+          vim.keymap.set("n", "q", function()
+            require("neotest").summary.close()
+          end, { desc = "Quit summary", buffer = true })
+        end,
+      })
+    end,
     -- stylua: ignore
     keys = {
       ---@diagnostic disable-next-line: missing-fields
