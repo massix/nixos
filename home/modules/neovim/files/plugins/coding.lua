@@ -242,12 +242,16 @@ return {
       -- Stop spamming! I already have the lualine
       vim.g.direnv_silent_load = 1
     end,
+    keys = {
+      { "<leader>ne", "<cmd>DirenvExport<cr>", desc = "Direnv Export" },
+    },
   },
 
   -- Enter nix develop automagically
   {
     "figsoda/nix-develop.nvim",
-    opts = {},
+    event = "VeryLazy",
+    config = function() end,
     keys = {
       { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
       { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
