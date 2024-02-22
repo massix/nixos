@@ -849,15 +849,19 @@ return {
     opts = {
       markdown = {
         fat_headlines = false,
+        codeblock_highlight = false,
       },
       org = {
         fat_headlines = false,
+        codeblock_highlight = false,
       },
       norg = {
         fat_headlines = false,
+        codeblock_highlight = false,
       },
       rmd = {
         fat_headlines = false,
+        codeblock_highlight = false,
       },
     },
   },
