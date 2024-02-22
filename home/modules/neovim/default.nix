@@ -212,5 +212,15 @@ in
     home.sessionVariables = mkIf cfg.defaultEditor {
       EDITOR = "nvim";
     };
+
+
+    xdg.configFile = mkIf cfg.gui.enable {
+      "neovide/config.toml".text = ''
+        [font]
+        normal = ["${cfg.gui.font.name}"]
+        size = ${builtins.toString cfg.gui.font.size}
+      '';
+    };
+
   };
 }
