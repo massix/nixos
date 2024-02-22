@@ -95,6 +95,7 @@ in
       enable = true;
       configuration.package = unstable.neovim-unwrapped;
       defaultEditor = true;
+      gui.enable = true;
     };
 
     git = {

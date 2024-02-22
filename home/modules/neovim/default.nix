@@ -52,6 +52,12 @@ in
       unstable = mkEnableOption "Install from the unstable channel";
       nightly = mkEnableOption "Install from the nightly channel";
     };
+    gui = {
+      enable = mkEnableOption "Install GUI";
+      package = mkPackageOption unstable "neovide" {
+        default = "neovide";
+      };
+    };
   };
 
   config = {
@@ -67,6 +73,7 @@ in
       extraLuaPackages = ps: [ ps.magick ];
     };
 
+    home.packages = mkIf cfg.gui.enable [ cfg.gui.package ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
@@ -118,6 +125,7 @@ in
         "${nvimHome}/init.lua".source = ./files/init.lua;
         "${config}/options.lua".source = ./files/config/options.lua;
         "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
+        "${config}/gui.lua".source = ./files/config/gui.lua;
 
         # Plugins configurations
         "${plugins}/colorscheme.lua".source = ./files/plugins/colorscheme.lua;

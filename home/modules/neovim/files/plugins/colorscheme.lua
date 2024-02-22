@@ -29,7 +29,7 @@ return {
     opts = {
       flavour = "mocha",
       term_colors = true,
-      transparent_background = true,
+      transparent_background = false,
       show_end_of_buffer = false,
       dim_inactive = {
         enabled = true,
