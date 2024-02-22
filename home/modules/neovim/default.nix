@@ -2,7 +2,15 @@
 let
   cfg = config.my-modules.neovim;
   inherit (unstable) rustPlatform fetchFromGitHub;
-  inherit (lib) mkEnableOption mkPackageOption mkIf;
+  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
+  mkStringOption = description: default: mkOption {
+    type = types.str;
+    inherit default description;
+  };
+  mkIntOption = description: default: mkOption {
+    type = types.number;
+    inherit default description;
+  };
   nvimLangs = map
     ({ code, hash }: unstable.stdenvNoCC.mkDerivation rec {
       pname = "neovim-spell-${code}";
@@ -12,7 +20,6 @@ let
         url = "http://ftp.vim.org/pub/vim/runtime/spell/${spellFile}";
         inherit hash;
       };
-
 
       dontBuild = true;
       dontConfigure = true;
@@ -57,6 +64,11 @@ in
       package = mkPackageOption unstable "neovide" {
         default = "neovide";
       };
+      font = {
+        name = mkStringOption "Font" "FiraCode";
+        size = mkIntOption "Font Size" 10;
+      };
+      scaleFactor = mkIntOption "Scale Factor" 1.0;
     };
   };
 
@@ -93,6 +105,7 @@ in
               source = "${retrieveLang l}/spell/${l}.utf-8.spl";
             };
           }) [ "it" "en" "fr" ];
+        mkGuiFont = font: size: "${builtins.replaceStrings [" "] ["_"] font},Symbols_Nerd_Font_Mono:h${builtins.toString size}";
       in
       {
         # Misc files
@@ -125,7 +138,43 @@ in
         "${nvimHome}/init.lua".source = ./files/init.lua;
         "${config}/options.lua".source = ./files/config/options.lua;
         "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
-        "${config}/gui.lua".source = ./files/config/gui.lua;
+
+        # The font is configurable via the configuration, so this is raw here
+        "${config}/gui.lua".text = ''
+          M = {}
+
+          M.default_scale = ${toString cfg.gui.scaleFactor};
+
+          M.change_scale_factor = function(delta)
+            vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+          end
+
+          M.setup = function()
+            vim.o.guifont = "${mkGuiFont cfg.gui.font.name cfg.gui.font.size}"
+            vim.g.neovide_floating_shadow = true
+            vim.g.neovide_hide_mouse_when_typing = false
+            vim.g.neovide_theme = "dark"
+            vim.g.neovide_unlink_border_highlights = true
+            vim.g.neovide_confirm_quit = false
+            vim.g.neovide_cursor_antialiasing = true
+            vim.g.neovide_scale_factor = M.default_scale
+
+            -- Register keybinding to modify the scale
+            require("which-key").register({
+              ["<leader>+"] = {
+                name = "+scale",
+                ["+"] = { function() require("config.gui").change_scale_factor(1.25) end, "Increase scale" },
+                ["-"] = { function() require("config.gui").change_scale_factor(1/1.25) end, "Decrease scale" },
+              },
+            })
+
+            -- Also create some more immediate bindings
+            vim.keymap.set("n", "<C-=>", function() require("config.gui").change_scale_factor(1.25) end, { desc = "Increase scale" })
+            vim.keymap.set("n", "<C-->", function() require("config.gui").change_scale_factor(1/1.25) end, { desc = "Decrease scale" })
+          end
+
+          return M
+        '';
 
         # Plugins configurations
         "${plugins}/colorscheme.lua".source = ./files/plugins/colorscheme.lua;

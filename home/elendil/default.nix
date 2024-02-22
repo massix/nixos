@@ -22,6 +22,10 @@ let
       unzip -d $out $src
     '';
   };
+  terminalFont = {
+      name = "Rec Mono Casual";
+      size = 10;
+  };
 in
 {
   my-modules = {
@@ -95,7 +99,11 @@ in
       enable = true;
       configuration.package = unstable.neovim-unwrapped;
       defaultEditor = true;
-      gui.enable = true;
+      gui = {
+        enable = true;
+        font.name = terminalFont.name;
+        font.size = terminalFont.size;
+      };
     };
 
     git = {
@@ -153,10 +161,9 @@ in
 
     kitty =
       let
-        font = "Rec Mono Casual";
-        italic_font = "${font} Italic";
-        bold_italic_font = "${font} Bold Italic";
-        bold_font = "${font} Bold";
+        italic_font = "${terminalFont.name} Italic";
+        bold_italic_font = "${terminalFont.name} Bold Italic";
+        bold_font = "${terminalFont.name} Bold";
       in
       {
         enable = true;
@@ -170,8 +177,8 @@ in
 
         # -> == <- >>= =<< != >= <=
         font = {
-          name = font;
-          size = 9;
+          name = terminalFont.name;
+          size = terminalFont.size;
         };
 
         settings = {
