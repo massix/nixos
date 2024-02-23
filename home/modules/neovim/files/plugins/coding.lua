@@ -24,7 +24,7 @@ return {
         "IndianBoy42/tree-sitter-just",
         lazy = false,
         config = false,
-        enabled = false,
+        enabled = true,
       },
     },
     cmd = { "TSUpdateSync" },
@@ -53,7 +53,7 @@ return {
         "javascript",
         "jsdoc",
         "json",
-        -- "just",
+        "just",
         "kdl",
         "lua",
         "luadoc",
@@ -110,7 +110,7 @@ return {
         filetype = "elisp",
       }
 
-      -- require("tree-sitter-just").setup({})
+      require("tree-sitter-just").setup({})
       require("nvim-treesitter.configs").setup(opts)
 
       if load_textobjects then
@@ -269,7 +269,6 @@ return {
     event = { "VeryLazy" },
     config = false,
   },
-
 
   -- lspconfig
   {
