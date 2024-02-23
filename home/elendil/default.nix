@@ -23,8 +23,8 @@ let
     '';
   };
   terminalFont = {
-      name = "Rec Mono Casual";
-      size = 10;
+    name = "Rec Mono Casual";
+    size = 10;
   };
 in
 {
@@ -177,8 +177,7 @@ in
 
         # -> == <- >>= =<< != >= <=
         font = {
-          name = terminalFont.name;
-          size = terminalFont.size;
+          inherit (terminalFont) name size;
         };
 
         settings = {
