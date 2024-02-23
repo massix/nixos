@@ -27,6 +27,13 @@ return {
         opts = {},
         config = function() end,
       },
+      {
+        "massix/org-checkbox.nvim",
+        opts = {},
+        config = function()
+          require("orgcheckbox").setup()
+        end,
+      },
     },
     config = function(_, opts)
       require("orgmode").setup_ts_grammar()
