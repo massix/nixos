@@ -2,8 +2,12 @@
   "neodev": {
     "library": {
       "enabled": true,
-      "plugins": true
-    }
+      "plugins": true,
+      "runtime": true,
+      "types": true
+    },
+    "pathStrict": false,
+    "lspconfig": true
   },
   "neoconf": {
     "live_reload": true,
@@ -16,6 +20,16 @@
         "enabled": true
       }
     }
+  },
+  "lspconfig": {
+    "lua_ls": {
+      "Lua.runtime.pathStrict": false,
+      "Lua.runtime.path": [
+        "?.lua",
+        "?/init.lua",
+        "${workspace}/home/modules/neovim/files/?.lua",
+        "${workspace}/home/modules/neovim/files/?/init.lua"
+      ]
+    }
   }
 }
-
