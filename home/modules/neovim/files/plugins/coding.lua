@@ -542,7 +542,7 @@ return {
         enabled = function()
           local disabled_fts = {
             "TelescopePrompt",
-            "toggleterm"
+            "toggleterm",
           }
           local ftype = vim.api.nvim_buf_get_option(0, "filetype")
           return not vim.tbl_contains(disabled_fts, ftype)
