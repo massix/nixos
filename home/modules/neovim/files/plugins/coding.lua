@@ -490,7 +490,6 @@ return {
       { "hrsh7th/cmp-cmdline" },
       { "hrsh7th/cmp-calc" },
       { "hrsh7th/cmp-nvim-lsp-document-symbol" },
-      { "hrsh7th/cmp-nvim-lsp-signature-help" },
       { "hrsh7th/cmp-emoji" },
       { "davidsierradz/cmp-conventionalcommits" },
       { "L3MON4D3/LuaSnip" },
@@ -540,7 +539,14 @@ return {
       local defaults = require("cmp.config.default")()
 
       return {
-        enabled = true,
+        enabled = function()
+          local disabled_fts = {
+            "TelescopePrompt",
+            "toggleterm"
+          }
+          local ftype = vim.api.nvim_buf_get_option(0, "filetype")
+          return not vim.tbl_contains(disabled_fts, ftype)
+        end,
         completion = {
           completeopt = "menuone,noinsert,noselect,preview",
         },
@@ -549,7 +555,6 @@ return {
           documentation = cmp.config.window.bordered(),
         },
         view = {
-          docs_auto_open = true,
           docs = {
             auto_open = true,
           },
@@ -571,7 +576,6 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
           { name = "mkdnflow" },
           { name = "orgmode" },

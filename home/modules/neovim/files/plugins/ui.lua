@@ -1,3 +1,4 @@
+---@type LazyPluginSpec[]
 return {
   -- Dressing (better vim ui)
   {
@@ -174,6 +175,8 @@ return {
   -- Internal statusline
   {
     "b0o/incline.nvim",
+    -- stylua: ignore
+    enabled = function() return vim.g.neovide == nil end,
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
     },

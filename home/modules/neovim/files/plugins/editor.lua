@@ -531,6 +531,17 @@ return {
           showcmd = true,
         },
       },
+      on_open = function()
+        if vim.g.neovide then
+          vim.g.neovide_zen_old_scale = vim.g.neovide_scale_factor
+          vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.5
+        end
+      end,
+      on_close = function()
+        if vim.g.neovide then
+          vim.g.neovide_scale_factor = vim.g.neovide_zen_old_scale or 1.0
+        end
+      end,
     },
     init = function()
       local wk = require("which-key")
@@ -549,7 +560,17 @@ return {
     "folke/twilight.nvim",
     lazy = false,
     opts = {
-      context = 2,
+      context = 10,
+      expand = {
+        "function",
+        "method",
+        "table",
+        "if_statement",
+        "preproc_function_def",
+        "function_definition",
+        "paragraph",
+        "list",
+      },
     },
     keys = {
       { "<leader>zt", "<CMD>Twilight<CR>", desc = "Toggle Twilight" },
@@ -652,7 +673,6 @@ return {
   {
     "code-biscuits/nvim-biscuits",
     event = "BufEnter",
-    enabled = false,
     opts = {
       show_on_start = false,
       cursor_line_only = true,
@@ -664,6 +684,7 @@ return {
       language_config = {
         org = { disabled = true },
         markdown = { disabled = true },
+        help = { disabled = true },
       },
     },
     keys = {
