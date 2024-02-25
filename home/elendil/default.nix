@@ -82,6 +82,16 @@ in
       };
     };
 
+    gaming = {
+      enable = true;
+      dwarfFortress = {
+        enable = true;
+        config = {
+          theme = with pkgs.dwarf-fortress-packages; themes.ironhand;
+        };
+      };
+    };
+
     helix = {
       enable = true;
       package = unstable.helix;

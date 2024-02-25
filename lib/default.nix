@@ -19,6 +19,7 @@
         ../home/modules/git.nix
         ../home/modules/zellij.nix
         ../home/modules/coding.nix
+        ../home/modules/gaming.nix
       ] ++ extraModules;
     };
 
