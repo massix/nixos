@@ -28,7 +28,7 @@ in
       channel = if cfg.configuration.unstable then unstable else pkgs;
     in
     mkIf cfg.enable {
-      programs.bash.enable = true;
+      programs.bash.enable = false;
       programs.zsh.enable = false;
 
       programs.broot = {

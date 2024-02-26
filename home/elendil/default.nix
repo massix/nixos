@@ -26,6 +26,10 @@ let
     name = "Rec Mono Casual";
     size = 10;
   };
+  hl = {
+    enabled = true;
+    file = "$HOME/org/.hledger.journal";
+  };
 in
 {
   my-modules = {
@@ -266,7 +270,7 @@ in
   };
 
   home.sessionVariables = {
-    EMACS = "${unstable.emacs-unstable}/bin/emacs";
+    LEDGER_FILE = hl.file;
   };
 
   home.packages =
@@ -274,11 +278,9 @@ in
       stable-packages = with pkgs; [
         gnome.dconf-editor
         gnome3.gnome-tweaks
-        rclone
       ];
 
       unstable-packages = with unstable; [
-        obsidian
         just
         powertop
         microsoft-edge
@@ -288,18 +290,11 @@ in
         # document conversion
         pandoc
 
-        # pdflatex
-        texlive.combined.scheme-small
-
         # Only for Teams PWA
         google-chrome
 
         spotify
         spotube
-
-        # TODO: make a module out of this
-        emacs-unstable
-        emacsPackages.vterm
 
         gnomeExtensions.gsconnect
       ];
@@ -307,8 +302,16 @@ in
       other-packages = [
         onedriver.onedriver
       ];
+
+      hledger-packages =
+        if hl.enabled then with unstable; [
+          hledger
+          hledger-ui
+          hledger-web
+          hledger-utils
+        ] else [ ];
     in
-    stable-packages ++ unstable-packages ++ other-packages;
+    stable-packages ++ unstable-packages ++ other-packages ++ hledger-packages;
 
   systemd.user.startServices = "sd-switch";
 
