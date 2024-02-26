@@ -951,4 +951,14 @@ return {
     opts = {},
     ft = { "qf" },
   },
+
+  -- Mini.align for aligning text
+  {
+    "echasnovski/mini.align",
+    opts = {},
+    keys = {
+      { "ga", mode = { "n", "v" }, desc = "Align" },
+      { "gA", mode = { "n", "v" }, desc = "Align with preview" },
+    },
+  },
 }
