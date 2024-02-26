@@ -30,9 +30,7 @@ return {
       {
         "massix/org-checkbox.nvim",
         opts = {},
-        config = function()
-          require("orgcheckbox").setup()
-        end,
+        main = "orgcheckbox",
       },
     },
     config = function(_, opts)
