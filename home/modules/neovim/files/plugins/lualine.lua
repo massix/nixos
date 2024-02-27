@@ -124,20 +124,6 @@ return {
               icon = " ",
             },
             { "branch" },
-            {
-              -- FIXME: this can be done in a better way probably
-              function()
-                ---@diagnostic disable-next-line: undefined-global
-                local clock = orgmode.statusline()
-                if clock ~= nil and clock ~= "" then
-                  local final = clock:gsub("%(Org%)", " "):gsub("%%", "%%%%"):gsub("%((.*)%)", "%1")
-                  return final
-                else
-                  return ""
-                end
-              end,
-              color = Util.fg("Special"),
-            },
           },
           lualine_c = {
             {
