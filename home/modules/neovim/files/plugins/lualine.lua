@@ -123,6 +123,75 @@ return {
               end,
               icon = " ",
             },
+            -- orgmode statusline
+            {
+              function()
+                ---@param headline OrgHeadline
+                local generate_statusline = function(headline)
+                  local active = headline:get_logbook():get_total_with_active():to_string()
+                  local effort = headline:get_property("effort")
+                  local priority = headline:get_priority()
+                  local category = headline:get_category()
+
+                  ---@type string
+                  local result
+
+                  if effort then
+                    result = string.format("%s/%s", active, effort)
+                  else
+                    result = string.format("%s", active)
+                  end
+
+                  if category and category ~= "" then
+                    result = string.format("%s (%s)", result, category)
+                  end
+
+                  if priority ~= "" then
+                    result = string.format("%s #%s", result, priority)
+                  end
+
+                  return result
+                end
+
+                local orgmode = require("orgmode").instance()
+                local clocked_headline = orgmode.clock.clocked_headline
+
+                if clocked_headline then
+                  return generate_statusline(clocked_headline)
+                else
+                  return ""
+                end
+              end,
+              cond = function()
+                if package.loaded["orgmode"] then
+                  local orgmode = require("orgmode").instance()
+                  return orgmode and orgmode.clock:has_clocked_headline()
+                end
+              end,
+              color = function()
+                -- FIXME: why this does not work??
+                if vim.api.nvim_buf_get_option(0, "filetype") == "alpha" then
+                  return { gui = "bold" }
+                end
+
+                local orgmode = require("orgmode").instance()
+                local clocked_headline = orgmode and orgmode.clock.clocked_headline
+                local priority = clocked_headline and clocked_headline:get_priority()
+
+                if clocked_headline and priority ~= "" then
+                  local highlights = {
+                    A = { gui = "bold", fg = "#f38ba8" },
+                    B = { gui = "bold", fg = "#f9e2af" },
+                    C = { gui = "bold", fg = "#a6e3e1" },
+                  }
+
+                  return highlights[priority] or { gui = "bold" }
+                else
+                  return { gui = "bold" }
+                end
+              end,
+              icon = " ",
+            },
             { "branch" },
           },
           lualine_c = {

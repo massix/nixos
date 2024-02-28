@@ -204,6 +204,10 @@ return {
         },
       }
     end,
+    keys = {
+      -- stylua: ignore
+      { "<leader>oR", function() require("orgmode").instance().clock:init() end, desc = "Reload Clock" },
+    },
   },
 
   {
