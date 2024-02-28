@@ -157,7 +157,7 @@ return {
       })
     end,
     keys = {
-      { "<leader>A", "<cmd> Alpha<CR>", desc = "Alpha Dashboard" },
+      { "<leader>A", "<cmd>Alpha<CR>", desc = "Alpha Dashboard" },
     },
   },
 }
