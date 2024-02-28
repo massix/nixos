@@ -669,35 +669,6 @@ return {
     },
   },
 
-  -- Code biscuits
-  {
-    "code-biscuits/nvim-biscuits",
-    event = "BufEnter",
-    opts = {
-      show_on_start = false,
-      cursor_line_only = true,
-      on_events = { "CursorHoldI", "InsertLeave" },
-      trim_by_words = false,
-      default_config = {
-        prefix_string = " ",
-      },
-      language_config = {
-        org = { disabled = true },
-        markdown = { disabled = true },
-        help = { disabled = true },
-      },
-    },
-    keys = {
-      {
-        "<leader>cb",
-        function()
-          require("nvim-biscuits").toggle_biscuits()
-        end,
-        desc = "Toggle biscuits",
-      },
-    },
-  },
-
   -- Better escape
   {
     "max397574/better-escape.nvim",
