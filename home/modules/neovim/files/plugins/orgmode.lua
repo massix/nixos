@@ -2,10 +2,9 @@ local util = require("util.nix")
 
 return {
   {
-    "massix/orgmode",
-    branch = "feat/repeat_to_state",
+    "nvim-orgmode/orgmode",
     enabled = true,
-    event = "VeryLazy",
+    ft = { "org", "orgagenda" },
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       {
@@ -19,7 +18,7 @@ return {
           require("telescope").load_extension("orgmode")
         end,
         keys = {
-          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org header" },
+          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org headings" },
         },
       },
       {
@@ -34,8 +33,9 @@ return {
       },
     },
     config = function(_, opts)
-      require("orgmode").setup_ts_grammar()
-      require("orgmode").setup(opts)
+      local orgmode = require("orgmode")
+      orgmode.setup_ts_grammar()
+      orgmode.setup(opts)
     end,
     opts = function()
       local Menu = require("org-modern.menu")
@@ -204,9 +204,11 @@ return {
         },
       }
     end,
+    -- stylua: ignore
     keys = {
-      -- stylua: ignore
-      { "<leader>oR", function() require("orgmode").instance().clock:init() end, desc = "Reload Clock" },
+      { "<leader>oR", function() require("orgmode").instance().clock:init() end, desc = "org reload clock" },
+      { "<leader>oa", function() require("orgmode").action("agenda.prompt") end, desc = "org agenda" },
+      { "<leader>oc", function() require("orgmode").action("capture.prompt") end, desc = "org capture" },
     },
   },
 

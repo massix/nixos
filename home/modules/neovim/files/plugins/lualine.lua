@@ -24,10 +24,9 @@ return {
     opts = function()
       local Util = require("util.defaults")
       local icons = Util.icons
-
       return {
         options = {
-          theme = "auto",
+          theme = "catppuccin",
           globalstatus = true,
           icons_enabled = true,
           section_separators = { left = "", right = "" },
@@ -123,6 +122,7 @@ return {
               end,
               icon = " ",
             },
+
             -- orgmode statusline
             {
               function()
@@ -132,6 +132,14 @@ return {
                   local effort = headline:get_property("effort")
                   local priority = headline:get_priority()
                   local category = headline:get_category()
+                  local title = headline:get_title()
+
+                  if string.len(title) > 20 then
+                    title = title:sub(1, 20) .. "  "
+                  end
+
+                  -- Remove percentages
+                  title = title:gsub("%%", "%%%%")
 
                   ---@type string
                   local result
@@ -150,7 +158,7 @@ return {
                     result = string.format("%s #%s", result, priority)
                   end
 
-                  return result
+                  return result .. " " .. title
                 end
 
                 local orgmode = require("orgmode").instance()
@@ -166,29 +174,26 @@ return {
                 if package.loaded["orgmode"] then
                   local orgmode = require("orgmode").instance()
                   return orgmode and orgmode.clock:has_clocked_headline()
+                else
+                  return false
                 end
               end,
               color = function()
-                -- FIXME: why this does not work??
-                if vim.api.nvim_buf_get_option(0, "filetype") == "alpha" then
-                  return { gui = "bold" }
+                if not package.loaded["orgmode"] then
+                  return nil
                 end
 
                 local orgmode = require("orgmode").instance()
                 local clocked_headline = orgmode and orgmode.clock.clocked_headline
                 local priority = clocked_headline and clocked_headline:get_priority()
 
-                if clocked_headline and priority ~= "" then
-                  local highlights = {
-                    A = { gui = "bold", fg = "#f38ba8" },
-                    B = { gui = "bold", fg = "#f9e2af" },
-                    C = { gui = "bold", fg = "#a6e3e1" },
-                  }
+                local highlights = {
+                  A = { gui = "bold", fg = "#f38ba8" },
+                  B = { gui = "bold", fg = "#f9e2af" },
+                  C = { gui = "bold", fg = "#a6e3e1" },
+                }
 
-                  return highlights[priority] or { gui = "bold" }
-                else
-                  return { gui = "bold" }
-                end
+                return highlights[priority] or highlights.B
               end,
               icon = " ",
             },
@@ -225,12 +230,6 @@ return {
             {
               "overseer",
               colored = true,
-            },
-            -- stylua: ignore
-            {
-              function() return icons.kinds.Codeium .. " " .. codeium_status() end,
-              cond = function() return codeium_status() ~= nil end,
-              color = Util.fg("Special"),
             },
             -- stylua: ignore
             {
