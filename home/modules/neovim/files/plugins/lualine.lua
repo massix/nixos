@@ -1,21 +1,3 @@
-local function codeium_status()
-  if not package.loaded["cmp"] then
-    print("cmp not loaded")
-    return nil
-  end
-
-  for _, s in ipairs(require("cmp").core.sources) do
-    if s.name == "codeium" and s.source:is_available() then
-      if s.status == s.SourceStatus.FETCHING then
-        return "Pending"
-      end
-      return "OK"
-    end
-  end
-
-  return nil
-end
-
 return {
   -- statusline
   {
