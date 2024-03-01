@@ -5,5 +5,5 @@
   codeium-ls = import ./coding/codeiumls.nix { inherit pkgs; };
   vscode-js-debug = import ./coding/vscodejsdebug.nix { inherit pkgs; };
   spotube = import ./spotube { inherit pkgs; };
+  tana = import ./tana { inherit pkgs; };
 }
-

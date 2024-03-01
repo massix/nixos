@@ -312,11 +312,11 @@ in
         spotube
 
         gnomeExtensions.gsconnect
+        onedriver
+        tana
       ];
 
-      other-packages = [
-        onedriver.onedriver
-      ];
+      other-packages = [ ];
 
       hledger-packages =
         if hl.enabled then with unstable; [
