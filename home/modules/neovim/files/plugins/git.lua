@@ -37,6 +37,14 @@ local spec = {
     },
   },
 
+  -- Fugitive
+  {
+    "tpope/vim-fugitive",
+    opts = {},
+    config = function() end,
+    cmd = { "G", "Git", "Gstatus" },
+  },
+
   -- Git signs
   {
     "lewis6991/gitsigns.nvim",
