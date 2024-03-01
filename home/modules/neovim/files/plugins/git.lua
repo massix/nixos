@@ -35,6 +35,7 @@ local spec = {
         desc = "Open Neogit",
       },
     },
+    cmd = { "Neogit" },
   },
 
   -- Fugitive
