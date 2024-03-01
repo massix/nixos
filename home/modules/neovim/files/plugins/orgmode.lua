@@ -36,6 +36,43 @@ return {
       local orgmode = require("orgmode")
       orgmode.setup_ts_grammar()
       orgmode.setup(opts)
+
+      local orgmode_group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        pattern = "*.org",
+        group = orgmode_group,
+        callback = function()
+          local current_window = vim.api.nvim_get_current_win()
+          local current_buffer = vim.api.nvim_get_current_buf()
+
+          -- If we're already in the agenda, skip everything (for example when clocking)
+          if vim.api.nvim_buf_get_option(current_buffer, "ft") == "orgagenda" then
+            return
+          end
+
+          ---@type number[]
+          local orgagenda = vim.tbl_filter(function(w)
+            local buffer = vim.api.nvim_win_get_buf(w)
+            return vim.api.nvim_buf_get_option(buffer, "ft") == "orgagenda"
+          end, vim.api.nvim_list_wins())
+
+          local _, oa_window = next(orgagenda)
+
+          if oa_window ~= nil then
+            local first_line = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(oa_window), 0, 1, true)
+
+            -- If we have the word "agenda" in the very first line, then it's the agenda!
+            if first_line[1]:match("agenda") then
+              orgmode.instance().agenda:redo(false)
+
+              -- Schedule the callback to run after the orgmode buffer is modified
+              vim.defer_fn(function()
+                vim.api.nvim_set_current_win(current_window)
+              end, 500)
+            end
+          end
+        end,
+      })
     end,
     opts = function()
       local Menu = require("org-modern.menu")
