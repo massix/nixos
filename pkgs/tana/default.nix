@@ -1,7 +1,7 @@
-{ pkgs }:
+{ stable, unstable }:
 let
-  inherit (pkgs) stdenv lib;
-  xorgLibs = with pkgs.xorg; [
+  inherit (unstable) stdenv lib xorg;
+  xorgLibs = with xorg; [
     libX11
     libxcb
     libXcomposite
@@ -10,7 +10,10 @@ let
     libXfixes
     libXrandr
   ];
-  buildInputs = with pkgs; [
+  glLibs = [
+    stable.mesa
+  ];
+  libs = with unstable; [
     alsa-lib
     at-spi2-atk
     atkmm
@@ -27,19 +30,20 @@ let
     nspr
     nss
     pango
-  ] ++ xorgLibs;
+  ];
+  buildInputs = xorgLibs ++ glLibs ++ libs;
   version = "1.0.15";
 in
 stdenv.mkDerivation {
   pname = "tana";
   inherit version buildInputs;
 
-  src = pkgs.fetchurl {
+  src = stable.fetchurl {
     url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v1.0.15/tana_${version}_amd64.deb";
     hash = "sha256-94AyAwNFN5FCol97US1Pv8IN1+WMRA3St9kL2w+9FJU=";
   };
 
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = with stable; [
     autoPatchelfHook
     dpkg
     makeWrapper
@@ -49,7 +53,7 @@ stdenv.mkDerivation {
 
   # Needed for zygote
   runtimeDependencies = [
-    pkgs.systemd
+    stable.systemd
   ];
 
   dontConfigure = true;

@@ -1,22 +1,22 @@
-{ pkgs, ... }:
+{ unstable, ... }:
 let
-  inherit (pkgs) buildNpmPackage;
+  inherit (unstable) buildNpmPackage;
 in
 buildNpmPackage rec {
   pname = "vscode-js-debug";
   version = "1.85.0";
 
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = with unstable; [
     nodePackages.gulp-cli
     python311
     pkg-config
   ];
 
-  buildInputs = with pkgs; [ libsecret ];
+  buildInputs = with unstable; [ libsecret ];
 
   patches = [ ./patches/patch-packages-json.patch ];
 
-  src = pkgs.fetchFromGitHub {
+  src = unstable.fetchFromGitHub {
     owner = "microsoft";
     repo = pname;
     rev = "v${version}";

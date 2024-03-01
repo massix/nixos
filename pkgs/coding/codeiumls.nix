@@ -1,9 +1,9 @@
-{ pkgs, ... }:
-pkgs.stdenvNoCC.mkDerivation rec {
+{ unstable, ... }:
+unstable.stdenvNoCC.mkDerivation rec {
   pname = "codeium-ls";
   version = "1.6.7";
 
-  nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
+  nativeBuildInputs = with unstable; [ autoPatchelfHook ];
 
   src = builtins.fetchurl {
     url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_linux_x64.gz";

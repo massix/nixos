@@ -113,7 +113,7 @@
           ./system/elendil/hardware-configuration.nix
         ];
       };
-      packages."${system}" = import ./pkgs { pkgs = unstable; };
+      packages."${system}" = import ./pkgs { inherit unstable; stable = pkgs; };
 
       devShells."${system}" = {
         default = unstable.mkShell {

@@ -1,6 +1,6 @@
-{ pkgs }:
+{ unstable, ... }:
 let
-  inherit (pkgs) buildGoModule fetchFromGitHub lib;
+  inherit (unstable) buildGoModule fetchFromGitHub lib;
 in
 buildGoModule rec {
   pname = "onedriver";
@@ -29,13 +29,13 @@ buildGoModule rec {
     ];
   };
 
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = with unstable; [
     pkg-config
     git
     installShellFiles
   ];
 
-  buildInputs = with pkgs; [
+  buildInputs = with unstable; [
     webkitgtk_4_1
     glib
     fuse
@@ -66,7 +66,7 @@ buildGoModule rec {
 
     substituteInPlace $out/lib/systemd/user/onedriver@.service \
       --replace "/usr/bin/onedriver" "$out/bin/onedriver" \
-      --replace "/usr/bin/fusermount" "${pkgs.fuse3}/bin/fusermount"
+      --replace "/usr/bin/fusermount" "${unstable.fuse3}/bin/fusermount"
   '';
 
   doCheck = false;
