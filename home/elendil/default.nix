@@ -71,7 +71,7 @@ in
       enable = true;
       unstable = true;
       languages = {
-        c = true;
+        c = false;
         c_sharp = true;
         haskell = true;
         javascript = true;
@@ -81,7 +81,7 @@ in
         misc = true;
         nix = true;
         purescript = true;
-        racket = true;
+        racket = false;
         rust = true;
         scripting = true;
         terraform = true;
