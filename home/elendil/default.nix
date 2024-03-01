@@ -3,8 +3,23 @@
 , ...
 }:
 let
-  mypkgs = import ../../pkgs { inherit pkgs; };
-  inherit (mypkgs) onedriver;
+  mkOneDriverService = { pkgs, mountpoint }: {
+    Unit = {
+      Description = "onedriver";
+    };
+
+    Service = {
+      ExecStart = "${pkgs.onedriver}/bin/onedriver ${mountpoint}";
+      ExecStopPost = "${pkgs.fuse}/bin/fusermount -uz ${mountpoint}";
+      Restart = "on-abnormal";
+      RestartSec = "3";
+      RestartForceExitStatus = "2";
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
   catppuccin-backgrounds = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-backgrounds";
     version = "0.0.1";
@@ -317,10 +332,9 @@ in
 
   # Automount Onedriver
   systemd.user.services = {
-    "onedriver@home-massi-OneDrive" = onedriver.mkOneDriverService {
+    "onedriver@home-massi-OneDrive" = mkOneDriverService {
+      pkgs = unstable;
       mountpoint = "\${HOME}/OneDrive";
-      inherit (onedriver) onedriver;
-      inherit (pkgs) fuse;
     };
   };
 

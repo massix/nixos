@@ -57,17 +57,15 @@
     , masterpkgs
     , purescript-overlay
     , emacs-overlay
+    , self
     , ...
     }:
     let
       system = "x86_64-linux";
       stateVersion = "23.11";
-      mypkgs = import ./pkgs/default.nix { pkgs = unstable; };
       overlays = [
         (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
-        (_final: _prev: {
-          inherit (mypkgs) lombok codeium-ls vscode-js-debug spotube;
-        })
+        (_final: _prev: self.packages."${system}")
         nix-direnv.overlays.default
         purescript-overlay.overlays.default
         emacs-overlay.overlays.default
@@ -115,8 +113,9 @@
           ./system/elendil/hardware-configuration.nix
         ];
       };
-      devShells."${system}" = {
+      packages."${system}" = import ./pkgs { pkgs = unstable; };
 
+      devShells."${system}" = {
         default = unstable.mkShell {
           packages = with unstable; [
             deadnix /* dead code for nix */
