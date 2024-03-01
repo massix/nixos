@@ -21,6 +21,7 @@ let
     glib
     gtk3
     libdrm
+    libglvnd
     libxkbcommon
     mesa
     nspr
