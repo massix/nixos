@@ -27,6 +27,7 @@ in
       purescript = mkEnDef "Enable Purescript tooling" false;
       racket = mkEnDef "Enable racket tooling" false;
       rust = mkEnDef "Enable Rust tooling" false;
+      scripting = mkEnDef "Enable scripting tooling" false;
       terraform = mkEnDef "Enable Terraform tooling" false;
       yaml = mkEnDef "Enable YAML tooling" false;
     };
@@ -91,6 +92,10 @@ in
 
       racketTooling = with channel; [
         racket
+      ];
+
+      scriptingTooling = with channel; [
+        nodePackages.bash-language-server /* language server for bash */
       ];
 
       nixTooling = with channel; [
@@ -164,6 +169,7 @@ in
         (whenT cfg.languages.java javaTooling) ++
         (whenT cfg.languages.json jsonTooling) ++
         (whenT cfg.languages.yaml yamlTooling) ++
+        (whenT cfg.languages.scripting scriptingTooling) ++
         (whenT cfg.languages.misc miscTooling);
     };
 }

@@ -389,6 +389,10 @@ return {
         capabilities = capabilities,
       })
 
+      lspconfig.bashls.setup({
+        capabilities = capabilities,
+      })
+
       lspconfig.omnisharp.setup({
         cmd = { "OmniSharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
         handlers = {

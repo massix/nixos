@@ -83,6 +83,7 @@ in
         purescript = true;
         racket = true;
         rust = true;
+        scripting = true;
         terraform = true;
         yaml = true;
       };
