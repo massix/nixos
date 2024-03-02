@@ -84,14 +84,18 @@ return {
           vim.wo.conceallevel = 3
 
           local toggle_conceal = function()
-            vim.wo.conceallevel = vim.wo.conceallevel == 0 and 3 or 0
+            if vim.wo.conceallevel == 0 then
+              vim.wo.conceallevel = 3
+            else
+              vim.wo.conceallevel = 0
+            end
           end
 
           local wk = require("which-key")
           wk.register({
             -- stylua: ignore
-            ["<C-e>"] = { function() toggle_conceal() end, "Toggle Conceal", mode = { "i" }, buffer = 0 },
-          })
+            ["<C-e>"] = { function() toggle_conceal() end, "Toggle Conceal" },
+          }, { mode = { "n", "i" }, buffer = 0 })
         end,
       })
     end,
