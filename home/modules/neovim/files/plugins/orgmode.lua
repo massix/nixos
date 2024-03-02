@@ -37,6 +37,7 @@ return {
       orgmode.setup_ts_grammar()
       orgmode.setup(opts)
 
+      -- Automatically refresh the agenda view when editing an agenda file
       local orgmode_group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
       vim.api.nvim_create_autocmd("BufWritePost", {
         pattern = "*.org",
@@ -71,6 +72,26 @@ return {
               end, 500)
             end
           end
+        end,
+      })
+
+      -- Set conceal stuff when in orgmode
+      vim.api.nvim_create_autocmd({ "Filetype" }, {
+        pattern = { "org" },
+        group = orgmode_group,
+        callback = function()
+          vim.wo.concealcursor = "nvic"
+          vim.wo.conceallevel = 3
+
+          local toggle_conceal = function()
+            vim.wo.conceallevel = vim.wo.conceallevel == 0 and 3 or 0
+          end
+
+          local wk = require("which-key")
+          wk.register({
+            -- stylua: ignore
+            ["<C-e>"] = { function() toggle_conceal() end, "Toggle Conceal", mode = { "i" }, buffer = 0 },
+          })
         end,
       })
     end,
@@ -183,12 +204,12 @@ return {
         },
         org_default_notes_file = "~/org/refile.org",
         org_agenda_text_search_extra_files = { "agenda-archives" },
-        org_startup_indented = true,
-        org_adapt_indentation = false,
-        org_tags_column = 0,
+        org_startup_indented = false,
+        org_adapt_indentation = true,
+        org_tags_column = 80,
         win_split_mode = "horizontal",
         win_border = "rounded",
-        org_hide_leading_stars = true,
+        org_hide_leading_stars = false,
         org_hide_emphasis_markers = true,
         org_log_into_drawer = "LOGBOOK",
         org_startup_folded = "inherit",
