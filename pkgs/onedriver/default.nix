@@ -1,6 +1,6 @@
 { unstable, ... }:
 let
-  inherit (unstable) buildGoModule fetchFromGitHub lib;
+  inherit (unstable) buildGoModule fetchFromGitHub;
 in
 buildGoModule rec {
   pname = "onedriver";
@@ -15,19 +15,6 @@ buildGoModule rec {
   };
 
   vendorHash = "sha256-OOiiKtKb+BiFkoSBUQQfqm4dMfDW3Is+30Kwcdg8LNA=";
-
-  meta = with lib; {
-    description = "Onedriver is a network filesystem for Linux";
-    homepage = "https://github.com/${src.owner}/${src.repo}";
-    license = licenses.gpl3;
-    maintainers = [
-      {
-        handle = "Massimo Gengarelli";
-        email = "massimo.gengarelli@gmail.com";
-        github = "massix";
-      }
-    ];
-  };
 
   nativeBuildInputs = with unstable; [
     pkg-config
@@ -66,7 +53,7 @@ buildGoModule rec {
 
     substituteInPlace $out/lib/systemd/user/onedriver@.service \
       --replace "/usr/bin/onedriver" "$out/bin/onedriver" \
-      --replace "/usr/bin/fusermount" "${unstable.fuse3}/bin/fusermount"
+      --replace "/usr/bin/fusermount" "/run/wrappers/bin/fusermount"
   '';
 
   doCheck = false;
