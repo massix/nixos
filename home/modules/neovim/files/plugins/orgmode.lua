@@ -45,14 +45,14 @@ return {
         pattern = { "org" },
         group = orgmode_group,
         callback = function()
-          vim.opt_local.concealcursor = "nvic"
-          vim.opt_local.conceallevel = 3
+          vim.wo.concealcursor = "nvic"
+          vim.wo.conceallevel = 3
 
           local toggle_conceal = function()
-            if vim.opt_local.conceallevel == 0 then
-              vim.opt_local.conceallevel = 3
+            if vim.wo.conceallevel > 0 then
+              vim.wo.conceallevel = 0
             else
-              vim.opt_local.conceallevel = 0
+              vim.wo.conceallevel = 3
             end
           end
 
