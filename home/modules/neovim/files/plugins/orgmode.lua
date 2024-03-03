@@ -39,55 +39,20 @@ return {
 
       -- Automatically refresh the agenda view when editing an agenda file
       local orgmode_group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
-      vim.api.nvim_create_autocmd("BufWritePost", {
-        pattern = "*.org",
-        group = orgmode_group,
-        callback = function()
-          local current_window = vim.api.nvim_get_current_win()
-          local current_buffer = vim.api.nvim_get_current_buf()
-
-          -- If we're already in the agenda, skip everything (for example when clocking)
-          if vim.api.nvim_buf_get_option(current_buffer, "ft") == "orgagenda" then
-            return
-          end
-
-          ---@type number[]
-          local orgagenda = vim.tbl_filter(function(w)
-            local buffer = vim.api.nvim_win_get_buf(w)
-            return vim.api.nvim_buf_get_option(buffer, "ft") == "orgagenda"
-          end, vim.api.nvim_list_wins())
-
-          local _, oa_window = next(orgagenda)
-
-          if oa_window ~= nil then
-            local first_line = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(oa_window), 0, 1, true)
-
-            -- If we have the word "agenda" in the very first line, then it's the agenda!
-            if first_line[1]:match("agenda") then
-              orgmode.instance().agenda:redo(false)
-
-              -- Schedule the callback to run after the orgmode buffer is modified
-              vim.defer_fn(function()
-                vim.api.nvim_set_current_win(current_window)
-              end, 500)
-            end
-          end
-        end,
-      })
 
       -- Set conceal stuff when in orgmode
       vim.api.nvim_create_autocmd({ "Filetype" }, {
         pattern = { "org" },
         group = orgmode_group,
         callback = function()
-          vim.wo.concealcursor = "nvic"
-          vim.wo.conceallevel = 3
+          vim.opt_local.concealcursor = "nvic"
+          vim.opt_local.conceallevel = 3
 
           local toggle_conceal = function()
-            if vim.wo.conceallevel == 0 then
-              vim.wo.conceallevel = 3
+            if vim.opt_local.conceallevel == 0 then
+              vim.opt_local.conceallevel = 3
             else
-              vim.wo.conceallevel = 0
+              vim.opt_local.conceallevel = 0
             end
           end
 
@@ -216,7 +181,7 @@ return {
         org_hide_leading_stars = false,
         org_hide_emphasis_markers = true,
         org_log_into_drawer = "LOGBOOK",
-        org_startup_folded = "inherit",
+        org_startup_folded = "content",
         org_capture_templates = {
           r = {
             description = "Refilable Task",
