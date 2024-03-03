@@ -1,15 +1,19 @@
-{ unstable, ... }:
+{ unstable
+, wrapperDir ? "/run/wrappers/bin"
+, ...
+}:
 let
   inherit (unstable) buildGoModule fetchFromGitHub;
-in
-buildGoModule rec {
-  pname = "onedriver";
   version = "0.14.1";
+  pname = "onedriver";
+in
+buildGoModule {
+  inherit version pname;
   enableParallelBuilding = true;
 
   src = fetchFromGitHub {
     owner = "jstaf";
-    repo = "onedriver";
+    repo = pname;
     rev = "v${version}";
     hash = "sha256-mA5otgqXQAw2UYUOJaC1zyJuzEu2OS/pxmjJnWsVdxs=";
   };
@@ -22,11 +26,7 @@ buildGoModule rec {
     installShellFiles
   ];
 
-  buildInputs = with unstable; [
-    webkitgtk_4_1
-    glib
-    fuse
-  ];
+  buildInputs = with unstable; [ webkitgtk_4_1 glib fuse ];
 
   ldflags = [ "-X github.com/jstaf/onedriver/cmd/common.commit=v${version}" ];
 
@@ -53,7 +53,7 @@ buildGoModule rec {
 
     substituteInPlace $out/lib/systemd/user/onedriver@.service \
       --replace "/usr/bin/onedriver" "$out/bin/onedriver" \
-      --replace "/usr/bin/fusermount" "/run/wrappers/bin/fusermount"
+      --replace "/usr/bin/fusermount" "${wrapperDir}/fusermount"
   '';
 
   doCheck = false;
