@@ -3,14 +3,16 @@
 , ...
 }:
 let
-  mkOneDriverService = { pkgs, mountpoint }: {
+  wrapperDir = "/run/wrappers/";
+
+  mOnedriverService = { pkgs, mountpoint }: {
     Unit = {
       Description = "onedriver";
     };
 
     Service = {
       ExecStart = "${pkgs.onedriver}/bin/onedriver ${mountpoint}";
-      ExecStopPost = "${pkgs.fuse}/bin/fusermount -uz ${mountpoint}";
+      ExecStopPost = "${wrapperDir}/bin/fusermount -uz ${mountpoint}";
       Restart = "on-abnormal";
       RestartSec = "3";
       RestartForceExitStatus = "2";
@@ -333,7 +335,7 @@ in
 
   # Automount Onedriver
   systemd.user.services = {
-    "onedriver@home-massi-OneDrive" = mkOneDriverService {
+    "onedriver@home-massi-OneDrive" = mOnedriverService {
       pkgs = unstable;
       mountpoint = "\${HOME}/OneDrive";
     };
