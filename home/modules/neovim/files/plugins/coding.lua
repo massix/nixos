@@ -362,6 +362,18 @@ return {
 
       lspconfig.terraformls.setup({
         capabilities = capabilities,
+        -- See https://github.com/hashicorp/terraform-ls/issues/1655
+        init_options = {
+          terraform = {
+            timeout = "30s",
+          },
+          validation = {
+            enableEnhancedValidation = true,
+          },
+          experimentalFeatures = {
+            prefillRequiredFields = true,
+          },
+        },
       })
 
       lspconfig.dockerls.setup({
