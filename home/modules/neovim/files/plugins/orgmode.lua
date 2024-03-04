@@ -48,6 +48,10 @@ return {
           vim.wo.concealcursor = "nvic"
           vim.wo.conceallevel = 3
 
+          -- Make sure we only move one character when tabbing
+          vim.opt_local.shiftwidth = 1
+          vim.opt_local.tabstop = 1
+
           local toggle_conceal = function()
             if vim.wo.conceallevel > 0 then
               vim.wo.conceallevel = 0
@@ -176,7 +180,7 @@ return {
         org_startup_indented = false,
         org_adapt_indentation = true,
         org_tags_column = 80,
-        win_split_mode = "horizontal",
+        win_split_mode = "bo 20sp",
         win_border = "rounded",
         org_hide_leading_stars = false,
         org_hide_emphasis_markers = true,
