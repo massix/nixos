@@ -1,6 +1,6 @@
 { stable, unstable }:
 let
-  inherit (unstable) stdenv lib xorg;
+  inherit (unstable) stdenv xorg lib;
   xorgLibs = with xorg; [
     libX11
     libxcb
@@ -12,6 +12,7 @@ let
   ];
   glLibs = [
     stable.mesa
+    unstable.libglvnd
   ];
   libs = with unstable; [
     alsa-lib
@@ -24,7 +25,6 @@ let
     glib
     gtk3
     libdrm
-    libglvnd
     libxkbcommon
     mesa
     nspr
@@ -39,7 +39,7 @@ stdenv.mkDerivation {
   inherit version buildInputs;
 
   src = stable.fetchurl {
-    url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v1.0.15/tana_${version}_amd64.deb";
+    url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v${version}/tana_${version}_amd64.deb";
     hash = "sha256-94AyAwNFN5FCol97US1Pv8IN1+WMRA3St9kL2w+9FJU=";
   };
 
@@ -47,8 +47,6 @@ stdenv.mkDerivation {
     autoPatchelfHook
     dpkg
     makeWrapper
-    stdenv.cc.cc.lib
-    wrapGAppsHook
   ];
 
   # Needed for zygote
@@ -60,9 +58,11 @@ stdenv.mkDerivation {
   dontBuild = true;
 
   installPhase = ''
+    runHook preInstall
     mkdir -p $out
     cp -r usr/* $out
-    rm -f $out/bin/tana
+    rm $out/bin/tana
+    runHook postInstall
   '';
 
   postFixup = ''
@@ -70,7 +70,7 @@ stdenv.mkDerivation {
       --replace "Exec=tana" "Exec=$out/bin/tana" \
       --replace "Name=tana" "Name=Tana"
     makeWrapper $out/lib/tana/Tana $out/bin/tana \
-      --set LD_LIBRARY_PATH ${lib.makeLibraryPath buildInputs} \
+      --set LD_LIBRARY_PATH ${lib.makeLibraryPath glLibs} \
       --suffix LD_LIBRARY_PATH : $out/lib/tana
   '';
 }
