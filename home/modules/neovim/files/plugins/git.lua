@@ -28,7 +28,7 @@ local spec = {
     },
     --stylua: ignore
     keys = {
-      { "<leader>gg", function() require("neogit").open({ kind = "auto" }) end, desc = "Open Neogit", },
+      { "<leader>gg", function() require("neogit").open({ kind = "replace" }) end, desc = "Open Neogit", },
       { "<leader>gt", function() require("neogit").open({ kind = "tab" }) end, desc = "Open Neogit in new tab", },
     },
     cmd = { "Neogit" },
