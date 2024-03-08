@@ -21,6 +21,7 @@ in
       java = mkEnDef "Enable Java tooling" false;
       javascript = mkEnDef "Enable Javascript tooling" false;
       json = mkEnDef "Enable JSON tooling" false;
+      kotlin = mkEnDef "Enable Kotlin tooling" false;
       lua = mkEnDef "Enable LUA tooling" false;
       misc = mkEnDef "Enable other stuff (git, docker, ...)" false;
       nix = mkEnDef "Enable Nix tooling" false;
@@ -88,6 +89,10 @@ in
       purescriptTooling = with channel; [
         purs-tidy-bin.purs-tidy-0_10_0 /* Formatter for purescript */
         purescript-language-server /* language server for purescript */
+      ];
+
+      kotlinTooling = with channel; [
+        kotlin-language-server
       ];
 
       racketTooling = with channel; [
@@ -163,6 +168,7 @@ in
         (whenT cfg.languages.racket racketTooling) ++
         (whenT cfg.languages.nix nixTooling) ++
         (whenT cfg.languages.terraform terraformTooling) ++
+        (whenT cfg.languages.kotlin kotlinTooling) ++
         (whenT cfg.languages.javascript javascriptTooling) ++
         (whenT cfg.languages.lua luaTooling) ++
         (whenT cfg.languages.rust rustTooling) ++

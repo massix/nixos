@@ -54,6 +54,7 @@ return {
         "json",
         "just",
         "kdl",
+        "kotlin",
         "ledger",
         "lua",
         "luadoc",
@@ -398,6 +399,13 @@ return {
 
       lspconfig.bashls.setup({
         capabilities = capabilities,
+      })
+
+      lspconfig.kotlin_language_server.setup({
+        capabilities = capabilities,
+        init_options = {
+          storage_path = "/tmp/kotlinlangserver/",
+        },
       })
 
       lspconfig.omnisharp.setup({
