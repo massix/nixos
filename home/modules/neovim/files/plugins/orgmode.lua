@@ -63,7 +63,7 @@ return {
           local wk = require("which-key")
           wk.register({
             -- stylua: ignore
-            ["<C-e>"] = { function() toggle_conceal() end, "Toggle Conceal" },
+            ["<C-k>"] = { function() toggle_conceal() end, "Toggle Conceal" },
           }, { mode = { "n", "i" }, buffer = 0 })
         end,
       })
