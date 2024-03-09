@@ -155,23 +155,25 @@ return {
         notify_format = nil,
         sources = {
           -- Diagnostics --
-          nls.builtins.diagnostics.fish,
-          nls.builtins.diagnostics.deadnix,
+          nls.builtins.diagnostics.actionlint,
           nls.builtins.diagnostics.ansiblelint,
+          nls.builtins.diagnostics.commitlint,
+          nls.builtins.diagnostics.deadnix,
+          nls.builtins.diagnostics.dotenv_linter,
+          nls.builtins.diagnostics.editorconfig_checker,
+          nls.builtins.diagnostics.fish,
           nls.builtins.diagnostics.gitlint,
           nls.builtins.diagnostics.hadolint,
+          nls.builtins.diagnostics.ktlint,
+          nls.builtins.diagnostics.selene,
           nls.builtins.diagnostics.terraform_validate,
           nls.builtins.diagnostics.tfsec,
-
-          -- Formatting --
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.formatting.stylua,
-          nls.builtins.formatting.shfmt,
-          nls.builtins.formatting.nixpkgs_fmt,
+          nls.builtins.diagnostics.trivy,
+          nls.builtins.diagnostics.yamllint,
 
           -- Code Actions --
-          nls.builtins.code_actions.statix,
           nls.builtins.code_actions.refactoring,
+          nls.builtins.code_actions.statix,
           nls.builtins.code_actions.ts_node_action,
         },
       }
@@ -741,8 +743,9 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        nix = { "nixpkgs-fmt" },
+        nix = { "nixpkgs_fmt" },
         purescript = { "purstidy" },
+        fish = { "fish_indent" },
       },
       format_on_save = function(_)
         if util_defaults.has_autoformat() then

@@ -153,9 +153,16 @@ in
         hadolint /* linter for Dockerfiles */
         marksman /* language server for markdown */
         commitlint /* linter for commit messages */
+        actionlint /* linter for github actions */
         cocogitto /* autogenerate changelogs */
+        dotenv-linter /* linter for dotenv files */
+        editorconfig-checker /* linter for .editorconfig files */
         gnumake42 /* makefile */
         bear /* generate compilation database */
+        ktlint /* linter for kotlin */
+        selene /* linter for lua */
+        trivy /* security scanner for terraform */
+        yamllint /* linter for yaml */
       ];
     in
     {
