@@ -4,6 +4,7 @@
 }:
 let
   wrapperDir = "/run/wrappers/";
+  inherit (unstable) fetchFromGitHub;
 
   mOnedriverService = { pkgs, mountpoint }: {
     Unit = {
@@ -22,6 +23,7 @@ let
       WantedBy = [ "graphical-session.target" ];
     };
   };
+
   catppuccin-backgrounds = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-backgrounds";
     version = "0.0.1";
@@ -39,13 +41,36 @@ let
       unzip -d $out $src
     '';
   };
+
   terminalFont = {
     name = "Rec Mono Casual";
     size = 10;
   };
+
   hl = {
     enabled = true;
     file = "$HOME/org/.hledger.journal";
+  };
+
+  rioThemes = unstable.stdenvNoCC.mkDerivation {
+    pname = "catppuccin-rio-themes";
+    version = "0.0.1";
+
+    src = fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "rio";
+      rev = "a8d3d3c";
+      hash = "sha256-bT789sEDJl3wQh/yfbmjD/J7XNr2ejOd0UsASguyCQo=";
+    };
+
+    dontBuild = true;
+    dontCheck = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out/rio/themes
+      cp *.toml $out/rio/themes/
+    '';
   };
 in
 {
@@ -233,6 +258,26 @@ in
           listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
         };
       };
+
+    rio = {
+      enable = true;
+      package = unstable.rio;
+      settings = {
+        cursor = "_";
+        blinking-cursor = true;
+        hide-cursor-when-typing = false;
+        renderer = {
+          performance = "High";
+        };
+        fonts = {
+          size = terminalFont.size + 6;
+          regular = {
+            family = terminalFont.name;
+            style = "normal";
+          };
+        };
+      } // builtins.fromTOML (builtins.readFile "${rioThemes}/rio/themes/catppuccin-mocha.toml");
+    };
 
     command-not-found.enable = false;
 
