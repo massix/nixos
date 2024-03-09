@@ -1,7 +1,6 @@
 { config
 , lib
 , modulesPath
-, pkgs
 , unstable
 , ...
 }: {
@@ -9,10 +8,15 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+      kernelModules = [ "i915" ];
+    };
+
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e9f57e65-2d06-4fd1-bdfa-e79212b90efa";
@@ -40,10 +44,11 @@
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
-    extraPackages = with pkgs; [
+    extraPackages = with unstable; lib.mkDefault [
       intel-media-driver
       vaapiVdpau
       libvdpau-va-gl
+      intel-vaapi-driver
     ];
   };
 
@@ -59,15 +64,15 @@
   };
 
   services.auto-cpufreq = {
-    enable = false;
+    enable = true;
     settings =
       let
         governor = "powersave";
         scaling_min_freq = "400000";
         scaling_max_freq.charger = "3900000";
-        scaling_max_freq.battery = "1400000";
+        scaling_max_freq.battery = "3900000";
         turbo.charger = "always";
-        turbo.battery = "never";
+        turbo.battery = "always";
         options = builtins.map
           (setting: {
             name = setting;
@@ -91,18 +96,18 @@
       Autoreload: True
 
       [BATTERY]
-      Update_Rate_s: 30
-      PL1_Tdp_W: 8
+      Update_Rate_s: 20
+      PL1_Tdp_W: 12
       PL1_Duration_s: 28
-      PL2_Tdp_W: 12
+      PL2_Tdp_W: 44
       PL2_Duration_S: 0.002
-      Trip_Temp_C: 65
+      Trip_Temp_C: 75
       cTDP: 1
       Disable_BDPROCHOT: True
 
       [AC]
       Update_Rate_s: 5
-      PL1_Tdp_W: 28
+      PL1_Tdp_W: 32
       PL1_Duration_s: 28
       PL2_Tdp_W: 44
       PL2_Duration_S: 0.002
@@ -127,8 +132,11 @@
     '';
   };
 
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  powerManagement.powertop.enable = true;
+  powerManagement = {
+    enable = true;
+    cpuFreqGovernor = lib.mkDefault "powersave";
+    powertop.enable = true;
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
