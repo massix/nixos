@@ -13,10 +13,10 @@ default: switch
   {{ stylua }} .
 
 @system:
-  sudo {{ nixch }} --update nixos-unstable
   sudo {{ nixosrb }} switch --impure
 
 @update: && system
+  sudo {{ nixch }} --update nixos-unstable
   {{ nix }} flake update
   {{ home_manager }} switch
 
