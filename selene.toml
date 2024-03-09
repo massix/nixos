@@ -1,0 +1,4 @@
+[lints]
+mixed_table = "allow"
+undefined_variable = "allow"
+unscoped_variables = "allow"
