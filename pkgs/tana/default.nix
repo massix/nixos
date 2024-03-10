@@ -33,10 +33,10 @@ let
   ];
   buildInputs = xorgLibs ++ glLibs ++ libs;
   version = "1.0.15";
+  pname = "tana";
 in
 stdenv.mkDerivation {
-  pname = "tana";
-  inherit version buildInputs;
+  inherit version buildInputs pname;
 
   src = stable.fetchurl {
     url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v${version}/tana_${version}_amd64.deb";
@@ -73,4 +73,6 @@ stdenv.mkDerivation {
       --set LD_LIBRARY_PATH ${lib.makeLibraryPath glLibs} \
       --suffix LD_LIBRARY_PATH : $out/lib/tana
   '';
+
+  meta.mainProgram = pname;
 }
