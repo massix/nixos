@@ -126,6 +126,10 @@ in
           tf = "terraform";
           g = "git";
           mk = "make";
+          zj = "zellij";
+          zja = "zellij attach";
+          zjd = "zellij delete-session";
+          zjda = "zellij delete-all-sessions";
         };
       };
     };
@@ -171,12 +175,12 @@ in
     };
 
     zellij = {
-      enable = false;
+      enable = true;
       configuration = {
         autoAttach = false;
         autoExit = false;
         unstable = true;
-        enableFishIntegration = true;
+        enableFishIntegration = false;
       };
     };
   };
@@ -275,6 +279,7 @@ in
             family = terminalFont.name;
             style = "normal";
           };
+          extras = [{ family = "Symbols Nerd Font Mono"; }];
         };
       } // builtins.fromTOML (builtins.readFile "${rioThemes}/rio/themes/catppuccin-mocha.toml");
     };

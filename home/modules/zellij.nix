@@ -1,7 +1,8 @@
 { pkgs, unstable, lib, config, ... }:
 let
   cfg = config.my-modules.zellij;
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkOption types mkIf;
+  boolToStr = bool: if bool then "true" else "false";
 in
 {
   options.my-modules.zellij = {
@@ -9,11 +10,16 @@ in
 
     configuration = {
       unstable = mkEnableOption "Use unstable channel";
-      enableFishIntegration = mkEnableOption "Enable fish integration";
-      enableZshIntegration = mkEnableOption "Enable zsh integration";
-      enableBashIntegration = mkEnableOption "Enable bash integration";
+      enableFishIntegration = mkEnableOption "Fish integration";
+      enableZshIntegration = mkEnableOption "Zsh integration";
+      enableBashIntegration = mkEnableOption "Bash integration";
       autoAttach = mkEnableOption "Auto-attach to a session";
       autoExit = mkEnableOption "Auto-exit on exit";
+      theme = mkOption {
+        type = types.str;
+        default = "catppuccin-mocha";
+        description = "Theme to use for Zellij";
+      };
     };
   };
 
@@ -25,8 +31,8 @@ in
     };
 
     home.sessionVariables = {
-      ZELLIJ_AUTO_ATTACH = if cfg.configuration.autoAttach then "true" else "false";
-      ZELLIJ_AUTO_EXIT = if cfg.configuration.autoExit then "true" else "false";
+      ZELLIJ_AUTO_ATTACH = boolToStr cfg.configuration.autoAttach;
+      ZELLIJ_AUTO_EXIT = boolToStr cfg.configuration.autoExit;
     };
 
     home.file =
@@ -201,7 +207,7 @@ in
 
           // Choose the theme that is specified in the themes section.
           // Default: default
-          theme "tokyo-night-storm"
+          theme "${cfg.configuration.theme}"
 
           scroll_buffer_size 50000
 
