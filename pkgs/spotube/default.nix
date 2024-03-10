@@ -1,12 +1,12 @@
 { unstable, ... }:
 let
   inherit (unstable) lib stdenv;
-  version = "3.4.0";
+  version = "3.5.0";
 
   src = unstable.fetchurl {
     url = "https://github.com/KRTirtho/spotube/releases/download/v${version}/spotube-linux-${version}-x86_64.tar.xz";
     name = "spotube-linux-${version}-x86_64.tar.xz";
-    sha256 = "sha256-vTK3aWM1Aly3yCNEpQS0y+4dHTjsn2VWJAI9Sk518rg=";
+    sha256 = "sha256-u0IAheA4Of3TtvY7d46dFcgRfLBGUrfsGIyY1K43KBo=";
   };
 
   buildInputs = with unstable; [
