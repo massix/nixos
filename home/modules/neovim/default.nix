@@ -35,16 +35,16 @@ let
     { code = "en"; hash = "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA="; }];
   sniprun = rustPlatform.buildRustPackage rec {
     pname = "sniprun";
-    version = "1.3.9";
+    version = "1.3.11";
 
     src = fetchFromGitHub {
       owner = "michaelb";
       repo = "sniprun";
-      sha256 = "sha256-g2zPGAJIjMDWn8FCsuRPZyYHDk+ZHCd04lGlYHvb4OI=";
+      sha256 = "sha256-f/EifFvlHr41wP0FfkwSGVdXLyz739st/XtnsSbzNT4=";
       rev = "v${version}";
     };
 
-    cargoSha256 = "sha256-cCBNAEDjgSyZG1NfsKXijaNFqOplXR4nmjwzvx7TaQE=";
+    cargoSha256 = "sha256-ntOlz0jP5csVQnopu2BixXuVSFCFI7pwqG+H8hCu0dA=";
     doCheck = false;
   };
 in
