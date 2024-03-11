@@ -198,6 +198,9 @@ in
         "${plugins}/pomodoro.lua".source = ./files/plugins/pomodoro.lua;
         "${plugins}/project.lua".source = ./files/plugins/project.lua;
         "${plugins}/rest.lua".source = ./files/plugins/rest.lua;
+        "${plugins}/file.lua".source = ./files/plugins/file.lua;
+        "${plugins}/keys.lua".source = ./files/plugins/keys.lua;
+        "${plugins}/telescope.lua".source = ./files/plugins/telescope.lua;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {
