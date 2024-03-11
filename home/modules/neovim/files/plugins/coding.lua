@@ -165,7 +165,6 @@ return {
           nls.builtins.diagnostics.gitlint,
           nls.builtins.diagnostics.hadolint,
           nls.builtins.diagnostics.ktlint,
-          nls.builtins.diagnostics.selene,
           nls.builtins.diagnostics.terraform_validate,
           nls.builtins.diagnostics.tfsec,
           nls.builtins.diagnostics.trivy,

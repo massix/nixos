@@ -93,6 +93,7 @@ in
 
       kotlinTooling = with channel; [
         kotlin-language-server
+        ktlint /* linter for kotlin */
       ];
 
       racketTooling = with channel; [
@@ -113,6 +114,7 @@ in
       terraformTooling = with channel; [
         tfsec /* Static analyzer for terraform */
         terraform-ls /* language server for terraform */
+        trivy /* security scanner for terraform */
       ];
 
       javascriptTooling = with channel; [
@@ -143,6 +145,7 @@ in
 
       yamlTooling = with channel; [
         yaml-language-server /* language server for yaml */
+        yamllint /* linter for yaml */
       ];
 
       miscTooling = with channel; [
@@ -159,10 +162,6 @@ in
         editorconfig-checker /* linter for .editorconfig files */
         gnumake42 /* makefile */
         bear /* generate compilation database */
-        ktlint /* linter for kotlin */
-        selene /* linter for lua */
-        trivy /* security scanner for terraform */
-        yamllint /* linter for yaml */
       ];
     in
     {
