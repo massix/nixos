@@ -136,6 +136,7 @@ in
 
         # Init and start-up options
         "${nvimHome}/init.lua".source = ./files/init.lua;
+
         "${config}/options.lua".source = ./files/config/options.lua;
         "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
 
@@ -177,30 +178,7 @@ in
         '';
 
         # Plugins configurations
-        "${plugins}/colorscheme.lua".source = ./files/plugins/colorscheme.lua;
-        "${plugins}/editor.lua".source = ./files/plugins/editor.lua;
-        "${plugins}/git.lua".source = ./files/plugins/git.lua;
-        "${plugins}/coding.lua".source = ./files/plugins/coding.lua;
-        "${plugins}/alpha.lua".source = ./files/plugins/alpha.lua;
-        "${plugins}/lualine.lua".source = ./files/plugins/lualine.lua;
-        "${plugins}/ui.lua".source = ./files/plugins/ui.lua;
-        "${plugins}/dap.lua".source = ./files/plugins/dap.lua;
-        "${plugins}/neotest.lua".source = ./files/plugins/neotest.lua;
-        "${plugins}/toggleterm.lua".source = ./files/plugins/toggleterm.lua;
-        "${plugins}/hardtime.lua".source = ./files/plugins/hardtime.lua;
-        "${plugins}/codeium.lua".source = ./files/plugins/codeium.lua;
-        "${plugins}/rust.lua".source = ./files/plugins/rust.lua;
-        "${plugins}/purescript.lua".source = ./files/plugins/purescript.lua;
-        "${plugins}/haskell.lua".source = ./files/plugins/haskell.lua;
-        "${plugins}/iron.lua".source = ./files/plugins/iron.lua;
-        "${plugins}/obsidian.lua".source = ./files/plugins/obsidian.lua;
-        "${plugins}/orgmode.lua".source = ./files/plugins/orgmode.lua;
-        "${plugins}/pomodoro.lua".source = ./files/plugins/pomodoro.lua;
-        "${plugins}/project.lua".source = ./files/plugins/project.lua;
-        "${plugins}/rest.lua".source = ./files/plugins/rest.lua;
-        "${plugins}/file.lua".source = ./files/plugins/file.lua;
-        "${plugins}/keys.lua".source = ./files/plugins/keys.lua;
-        "${plugins}/telescope.lua".source = ./files/plugins/telescope.lua;
+        "${plugins}".source = ./files/plugins;
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {
