@@ -33,10 +33,10 @@ let
   ];
   buildInputs = xorgLibs ++ glLibs ++ libs;
   version = "1.0.15";
-  pname = "tana";
 in
 stdenv.mkDerivation {
-  inherit version buildInputs pname;
+  pname = "tana";
+  inherit version buildInputs;
 
   src = stable.fetchurl {
     url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v${version}/tana_${version}_amd64.deb";
@@ -46,8 +46,9 @@ stdenv.mkDerivation {
   nativeBuildInputs = with stable; [
     autoPatchelfHook
     dpkg
-    makeWrapper
   ];
+
+  appendRunpaths = map (pkg: "${lib.getLib pkg}/lib") glLibs ++ [ "${placeholder "out"}/lib/tana" ];
 
   # Needed for zygote
   runtimeDependencies = [
@@ -61,7 +62,6 @@ stdenv.mkDerivation {
     runHook preInstall
     mkdir -p $out
     cp -r usr/* $out
-    rm $out/bin/tana
     runHook postInstall
   '';
 
@@ -69,10 +69,7 @@ stdenv.mkDerivation {
     substituteInPlace $out/share/applications/tana.desktop \
       --replace "Exec=tana" "Exec=$out/bin/tana" \
       --replace "Name=tana" "Name=Tana"
-    makeWrapper $out/lib/tana/Tana $out/bin/tana \
-      --set LD_LIBRARY_PATH ${lib.makeLibraryPath glLibs} \
-      --suffix LD_LIBRARY_PATH : $out/lib/tana
   '';
 
-  meta.mainProgram = pname;
+  meta.mainProgram = "tana";
 }
