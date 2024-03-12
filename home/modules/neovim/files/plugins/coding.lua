@@ -45,6 +45,7 @@ return {
         "elisp",
         "elvish",
         "fish",
+        "gleam",
         "haskell",
         "html",
         "http",
@@ -420,6 +421,10 @@ return {
         organize_imports_on_format = true,
         enable_import_completion = true,
         enable_editorconfig_support = true,
+      })
+
+      lspconfig.gleam.setup({
+        capabilities = capabilities,
       })
 
       -- When using C# the Lspsaga go_to_definitions does not work, we have to rely on omnisharp_extended
