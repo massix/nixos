@@ -3,6 +3,10 @@ let
   cfg = config.my-modules.zellij;
   inherit (lib) mkEnableOption mkOption types mkIf;
   boolToStr = bool: if bool then "true" else "false";
+  mkStringOption = default: description: mkOption {
+    type = types.str;
+    inherit default description;
+  };
 in
 {
   options.my-modules.zellij = {
@@ -15,21 +19,10 @@ in
       enableBashIntegration = mkEnableOption "Bash integration";
       autoAttach = mkEnableOption "Auto-attach to a session";
       autoExit = mkEnableOption "Auto-exit on exit";
-      theme = mkOption {
-        type = types.str;
-        default = "catppuccin-mocha";
-        description = "Theme to use for Zellij";
-      };
-      defaultLayout = mkOption {
-        type = types.str;
-        default = "compact";
-        description = "Default layout to use";
-      };
-      defaultMode = mkOption {
-        type = types.str;
-        default = "locked";
-        description = "Default mode to use";
-      };
+      theme = mkStringOption "catppuccin-mocha" "Theme to use for Zellij";
+      defaultLayout = mkStringOption "compact" "Default layout to use";
+      defaultMode = mkStringOption "locked" "Default mode to use";
+      mirrorSession = mkEnableOption "Use mirror session" // { default = true; };
     };
   };
 
@@ -52,6 +45,7 @@ in
           ''theme "${cfg.configuration.theme}"''
           ''default_layout "${cfg.configuration.defaultLayout}"''
           ''default_mode "${cfg.configuration.defaultMode}"''
+          ''mirror_session ${boolToStr cfg.configuration.mirrorSession}''
         ];
         mkConfig = path: opts: (builtins.readFile path) + lib.strings.concatLines opts;
       in
