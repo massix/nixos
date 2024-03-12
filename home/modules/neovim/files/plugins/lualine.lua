@@ -212,6 +212,7 @@ return {
             {
               "overseer",
               colored = true,
+              unique = true,
             },
             -- stylua: ignore
             {

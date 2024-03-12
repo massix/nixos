@@ -880,7 +880,9 @@ return {
   -- Overseer
   {
     "stevearc/overseer.nvim",
-    opts = {},
+    opts = {
+      dap = false,
+    },
     lazy = true,
     init = function()
       local wk = require("which-key")

@@ -27,7 +27,6 @@ return {
     end,
 
     dependencies = {
-
       -- fancy UI for the debugger
       {
         "rcarriga/nvim-dap-ui",
@@ -138,8 +137,8 @@ return {
       { "<C-c>dj", function() require("dap").down() end, desc = "Down" },
       { "<C-c>dk", function() require("dap").up() end, desc = "Up" },
       { "<C-c>dl", function() require("dap").run_last() end, desc = "Run Last" },
-      { "<C-c>do", function() require("dap").step_out() end, desc = "Step Out" },
-      { "<C-c>dO", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<C-c>dO", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<C-c>do", function() require("dap").step_over() end, desc = "Step Over" },
       { "<C-c>dp", function() require("dap").pause() end, desc = "Pause" },
       { "<C-c>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
       { "<C-c>ds", function() require("dap").session() end, desc = "Session" },
@@ -155,9 +154,9 @@ return {
 
       local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
       local dap = require("dap")
-      --
-      -- setup dap config by VsCode launch.json file
-      require("dap.ext.vscode").load_launchjs(nil, json_transforms)
+
+      require("dap.ext.vscode").json_decode = require("overseer.json").decode
+      require("overseer").patch_dap(true)
 
       for name, sign in pairs(require("util.defaults").icons.dap) do
         sign = type(sign) == "table" and sign or { sign }
@@ -201,6 +200,9 @@ return {
           end,
         },
       }
+
+      -- setup dap config by VsCode launch.json file
+      require("dap.ext.vscode").load_launchjs(nil, json_transforms)
     end,
   },
 }
