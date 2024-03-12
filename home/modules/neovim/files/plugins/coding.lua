@@ -150,30 +150,31 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local nls = require("null-ls")
+      local diagnostics = nls.builtins.diagnostics
+      local code_actions = nls.builtins.code_actions
+
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
         notify_format = nil,
         sources = {
           -- Diagnostics --
-          nls.builtins.diagnostics.actionlint,
-          nls.builtins.diagnostics.ansiblelint,
-          nls.builtins.diagnostics.commitlint,
-          nls.builtins.diagnostics.deadnix,
-          nls.builtins.diagnostics.dotenv_linter,
-          nls.builtins.diagnostics.editorconfig_checker,
-          nls.builtins.diagnostics.fish,
-          nls.builtins.diagnostics.gitlint,
-          nls.builtins.diagnostics.hadolint,
-          nls.builtins.diagnostics.ktlint,
-          nls.builtins.diagnostics.terraform_validate,
-          nls.builtins.diagnostics.tfsec,
-          nls.builtins.diagnostics.trivy,
-          nls.builtins.diagnostics.yamllint,
+          diagnostics.actionlint,
+          diagnostics.ansiblelint,
+          diagnostics.commitlint,
+          diagnostics.deadnix,
+          diagnostics.dotenv_linter,
+          diagnostics.editorconfig_checker,
+          diagnostics.fish,
+          diagnostics.gitlint,
+          diagnostics.hadolint,
+          diagnostics.ktlint,
+          diagnostics.terraform_validate,
+          diagnostics.tfsec,
+          diagnostics.trivy,
+          diagnostics.yamllint,
 
           -- Code Actions --
-          nls.builtins.code_actions.refactoring,
-          nls.builtins.code_actions.statix,
-          nls.builtins.code_actions.ts_node_action,
+          code_actions.statix,
         },
       }
     end,
