@@ -1,5 +1,13 @@
 local util = require("util.nix")
 
+_G.org_toggle_conceal = function()
+  if vim.wo.conceallevel > 0 then
+    vim.wo.conceallevel = 0
+  else
+    vim.wo.conceallevel = 3
+  end
+end
+
 return {
   {
     "nvim-orgmode/orgmode",
@@ -52,19 +60,18 @@ return {
           vim.opt_local.shiftwidth = 1
           vim.opt_local.tabstop = 1
 
-          local toggle_conceal = function()
-            if vim.wo.conceallevel > 0 then
-              vim.wo.conceallevel = 0
+          local map = function(modes, lhs)
+            -- stylua: ignore
+            if type(modes) == "table" then
+              for _, mode in ipairs(modes) do
+                vim.api.nvim_buf_set_keymap(0, mode, lhs, "<cmd>lua org_toggle_conceal()<CR>", { desc = "Toggle conceal" })
+              end
             else
-              vim.wo.conceallevel = 3
+              vim.api.nvim_buf_set_keymap(0, modes, lhs, "<cmd>lua org_toggle_conceal()<CR>", { desc = "Toggle conceal" })
             end
           end
 
-          local wk = require("which-key")
-          wk.register({
-            -- stylua: ignore
-            ["<C-k>"] = { function() toggle_conceal() end, "Toggle Conceal" },
-          }, { mode = { "n", "i" }, buffer = 0 })
+          map({ "n", "v", "i" }, "<C-c>c")
         end,
       })
     end,
