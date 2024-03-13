@@ -72,6 +72,27 @@ let
       cp *.toml $out/rio/themes/
     '';
   };
+
+  warpThemes = unstable.stdenvNoCC.mkDerivation {
+    pname = "catppuccin-warp-themes";
+    version = "0.0.1";
+
+    src = fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "warp";
+      rev = "5d88d7e";
+      hash = "sha256-Q1N9Vwrv+Ub4jprb/Ys8p8GfNs1sN7Q1fLFHVAeH1e0=";
+    };
+
+    dontBuild = true;
+    dontCheck = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out/warp/themes
+      cp dist/*.yml $out/warp/themes/
+    '';
+  };
 in
 {
   my-modules = {
@@ -397,6 +418,8 @@ in
   xdg = {
     enable = true;
     mime.enable = true;
+
+    dataFile."warp-terminal/themes".source = "${warpThemes}/warp/themes";
 
     # Patch to allow Kitty to use Monaspace font
     configFile."fontconfig/conf.d/99-monaspace-monospace.conf".text = ''
