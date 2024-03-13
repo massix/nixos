@@ -368,6 +368,8 @@ in
         gnomeExtensions.gsconnect
         onedriver
         tana
+
+        warp-terminal
       ];
 
       other-packages = [ ];

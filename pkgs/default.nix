@@ -6,4 +6,5 @@
   vscode-js-debug = import ./coding/vscodejsdebug.nix { inherit stable unstable; };
   spotube = import ./spotube { inherit stable unstable; };
   tana = import ./tana { inherit stable unstable; };
+  warp-terminal = import ./warp-terminal { inherit stable unstable; };
 }
