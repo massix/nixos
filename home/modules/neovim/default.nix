@@ -2,7 +2,8 @@
 let
   cfg = config.my-modules.neovim;
   inherit (unstable) rustPlatform fetchFromGitHub;
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
+  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types strings;
+  inherit (config.lib.file) mkOutOfStoreSymlink;
   mkStringOption = description: default: mkOption {
     type = types.str;
     inherit default description;
@@ -47,6 +48,9 @@ let
     cargoSha256 = "sha256-ntOlz0jP5csVQnopu2BixXuVSFCFI7pwqG+H8hCu0dA=";
     doCheck = false;
   };
+  configPath = "${config.xdg.configHome}/nixos";
+  modulePath = "home/modules/neovim";
+  mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
 in
 {
   options.my-modules.neovim = {
@@ -132,13 +136,13 @@ in
           }
         '';
 
-        "${util}/defaults.lua".source = ./files/util/defaults.lua;
+        "${util}/defaults.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/util/defaults.lua");
 
         # Init and start-up options
-        "${nvimHome}/init.lua".source = ./files/init.lua;
+        "${nvimHome}/init.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/init.lua");
 
-        "${config}/options.lua".source = ./files/config/options.lua;
-        "${config}/keymaps.lua".source = ./files/config/keymaps.lua;
+        "${config}/options.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/options.lua");
+        "${config}/keymaps.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/keymaps.lua");
 
         # The font is configurable via the configuration, so this is raw here
         "${config}/gui.lua".text = ''
@@ -178,7 +182,7 @@ in
         '';
 
         # Plugins configurations
-        "${plugins}".source = ./files/plugins;
+        "${plugins}".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/plugins");
 
         /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
         "${nvimHome}/lldb-wrapper.sh" = {
