@@ -1,4 +1,4 @@
-{ unstable, ... }:
+{ unstable, stable, ... }:
 let
   inherit (unstable) stdenv;
   pkgs = unstable;
@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
   ] ++ [ stdenv.cc.cc.lib ];
 
   runtimeDependencies = with pkgs; [
+    stable.mesa
     libglvnd
     libxkbcommon
     vulkan-loader
