@@ -31,6 +31,7 @@ let
     nss
     pango
   ];
+  runPaths = glLibs ++ [ stdenv.cc.cc stdenv.cc.libc ];
   buildInputs = xorgLibs ++ glLibs ++ libs;
   version = "1.0.15";
 in
@@ -48,7 +49,7 @@ stdenv.mkDerivation {
     dpkg
   ];
 
-  appendRunpaths = map (pkg: "${lib.getLib pkg}/lib") glLibs ++ [ "${placeholder "out"}/lib/tana" ];
+  appendRunpaths = map (pkg: "${lib.getLib pkg}/lib") runPaths ++ [ "${placeholder "out"}/lib/tana" ];
 
   # Needed for zygote
   runtimeDependencies = [
