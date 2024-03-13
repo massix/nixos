@@ -43,7 +43,7 @@ let
   };
 
   terminalFont = {
-    name = "Rec Mono Casual";
+    name = "Rec Mono Duotone";
     size = 10;
   };
 
