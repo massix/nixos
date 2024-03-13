@@ -7,6 +7,7 @@ local supported_filetypes = {
   "purescript",
   "elvish",
   "haskell",
+  "lua",
 }
 
 ---@type LazyPluginSpec[]
@@ -17,12 +18,12 @@ return {
     opts = function()
       return {
         config = {
-          scratch_repl = true,
+          scratch_repl = false,
           repl_definition = {
             sh = { command = { "fish" } },
             typescript = { command = { "./node_modules/.bin/ts-node" } },
             javascript = { command = { "node" } },
-            nix = { command = { "nix", "repl" } },
+            nix = { command = { "nix", "repl", "--allow-dirty", "--impure" } },
             racket = { command = { "racket" } },
             purescript = { command = { "spago", "repl" } },
             elvish = { command = { "elvish" } },
