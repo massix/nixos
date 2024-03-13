@@ -161,6 +161,18 @@ in
         enable = true;
         config = {
           theme = with pkgs.dwarf-fortress-packages; themes.ironhand;
+          enableDwarfTherapist = false;
+          enableLegendsBrowser = false;
+        };
+      };
+      nethack = {
+        enable = true;
+        unstable = true;
+        options = {
+          permInvent = true;
+          petType = "cat";
+          msgWindow = "reversed";
+          litCorridor = true;
         };
       };
     };
