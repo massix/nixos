@@ -73,6 +73,7 @@ return {
         "terraform",
         "toml",
         "typescript",
+        "typst",
         "vim",
         "yaml",
         "xml",
@@ -425,6 +426,10 @@ return {
       })
 
       lspconfig.gleam.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.typst_lsp.setup({
         capabilities = capabilities,
       })
 

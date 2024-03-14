@@ -397,6 +397,8 @@ in
 
         spotify
         spotube
+        typst
+        typst-lsp
 
         gnomeExtensions.gsconnect
         onedriver
