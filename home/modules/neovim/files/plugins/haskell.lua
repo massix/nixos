@@ -6,7 +6,6 @@ return {
       "mfussenegger/nvim-dap",
       "nvim-lua/plenary.nvim",
     },
-    lazy = true,
     ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
     opts = {
       tools = {
@@ -24,46 +23,31 @@ return {
     config = function(_, opts)
       vim.g.haskell_tools = opts
 
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>cH"] = { name = "+haskell" },
-      })
-
       require("telescope").load_extension("ht")
       require("telescope").load_extension("hoogle")
+
+      -- Set bindings only when the plugin is loaded
+      local group = vim.api.nvim_create_augroup("HaskellTools", { clear = true })
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = { "haskell", "lhaskell", "cabal", "cabalproject" },
+        group = group,
+        callback = function(args)
+          local wk = require("which-key")
+          local ht = require("haskell-tools")
+          -- stylua: ignore
+          wk.register({
+            h = {
+              name = "+haskell",
+              c = { vim.lsp.codelens.run, "Refresh Codelens", },
+              s = { ht.hoogle.hoogle_signature, "Hoogle Signature", },
+              R = { ht.repl.toggle, "Toggle REPL for current package", },
+              r = { function() ht.repl.toggle(vim.api.nvim_buf_get_name(0)) end, "Toggle REPL for current buffer", },
+              q = { ht.repl.quit, "Quit REPL", },
+              e = { ht.lsp.buf_eval_all, "Evaluate all", },
+            },
+          }, { prefix = "<leader>c", buffer = args.buf })
+        end,
+      })
     end,
-    -- stylua: ignore
-    keys = {
-      {
-        "<leader>cHc",
-        function() vim.lsp.codelens.run() end,
-        desc = "Refresh Codelens",
-      },
-      {
-        "<leader>cHs",
-        function() require("haskell-tools").hoogle.hoogle_signature() end,
-        desc = "Hoogle Signature",
-      },
-      {
-        "<leader>cHR",
-        function() require("haskell-tools").repl.toggle() end,
-        desc = "Toggle REPL for current package",
-      },
-      {
-        "<leader>cHr",
-        function() require("haskell-tools").repl.toggle(vim.api.nvim_buf_get_name(0)) end,
-        desc = "Toggle REPL for current buffer",
-      },
-      {
-        "<leader>cHq",
-        function() require("haskell-tools").repl.quit() end,
-        desc = "Quit REPL",
-      },
-      {
-        "<leader>cHe",
-        function() require("haskell-tools").lsp.buf_eval_all() end,
-        desc = "Evaluate snippet",
-      },
-    },
   },
 }
