@@ -82,7 +82,7 @@ return {
 
                 for _, client in ipairs(clients) do
                   local filetypes = client.config.filetypes
-                  if filetypes and vim.fn.index(filetypes, bufft) ~= -1 then
+                  if client.name == "jdtls" or (filetypes and vim.fn.index(filetypes, bufft) ~= -1) then
                     local ret = client.name
                     if #clients > 1 then
                       ret = ret .. "+"

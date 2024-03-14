@@ -9,7 +9,7 @@ return {
       })
     end,
     dependencies = {
-      { "andy-bell101/neotest-java" },
+      { "rcasia/neotest-java" },
       { "rouge8/neotest-rust" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
@@ -19,6 +19,7 @@ return {
         adapters = {
           require("neotest-rust"),
           require("neotest-haskell"),
+          require("neotest-java"),
           require("neotest-dotnet")({
             custom_attributes = {
               xunit = { "SkippableEnvironmentFact" },

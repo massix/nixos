@@ -64,14 +64,32 @@ return {
           opts = { skip = true },
         },
 
+        -- Skip messages from null-ls
         {
-          -- Skip messages from null-ls
           filter = {
             event = "lsp",
             kind = "progress",
             cond = function(message)
               local client = vim.tbl_get(message.opts, "progress", "client")
               return client == "null-ls"
+            end,
+          },
+          opts = { skip = true },
+        },
+
+        -- Skip validation messages from jdtls
+        {
+          filter = {
+            event = "lsp",
+            kind = "progress",
+            cond = function(message)
+              local client = vim.tbl_get(message.opts, "progress", "client")
+              if client == "jdtls" then
+                local content = vim.tbl_get(message.opts, "progress", "message")
+                return content == "Validate documents"
+              end
+
+              return false
             end,
           },
           opts = { skip = true },

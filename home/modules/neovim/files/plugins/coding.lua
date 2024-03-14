@@ -75,6 +75,7 @@ return {
         "typescript",
         "vim",
         "yaml",
+        "xml",
       },
       incremental_selection = {
         enable = true,
@@ -801,6 +802,7 @@ return {
     config = function(_, _)
       local fname = vim.api.nvim_buf_get_name(0)
       local root_dir = require("lspconfig.server_configurations.jdtls").default_config.root_dir
+      local nix_config = require("util.nix")
 
       local project_name = function(rdir)
         return rdir and vim.fs.basename(rdir)
@@ -821,7 +823,7 @@ return {
 
       local jdtls_options = {
         cmd = {
-          "jdt-language-server",
+          "jdtls",
           "-configuration",
           jdtls_config_dir(project_name(root_dir(fname))),
           "-data",
@@ -830,7 +832,7 @@ return {
 
         root_dir = root_dir(fname),
         init_options = {
-          bundles = {},
+          bundles = nix_config.jdtls.bundles,
         },
       }
 
@@ -859,7 +861,6 @@ return {
               ["<leader>co"] = { jdtls.organize_imports, "Organize Imports" },
             }, { mode = "n", buffer = args.buf })
 
-            local nix_config = require("util.nix")
             if nix_config.dapConfigured then
               vim.list_extend(jdtls_options.init_options.bundles, nix_config.jdtls.bundles)
 
@@ -868,11 +869,10 @@ return {
               jdtls_dap.setup_dap_main_class_configs()
 
               wk.register({
-                ["<leader>t"] = { name = "+test" },
-                ["<leader>tt"] = { jdtls_dap.test_class, "Run All Test" },
-                ["<leader>tr"] = { jdtls_dap.test_nearest_method, "Run Nearest Test" },
-                ["<leader>tT"] = { jdtls_dap.pick_test, "Run Test" },
-              }, { mode = "n", buffer = args.buf })
+                ["t"] = { jdtls_dap.test_class, "[jdtls] run all test in class" },
+                ["d"] = { jdtls_dap.test_nearest_method, "[jdtls] debug nearest" },
+                ["r"] = { jdtls_dap.pick_test, "[jdtls] run test from buffer" },
+              }, { mode = "n", buffer = args.buf, prefix = "<C-c>n" })
             end
           end
         end,
