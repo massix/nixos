@@ -27,7 +27,7 @@ in
         EDITOR = "hx";
       };
 
-      home.packages = with channel; [ nil rnix-lsp nixd-nightly ];
+      home.packages = with channel; [ nil nixd-nightly ];
 
       programs.helix = {
         inherit (cfg) enable package;
