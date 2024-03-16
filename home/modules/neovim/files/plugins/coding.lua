@@ -1,4 +1,3 @@
-local load_textobjects = false
 local util_defaults = require("util.defaults")
 
 return {
@@ -8,18 +7,9 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "VeryLazy" },
     dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        init = function()
-          -- disable rtp plugin, as we only need its queries for mini.ai
-          -- In case other textobject modules are enabled, we will load them
-          -- once nvim-treesitter is loaded
-          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-          load_textobjects = true
-        end,
-      },
+      { "nvim-treesitter/nvim-treesitter-textobjects", config = false },
       {
         "IndianBoy42/tree-sitter-just",
         lazy = false,
@@ -33,6 +23,12 @@ return {
       { "<bs>", desc = "Decrement selection", mode = "x" },
     },
     opts = {
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+        },
+      },
       highlight = {
         enable = true,
       },
@@ -116,21 +112,6 @@ return {
 
       require("tree-sitter-just").setup({})
       require("nvim-treesitter.configs").setup(opts)
-
-      if load_textobjects then
-        -- PERF: no need to load the plugin, if we only need its queries for mini.ai
-        if opts.textobjects then
-          for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
-            if opts.textobjects[mod] and opts.textobjects[mod].enable then
-              local Loader = require("lazy.core.loader")
-              Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
-              local plugin = require("lazy.core.config").plugins["nvim-treesitter-textobjects"]
-              require("lazy.core.loader").source_runtime(plugin.dir, "plugin")
-              break
-            end
-          end
-        end
-      end
 
       -- Once treesitter loaded, we can change the foldmethod
       vim.opt.foldmethod = "expr"
@@ -757,6 +738,7 @@ return {
         nix = { "nixpkgs_fmt" },
         purescript = { "purstidy" },
         fish = { "fish_indent" },
+        java = { "google-java-format" },
       },
       format_on_save = function(_)
         if util_defaults.has_autoformat() then
@@ -838,6 +820,25 @@ return {
         root_dir = root_dir(fname),
         init_options = {
           bundles = nix_config.jdtls.bundles,
+        },
+
+        settings = {
+          java = {
+            completion = {
+              enabled = true,
+              favoriteStaticMembers = {
+                "org.junit.jupiter.api.Assertions.*",
+                "org.junit.jupiter.api.Assumptions.*",
+                "org.junit.jupiter.api.DynamicContainer.*",
+                "org.junit.jupiter.api.DynamicTest.*",
+                "org.junit.Assert.*",
+                "org.junit.Assume.*",
+              },
+            },
+            format = {
+              enabled = false,
+            },
+          },
         },
       }
 

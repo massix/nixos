@@ -137,6 +137,7 @@ in
         vscode-extensions.vscjava.vscode-java-debug
         vscode-extensions.vscjava.vscode-java-test
         lombok /* lombok agent */
+        google-java-format /* formatter for Java */
       ];
 
       jsonTooling = with channel; [

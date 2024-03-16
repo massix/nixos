@@ -45,6 +45,7 @@ opt.spell = true -- Enable spelling
 opt.spelllang = { "en", "fr", "it" } -- Enable 3 languages
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
+opt.swapfile = false -- Do not create swapfiles
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.termguicolors = true -- True color support
 opt.timeoutlen = 300
