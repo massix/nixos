@@ -4,7 +4,7 @@
 }:
 let
   wrapperDir = "/run/wrappers/";
-  inherit (unstable) fetchFromGitHub;
+  inherit (unstable) lib fetchFromGitHub;
 
   mOnedriverService = { pkgs, mountpoint }: {
     Unit = {
@@ -383,6 +383,7 @@ in
       ];
 
       unstable-packages = with unstable; [
+        flameshot
         just
         powertop
         microsoft-edge
@@ -434,6 +435,12 @@ in
     mime.enable = true;
 
     dataFile."warp-terminal/themes".source = "${warpThemes}/warp/themes";
+
+    configFile."flameshot/flameshot.ini".text = lib.generators.toINI { } {
+      General = {
+        savePath = "/home/massi/Pictures/Screenshots";
+      };
+    };
 
     # Patch to allow Kitty to use Monaspace font
     configFile."fontconfig/conf.d/99-monaspace-monospace.conf".text = ''
