@@ -31,6 +31,7 @@ in
       scripting = mkEnDef "Enable scripting tooling" false;
       terraform = mkEnDef "Enable Terraform tooling" false;
       yaml = mkEnDef "Enable YAML tooling" false;
+      typst = mkEnDef "Enable Typst tooling" false;
     };
   };
 
@@ -164,6 +165,11 @@ in
         gnumake42 /* makefile */
         bear /* generate compilation database */
       ];
+
+      typstTooling = with channel; [
+        typst-lsp /* lsp for typst */
+        typstfmt /* experimental formatter for typst */
+      ];
     in
     {
       home.packages =
@@ -183,6 +189,7 @@ in
         (whenT cfg.languages.json jsonTooling) ++
         (whenT cfg.languages.yaml yamlTooling) ++
         (whenT cfg.languages.scripting scriptingTooling) ++
-        (whenT cfg.languages.misc miscTooling);
+        (whenT cfg.languages.misc miscTooling) ++
+        (whenT cfg.languages.typst typstTooling);
     };
 }

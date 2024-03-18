@@ -135,6 +135,7 @@ in
         scripting = true;
         terraform = true;
         yaml = true;
+        typst = true;
       };
     };
 
@@ -398,8 +399,6 @@ in
 
         spotify
         spotube
-        typst
-        typst-lsp
 
         gnomeExtensions.gsconnect
         onedriver
