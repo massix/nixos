@@ -39,7 +39,7 @@ local spec = {
     "tpope/vim-fugitive",
     opts = {},
     config = function() end,
-    cmd = { "G", "Git", "Gstatus" },
+    cmd = { "G", "Git", "Gstatus", "Gllog" },
   },
 
   -- Git signs
