@@ -739,7 +739,6 @@ return {
         purescript = { "purstidy" },
         fish = { "fish_indent" },
         java = { "google-java-format" },
-        typst = { "typstfmt" },
       },
       format_on_save = function(_)
         if util_defaults.has_autoformat() then
