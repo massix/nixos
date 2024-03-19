@@ -818,9 +818,15 @@ return {
         },
 
         root_dir = root_dir(fname),
+
         init_options = {
           bundles = nix_config.jdtls.bundles,
         },
+
+        on_attach = function()
+          jdtls.setup_dap()
+          jdtls_dap.setup_dap_main_class_configs()
+        end,
 
         settings = {
           java = {
@@ -845,42 +851,26 @@ return {
       -- Create autocommand to attach to all the java filetypes
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "java" },
-        callback = function()
-          jdtls.start_or_attach(jdtls_options)
-        end,
-      })
-
-      --
-      -- Create some more bindings once the LSP is attached
-      vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          jdtls.start_or_attach(jdtls_options)
+
+          -- Register keys when in Java files
           local wk = require("which-key")
+          wk.register({
+            ["<leader>cx"] = { name = "+extract" },
+            ["<leader>cxv"] = { jdtls.extract_variable_all, "Extract Variable" },
+            ["<leader>cxc"] = { jdtls.extract_constant, "Extract Constant" },
+            ["<leader>co"] = { jdtls.organize_imports, "Organize Imports" },
+            ["gs"] = { jdtls.super_implementation, "Goto Super" },
+          }, { mode = "n", buffer = args.buf })
 
-          if client and client.name == "jdtls" then
-            wk.register({
-              ["<leader>cx"] = { name = "+extract" },
-              ["<leader>cxv"] = { jdtls.extract_variable_all, "Extract Variable" },
-              ["<leader>cxc"] = { jdtls.extract_constant, "Extract Constant" },
-              ["gs"] = { jdtls.super_implementation, "Goto Super" },
-              ["gS"] = { jdtls_tests.goto_subjects, "Goto Subjects" },
-              ["<leader>co"] = { jdtls.organize_imports, "Organize Imports" },
-            }, { mode = "n", buffer = args.buf })
-
-            if nix_config.dapConfigured then
-              vim.list_extend(jdtls_options.init_options.bundles, nix_config.jdtls.bundles)
-
-              -- Configure dap for java
-              jdtls.setup_dap({ hotcodereplace = "auto", config_overrides = {} })
-              jdtls_dap.setup_dap_main_class_configs()
-
-              wk.register({
-                ["t"] = { jdtls_dap.test_class, "[jdtls] run all test in class" },
-                ["d"] = { jdtls_dap.test_nearest_method, "[jdtls] debug nearest" },
-                ["r"] = { jdtls_dap.pick_test, "[jdtls] run test from buffer" },
-              }, { mode = "n", buffer = args.buf, prefix = "<C-c>n" })
-            end
-          end
+          wk.register({
+            ["t"] = { jdtls_dap.test_class, "[jdtls] run all test in class" },
+            ["d"] = { jdtls_dap.test_nearest_method, "[jdtls] debug nearest" },
+            ["r"] = { jdtls_dap.pick_test, "[jdtls] run test from buffer" },
+            ["g"] = { jdtls_tests.generate, "[jdtls] generate test class" },
+            ["G"] = { jdtls_tests.goto_subjects, "Goto Subjects" },
+          }, { mode = "n", buffer = args.buf, prefix = "<C-c>n" })
         end,
       })
 

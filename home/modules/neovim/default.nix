@@ -115,14 +115,12 @@ in
         # Misc files
         "${util}/nix.lua".text = ''
           -- Some variables that are injected automatically by nix
-          local bundles = {
-            "${unstable.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-*.jar",
-          }
+          local bundles = {}
+          local debug_bundles = vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/*.jar"), "\n")
+          local test_bundles = vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
 
-          vim.list_extend(
-            bundles,
-            vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
-          )
+          vim.list_extend(bundles, debug_bundles)
+          vim.list_extend(bundles, test_bundles)
 
           return {
             nvimHome = "${nvimHome}",
