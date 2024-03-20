@@ -11,7 +11,7 @@ return {
         "${HOME}",
         "~",
       },
-      show_hidden = true,
+      show_hidden = false,
       patterns = {
         ".git",
         "_darcs",

@@ -502,6 +502,7 @@ return {
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
       { "hrsh7th/cmp-calc" },
+      { "rcarriga/cmp-dap" },
       { "hrsh7th/cmp-nvim-lsp-document-symbol" },
       { "hrsh7th/cmp-emoji" },
       { "davidsierradz/cmp-conventionalcommits" },
@@ -539,6 +540,12 @@ return {
           local current_cmd = vim.fn.getcmdline():match("%S+")
           return not disabled_commands[current_cmd] or cmp.close()
         end,
+      })
+
+      cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        sources = {
+          { name = "dap" },
+        },
       })
 
       -- Setup conventionalcommits for gitcommit files
