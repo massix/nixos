@@ -93,27 +93,6 @@ let
       cp dist/*.yml $out/warp/themes/
     '';
   };
-
-  k9sThemes = unstable.stdenvNoCC.mkDerivation {
-    pname = "catppuccin-k9s-themes";
-    version = "0.0.1";
-
-    src = fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "k9s";
-      rev = "590a762";
-      hash = "sha256-EBDciL3F6xVFXvND+5duT+OiVDWKkFMWbOOSruQ0lus=";
-    };
-
-    dontBuild = true;
-    dontCheck = true;
-    dontConfigure = true;
-
-    installPhase = ''
-      mkdir -p $out/k9s/skins
-      cp dist/*.yaml $out/k9s/skins/
-    '';
-  };
 in
 {
   my-modules = {
@@ -238,6 +217,12 @@ in
         unstable = true;
         enableFishIntegration = false;
       };
+    };
+
+    devops = {
+      enable = true;
+      k9s.enable = true;
+      azure-cli.enable = true;
     };
   };
 
@@ -427,8 +412,6 @@ in
         tana
 
         warp-terminal
-
-        k9s
       ];
 
       other-packages = [ ];
@@ -458,36 +441,6 @@ in
     mime.enable = true;
 
     dataFile."warp-terminal/themes".source = "${warpThemes}/warp/themes";
-
-    configFile."k9s/skins".source = "${k9sThemes}/k9s/skins";
-
-    configFile."k9s/config.yaml".text = lib.generators.toYAML { } {
-      k9s = {
-        liveViewAutoRefresh = true;
-        ui = {
-          enableMouse = true;
-          reactive = true;
-          skin = "catppuccin-mocha";
-        };
-        logger = {
-          buffer = 5000;
-          sinceSeconds = -1;
-        };
-      };
-    };
-
-    configFile."k9s/aliases.yaml".text = lib.generators.toYAML { } {
-      aliases = {
-        dp = "deployments";
-        sec = "v1/secrets";
-        jo = "jobs";
-        cr = "clusterroles";
-        crb = "clusterrolebindings";
-        ro = "roles";
-        rb = "rolebindings";
-        np = "networkpolicies";
-      };
-    };
 
     configFile."flameshot/flameshot.ini".text = lib.generators.toINI { } {
       General = {

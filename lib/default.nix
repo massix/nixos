@@ -20,6 +20,7 @@
         ../home/modules/git.nix
         ../home/modules/coding.nix
         ../home/modules/gaming.nix
+        ../home/modules/devops.nix
       ] ++ extraModules;
     };
 
