@@ -43,8 +43,8 @@ let
   };
 
   terminalFont = {
-    name = "Rec Mono Duotone";
-    size = 10;
+    name = "0xProto";
+    size = 9;
   };
 
   hl = {
@@ -111,6 +111,7 @@ in
           meslo-lg
           ibm-plex
           recursive
+          _0xproto
         ];
       };
     };
