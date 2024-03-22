@@ -67,13 +67,32 @@ if vim.g.neovide then
   require("config.gui").setup()
 end
 
-local group = vim.api.nvim_create_augroup("AutoReload", { clear = true })
+-- Autoreload buffer
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" }, {
   pattern = "*",
-  group = group,
+  group = vim.api.nvim_create_augroup("AutoReload", { clear = true }),
   callback = function()
     if vim.api.nvim_get_mode().mode ~= "c" then
       vim.cmd.checktime()
     end
+  end,
+})
+
+-- Use 'q' to exit some common buffers
+vim.api.nvim_create_autocmd("Filetype", {
+  group = vim.api.nvim_create_augroup("QLeave", { clear = true }),
+  pattern = {
+    "fugitive",
+    "neotest-summary",
+    "neotest-output",
+    "neotest-output-panel",
+    "dapui_console",
+    "dapui_watches",
+    "qf",
+    "help",
+    "man",
+  },
+  callback = function(args)
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = args.buf })
   end,
 })
