@@ -418,6 +418,7 @@ in
         tana
 
         warp-terminal
+        protonvpn-gui
       ];
 
       other-packages = [ ];
