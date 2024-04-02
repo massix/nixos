@@ -19,8 +19,46 @@ return {
 
     -- stylua: ignore
     keys = {
-      ---@diagnostic disable-next-line: undefined-global
-      { "<leader>fo", function() MiniFiles.open() end, desc = "Open Files", },
+      { "<leader>fm", function() MiniFiles.open() end, desc = "mini.files", },
+    },
+  },
+
+  -- Dired
+  {
+    "X3eRo0/dired.nvim",
+    opts = {
+      show_icons = true,
+      show_banner = true,
+      hide_details = false,
+      keybinds = {
+        dired_enter = "<cr>",
+        dired_back = "-",
+        dired_up = "_",
+        dired_rename = "R",
+        dired_create = "d",
+        dired_delete = "D",
+        dired_delete_range = "D",
+        dired_copy = "C",
+        dired_copy_range = "C",
+        dired_copy_marked = "MC",
+        dired_move = "X",
+        dired_move_range = "X",
+        dired_move_marked = "MX",
+        dired_paste = "P",
+        dired_mark = "M",
+        dired_mark_range = "M",
+        dired_delete_marked = "MD",
+        dired_toggle_hidden = ".",
+        dired_toggle_sort_order = ",",
+        dired_toggle_icons = "*",
+        dired_toggle_colors = "c",
+        dired_toggle_hide_details = "(",
+        dired_quit = "q",
+      },
+    },
+    cmd = { "Dired" },
+    keys = {
+      { "<leader>fd", "<cmd>Dired<cr>", desc = "Dired" },
     },
   },
 
@@ -31,18 +69,15 @@ return {
       { "nvim-tree/nvim-web-devicons" },
       { "SirZenith/oil-vcs-status" },
     },
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>fm"] = { name = "+oil" },
-      })
-    end,
     opts = {
       default_file_explorer = false,
       constrain_cursor = "editable",
       experimental_watch_for_changes = true,
       win_options = {
         signcolumn = "yes:2",
+      },
+      keymaps = {
+        q = "actions.close",
       },
       columns = {
         "icon",
@@ -52,8 +87,8 @@ return {
       },
     },
     keys = {
-      { "<leader>fmo", "<cmd>Oil<cr>", desc = "Oil" },
-      { "<leader>fmf", "<cmd>Oil --float<cr>", desc = "Oil (float)" },
+      { "<leader>fo", "<cmd>Oil<cr>", desc = "Oil" },
+      { "<leader>ff", "<cmd>Oil --float<cr>", desc = "Oil (float)" },
     },
   },
 }
