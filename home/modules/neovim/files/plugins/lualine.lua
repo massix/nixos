@@ -214,6 +214,7 @@ return {
               colored = true,
               unique = true,
             },
+
             -- stylua: ignore
             {
               ---@diagnostic disable-next-line: undefined-field
@@ -247,6 +248,11 @@ return {
             },
           },
           lualine_y = {
+            -- Codeium status
+            -- stylua: ignore
+            {
+              function() return vim.fn["codeium#GetStatusString"]() end,
+            },
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },

@@ -598,7 +598,6 @@ return {
           { name = "mkdnflow" },
           { name = "orgmode" },
           { name = "path" },
-          { name = "codeium" },
           { name = "emoji" },
           { name = "calc" },
         }, {
