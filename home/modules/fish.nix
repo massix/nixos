@@ -34,7 +34,12 @@ in
       programs.broot = {
         enable = true;
         package = channel.broot;
-        settings.modal = true;
+        settings = {
+          modal = true;
+          special_paths = {
+            "~/OneDrive" = { list = "never"; };
+          };
+        };
       };
 
       programs.fzf = {
