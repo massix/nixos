@@ -42,7 +42,6 @@ return {
     },
     config = function(_, opts)
       local orgmode = require("orgmode")
-      orgmode.setup_ts_grammar()
       orgmode.setup(opts)
 
       -- Automatically refresh the agenda view when editing an agenda file
@@ -59,6 +58,10 @@ return {
           -- Make sure we only move one character when tabbing
           vim.opt_local.shiftwidth = 1
           vim.opt_local.tabstop = 1
+
+          -- Enable modeline for org buffers
+          vim.opt_local.modeline = true
+          vim.opt_local.modelines = 30
 
           local map = function(modes, lhs)
             -- stylua: ignore
