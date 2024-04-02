@@ -1,8 +1,14 @@
 --- @type LazyPluginSpec[]
 return {
   {
+    "vhyrro/luarocks.nvim",
+    opts = {},
+    event = "VeryLazy",
+  },
+  {
     "rest-nvim/rest.nvim",
     ft = { "http" },
+    dependencies = { "vhyrro/luarocks.nvim" },
     opts = {},
     config = function(_, opts)
       -- Register the keymaps only when rest is loaded
