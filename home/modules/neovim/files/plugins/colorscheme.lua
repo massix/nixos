@@ -28,6 +28,7 @@ return {
     enabled = true,
     opts = {
       flavour = "mocha",
+      no_italic = true,
       term_colors = true,
       transparent_background = false,
       show_end_of_buffer = false,
