@@ -40,6 +40,7 @@
 
   # Enable surface-control
   microsoft-surface.surface-control.enable = true;
+  microsoft-surface.ipts.enable = true;
 
   # Enable OpenGL
   hardware.opengl = {
