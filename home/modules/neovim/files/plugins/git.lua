@@ -28,8 +28,7 @@ local spec = {
     },
     --stylua: ignore
     keys = {
-      { "<leader>gg", function() require("neogit").open({ kind = "replace" }) end, desc = "Open Neogit", },
-      { "<leader>gt", function() require("neogit").open({ kind = "tab" }) end, desc = "Open Neogit in new tab", },
+      { "<leader>gn", function() require("neogit").open({ kind = "tab" }) end, desc = "Neogit", },
     },
     cmd = { "Neogit" },
   },
@@ -40,6 +39,9 @@ local spec = {
     opts = {},
     config = function() end,
     cmd = { "G", "Git", "Gstatus", "Gllog" },
+    keys = {
+      { "<leader>gg", "<cmd>G<cr>", desc = "Fugitive" },
+    },
   },
 
   -- Git signs

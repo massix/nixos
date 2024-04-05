@@ -83,6 +83,7 @@ vim.api.nvim_create_autocmd("Filetype", {
   group = vim.api.nvim_create_augroup("QLeave", { clear = true }),
   pattern = {
     "fugitive",
+    "fugitiveblame",
     "neotest-summary",
     "neotest-output",
     "neotest-output-panel",
