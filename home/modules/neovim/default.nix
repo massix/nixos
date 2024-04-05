@@ -125,7 +125,10 @@ in
           return {
             nvimHome = "${nvimHome}",
             dapConfigured = true,
-            jdtls = { bundles = bundles },
+            jdtls = {
+              bundles = bundles,
+              lombok = "${unstable.lombok}/lombok.jar",
+            },
             codeium = "${unstable.codeium-ls}/bin/codeium-ls_server_linux_x64",
             vsCodeJsDebug = "${unstable.vscode-js-debug}/vscode-js-debug",
             nodePath = "${unstable.nodejs}/bin/node",

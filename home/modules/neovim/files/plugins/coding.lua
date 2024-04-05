@@ -794,6 +794,7 @@ return {
           jdtls_config_dir(project_name(root_dir(fname))),
           "-data",
           jdtls_workspace_dir(project_name(root_dir(fname))),
+          "--jvm-arg=-javaagent:" .. nix_config.jdtls.lombok,
         },
 
         root_dir = root_dir(fname),
