@@ -13,14 +13,8 @@ return {
     "nvim-orgmode/orgmode",
     enabled = true,
     ft = { "org", "orgagenda" },
-    commit = "050ed170b413872015b5f005b45fde1b7cd5cd22",
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
-      {
-        "akinsho/org-bullets.nvim",
-        config = true,
-        ft = { "org" },
-      },
       {
         "lyz-code/telescope-orgmode.nvim",
         config = function()
@@ -44,7 +38,6 @@ return {
     config = function(_, opts)
       local orgmode = require("orgmode")
       orgmode.setup(opts)
-      orgmode.setup_ts_grammar()
 
       -- Automatically refresh the agenda view when editing an agenda file
       local orgmode_group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
