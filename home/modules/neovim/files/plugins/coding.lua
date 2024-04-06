@@ -622,7 +622,7 @@ return {
         },
         experimental = {
           ghost_text = {
-            enabled = true,
+            enabled = false, -- conflicts with codeium
           },
         },
         sorting = defaults.sorting,
