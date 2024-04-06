@@ -24,7 +24,7 @@
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
     nix-formatter-pack.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=fb6af288f6cf0f00d3af60cf9d5110433b954565";
+    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=f3b959627bca46a9f7052b8fbc464b8323e68c2c";
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
@@ -107,10 +107,9 @@
       nixosConfigurations."elendil" = helpers.mkSystem {
         inherit pkgs unstable stateVersion system;
         extraModules = [
-          nixos-hardware.nixosModules.microsoft-surface-pro-intel
-          nixos-hardware.nixosModules.microsoft-surface-common
           ./system/elendil/configuration.nix
           ./system/elendil/hardware-configuration.nix
+          nixos-hardware.nixosModules.microsoft-surface-pro-intel
         ];
       };
       packages."${system}" = import ./pkgs { inherit unstable; stable = pkgs; };
