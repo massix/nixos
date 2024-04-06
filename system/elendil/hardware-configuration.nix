@@ -92,7 +92,11 @@
       builtins.listToAttrs options;
   };
 
-  services.thermald.enable = true;
+  services.thermald = {
+    enable = true;
+    configFile = ./files/thermald-conf.xml;
+    package = unstable.thermald;
+  };
 
   services.throttled = {
     enable = false;
