@@ -112,6 +112,7 @@
           nixos-hardware.nixosModules.microsoft-surface-pro-intel
         ];
       };
+
       packages."${system}" = import ./pkgs { inherit unstable; stable = pkgs; };
 
       devShells."${system}" = {

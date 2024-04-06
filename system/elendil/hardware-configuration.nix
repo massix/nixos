@@ -69,7 +69,7 @@
   };
 
   services.auto-cpufreq = {
-    enable = false;
+    enable = true;
     settings =
       let
         governor = "powersave";
@@ -92,14 +92,8 @@
       builtins.listToAttrs options;
   };
 
-  services.thermald = {
-    enable = true;
-    configFile = ./files/thermald-conf.xml;
-    package = unstable.thermald;
-  };
-
   services.throttled = {
-    enable = false;
+    enable = true;
     extraConfig = ''
       [GENERAL]
       Enabled: True
@@ -108,24 +102,25 @@
 
       [BATTERY]
       Update_Rate_s: 20
-      PL1_Tdp_W: 12
+      PL1_Tdp_W: 29
       PL1_Duration_s: 28
       PL2_Tdp_W: 44
       PL2_Duration_S: 0.002
       Trip_Temp_C: 75
-      cTDP: 1
+      HWP_Mode: False
+      cTDP: 0
       Disable_BDPROCHOT: True
 
       [AC]
       Update_Rate_s: 5
-      PL1_Tdp_W: 32
+      PL1_Tdp_W: 44
       PL1_Duration_s: 28
       PL2_Tdp_W: 44
       PL2_Duration_S: 0.002
       Trip_Temp_C: 80
       HWP_Mode: True
-      cTDP: 0
-      Disable_BDPROCHOT: True
+      cTDP: 2
+      Disable_BDPROCHOT: False
 
       [UNDERVOLT.BATTERY]
       CORE: 0
