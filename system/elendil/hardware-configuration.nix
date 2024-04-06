@@ -16,6 +16,10 @@
 
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
+    kernelParams = [
+      "mem_sleep_default=deep"
+      "acpi_enforce_resources=lax"
+    ];
   };
 
   fileSystems."/" = {
@@ -65,7 +69,7 @@
   };
 
   services.auto-cpufreq = {
-    enable = true;
+    enable = false;
     settings =
       let
         governor = "powersave";
@@ -88,8 +92,10 @@
       builtins.listToAttrs options;
   };
 
+  services.thermald.enable = true;
+
   services.throttled = {
-    enable = true;
+    enable = false;
     extraConfig = ''
       [GENERAL]
       Enabled: True
