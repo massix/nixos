@@ -69,7 +69,7 @@ return {
             end
           end
 
-          map({ "n", "v", "i" }, "<C-c>c")
+          map({ "n", "v", "i" }, "<C-c><C-c>")
         end,
       })
     end,
@@ -194,31 +194,31 @@ return {
         org_capture_templates = {
           r = {
             description = "Refilable Task",
-            template = "* TODO %?\n%u",
+            template = "* TODO %?\n  %u",
             headline = "Tasks",
             target = "~/org/refile.org",
           },
           t = {
             description = "Personal Task",
-            template = "* TODO %?\n%u",
+            template = "* TODO %?\n  %u",
             headline = "Tasks",
             target = "~/org/index.org",
           },
           T = {
             description = "Work Task",
-            template = "* TODO %?\n%u",
+            template = "* TODO %?\n  %u",
             headline = "Tasks",
             target = "~/org/work.org",
           },
           c = {
             description = "Personal calendar entry",
-            template = "* MEET %?\nSCHEDULED: %T\n",
+            template = "* MEET %?\n  SCHEDULED: %^{Meeting Time}T\n",
             headline = "Calendar",
             target = "~/org/index.org",
           },
           C = {
             description = "Work calendar entry",
-            template = "* MEET %?\nSCHEDULED: %T\n",
+            template = "* MEET %?\n  SCHEDULED: %^{Meeting Time}T\n",
             headline = "Calendar",
             target = "~/org/work.org",
           },
