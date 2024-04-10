@@ -178,6 +178,7 @@ return {
     "folke/trouble.nvim",
     branch = "dev",
     cmd = { "Trouble" },
+    event = { "LspAttach" },
     opts = { use_diagnostic_signs = true },
     keys = {
       { "<leader>xx", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Document Diagnostics (Trouble)" },
@@ -255,29 +256,46 @@ return {
       require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      ---@param client lsp.Client
+      ---@param bufnr integer
+      local attach_trouble = function(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+          vim.api.nvim_buf_set_keymap(
+            bufnr,
+            "n",
+            "<leader>co",
+            "<cmd>Trouble symbols toggle focus=true win.position=left pinned=true<CR>",
+            { desc = "LSP Symbols" }
+          )
+        end
+      end
+
       local cfg = require("yaml-companion").setup({
         lspconfig = {
           capabilities = capabilities,
           ---@param bufnr integer
-          on_attach = function(_, bufnr)
-            local wk = require("which-key")
-            wk.register({
-              ["<leader>cS"] = { "<cmd>Telescope yaml_schema<CR>", "Switch YAML schema", { buffer = bufnr } },
-            })
+          on_attach = function(client, bufnr)
+            -- stylua: ignore
+            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
+            attach_trouble(client, bufnr)
           end,
         },
       })
 
       lspconfig.nil_ls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.jsonls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
         settings = {
           json = {
             schemas = require("schemastore").json.schemas(),
@@ -307,20 +325,17 @@ return {
         },
         capabilities = capabilities,
         ---@param bufnr integer
-        on_attach = function(_, bufnr)
-          local wk = require("which-key")
-          wk.register({
-            ["<leader>cS"] = {
-              "<cmd>ClangdSwitchSourceHeader<cr>",
-              "Switch source and headers (C/C++)",
-              { buffer = bufnr, mode = "n" },
-            },
-          })
+        on_attach = function(client, bufnr)
+          -- stylua: ignore
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>ClangdSwitchSourceHeader<cr>", { desc = "Switch source and headers (C/C++)" })
+
+          attach_trouble(client, bufnr)
         end,
       })
 
       lspconfig.terraformls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
         -- See https://github.com/hashicorp/terraform-ls/issues/1655
         init_options = {
           terraform = {
@@ -337,30 +352,37 @@ return {
 
       lspconfig.dockerls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.helm_ls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.tsserver.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.purescriptls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.marksman.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.bashls.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       lspconfig.kotlin_language_server.setup({
         capabilities = capabilities,
+        on_attach = attach_trouble,
         init_options = {
           storage_path = "/tmp/kotlinlangserver/",
         },
@@ -372,34 +394,37 @@ return {
           ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
         -- capabilities = capabilities,
-        enable_roslyn_analyzers = true,
-        organize_imports_on_format = true,
-        enable_import_completion = true,
-        enable_editorconfig_support = true,
-      })
-
-      lspconfig.gleam.setup({
-        capabilities = capabilities,
-      })
-
-      lspconfig.typst_lsp.setup({
-        capabilities = capabilities,
-      })
-
-      -- When using C# the Lspsaga go_to_definitions does not work, we have to rely on omnisharp_extended
-      local c_sharp_group = vim.api.nvim_create_augroup("CSharp", { clear = true })
-      vim.api.nvim_create_autocmd("Filetype", {
-        pattern = "cs",
-        group = c_sharp_group,
-        callback = function()
+        settings = {
+          RoslynExtensionsOptions = {
+            EnableAnalyzersSupport = true,
+            EnableImportCompletion = true,
+          },
+          FormattingOptions = {
+            EnableEditorConfigSupport = true,
+            OrganizeImports = true,
+          },
+        },
+        on_attach = function(client, bufnr)
           vim.api.nvim_buf_set_keymap(
-            0,
+            bufnr,
             "n",
             "gD",
             "<cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<CR>",
             { desc = "C# Goto definition" }
           )
+
+          attach_trouble(client, bufnr)
         end,
+      })
+
+      lspconfig.gleam.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+      })
+
+      lspconfig.typst_lsp.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
       })
 
       -- If there are both yamlls and helm_ls, then detach yamlls
@@ -802,9 +827,25 @@ return {
           bundles = nix_config.jdtls.bundles,
         },
 
-        on_attach = function()
+        on_attach = function(_, bufnr)
           jdtls.setup_dap()
           jdtls_dap.setup_dap_main_class_configs()
+
+          require("which-key").register({
+            ["j"] = {
+              name = "+jdt",
+              c = { "<CMD>JdtCompile<CR>", "Jdt Compile" },
+              u = { "<CMD>JdtUpdateDebugConfig<CR>", "Jdt Update Debug Config" },
+              U = { "<CMD>JdtUpdateConfig<CR>", "Jdt Update Config" },
+              h = { "<CMD>JdtUpdateHotcode<CR>", "Jdt Hot Replace" },
+              r = { "<CMD>JdtRestart<CR>", "Jdt Restart" },
+              b = { "<CMD>JdtBytecode<CR>", "Jdt Bytecode" },
+              S = { "<CMD>JdtJshell<CR>", "Jdt JShell" },
+              R = { vim.lsp.codelens.refresh, "Force refresh Codelens" },
+            },
+          }, { mode = "n", buffer = bufnr, prefix = "<C-c>" })
+
+          vim.lsp.codelens.refresh()
         end,
 
         settings = {
@@ -818,6 +859,7 @@ return {
                 "org.junit.jupiter.api.DynamicTest.*",
                 "org.junit.Assert.*",
                 "org.junit.Assume.*",
+                "org.mockito.Mockito.*",
               },
             },
             format = {
