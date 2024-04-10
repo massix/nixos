@@ -75,9 +75,9 @@
         governor = "powersave";
         scaling_min_freq = "400000";
         scaling_max_freq.charger = "3900000";
-        scaling_max_freq.battery = "3900000";
-        turbo.charger = "always";
-        turbo.battery = "always";
+        scaling_max_freq.battery = "3300000";
+        turbo.charger = "auto";
+        turbo.battery = "never";
         options = builtins.map
           (setting: {
             name = setting;
@@ -93,7 +93,7 @@
   };
 
   services.throttled = {
-    enable = true;
+    enable = false;
     extraConfig = ''
       [GENERAL]
       Enabled: True
@@ -137,6 +137,29 @@
       ANALOGIO: 0
     '';
   };
+
+  # Custom thermald implementation
+  services.dbus.packages = [ unstable.thermald ];
+  systemd.services.thermald =
+    let
+      configFile = ./files/thermal-conf.xml;
+    in
+    {
+      description = "Thermal Daemon Service";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        PrivateNetwork = true;
+        ExecStart = ''
+          ${unstable.thermald}/sbin/thermald \
+              --loglevel=info \
+              --dbus-enable \
+              --no-daemon \
+              --systemd \
+              --ignore-default-control \
+              --config-file ${configFile}
+        '';
+      };
+    };
 
   powerManagement = {
     enable = true;
