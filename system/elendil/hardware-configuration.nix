@@ -45,27 +45,32 @@
   # Enable surface-control
   microsoft-surface.surface-control.enable = true;
   microsoft-surface.ipts.enable = true;
+  hardware = {
+    enableAllFirmware = true;
 
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with unstable; lib.mkDefault [
-      intel-media-driver
-      vaapiVdpau
-      libvdpau-va-gl
-      intel-vaapi-driver
-    ];
-  };
-
-  hardware.bluetooth = with unstable; {
-    settings = {
-      General = {
-        Experimental = true;
-        ControllerMode = "dual";
-      };
-      Policy.AutoEnable = true;
+    # Enable OpenGL
+    opengl = {
+      enable = true;
+      extraPackages = with unstable; lib.mkDefault [
+        intel-media-driver
+        vaapiVdpau
+        libvdpau-va-gl
+        intel-vaapi-driver
+      ];
     };
-    package = bluez.override { enableExperimental = true; };
+
+    bluetooth = with unstable; {
+      settings = {
+        General = {
+          Experimental = true;
+          ControllerMode = "dual";
+        };
+        Policy.AutoEnable = true;
+      };
+      package = bluez.override { enableExperimental = true; };
+    };
+
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
   services.auto-cpufreq = {
@@ -168,5 +173,4 @@
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
