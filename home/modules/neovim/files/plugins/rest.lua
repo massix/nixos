@@ -4,11 +4,13 @@ return {
     "vhyrro/luarocks.nvim",
     opts = {},
     event = "VeryLazy",
+    enabled = false,
   },
   {
     "rest-nvim/rest.nvim",
     ft = { "http" },
     dependencies = { "vhyrro/luarocks.nvim" },
+    enabled = false,
     opts = {},
     config = function(_, opts)
       -- Register the keymaps only when rest is loaded
