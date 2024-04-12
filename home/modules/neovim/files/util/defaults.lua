@@ -2,21 +2,6 @@ local M = {}
 
 local Util = require("lazy.core.util")
 
-M.auto_format = true
-
-function M.toggle_autoformat()
-  M.auto_format = not M.auto_format
-  if M.auto_format then
-    vim.notify("Autoformat enabled", vim.log.levels.INFO)
-  else
-    vim.notify("Autoformat disabled", vim.log.levels.INFO)
-  end
-end
-
-function M.has_autoformat()
-  return M.auto_format
-end
-
 M.root_patterns = { ".git", "lua" }
 
 ---@param silent boolean?

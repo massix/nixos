@@ -728,6 +728,23 @@ return {
   {
     "stevearc/conform.nvim",
     event = "BufEnter",
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>cF"] = { name = "+format" },
+      })
+
+      vim.g.conform_autoformat = true
+
+      vim.g.conform_toggle_autoformat = function()
+        vim.g.conform_autoformat = not vim.g.conform_autoformat
+        if vim.g.conform_autoformat then
+          vim.notify("Autoformatting on")
+        else
+          vim.notify("Autoformatting off")
+        end
+      end
+    end,
     opts = {
       formatters = {
         purstidy = {
@@ -744,41 +761,24 @@ return {
         java = { "google-java-format" },
       },
       format_on_save = function(_)
-        if util_defaults.has_autoformat() then
-          return { lsp_fallback = true }
+        if vim.g.conform_autoformat then
+          return { lsp_fallback = true, timeout_ms = 2000 }
         else
           return
         end
       end,
       format_after_save = function(_)
-        if util_defaults.has_autoformat() then
-          return { lsp_fallback = true, async = true }
+        if vim.g.conform_autoformat then
+          return { lsp_fallback = true, timeout_ms = 2000, async = true }
         else
           return
         end
       end,
     },
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>cF"] = { name = "+format" },
-      })
-    end,
+    -- stylua: ignore
     keys = {
-      {
-        "<leader>cFf",
-        function()
-          require("conform").format({ lsp_fallback = true })
-        end,
-        desc = "Format Document",
-      },
-      {
-        "<leader>cFt",
-        function()
-          util_defaults.toggle_autoformat()
-        end,
-        desc = "Toggle Autoformatting",
-      },
+      { "<leader>cFf", function() require("conform").format({ lsp_fallback = true }) end, desc = "Format Document" },
+      { "<leader>cFt", function() vim.g.conform_toggle_autoformat() end, desc = "Toggle Autoformatting" },
     },
   },
 
