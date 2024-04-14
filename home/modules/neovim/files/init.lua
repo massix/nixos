@@ -98,3 +98,12 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = args.buf })
   end,
 })
+
+-- Set filetype to typst for typ files
+vim.api.nvim_create_autocmd("BufRead", {
+  pattern = "*.typ",
+  group = vim.api.nvim_create_augroup("Typst", { clear = true }),
+  callback = function()
+    vim.bo.filetype = "typst"
+  end,
+})
