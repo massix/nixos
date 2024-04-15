@@ -42,9 +42,13 @@
   # Enable DHCP on all interfaces
   networking.useDHCP = lib.mkDefault true;
 
-  # Enable surface-control
-  microsoft-surface.surface-control.enable = true;
-  microsoft-surface.ipts.enable = true;
+  microsoft-surface = {
+
+    # Enable surface-control
+    surface-control.enable = true;
+    ipts.enable = true;
+  };
+
   hardware = {
     enableAllFirmware = true;
 
