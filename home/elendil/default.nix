@@ -112,6 +112,7 @@ in
           ibm-plex
           recursive
           _0xproto
+          comic-mono
         ];
       };
     };
