@@ -133,7 +133,7 @@ in
         nix = true;
         purescript = true;
         racket = false;
-        rust = false;
+        rust = true;
         scripting = true;
         terraform = true;
         yaml = true;

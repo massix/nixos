@@ -131,6 +131,7 @@ in
       rustTooling = with channel; [
         rust-analyzer /* language server for rust */
         cargo-nextest /* test runner for rust */
+        rustfmt /* formatter for rust */
       ] ++ [ master.vscode-extensions.vadimcn.vscode-lldb ];
 
       javaTooling = with channel; [

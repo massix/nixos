@@ -759,6 +759,7 @@ return {
         purescript = { "purstidy" },
         fish = { "fish_indent" },
         java = { "google-java-format" },
+        rust = { "rustfmt" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then

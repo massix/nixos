@@ -10,14 +10,13 @@ return {
     end,
     dependencies = {
       { "rcasia/neotest-java" },
-      { "rouge8/neotest-rust" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
     },
     opts = function()
       return {
         adapters = {
-          require("neotest-rust"),
+          require("rustaceanvim.neotest"),
           require("neotest-haskell"),
           require("neotest-java"),
           require("neotest-dotnet")({
