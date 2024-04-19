@@ -422,6 +422,9 @@ in
         protonvpn-gui
 
         slack
+
+        todoist
+        todoist-electron
       ];
 
       other-packages = [ ];
