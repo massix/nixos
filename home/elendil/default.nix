@@ -420,6 +420,8 @@ in
 
         warp-terminal
         protonvpn-gui
+
+        slack
       ];
 
       other-packages = [ ];
