@@ -41,6 +41,7 @@ local spec = {
     cmd = { "G", "Git", "Gstatus", "Gllog" },
     keys = {
       { "<leader>gg", "<cmd>G<cr>", desc = "Fugitive" },
+      { "<leader>g<space>", ":G ", desc = "Fugitive <space>" },
     },
   },
 
