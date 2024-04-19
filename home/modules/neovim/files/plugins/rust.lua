@@ -43,6 +43,8 @@ return {
                 p = { "<cmd>RustLsp parentModule<CR>", "Parent Module" },
               },
             }, { buffer = bufnr, prefix = "<C-c>" })
+
+            vim.lsp.codelens.refresh()
           end,
         },
       }
