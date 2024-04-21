@@ -393,8 +393,8 @@ in
   home.packages =
     let
       stable-packages = with pkgs; [
-        gnome.dconf-editor
-        gnome3.gnome-tweaks
+        # Only for Teams PWA
+        google-chrome
       ];
 
       unstable-packages = with unstable; [
@@ -404,12 +404,11 @@ in
         microsoft-edge
         pbpctrl
         gtk-engine-murrine
+        gnome.dconf-editor
+        gnome3.gnome-tweaks
 
         # document conversion
         pandoc
-
-        # Only for Teams PWA
-        google-chrome
 
         spotify
         spotube
