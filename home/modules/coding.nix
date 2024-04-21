@@ -1,4 +1,4 @@
-{ pkgs, unstable, config, lib, master, ... }:
+{ pkgs, config, lib, master, ... }:
 let
   inherit (lib) mkOption types;
   cfg = config.my-modules.coding;
@@ -13,7 +13,6 @@ in
 {
   options.my-modules.coding = {
     enable = mkEnDef "Enable coding goodies" false;
-    unstable = mkEnDef "Use unstable channel" true;
     languages = {
       c = mkEnDef "Enable Clang tooling" false;
       c_sharp = mkEnDef "Enable C# tooling" false;
@@ -37,24 +36,23 @@ in
 
   config =
     let
-      channel = if cfg.unstable then unstable else pkgs;
       whenT = k: t: if k then t else [ ];
-      baseTooling = with channel; [
+      baseTooling = with pkgs; [
         gcc
         wl-clipboard
         nodejs
       ];
 
-      clangTooling = with channel; [
+      clangTooling = with pkgs; [
         llvmPackages.clang-unwrapped
       ];
 
-      c_sharpTooling = with channel; [
+      c_sharpTooling = with pkgs; [
         omnisharp-roslyn
         netcoredbg
       ];
 
-      haskellTooling = with channel; [
+      haskellTooling = with pkgs; [
         haskellPackages.ormolu /* Formatter */
         haskell-language-server /* LSP */
 
@@ -87,54 +85,54 @@ in
         haskellPackages.hoogle /* Hoogle search tool */
       ];
 
-      purescriptTooling = with channel; [
+      purescriptTooling = with pkgs; [
         purs-tidy-bin.purs-tidy-0_10_0 /* Formatter for purescript */
         purescript-language-server /* language server for purescript */
       ];
 
-      kotlinTooling = with channel; [
+      kotlinTooling = with pkgs; [
         kotlin-language-server
         ktlint /* linter for kotlin */
       ];
 
-      racketTooling = with channel; [
+      racketTooling = with pkgs; [
         racket
       ];
 
-      scriptingTooling = with channel; [
+      scriptingTooling = with pkgs; [
         nodePackages.bash-language-server /* language server for bash */
       ];
 
-      nixTooling = with channel; [
+      nixTooling = with pkgs; [
         deadnix /* dead code for nix */
         nixpkgs-fmt /* Formatter for nix */
         statix /* Static analyzer for nix */
         nil /* language server for nix */
       ];
 
-      terraformTooling = with channel; [
+      terraformTooling = with pkgs; [
         tfsec /* Static analyzer for terraform */
         terraform-ls /* language server for terraform */
         trivy /* security scanner for terraform */
       ];
 
-      javascriptTooling = with channel; [
+      javascriptTooling = with pkgs; [
         vscode-js-debug /* debugger for javascript */
         nodePackages_latest.typescript-language-server /* language server for typescript */
       ];
 
-      luaTooling = with channel; [
+      luaTooling = with pkgs; [
         stylua /* Formatter for lua */
         lua-language-server /* language server for lua */
       ];
 
-      rustTooling = with channel; [
+      rustTooling = with pkgs; [
         rust-analyzer /* language server for rust */
         cargo-nextest /* test runner for rust */
         rustfmt /* formatter for rust */
       ] ++ [ master.vscode-extensions.vadimcn.vscode-lldb ];
 
-      javaTooling = with channel; [
+      javaTooling = with pkgs; [
         jdt-language-server /* language server for java */
         vscode-extensions.vscjava.vscode-java-debug
         vscode-extensions.vscjava.vscode-java-test
@@ -142,16 +140,16 @@ in
         google-java-format /* formatter for Java */
       ];
 
-      jsonTooling = with channel; [
+      jsonTooling = with pkgs; [
         vscode-langservers-extracted /* language server for json */
       ];
 
-      yamlTooling = with channel; [
+      yamlTooling = with pkgs; [
         yaml-language-server /* language server for yaml */
         yamllint /* linter for yaml */
       ];
 
-      miscTooling = with channel; [
+      miscTooling = with pkgs; [
         dockerfile-language-server-nodejs /* language server for docker */
         helm-ls /* language server for helm */
         codeium-ls /* language server for codeium */
@@ -167,7 +165,7 @@ in
         bear /* generate compilation database */
       ];
 
-      typstTooling = with channel; [
+      typstTooling = with pkgs; [
         typst-lsp /* lsp for typst */
         typstfmt /* experimental formatter for typst */
       ];

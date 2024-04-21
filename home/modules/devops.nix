@@ -1,13 +1,13 @@
-{ unstable, config, ... }:
+{ pkgs, lib, config, ... }:
 let
-  inherit (unstable) fetchFromGitHub lib;
+  inherit (pkgs) fetchFromGitHub stdenvNoCC;
   inherit (lib) mkEnableOption mkOption mkIf types;
   yamlGenerator = lib.generators.toYAML { };
   iniGenerator = lib.generators.toINI { };
 
   cfg = config.my-modules.devops;
 
-  k9sThemes = unstable.stdenvNoCC.mkDerivation {
+  k9sThemes = stdenvNoCC.mkDerivation {
     pname = "catppuccin-k9s-themes";
     version = "0.0.1";
 
@@ -56,7 +56,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages =
-      with unstable;
+      with pkgs;
       let
         k9sPackages = if cfg.k9s.enable then [ k9s ] else [ ];
         azCliPackages = if cfg.azure-cli.enable then [ azure-cli ] else [ ];

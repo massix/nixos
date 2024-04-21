@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable, ... }:
+{ config, lib, pkgs, ... }:
 let
   cfg = config.my-modules.git;
   inherit (lib) mkEnableOption mkOption mkIf;
@@ -16,62 +16,57 @@ in
       default = "massimo.gengarelli@gmail.com";
       description = "User email";
     };
-    configuration.unstable = mkEnableOption "Use unstable channel";
   };
 
-  config =
-    let
-      channel = if cfg.configuration.unstable then unstable else pkgs;
-    in
-    mkIf cfg.enable {
-      programs.git = {
-        inherit (cfg) enable userName userEmail;
-        package = channel.git;
+  config = mkIf cfg.enable {
+    programs.git = {
+      inherit (cfg) enable userName userEmail;
+      package = pkgs.git;
 
-        delta.enable = true;
-        delta.package = channel.delta;
+      delta.enable = true;
+      delta.package = pkgs.delta;
 
-        delta.options = {
-          features = "decorations";
-          navigate = true;
-          side-by-side = true;
-        };
-
-        aliases = {
-          lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-        };
-
-        extraConfig = {
-          push = {
-            default = "matching";
-          };
-          pull = {
-            rebase = true;
-          };
-          init = {
-            defaultBranch = "main";
-          };
-        };
-
-        ignores = [
-          "*.log"
-          "*.out"
-          ".DS_Store"
-          "bin/"
-          "dist/"
-          "result"
-        ];
+      delta.options = {
+        features = "decorations";
+        navigate = true;
+        side-by-side = true;
       };
 
-      programs.fish.shellAbbrs = mkIf config.my-modules.fish.enable {
-        g = "git";
-        gco = "git checkout";
-        gcl = "git clone";
-        gclgh = "git clone git@github.com:";
-        gcm = "git commit -m";
-        ga = "git add";
-        gd = "git diff";
-        gs = "git status";
+      aliases = {
+        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
       };
+
+      extraConfig = {
+        push = {
+          default = "matching";
+        };
+        pull = {
+          rebase = true;
+        };
+        init = {
+          defaultBranch = "main";
+        };
+      };
+
+      ignores = [
+        "*.log"
+        "*.out"
+        ".DS_Store"
+        "bin/"
+        "dist/"
+        "result"
+      ];
     };
+
+    programs.fish.shellAbbrs = mkIf config.my-modules.fish.enable {
+      g = "git";
+      gco = "git checkout";
+      gcl = "git clone";
+      gclgh = "git clone git@github.com:";
+      gcm = "git commit -m";
+      ga = "git add";
+      gd = "git diff";
+      gs = "git status";
+    };
+  };
 }

@@ -18,25 +18,25 @@
     /* Warning: packages from this repo are subject to change rapidly!. */
     masterpkgs.url = "github:NixOS/nixpkgs/master";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "unstablepkgs";
 
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
-    nix-formatter-pack.inputs.nixpkgs.follows = "nixpkgs";
+    nix-formatter-pack.inputs.nixpkgs.follows = "unstablepkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware?rev=6f976e53752e5b9ab08f9a3b1b0b9c67815c9754";
 
     homeage.url = "github:jordanisaacs/homeage";
-    homeage.inputs.nixpkgs.follows = "nixpkgs";
+    homeage.inputs.nixpkgs.follows = "unstablepkgs";
 
     nixd.url = "github:nix-community/nixd";
-    nixd.inputs.nixpkgs.follows = "nixpkgs";
+    nixd.inputs.nixpkgs.follows = "unstablepkgs";
 
     flake-compat.url = "github:inclyc/flake-compat";
     flake-compat.flake = false;
 
     nix-direnv.url = "github:nix-community/nix-direnv";
-    nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
+    nix-direnv.inputs.nixpkgs.follows = "unstablepkgs";
 
     purescript-overlay.url = "github:thomashoneyman/purescript-overlay";
 
@@ -62,7 +62,7 @@
     }:
     let
       system = "x86_64-linux";
-      stateVersion = "23.11";
+      stateVersion = "24.05";
       overlays = [
         (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
         (_final: _prev: self.packages."${system}")
@@ -77,7 +77,7 @@
         permittedInsecurePackages = [ "electron-25.9.0" ];
       };
 
-      pkgs = import nixpkgs {
+      stable = import nixpkgs {
         inherit system overlays config;
       };
 
@@ -89,23 +89,29 @@
         inherit system overlays config;
       };
 
-      helpers = import ./lib { inherit home-manager nixpkgs homeage; };
+      helpers = import ./lib {
+        inherit home-manager homeage;
+        nixpkgs = unstablepkgs;
+      };
+
+      username = "massi";
     in
     {
       homeConfigurations."massi@elendil" = helpers.mkHome {
-        inherit pkgs unstable stateVersion master;
-        username = "massi";
+        inherit stable stateVersion master username;
+        pkgs = unstable;
         extraModules = [ ./home/elendil ];
       };
 
       homeConfigurations."massi@coravandil" = helpers.mkHome {
-        inherit pkgs unstable stateVersion master;
-        username = "massi";
+        inherit stable stateVersion master username;
+        pkgs = unstable;
         extraModules = [ ./home/coravandil ];
       };
 
       nixosConfigurations."elendil" = helpers.mkSystem {
-        inherit pkgs unstable stateVersion system;
+        inherit stable stateVersion system;
+        pkgs = unstable;
         extraModules = [
           ./system/elendil/configuration.nix
           ./system/elendil/hardware-configuration.nix
@@ -113,7 +119,7 @@
         ];
       };
 
-      packages."${system}" = import ./pkgs { inherit unstable; stable = pkgs; };
+      packages."${system}" = import ./pkgs { inherit stable unstable; };
 
       devShells."${system}" = {
         default = unstable.mkShell {
@@ -149,7 +155,7 @@
       };
 
       formatter.${system} = nix-formatter-pack.lib.mkFormatter {
-        inherit pkgs;
+        pkgs = stable;
         config.tools = {
           alejandra.enable = false;
           deadnix.enable = true;

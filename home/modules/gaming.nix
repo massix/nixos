@@ -1,4 +1,4 @@
-{ pkgs, unstable, config, lib, ... }:
+{ pkgs, config, lib, ... }:
 let
   cfg = config.my-modules.gaming;
   inherit (lib) mkEnableOption mkIf mkOption types;
@@ -24,7 +24,6 @@ in
     enable = mkEnableOption "Enable gaming module";
     nethack = {
       enable = mkEnableOption "install Nethack";
-      unstable = mkEnableOption "use unstable package";
       options = {
         autoPickup = mkDisableOption "Automatically pickup items";
         pickupTypes = mkStringOption "Pickup types" "$";
@@ -41,7 +40,6 @@ in
     };
     dwarfFortress = {
       enable = mkEnableOption "Install Dwarf Fortress";
-      unstable = mkEnableOption "Use unstable package";
       config = {
         theme = mkOption {
           description = "Theme to use";
@@ -59,56 +57,51 @@ in
     };
   };
 
-  config =
-    let
-      dfChannel = if cfg.dwarfFortress.unstable then unstable else pkgs;
-      nhChannel = if cfg.nethack.unstable then unstable else pkgs;
-    in
-    mkIf cfg.enable {
+  config = mkIf cfg.enable {
 
-      home.sessionVariables = mkIf cfg.nethack.enable {
-        NETHACKOPTIONS = "@${config.xdg.configHome}/nethack/options";
-      };
-
-      xdg.configFile."nethack/options" = mkIf cfg.nethack.enable {
-        text =
-          let
-            boolOpt = name: enabled: if enabled then "${name}" else "!${name}";
-          in
-          ''
-            OPTIONS=${boolOpt "autopickup" cfg.nethack.options.autoPickup}
-            OPTIONS=${boolOpt "pickup_thrown" cfg.nethack.options.pickupThrown}
-            OPTIONS=${boolOpt "menucolors" cfg.nethack.options.menuColors}
-            OPTIONS=${boolOpt "perm_invent" cfg.nethack.options.permInvent}
-            OPTIONS=${boolOpt "lit_corridor" cfg.nethack.options.litCorridor}
-            OPTIONS=pickup_types:${cfg.nethack.options.pickupTypes}
-            OPTIONS=menustyle:${cfg.nethack.options.menuStyle}
-            OPTIONS=runmode:${cfg.nethack.options.runMode}
-            OPTIONS=number_pad:${cfg.nethack.options.numberPad}
-            OPTIONS=pettype:${cfg.nethack.options.petType}
-            OPTIONS=msg_window:${cfg.nethack.options.msgWindow}
-          '';
-      };
-
-      home.packages =
-        let
-          dwarfFortress =
-            if cfg.dwarfFortress.enable then with dfChannel.dwarf-fortress-packages; [
-              (dwarf-fortress-full.override {
-                inherit (cfg.dwarfFortress.config) theme enableDwarfTherapist enableLegendsBrowser enableIntro enableSoundSense enableStoneSense;
-              })
-            ] else [ ];
-          netHack = if cfg.nethack.enable then (with nhChannel; [ nethack ]) else [ ];
-        in
-        dwarfFortress ++ netHack;
-
-      xdg.desktopEntries."dwarf-fortress" = mkIf cfg.dwarfFortress.enable {
-        name = "Dwarf Fortress";
-        exec = "dwarf-fortress";
-        type = "Application";
-        icon = "${dfIcon}/dwarf-fortress.svg";
-        terminal = false;
-        categories = [ "Game" ];
-      };
+    home.sessionVariables = mkIf cfg.nethack.enable {
+      NETHACKOPTIONS = "@${config.xdg.configHome}/nethack/options";
     };
+
+    xdg.configFile."nethack/options" = mkIf cfg.nethack.enable {
+      text =
+        let
+          boolOpt = name: enabled: if enabled then "${name}" else "!${name}";
+        in
+        ''
+          OPTIONS=${boolOpt "autopickup" cfg.nethack.options.autoPickup}
+          OPTIONS=${boolOpt "pickup_thrown" cfg.nethack.options.pickupThrown}
+          OPTIONS=${boolOpt "menucolors" cfg.nethack.options.menuColors}
+          OPTIONS=${boolOpt "perm_invent" cfg.nethack.options.permInvent}
+          OPTIONS=${boolOpt "lit_corridor" cfg.nethack.options.litCorridor}
+          OPTIONS=pickup_types:${cfg.nethack.options.pickupTypes}
+          OPTIONS=menustyle:${cfg.nethack.options.menuStyle}
+          OPTIONS=runmode:${cfg.nethack.options.runMode}
+          OPTIONS=number_pad:${cfg.nethack.options.numberPad}
+          OPTIONS=pettype:${cfg.nethack.options.petType}
+          OPTIONS=msg_window:${cfg.nethack.options.msgWindow}
+        '';
+    };
+
+    home.packages =
+      let
+        dwarfFortress =
+          if cfg.dwarfFortress.enable then with pkgs.dwarf-fortress-packages; [
+            (dwarf-fortress-full.override {
+              inherit (cfg.dwarfFortress.config) theme enableDwarfTherapist enableLegendsBrowser enableIntro enableSoundSense enableStoneSense;
+            })
+          ] else [ ];
+        netHack = if cfg.nethack.enable then (with pkgs; [ nethack ]) else [ ];
+      in
+      dwarfFortress ++ netHack;
+
+    xdg.desktopEntries."dwarf-fortress" = mkIf cfg.dwarfFortress.enable {
+      name = "Dwarf Fortress";
+      exec = "dwarf-fortress";
+      type = "Application";
+      icon = "${dfIcon}/dwarf-fortress.svg";
+      terminal = false;
+      categories = [ "Game" ];
+    };
+  };
 }

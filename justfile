@@ -2,7 +2,6 @@ nixpkgs_fmt := `which nixpkgs-fmt`
 statix := `which statix`
 nix := `which nix`
 nixosrb := `which nixos-rebuild`
-nixch := `which nix-channel`
 home_manager := `which home-manager`
 stylua := `which stylua`
 
@@ -13,10 +12,9 @@ default: switch
   {{ stylua }} .
 
 @system:
-  sudo {{ nixosrb }} switch --impure
+  sudo {{ nixosrb }} switch
 
 @update: && system
-  sudo {{ nixch }} --update nixos-unstable
   {{ nix }} flake update
   {{ home_manager }} switch
 

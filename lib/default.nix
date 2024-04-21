@@ -4,9 +4,9 @@
 , ...
 }: {
   mkHome =
-    { pkgs, unstable, master, stateVersion, username, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
+    { pkgs, stable, master, stateVersion, username, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit unstable master stateVersion username; };
+      extraSpecialArgs = { inherit stable master stateVersion username; };
 
       modules = [
         homeage.homeManagerModules.homeage
@@ -25,10 +25,10 @@
     };
 
   mkSystem =
-    { pkgs, unstable, stateVersion, system, extraModules ? [ ] }:
+    { pkgs, stable, stateVersion, system, extraModules ? [ ] }:
     nixpkgs.lib.nixosSystem {
       inherit pkgs system;
-      specialArgs = { inherit unstable stateVersion; };
+      specialArgs = { inherit stable stateVersion; };
       modules = extraModules;
     };
 }

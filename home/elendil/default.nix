@@ -1,10 +1,9 @@
 { pkgs
-, unstable
 , ...
 }:
 let
   wrapperDir = "/run/wrappers/";
-  inherit (unstable) lib fetchFromGitHub;
+  inherit (pkgs) lib fetchFromGitHub;
 
   mOnedriverService = { pkgs, mountpoint }: {
     Unit = {
@@ -52,7 +51,7 @@ let
     file = "$HOME/org/.hledger.journal";
   };
 
-  rioThemes = unstable.stdenvNoCC.mkDerivation {
+  rioThemes = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-rio-themes";
     version = "0.0.1";
 
@@ -73,7 +72,7 @@ let
     '';
   };
 
-  warpThemes = unstable.stdenvNoCC.mkDerivation {
+  warpThemes = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-warp-themes";
     version = "0.0.1";
 
@@ -98,13 +97,12 @@ in
   my-modules = {
     fonts = {
       enable = true;
-      configuration.unstable = true;
       families = {
         noto-fonts = true;
         liberation = true;
         fira-code = true;
         nerdfonts = true;
-        extra = with unstable; [
+        extra = with pkgs; [
           mplus-outline-fonts.githubRelease
           proggyfonts
           monaspace
@@ -119,7 +117,6 @@ in
 
     coding = {
       enable = true;
-      unstable = true;
       languages = {
         c = false;
         c_sharp = true;
@@ -144,7 +141,6 @@ in
     fish = {
       enable = true;
       configuration = {
-        unstable = true;
         extraShellAbbrs = {
           j = "just";
           tf = "terraform";
@@ -176,7 +172,6 @@ in
       };
       nethack = {
         enable = true;
-        unstable = true;
         options = {
           permInvent = true;
           petType = "cat";
@@ -188,20 +183,15 @@ in
 
     helix = {
       enable = true;
-      package = unstable.helix;
-      configuration.unstable = true;
       defaultEditor = false;
       configuration.theme = "tokyonight_storm";
     };
 
-    im = {
-      enable = true;
-      configuration.unstable = true;
-    };
+    im.enable = true;
 
     neovim = {
       enable = true;
-      configuration.package = unstable.neovim-unwrapped;
+      configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
       gui = {
         enable = true;
@@ -213,7 +203,6 @@ in
     git = {
       enable = true;
       userEmail = "massimo.gengarelli@gmail.com";
-      configuration.unstable = true;
     };
 
     zellij = {
@@ -221,7 +210,6 @@ in
       configuration = {
         autoAttach = false;
         autoExit = false;
-        unstable = true;
         enableFishIntegration = false;
       };
     };
@@ -238,19 +226,19 @@ in
     vscode = {
       enable = true;
       mutableExtensionsDir = true;
-      package = unstable.vscode-fhs;
+      package = pkgs.vscode-fhs;
     };
 
     nushell = {
       enable = true;
-      package = unstable.nushell;
+      package = pkgs.nushell;
       configFile.source = ./files/nushell_config.nu;
       envFile.source = ./files/nushell_env.nu;
     };
 
     firefox = {
       enable = true;
-      package = unstable.firefox;
+      package = pkgs.firefox;
     };
 
     direnv = {
@@ -277,7 +265,7 @@ in
       in
       {
         enable = true;
-        package = unstable.kitty;
+        package = pkgs.kitty;
         theme = "Catppuccin-Mocha";
 
         shellIntegration = {
@@ -313,7 +301,7 @@ in
 
     rio = {
       enable = true;
-      package = unstable.rio;
+      package = pkgs.rio;
       settings = {
         cursor = "_";
         blinking-cursor = true;
@@ -363,7 +351,7 @@ in
     enable = true;
     theme = {
       name = "Catppuccin-Mocha-Compact-Mauve-Dark";
-      package = unstable.catppuccin-gtk.override {
+      package = pkgs.catppuccin-gtk.override {
         accents = [ "mauve" ];
         size = "compact";
         tweaks = [ ];
@@ -372,11 +360,11 @@ in
     };
     iconTheme = {
       name = "Papirus";
-      package = unstable.papirus-icon-theme;
+      package = pkgs.papirus-icon-theme;
     };
     cursorTheme = {
       name = "Catppuccin-Mocha-Mauve-Cursors";
-      package = unstable.catppuccin-cursors.mochaMauve;
+      package = pkgs.catppuccin-cursors.mochaMauve;
       size = 32;
     };
   };
@@ -392,12 +380,9 @@ in
 
   home.packages =
     let
-      stable-packages = with pkgs; [
+      unstable-packages = with pkgs; [
         # Only for Teams PWA
-        google-chrome
-      ];
-
-      unstable-packages = with unstable; [
+        ungoogled-chromium
         flameshot
         just
         powertop
@@ -429,21 +414,21 @@ in
       other-packages = [ ];
 
       hledger-packages =
-        if hl.enabled then with unstable; [
+        if hl.enabled then with pkgs; [
           hledger
           hledger-ui
           hledger-web
           hledger-utils
         ] else [ ];
     in
-    stable-packages ++ unstable-packages ++ other-packages ++ hledger-packages;
+    unstable-packages ++ other-packages ++ hledger-packages;
 
   systemd.user.startServices = "sd-switch";
 
   # Automount Onedriver
   systemd.user.services = {
     "onedriver@home-massi-OneDrive" = mOnedriverService {
-      pkgs = unstable;
+      inherit pkgs;
       mountpoint = "\${HOME}/OneDrive";
     };
   };

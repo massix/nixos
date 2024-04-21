@@ -1,6 +1,6 @@
 { stateVersion
 , username
-, unstable
+, pkgs
 , config
 , ...
 }: {
@@ -8,17 +8,17 @@
     inherit stateVersion username;
     homeDirectory = "/home/${username}";
     activation.report-changes = config.lib.dag.entryAnywhere ''
-      ${unstable.nvd}/bin/nvd diff $oldGenPath $newGenPath
+      ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
     '';
 
-    packages = [ unstable.age ];
+    packages = [ pkgs.age ];
   };
 
   homeage = {
     # This is true for all users, the file must exist
     identityPaths = [ "~/.age/key.txt" ];
     installationType = "systemd";
-    pkg = unstable.rage;
+    pkg = pkgs.rage;
 
     file = {
       "idrsa" = {
@@ -54,7 +54,7 @@
       warn-dirty = true;
     };
 
-    package = unstable.nix;
+    package = pkgs.nix;
   };
 }
 

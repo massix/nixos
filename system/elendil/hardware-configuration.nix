@@ -1,7 +1,7 @@
 { config
 , lib
 , modulesPath
-, unstable
+, pkgs
 , ...
 }: {
   imports = [
@@ -55,7 +55,7 @@
     # Enable OpenGL
     opengl = {
       enable = true;
-      extraPackages = with unstable; lib.mkDefault [
+      extraPackages = with pkgs; lib.mkDefault [
         intel-media-driver
         vaapiVdpau
         libvdpau-va-gl
@@ -63,7 +63,7 @@
       ];
     };
 
-    bluetooth = with unstable; {
+    bluetooth = with pkgs; {
       settings = {
         General = {
           Experimental = true;
@@ -148,7 +148,7 @@
   };
 
   # Custom thermald implementation
-  services.dbus.packages = [ unstable.thermald ];
+  services.dbus.packages = [ pkgs.thermald ];
   systemd.services.thermald =
     let
       configFile = ./files/thermal-conf.xml;
@@ -159,7 +159,7 @@
       serviceConfig = {
         PrivateNetwork = true;
         ExecStart = ''
-          ${unstable.thermald}/sbin/thermald \
+          ${pkgs.thermald}/sbin/thermald \
               --loglevel=info \
               --dbus-enable \
               --no-daemon \

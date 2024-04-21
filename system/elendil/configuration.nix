@@ -3,7 +3,6 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { pkgs
 , stateVersion
-, unstable
 , ...
 }:
 let
@@ -13,15 +12,8 @@ let
   ];
 in
 {
-  disabledModules = [
-    "services/desktops/pipewire/pipewire.nix"
-    "services/desktops/pipewire/wireplumber.nix"
-  ];
-
   imports = [
     ./hardware-configuration.nix
-    <nixos-unstable/nixos/modules/services/desktops/pipewire/pipewire.nix>
-    <nixos-unstable/nixos/modules/services/desktops/pipewire/wireplumber.nix>
   ];
 
   # Bootloader.
@@ -81,9 +73,9 @@ in
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "intl";
+    variant = "intl";
   };
 
   services.keyd = {
@@ -122,7 +114,7 @@ in
 
   services.pipewire = {
     enable = true;
-    package = unstable.pipewire;
+    package = pkgs.pipewire;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
@@ -183,6 +175,14 @@ in
     viAlias = true;
     vimAlias = true;
     defaultEditor = true;
+  };
+
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+    package = (pkgs.appimage-run.override {
+      extraPkgs = _: with pkgs; [ hidapi ];
+    });
   };
 
   programs.zsh.enable = false;

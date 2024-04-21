@@ -1,4 +1,4 @@
-{ pkgs, unstable, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   cfg = config.my-modules.zellij;
   inherit (lib) mkEnableOption mkOption types mkIf;
@@ -13,7 +13,6 @@ in
     enable = mkEnableOption "Activate Zellij module";
 
     configuration = {
-      unstable = mkEnableOption "Use unstable channel";
       enableFishIntegration = mkEnableOption "Fish integration";
       enableZshIntegration = mkEnableOption "Zsh integration";
       enableBashIntegration = mkEnableOption "Bash integration";
@@ -29,7 +28,7 @@ in
   config = mkIf cfg.enable {
     programs.zellij = {
       enable = true;
-      package = if cfg.configuration.unstable then unstable.zellij else pkgs.zellij;
+      package = pkgs.zellij;
       inherit (cfg.configuration) enableFishIntegration enableZshIntegration enableBashIntegration;
     };
 

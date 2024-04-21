@@ -1,7 +1,7 @@
-{ config, lib, unstable, master, username, ... }:
+{ config, lib, pkgs, master, username, ... }:
 let
   cfg = config.my-modules.neovim;
-  inherit (unstable) rustPlatform fetchFromGitHub;
+  inherit (pkgs) rustPlatform fetchFromGitHub;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types strings;
   inherit (config.lib.file) mkOutOfStoreSymlink;
   mkStringOption = description: default: mkOption {
@@ -13,11 +13,11 @@ let
     inherit default description;
   };
   nvimLangs = map
-    ({ code, hash }: unstable.stdenvNoCC.mkDerivation rec {
+    ({ code, hash }: pkgs.stdenvNoCC.mkDerivation rec {
       pname = "neovim-spell-${code}";
       version = "1.0.0";
       spellFile = "${code}.utf-8.spl";
-      src = unstable.fetchurl {
+      src = pkgs.fetchurl {
         url = "http://ftp.vim.org/pub/vim/runtime/spell/${spellFile}";
         inherit hash;
       };
@@ -57,15 +57,14 @@ in
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
     configuration = {
-      package = mkPackageOption unstable "neovim" {
+      package = mkPackageOption pkgs "neovim" {
         default = "neovim-unwrapped";
       };
-      unstable = mkEnableOption "Install from the unstable channel";
       nightly = mkEnableOption "Install from the nightly channel";
     };
     gui = {
       enable = mkEnableOption "Install GUI";
-      package = mkPackageOption unstable "neovide" {
+      package = mkPackageOption pkgs "neovide" {
         default = "neovide";
       };
       font = {
@@ -116,8 +115,8 @@ in
         "${util}/nix.lua".text = ''
           -- Some variables that are injected automatically by nix
           local bundles = {}
-          local debug_bundles = vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/*.jar"), "\n")
-          local test_bundles = vim.split(vim.fn.glob("${unstable.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
+          local debug_bundles = vim.split(vim.fn.glob("${pkgs.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/*.jar"), "\n")
+          local test_bundles = vim.split(vim.fn.glob("${pkgs.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
 
           vim.list_extend(bundles, debug_bundles)
           vim.list_extend(bundles, test_bundles)
@@ -127,11 +126,11 @@ in
             dapConfigured = true,
             jdtls = {
               bundles = bundles,
-              lombok = "${unstable.lombok}/lombok.jar",
+              lombok = "${pkgs.lombok}/lombok.jar",
             },
-            codeium = "${unstable.codeium-ls}/bin/codeium-ls_server_linux_x64",
-            vsCodeJsDebug = "${unstable.vscode-js-debug}/vscode-js-debug",
-            nodePath = "${unstable.nodejs}/bin/node",
+            codeium = "${pkgs.codeium-ls}/bin/codeium-ls_server_linux_x64",
+            vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",
+            nodePath = "${pkgs.nodejs}/bin/node",
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
             sniprun = "${sniprun}/bin/sniprun",
