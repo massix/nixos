@@ -180,9 +180,9 @@ in
   programs.appimage = {
     enable = true;
     binfmt = true;
-    package = (pkgs.appimage-run.override {
+    package = pkgs.appimage-run.override {
       extraPkgs = _: with pkgs; [ hidapi ];
-    });
+    };
   };
 
   programs.zsh.enable = false;
