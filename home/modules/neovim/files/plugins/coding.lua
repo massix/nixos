@@ -151,6 +151,7 @@ return {
           diagnostics.gitlint,
           diagnostics.hadolint,
           diagnostics.ktlint,
+          diagnostics.statix,
           diagnostics.terraform_validate,
           diagnostics.tfsec,
           diagnostics.trivy,
