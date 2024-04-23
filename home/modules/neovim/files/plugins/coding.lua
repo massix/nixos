@@ -284,7 +284,7 @@ return {
         },
       })
 
-      lspconfig.nil_ls.setup({
+      lspconfig.nixd.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })

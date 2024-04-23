@@ -97,6 +97,8 @@
       username = "massi";
     in
     {
+      nix.nixPath = [ "nixpkgs=${unstablepkgs}" ];
+
       homeConfigurations."massi@elendil" = helpers.mkHome {
         inherit stable stateVersion master username;
         pkgs = unstable;

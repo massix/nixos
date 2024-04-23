@@ -1,12 +1,13 @@
 {
-  "formatting": {
-    "command": "nix fmt --quiet"
+  "nixpkgs": {
+    "expr": "import (builtins.getFlake \"/home/massi/.config/nixos\").inputs.unstablepkgs {}"
   },
   "options": {
-    "enable": true,
-    "target": {
-      "args": [],
-      "installable": "/flakeref#homeConfigurations.massi@elendil.options"
+    "nixos": {
+      "expr": "(builtins.getFlake \"/home/massi/.config/nixos\").nixosConfigurations.elendil.options"
+    },
+    "home-manager": {
+      "expr": "(builtins.getFlake \"/home/massi/.config/nixos\").homeConfigurations.\"massi@elendil\".options"
     }
   }
 }
