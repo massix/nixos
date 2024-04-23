@@ -138,7 +138,14 @@ in
   users.users.massi = {
     isNormalUser = true;
     description = "Massimo Gengarelli";
-    extraGroups = [ "networkmanager" "wheel" "docker" "surface-control" "video" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "surface-control"
+      "video"
+      "vboxusers"
+    ];
     shell = pkgs.fish;
   };
 
@@ -208,15 +215,25 @@ in
     nerdfonts
   ];
 
-  virtualisation.docker = {
-    enable = true;
-    listenOptions = [ "unix:///var/run/docker.sock" "tcp://0.0.0.0:2375" ];
-    daemon.settings = {
-      bip = "172.29.0.1/24";
-      default-address-pools = [
-        { base = "172.30.0.0/16"; size = 24; }
-        { base = "172.31.0.0/16"; size = 24; }
-      ];
+  virtualisation = {
+    docker = {
+      enable = true;
+      listenOptions = [ "unix:///var/run/docker.sock" "tcp://0.0.0.0:2375" ];
+      daemon.settings = {
+        bip = "172.29.0.1/24";
+        default-address-pools = [
+          { base = "172.30.0.0/16"; size = 24; }
+          { base = "172.31.0.0/16"; size = 24; }
+        ];
+      };
+    };
+
+    virtualbox.host = {
+      enable = true;
+      enableKvm = true;
+      enableExtensionPack = true;
+      enableHardening = false;
+      addNetworkInterface = false;
     };
   };
 
