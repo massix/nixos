@@ -182,7 +182,7 @@ in
     };
 
     helix = {
-      enable = true;
+      enable = false;
       defaultEditor = false;
       configuration.theme = "tokyonight_storm";
     };
