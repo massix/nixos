@@ -177,24 +177,26 @@ in
     ];
   };
 
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = true;
-  };
-
-  programs.appimage = {
-    enable = true;
-    binfmt = true;
-    package = pkgs.appimage-run.override {
-      extraPkgs = _: with pkgs; [ hidapi ];
+  programs = {
+    neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      defaultEditor = true;
     };
-  };
 
-  programs.zsh.enable = false;
-  programs.fish.enable = true;
-  programs.command-not-found.enable = false;
+    appimage = {
+      enable = true;
+      binfmt = true;
+      package = pkgs.appimage-run.override {
+        extraPkgs = _: with pkgs; [ hidapi ];
+      };
+    };
+
+    zsh.enable = false;
+    fish.enable = true;
+    command-not-found.enable = false;
+  };
 
   xdg.portal = {
     enable = true;
