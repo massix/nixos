@@ -237,7 +237,6 @@ return {
       { "folke/neodev.nvim" },
       { "hrsh7th/cmp-nvim-lsp" },
       { "b0o/schemastore.nvim" },
-      { "towolf/vim-helm" },
       { "Hoffs/omnisharp-extended-lsp.nvim" },
     },
     config = function()
@@ -290,6 +289,11 @@ return {
       })
 
       lspconfig.lua_ls.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+      })
+
+      lspconfig.helm_ls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
@@ -352,11 +356,6 @@ return {
       })
 
       lspconfig.dockerls.setup({
-        capabilities = capabilities,
-        on_attach = attach_trouble,
-      })
-
-      lspconfig.helm_ls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
@@ -426,21 +425,6 @@ return {
       lspconfig.typst_lsp.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
-      })
-
-      -- If there are both yamlls and helm_ls, then detach yamlls
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "helm",
-        group = vim.api.nvim_create_augroup("Helm", { clear = true }),
-        callback = function(args)
-          local clients = vim.lsp.get_active_clients({ bufnr = args.buf })
-          for _, client in ipairs(clients) do
-            if client.name == "yamlls" and vim.lsp.buf_is_attached(args.buf, client.id) then
-              vim.lsp.buf_detach_client(args.buf, client.id)
-              break
-            end
-          end
-        end,
       })
     end,
   },
