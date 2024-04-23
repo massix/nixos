@@ -11,7 +11,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       webcord
-      whatsapp-for-linux
+      zapzap /* whatsapp client */
       telegram-desktop
     ];
   };
