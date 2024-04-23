@@ -4,7 +4,7 @@ let
 in
 buildNpmPackage rec {
   pname = "vscode-js-debug";
-  version = "1.85.0";
+  version = "1.88.0";
 
   nativeBuildInputs = with unstable; [
     nodePackages.gulp-cli
@@ -20,10 +20,13 @@ buildNpmPackage rec {
     owner = "microsoft";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-mBXH3tqoiu3HIo1oZdQCD7Mq8Tvkt2DXfcoXb7KEgXE=";
+    hash = "sha256-gmeuRUcdz/4+FtPOblNj5DX3otXNRjHJjhPcCRuWXAY=";
   };
 
-  npmDepsHash = "sha256-O2P+sHDjQm9bef4oUNBab0khTdR/nUDyhalSoxj0JL0=";
+  npmDepsHash = "sha256-M4h2p8GLVjBDla0ile1jKWF6wPSdgcumx2GKm9KGmlw=";
+  npmInstallFlags = "--omit=dev";
+  npmFlags = [ "--legacy-peer-deps" ];
+  makeCacheWritable = true;
 
   dontNpmBuild = true;
 
@@ -32,8 +35,6 @@ buildNpmPackage rec {
     gulp clean compile vsDebugServerBundle:webpack-bundle
     runHook postBuild
   '';
-
-  npmInstallFlags = "--omit=dev";
 
   installPhase = ''
     mkdir $out
