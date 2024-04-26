@@ -4,7 +4,7 @@
 }:
 let
   inherit (unstable) buildGoModule fetchFromGitHub;
-  version = "0.14.1";
+  version = "f07678f9e6ef3120e8af032ee48326b23c802cac";
   pname = "onedriver";
 in
 buildGoModule {
@@ -14,11 +14,16 @@ buildGoModule {
   src = fetchFromGitHub {
     owner = "jstaf";
     repo = pname;
-    rev = "v${version}";
-    hash = "sha256-mA5otgqXQAw2UYUOJaC1zyJuzEu2OS/pxmjJnWsVdxs=";
+    rev = "${version}";
+    hash = "sha256-P1JsiPsDHW7VRbxY+vNFuPyK3UWJuPqu4dWME38505U=";
   };
 
-  vendorHash = "sha256-OOiiKtKb+BiFkoSBUQQfqm4dMfDW3Is+30Kwcdg8LNA=";
+  vendorHash = "sha256-JoinXXq9XuoXAa/ZgF3MIsKVooOUgKRS3KwWVWzjUJI=";
+
+  preBuild = ''
+    substituteInPlace cmd/common/common.go \
+      --replace-fail "/usr/share/icons/onedriver/onedriver.png" "$out/share/icons/onedriver/onedriver.png"
+  '';
 
   nativeBuildInputs = with unstable; [
     pkg-config
@@ -26,9 +31,11 @@ buildGoModule {
     installShellFiles
   ];
 
-  buildInputs = with unstable; [ webkitgtk_4_1 glib fuse ];
+  buildInputs = with unstable; [ webkitgtk_4_1 glib fuse gtk3 ];
 
-  ldflags = [ "-X github.com/jstaf/onedriver/cmd/common.commit=v${version}" ];
+  GOFLAGS = [ "-tags=gtk_3_24" ];
+
+  ldflags = [ "-X github.com/jstaf/onedriver/cmd/common.commit=${version}" ];
 
   subPackages = [
     "cmd/onedriver"
@@ -36,24 +43,23 @@ buildGoModule {
   ];
 
   postInstall = ''
-    echo "Running postInstall"
     install -Dm644 ./pkg/resources/onedriver.svg $out/share/icons/onedriver/onedriver.svg
     install -Dm644 ./pkg/resources/onedriver.png $out/share/icons/onedriver/onedriver.png
     install -Dm644 ./pkg/resources/onedriver-128.png $out/share/icons/onedriver/onedriver-128.png
 
-    install -Dm644 ./pkg/resources/onedriver.desktop $out/share/applications/onedriver.desktop
+    install -Dm644 ./pkg/resources/onedriver-launcher.desktop $out/share/applications/onedriver-launcher.desktop
     install -Dm644 ./pkg/resources/onedriver@.service $out/lib/systemd/user/onedriver@.service
 
     mkdir -p $out/share/man/man1
     installManPage ./pkg/resources/onedriver.1
 
-    substituteInPlace $out/share/applications/onedriver.desktop \
-      --replace "/usr/bin/onedriver-launcher" "$out/bin/onedriver-launcher" \
-      --replace "/usr/share/icons" "$out/share/icons"
+    substituteInPlace $out/share/applications/onedriver-launcher.desktop \
+      --replace-fail "/usr/bin/onedriver-launcher" "$out/bin/onedriver-launcher" \
+      --replace-fail "/usr/share/icons" "$out/share/icons"
 
     substituteInPlace $out/lib/systemd/user/onedriver@.service \
-      --replace "/usr/bin/onedriver" "$out/bin/onedriver" \
-      --replace "/usr/bin/fusermount" "${wrapperDir}/fusermount"
+      --replace-fail "/usr/bin/onedriver" "$out/bin/onedriver" \
+      --replace-fail "/usr/bin/fusermount" "${wrapperDir}/fusermount"
   '';
 
   doCheck = false;
