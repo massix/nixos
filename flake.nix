@@ -24,7 +24,7 @@
     nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
     nix-formatter-pack.inputs.nixpkgs.follows = "unstablepkgs";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware?rev=6f976e53752e5b9ab08f9a3b1b0b9c67815c9754";
+    nixos-hardware.url = "github:massix/nixos-hardware/fix/surface-kernel-6.7.9";
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "unstablepkgs";
