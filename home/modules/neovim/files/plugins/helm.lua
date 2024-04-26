@@ -10,13 +10,29 @@ return {
         pattern = "helm",
         group = vim.api.nvim_create_augroup("Helm", { clear = true }),
         callback = function(args)
-          local clients = vim.lsp.get_active_clients({ bufnr = args.buf })
-          for _, client in ipairs(clients) do
-            if client.name == "yamlls" and vim.lsp.buf_is_attached(args.buf, client.id) then
-              vim.lsp.buf_detach_client(args.buf, client.id)
-              break
-            end
-          end
+          vim.wo.spell = false -- Disable spelling for helm files
+          vim.loop.new_timer():start(
+            500,
+            0,
+            vim.schedule_wrap(function()
+              ---@type lsp.Client[]
+              local clients = vim.lsp.get_active_clients({ bufnr = args.buf })
+              for _, client in ipairs(clients) do
+                if client.name == "yamlls" or client.name == "null-ls" then
+                  if vim.lsp.buf_is_attached(args.buf, client.id) then
+                    vim.lsp.buf_detach_client(args.buf, client.id)
+
+                    local lsp_namespace = vim.lsp.diagnostic.get_namespace(client.id)
+                    vim.diagnostic.reset(lsp_namespace, args.buf)
+                    vim.diagnostic.disable(args.buf, lsp_namespace)
+                  end
+                end
+              end
+
+              -- Reset all diagnostics
+              vim.diagnostic.reset(nil, args.buf)
+            end)
+          )
         end,
       })
     end,
