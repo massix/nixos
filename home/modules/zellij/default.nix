@@ -1,12 +1,29 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.my-modules.zellij;
+  inherit (pkgs) stdenvNoCC;
   inherit (lib) mkEnableOption mkOption types mkIf;
   boolToStr = bool: if bool then "true" else "false";
   mkStringOption = default: description: mkOption {
     type = types.str;
     inherit default description;
   };
+  zellij-layouts = stdenvNoCC.mkDerivation {
+    pname = "zellij-layouts";
+    version = "1.0.0";
+    src = ./layouts;
+
+    dontConfigure = true;
+    dontUnpack = true;
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/layouts
+      cp -r $src/*.kdl $out/layouts/
+      runHook postInstall
+    '';
+  };
+  configDir = ".config/zellij";
 in
 {
   options.my-modules.zellij = {
@@ -19,7 +36,7 @@ in
       autoAttach = mkEnableOption "Auto-attach to a session";
       autoExit = mkEnableOption "Auto-exit on exit";
       theme = mkStringOption "catppuccin-mocha" "Theme to use for Zellij";
-      defaultLayout = mkStringOption "compact" "Default layout to use";
+      defaultLayout = mkStringOption "custom" "Default layout to use";
       defaultMode = mkStringOption "locked" "Default mode to use";
       mirrorSession = mkEnableOption "Use mirror session" // { default = true; };
     };
@@ -39,12 +56,12 @@ in
 
     home.file =
       let
-        configDir = ".config/zellij";
         configurableOptions = [
           ''theme "${cfg.configuration.theme}"''
           ''default_layout "${cfg.configuration.defaultLayout}"''
           ''default_mode "${cfg.configuration.defaultMode}"''
           ''mirror_session ${boolToStr cfg.configuration.mirrorSession}''
+          ''layout_dir "${zellij-layouts}/layouts"''
         ];
         mkConfig = path: opts: (builtins.readFile path) + lib.strings.concatLines opts;
       in
