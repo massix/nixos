@@ -406,6 +406,7 @@ in
         protonvpn-gui
 
         slack
+        hypnotix
 
         todoist
         todoist-electron
