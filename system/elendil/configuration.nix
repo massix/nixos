@@ -93,6 +93,16 @@
     };
   };
 
+  services.fwupd = {
+    enable = true;
+    package = pkgs.fwupd;
+    daemonSettings = {
+      EspLocation = "/boot";
+      TestDevices = false;
+      OnlyTrusted = false;
+    };
+  };
+
   # Configure console keymap
   console.keyMap = "us-acentos";
 
@@ -186,6 +196,7 @@
       };
     };
 
+    dconf.enable = true;
     zsh.enable = false;
     fish.enable = true;
     command-not-found.enable = false;

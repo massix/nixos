@@ -17,8 +17,7 @@
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
     kernelParams = [
-      "mem_sleep_default=deep"
-      "acpi_enforce_resources=lax"
+      "acpi_osi=\"!Windows 2020\""
     ];
   };
 
@@ -174,6 +173,18 @@
     enable = true;
     cpuFreqGovernor = lib.mkDefault "powersave";
     powertop.enable = true;
+
+    powerDownCommands = ''
+      echo "Removing ipts"
+      systemctl stop iptsd
+      ${pkgs.kmod}/bin/modprobe -r ipts
+    '';
+
+    resumeCommands = ''
+      echo "Reloading ipts"
+      ${pkgs.kmod}/bin/modprobe ipts
+      systemctl start iptsd
+    '';
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
