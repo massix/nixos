@@ -55,7 +55,7 @@ layout {
   }
 
   swap_tiled_layout name="v-stacked" {
-    ui min_panes=4 {
+    ui min_panes=3 {
       pane split_direction="vertical" {
         pane
         pane stacked=true { children; }
