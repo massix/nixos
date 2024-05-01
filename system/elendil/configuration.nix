@@ -5,12 +5,6 @@
 , stateVersion
 , ...
 }:
-let
-  nameservers = [
-    "94.140.14.15"
-    "94.140.15.16"
-  ];
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -38,10 +32,9 @@ in
   # Enable networking
   networking = {
     hostName = "elendil";
-    inherit nameservers;
     networkmanager = {
       enable = true;
-      insertNameservers = nameservers;
+      dns = "dnsmasq";
     };
 
     resolvconf.enable = false;
