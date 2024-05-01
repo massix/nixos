@@ -66,6 +66,7 @@ return {
         "regex",
         "rust",
         "terraform",
+        "tsx",
         "toml",
         "typescript",
         "typst",
@@ -255,7 +256,13 @@ return {
 
       require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Capabilities
+      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
 
       ---@param client lsp.Client
       ---@param bufnr integer
