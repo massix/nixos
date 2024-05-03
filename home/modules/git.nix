@@ -13,8 +13,13 @@ in
     };
     userEmail = mkOption {
       type = lib.types.str;
-      default = "massimo.gengarelli@gmail.com";
+      default = "massimo.gengarelli@proton.me";
       description = "User email";
+    };
+    workRepository = {
+      enabled = mkEnableOption "Work repository";
+      workEmail = mkOption { type = lib.types.str; description = "Work email"; };
+      workRoot = mkOption { type = lib.types.str; description = "Work root"; };
     };
   };
 
@@ -23,18 +28,26 @@ in
       inherit (cfg) enable userName userEmail;
       package = pkgs.git;
 
-      delta.enable = true;
-      delta.package = pkgs.delta;
+      delta = {
+        enable = true;
+        package = pkgs.delta;
 
-      delta.options = {
-        features = "decorations";
-        navigate = true;
-        side-by-side = true;
+        options = {
+          features = "decorations";
+          navigate = true;
+          side-by-side = true;
+        };
       };
 
       aliases = {
         lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+        lgnc = "log --oneline --graph --all";
       };
+
+      includes = mkIf cfg.workRepository.enabled [{
+        condition = "gitdir:${cfg.workRepository.workRoot}";
+        contents.user.email = cfg.workRepository.workEmail;
+      }];
 
       extraConfig = {
         push = {

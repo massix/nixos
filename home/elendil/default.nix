@@ -202,7 +202,11 @@ in
 
     git = {
       enable = true;
-      userEmail = "massimo.gengarelli@gmail.com";
+      workRepository = {
+        enabled = true;
+        workRoot = "~/Development/Work/";
+        workEmail = "massimo.gengarelli@alten.com";
+      };
     };
 
     zellij = {
