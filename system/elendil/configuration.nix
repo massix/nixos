@@ -35,6 +35,9 @@
     networkmanager = {
       enable = true;
       dns = "dnsmasq";
+      plugins = with pkgs; [
+        networkmanager-openconnect
+      ];
     };
 
     resolvconf.enable = false;
