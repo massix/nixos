@@ -42,7 +42,7 @@ let
   };
 
   terminalFont = {
-    name = "0xProto";
+    name = "Recursive Mono Casual Static";
     size = 9;
   };
 
