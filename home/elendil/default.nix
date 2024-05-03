@@ -345,9 +345,9 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/minimalistic/catppuccin_triangle.png";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/doggocat.png";
       picture-uri-dark = picture-uri;
-      picture-options = "scaled";
+      picture-options = "zoom";
     };
   };
 
