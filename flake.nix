@@ -39,10 +39,13 @@
     nix-direnv.inputs.nixpkgs.follows = "unstablepkgs";
 
     purescript-overlay.url = "github:thomashoneyman/purescript-overlay";
+    purescript-overlay.inputs.nixpkgs.follows = "unstablepkgs";
 
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly.inputs.nixpkgs.follows = "unstablepkgs";
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "unstablepkgs";
   };
 
   outputs =
