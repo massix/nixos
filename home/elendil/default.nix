@@ -390,7 +390,7 @@ in
         flameshot
         just
         powertop
-        microsoft-edge
+        (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland"; })
         pbpctrl
         gtk-engine-murrine
         gnome.dconf-editor
