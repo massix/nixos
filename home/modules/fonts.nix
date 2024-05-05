@@ -6,10 +6,8 @@ in
 {
   options.my-modules.fonts = {
     enable = mkEnableOption "Enable fonts handling";
-    families.noto-fonts = mkEnableOption "Install noto-fonts";
-    families.liberation = mkEnableOption "Install Liberation fonts";
-    families.fira-code = mkEnableOption "Install fira-code";
-    families.nerdfonts = mkEnableOption "Install NerdFonts";
+    typefonts = mkEnableOption "install typeface fonts" // { default = true; };
+    monospace = mkEnableOption "install monospace fonts" // { default = true; };
 
     families.extra = mkOption {
       type = types.listOf types.package;
@@ -21,25 +19,26 @@ in
 
   config =
     let
-      font_list = with pkgs;
-        (if cfg.families.noto-fonts then [
+      orEmpty = cond: fonts: if cond then fonts else [ ];
+      monospace-fonts =
+        orEmpty cfg.monospace (with pkgs; [
+          liberation_ttf
+          fira-code
+          fira-code-symbols
+          nerdfonts
+        ]);
+      typeface-fonts =
+        orEmpty cfg.typefonts (with pkgs; [
+          open-sans
+          libertine
+          google-fonts
           noto-fonts
           noto-fonts-cjk
           noto-fonts-emoji
-        ] else [ ]) ++
-        (if cfg.families.liberation then [
-          liberation_ttf
-        ] else [ ]) ++
-        (if cfg.families.fira-code then [
-          fira-code
-          fira-code-symbols
-        ] else [ ]) ++
-        (if cfg.families.nerdfonts then [
-          nerdfonts
-        ] else [ ]);
+        ]);
     in
     mkIf cfg.enable {
       fonts.fontconfig.enable = true;
-      home.packages = font_list ++ cfg.families.extra;
+      home.packages = monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
     };
 }

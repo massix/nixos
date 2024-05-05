@@ -98,10 +98,6 @@ in
     fonts = {
       enable = true;
       families = {
-        noto-fonts = true;
-        liberation = true;
-        fira-code = true;
-        nerdfonts = true;
         extra = with pkgs; [
           mplus-outline-fonts.githubRelease
           proggyfonts
