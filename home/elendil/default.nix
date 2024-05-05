@@ -410,6 +410,8 @@ in
 
         todoist
         todoist-electron
+
+        inkscape-with-extensions
       ];
 
       other-packages = [ ];
