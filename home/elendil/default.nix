@@ -258,11 +258,6 @@ in
     };
 
     kitty =
-      let
-        italic_font = "${terminalFont.name} Italic";
-        bold_italic_font = "${terminalFont.name} Bold Italic";
-        bold_font = "${terminalFont.name} Bold";
-      in
       {
         enable = true;
         package = pkgs.kitty;
@@ -273,14 +268,11 @@ in
           enableFishIntegration = true;
         };
 
-        # -> == <- >>= =<< != >= <=
         font = {
           inherit (terminalFont) name size;
         };
 
         settings = {
-          inherit italic_font bold_italic_font bold_font;
-
           cursor_shape = "beam";
           cursor_beam_thickness = "2.0";
           scrollback_lines = 10000;
