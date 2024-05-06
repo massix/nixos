@@ -42,7 +42,7 @@ let
   };
 
   terminalFont = {
-    name = "Recursive Mono Casual Static";
+    name = "Martian Mono";
     size = 9;
   };
 
