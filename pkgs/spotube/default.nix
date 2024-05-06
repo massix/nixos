@@ -1,15 +1,15 @@
-{ unstable, ... }:
+{ pkgs }:
 let
-  inherit (unstable) lib stdenv;
+  inherit (pkgs) lib stdenv;
   version = "3.6.0";
 
-  src = unstable.fetchurl {
+  src = pkgs.fetchurl {
     url = "https://github.com/KRTirtho/spotube/releases/download/v${version}/spotube-linux-${version}-x86_64.tar.xz";
     name = "spotube-linux-${version}-x86_64.tar.xz";
     sha256 = "sha256-ul+kH9hZVxzFOsPLActJ85MSQxZrGOE9sHAx1Ek7kz4=";
   };
 
-  buildInputs = with unstable; [
+  buildInputs = with pkgs; [
     atk
     cairo
     ffmpeg_4
@@ -33,7 +33,7 @@ stdenv.mkDerivation {
   pname = "spotube";
   inherit version src buildInputs;
 
-  nativeBuildInputs = with unstable; [
+  nativeBuildInputs = with pkgs; [
     makeWrapper
     patchelf
     stdenv.cc.cc.lib

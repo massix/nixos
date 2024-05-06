@@ -1,10 +1,10 @@
-{ stable, unstable }: {
-  onedriver = import ./onedriver { inherit stable unstable; };
-  lombok = import ./lombok { inherit stable unstable; };
-  jdtls = import ./jdtls-helix { inherit stable unstable; };
-  codeium-ls = import ./coding/codeiumls.nix { inherit stable unstable; };
-  vscode-js-debug = import ./coding/vscodejsdebug.nix { inherit stable unstable; };
-  spotube = import ./spotube { inherit stable unstable; };
-  tana = import ./tana { inherit stable unstable; };
-  warp-terminal = import ./warp-terminal { inherit stable unstable; };
+{ pkgs }: {
+  onedriver = import ./onedriver { inherit pkgs; };
+  lombok = import ./lombok { inherit pkgs; };
+  jdtls = import ./jdtls-helix { inherit pkgs; };
+  codeium-ls = import ./coding/codeiumls.nix { inherit pkgs; };
+  vscode-js-debug = import ./coding/vscodejsdebug.nix { inherit pkgs; };
+  spotube = import ./spotube { inherit pkgs; };
+  tana = import ./tana { inherit pkgs; };
+  warp-terminal = import ./warp-terminal { inherit pkgs; };
 }

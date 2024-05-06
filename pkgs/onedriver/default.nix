@@ -1,9 +1,8 @@
-{ unstable
+{ pkgs
 , wrapperDir ? "/run/wrappers/bin"
-, ...
 }:
 let
-  inherit (unstable) buildGoModule fetchFromGitHub;
+  inherit (pkgs) buildGoModule fetchFromGitHub;
   version = "f07678f9e6ef3120e8af032ee48326b23c802cac";
   pname = "onedriver";
 in
@@ -25,13 +24,14 @@ buildGoModule {
       --replace-fail "/usr/share/icons/onedriver/onedriver.png" "$out/share/icons/onedriver/onedriver.png"
   '';
 
-  nativeBuildInputs = with unstable; [
+  nativeBuildInputs = with pkgs; [
     pkg-config
     git
     installShellFiles
+    wrapGAppsHook
   ];
 
-  buildInputs = with unstable; [ webkitgtk_4_1 glib fuse gtk3 ];
+  buildInputs = with pkgs; [ webkitgtk_4_1 glib fuse gtk3 glib-networking ];
 
   GOFLAGS = [ "-tags=gtk_3_24" ];
 

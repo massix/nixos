@@ -1,7 +1,6 @@
-{ unstable, stable, ... }:
+{ pkgs }:
 let
-  inherit (unstable) stdenv;
-  pkgs = unstable;
+  inherit (pkgs) stdenv;
 in
 stdenv.mkDerivation rec {
   pname = "warp-terminal";
@@ -24,7 +23,7 @@ stdenv.mkDerivation rec {
   ] ++ [ stdenv.cc.cc.lib ];
 
   runtimeDependencies = with pkgs; [
-    stable.mesa
+    mesa
     libglvnd
     libxkbcommon
     vulkan-loader

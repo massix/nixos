@@ -1,12 +1,12 @@
-{ unstable, ... }:
+{ pkgs }:
 let
-  inherit (unstable) stdenv;
+  inherit (pkgs) stdenv;
 in
 stdenv.mkDerivation {
   pname = "jdtls-helix-fixed";
   version = "0.0.1";
 
-  src = unstable.fetchurl {
+  src = pkgs.fetchurl {
     url = "https://github.com/theli-ua/eclipse.jdt.ls/releases/download/java.apply.WorkspaceEdit/jdtls-helix.tar.xz";
     hash = "sha256-LRej0qCefaMmkm1CtfOZEw+IOpjYheTezdwr9ax41TM=";
   };
@@ -14,7 +14,7 @@ stdenv.mkDerivation {
   dontConfigure = true;
   dontBuild = true;
 
-  nativeBuildInputs = [ unstable.makeWrapper ];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
 
   unpackPhase = ''
     mkdir -p ./jdtls
@@ -25,9 +25,9 @@ stdenv.mkDerivation {
     mkdir -p $out
     cp -r ./jdtls $out/jdtls
     mkdir -p $out/bin
-    makeWrapper ${unstable.python3Minimal}/bin/python $out/bin/jdtls \
-      --prefix PATH : ${unstable.jdk}/bin \
-      --set JAVA_HOME ${unstable.jdk} \
+    makeWrapper ${pkgs.python3Minimal}/bin/python $out/bin/jdtls \
+      --prefix PATH : ${pkgs.jdk}/bin \
+      --set JAVA_HOME ${pkgs.jdk} \
       --add-flags $out/jdtls/bin/jdtls
   '';
 }

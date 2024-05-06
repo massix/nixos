@@ -1,17 +1,17 @@
-{ unstable, ... }:
+{ pkgs }:
 let
-  inherit (unstable) lib;
+  inherit (pkgs) lib;
   version = "1.8.30";
   fetchCodeium = version: hash: builtins.fetchurl {
     url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_linux_x64.gz";
     sha256 = hash;
   };
 in
-unstable.stdenvNoCC.mkDerivation {
+pkgs.stdenvNoCC.mkDerivation {
   pname = "codeium-ls";
   inherit version;
 
-  nativeBuildInputs = with unstable; [ autoPatchelfHook ];
+  nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
   src = fetchCodeium version "sha256:08li0a4fdsq7z3ar9yw45ffp6h1qxq7dbpmdyw9rnsr9c6gk01hq";
 

@@ -124,7 +124,7 @@
         ];
       };
 
-      packages."${system}" = import ./pkgs { inherit stable unstable; };
+      packages."${system}" = import ./pkgs { pkgs = unstable; };
 
       devShells."${system}" = {
         default = unstable.mkShell {

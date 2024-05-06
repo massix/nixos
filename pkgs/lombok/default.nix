@@ -1,12 +1,12 @@
-{ unstable, ... }:
+{ pkgs }:
 let
-  inherit (unstable) stdenv;
+  inherit (pkgs) stdenv;
 in
 stdenv.mkDerivation {
   pname = "lombok";
   version = "1.18.30";
 
-  src = unstable.fetchurl {
+  src = pkgs.fetchurl {
     url = "https://projectlombok.org/downloads/lombok.jar";
     hash = "sha256-1+4SLu4erutFGCqJ/zb8LdCGhY0bL1S2Fcb+97odYBI=";
   };
