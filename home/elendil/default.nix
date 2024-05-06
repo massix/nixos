@@ -337,6 +337,12 @@ in
       picture-uri-dark = picture-uri;
       picture-options = "zoom";
     };
+
+    "org/gnome/desktop/peripherals/touchpad" = {
+      disable-while-typing = true;
+      tap-to-click = true;
+      two-finger-scrolling-enabled = true;
+    };
   };
 
   gtk = {

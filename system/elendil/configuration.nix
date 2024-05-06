@@ -67,6 +67,10 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -181,6 +185,14 @@
       zsh
       fish
     ];
+
+    # Make disable-while-typing work again
+    etc."libinput/local-overrides.quirks".text = ''
+      [keyd]
+      MatchUdevType=keyboard
+      MatchVendor=0xFAC
+      AttrKeyboardIntegration=internal
+    '';
   };
 
   programs = {
