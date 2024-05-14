@@ -434,6 +434,7 @@ return {
   {
     "echasnovski/mini.pairs",
     version = "*",
+    enabled = false,
     event = { "BufEnter", "BufWinEnter" },
     opts = {},
   },

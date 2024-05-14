@@ -42,7 +42,7 @@ let
   };
 
   terminalFont = {
-    name = "Martian Mono";
+    name = "Recursive Mono Casual Static";
     size = 9;
   };
 
@@ -121,7 +121,7 @@ in
         javascript = true;
         java = true;
         json = true;
-        kotlin = true;
+        kotlin = false;
         lua = true;
         misc = true;
         nix = true;
@@ -413,6 +413,8 @@ in
         todoist-electron
 
         inkscape-with-extensions
+        (transmission_4.override { enableGTK3 = true; })
+        libnatpmp
       ];
 
       other-packages = [ ];
