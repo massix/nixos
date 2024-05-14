@@ -11,6 +11,7 @@ local json_transforms = {
   ["coreclr"] = { "cs" },
   ["ghc"] = { "haskell" },
   ["codelldb"] = { "rust", "c", "cpp" },
+  ["delve"] = { "go" },
 }
 
 --- @type LazyPluginSpec[]
@@ -196,6 +197,18 @@ return {
         command = "netcoredbg",
         args = { "--interpreter=vscode" },
       }
+
+      dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "dlv",
+          args = { "dap", "-l", "127.0.0.1:${port}" },
+        },
+      }
+
+      -- Neotest needs this
+      dap.adapters.go = dap.adapters.delve
 
       dap.adapters.netcoredbg = dap.adapters.coreclr
 

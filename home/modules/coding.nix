@@ -16,6 +16,7 @@ in
     languages = {
       c = mkEnDef "Enable Clang tooling" false;
       c_sharp = mkEnDef "Enable C# tooling" false;
+      go = mkEnDef "Enable Go tooling" false;
       haskell = mkEnDef "Enable Haskell tooling" false;
       java = mkEnDef "Enable Java tooling" false;
       javascript = mkEnDef "Enable Javascript tooling" false;
@@ -50,6 +51,13 @@ in
       c_sharpTooling = with pkgs; [
         omnisharp-roslyn
         netcoredbg
+      ];
+
+      goTooling = with pkgs; [
+        gopls /* LSP */
+        gofumpt /* Formatter */
+        delve /* Debugger */
+        golangci-lint /* Collection of linters */
       ];
 
       haskellTooling = with pkgs; [
@@ -176,6 +184,7 @@ in
         baseTooling ++
         (whenT cfg.languages.c clangTooling) ++
         (whenT cfg.languages.c_sharp c_sharpTooling) ++
+        (whenT cfg.languages.go goTooling) ++
         (whenT cfg.languages.haskell haskellTooling) ++
         (whenT cfg.languages.purescript purescriptTooling) ++
         (whenT cfg.languages.racket racketTooling) ++

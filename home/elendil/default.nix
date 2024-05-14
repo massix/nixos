@@ -116,6 +116,7 @@ in
       languages = {
         c = false;
         c_sharp = true;
+        go = true;
         haskell = false;
         javascript = true;
         java = true;

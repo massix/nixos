@@ -149,6 +149,7 @@ return {
           diagnostics.dotenv_linter,
           diagnostics.editorconfig_checker,
           diagnostics.fish,
+          diagnostics.golangci_lint,
           diagnostics.gitlint,
           diagnostics.hadolint,
           diagnostics.ktlint,
@@ -430,6 +431,11 @@ return {
       })
 
       lspconfig.typst_lsp.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+      })
+
+      lspconfig.gopls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
@@ -752,6 +758,7 @@ return {
         fish = { "fish_indent" },
         java = { "google-java-format" },
         rust = { "rustfmt" },
+        go = { "gofumpt" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then

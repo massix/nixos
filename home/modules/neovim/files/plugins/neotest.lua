@@ -12,6 +12,7 @@ return {
       { "rcasia/neotest-java" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
+      { "fredrikaverpil/neotest-golang" },
     },
     opts = function()
       return {
@@ -25,6 +26,7 @@ return {
             },
             discovery_root = "solution",
           }),
+          require("neotest-golang"),
         },
         output_panel = {
           open = "botright split | resize 15",
