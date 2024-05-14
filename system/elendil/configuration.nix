@@ -69,7 +69,13 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.libinput = {
     enable = true;
-    touchpad.disableWhileTyping = true;
+    touchpad = {
+      disableWhileTyping = true;
+      tapping = true;
+      clickMethod = "clickfinger";
+      accelProfile = "adaptive";
+      sendEventsMode = "enabled";
+    };
   };
 
   # Configure keymap in X11
@@ -192,6 +198,13 @@
       MatchUdevType=keyboard
       MatchVendor=0xFAC
       AttrKeyboardIntegration=internal
+
+      [Microsoft Surface Laptop Studio Touchpad]
+      MatchVendor=0x045E
+      MatchProduct=0x09AF
+      MatchUdevType=touchpad
+      AttrPressureRange=25:10
+      AttrPalmPressureThreshold=500
     '';
   };
 
