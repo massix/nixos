@@ -500,11 +500,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1715771400,
-        "narHash": "sha256-LKL3ptmecDSVRofPzR+OdjFt43iR+1mJz+8bSOgK3dU=",
+        "lastModified": 1715786410,
+        "narHash": "sha256-MKXZvYz6EvuBFlvjVqFWWZA13AJ2eCb+gZDI53aAGCc=",
         "owner": "massix",
         "repo": "protrans",
-        "rev": "32f52509b1f2688f715e3e870d91ee4f350cdcd0",
+        "rev": "2242f4d2076762bc653003671ff3e822223c2ce1",
         "type": "github"
       },
       "original": {
