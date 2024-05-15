@@ -375,6 +375,10 @@ in
     tray.enable = false;
   };
 
+  services.protrans = {
+    enable = true;
+  };
+
   home.sessionVariables = {
     LEDGER_FILE = hl.file;
   };

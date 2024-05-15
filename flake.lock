@@ -493,6 +493,26 @@
         "type": "gitlab"
       }
     },
+    "protrans": {
+      "inputs": {
+        "nixpkgs": [
+          "unstablepkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1715771400,
+        "narHash": "sha256-LKL3ptmecDSVRofPzR+OdjFt43iR+1mJz+8bSOgK3dU=",
+        "owner": "massix",
+        "repo": "protrans",
+        "rev": "32f52509b1f2688f715e3e870d91ee4f350cdcd0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "massix",
+        "repo": "protrans",
+        "type": "github"
+      }
+    },
     "purescript-overlay": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -528,6 +548,7 @@
         "nixd": "nixd",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "protrans": "protrans",
         "purescript-overlay": "purescript-overlay",
         "unstablepkgs": "unstablepkgs"
       }

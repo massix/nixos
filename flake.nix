@@ -46,6 +46,9 @@
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "unstablepkgs";
+
+    protrans.url = "github:massix/protrans";
+    protrans.inputs.nixpkgs.follows = "unstablepkgs";
   };
 
   outputs =
@@ -60,6 +63,7 @@
     , masterpkgs
     , purescript-overlay
     , emacs-overlay
+    , protrans
     , self
     , ...
     }:
@@ -105,13 +109,19 @@
       homeConfigurations."massi@elendil" = helpers.mkHome {
         inherit stable stateVersion master username;
         pkgs = unstable;
-        extraModules = [ ./home/elendil ];
+        extraModules = [
+          protrans.homeManagerModules.default
+          ./home/elendil
+        ];
       };
 
       homeConfigurations."massi@coravandil" = helpers.mkHome {
         inherit stable stateVersion master username;
         pkgs = unstable;
-        extraModules = [ ./home/coravandil ];
+        extraModules = [
+          protrans.homeManagerModules.default
+          ./home/coravandil
+        ];
       };
 
       nixosConfigurations."elendil" = helpers.mkSystem {
