@@ -42,7 +42,7 @@ let
   };
 
   terminalFont = {
-    name = "Recursive Mono Casual Static";
+    name = "IBM Plex Mono";
     size = 9;
   };
 
