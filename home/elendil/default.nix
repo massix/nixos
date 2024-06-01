@@ -42,12 +42,12 @@ let
   };
 
   terminalFont = {
-    name = "IBM Plex Mono";
+    name = "0xProto";
     size = 9;
   };
 
   hl = {
-    enabled = true;
+    enabled = false;
     file = "$HOME/org/.hledger.journal";
   };
 
@@ -277,6 +277,7 @@ in
         };
 
         settings = {
+          italic_font = "0xProto Italic";
           cursor_shape = "beam";
           cursor_beam_thickness = "2.0";
           scrollback_lines = 10000;
@@ -344,7 +345,7 @@ in
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = true;
+      tap-to-click = false;
       tap-and-drag = true;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
@@ -422,6 +423,8 @@ in
         inkscape-with-extensions
         (transmission_4.override { enableGTK3 = true; })
         libnatpmp
+
+        obsidian
       ];
 
       other-packages = [ ];
