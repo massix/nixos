@@ -438,6 +438,19 @@ return {
       lspconfig.gopls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
+        settings = {
+          gopls = {
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
+            },
+          },
+        },
       })
     end,
   },
