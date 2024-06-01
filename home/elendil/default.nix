@@ -218,7 +218,10 @@ in
     devops = {
       enable = true;
       k9s.enable = true;
-      azure-cli.enable = true;
+      azure-cli = {
+        enable = true;
+        extensions = with pkgs.azure-cli-extensions; [ k8s-extension ];
+      };
     };
   };
 

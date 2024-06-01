@@ -34,6 +34,10 @@ in
     enable = mkEnableOption "devops module";
     azure-cli = {
       enable = mkEnableOption "Azure CLI";
+      extensions = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+      };
     };
     k9s = {
       enable = mkEnableOption "k9s";
@@ -59,7 +63,7 @@ in
       with pkgs;
       let
         k9sPackages = if cfg.k9s.enable then [ k9s ] else [ ];
-        azCliPackages = if cfg.azure-cli.enable then [ azure-cli ] else [ ];
+        azCliPackages = if cfg.azure-cli.enable then [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ] else [ ];
         miscPackages = [ kubectl kubernetes-helm ];
       in
       k9sPackages ++ azCliPackages ++ miscPackages;
