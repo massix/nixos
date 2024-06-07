@@ -223,6 +223,15 @@ in
         extensions = with pkgs.azure-cli-extensions; [ k8s-extension ];
       };
     };
+
+
+    zed = {
+      enable = false;
+      settings = {
+        buffer_font_size = 12;
+        buffer_font_family = terminalFont.name;
+      };
+    };
   };
 
   programs = {

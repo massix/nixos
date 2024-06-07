@@ -21,6 +21,7 @@
         ../home/modules/coding.nix
         ../home/modules/gaming.nix
         ../home/modules/devops.nix
+        ../home/modules/zed.nix
       ] ++ extraModules;
     };
 
