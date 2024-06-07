@@ -41,8 +41,10 @@ let
     '';
   };
 
-  terminalFont = {
-    name = "0xProto";
+  terminalFont = rec {
+    name = "IBM Plex Mono";
+    italic = "${name} Italic";
+    bold = "${name} Bold";
     size = 9;
   };
 
@@ -286,7 +288,8 @@ in
         };
 
         settings = {
-          italic_font = "0xProto Italic";
+          italic_font = terminalFont.italic;
+          bold_font = terminalFont.bold;
           cursor_shape = "beam";
           cursor_beam_thickness = "2.0";
           scrollback_lines = 10000;
