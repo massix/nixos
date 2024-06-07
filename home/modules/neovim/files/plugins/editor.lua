@@ -168,32 +168,6 @@ return {
     },
   },
 
-  -- search/replace in multiple files
-  {
-    "nvim-pack/nvim-spectre",
-    cmd = "Spectre",
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>S"] = { name = "+spectre" },
-      })
-    end,
-    opts = {
-      open_cmd = "noswapfile vnew",
-      live_update = true,
-      is_open_target_win = true,
-      is_insert_mode = true,
-      is_block_ui_break = true,
-    },
-    -- stylua: ignore
-    keys = {
-      { "<leader>So", function() require("spectre").toggle() end, desc = "Toggle Spectre" },
-      { "<leader>Sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search current word", mode = "v" },
-      { "<leader>Sw", function() require("spectre").open_visual() end, desc = "Search current word", mode = "n" },
-      { "<leader>Sp", function() require("spectre").open_file_search({ select_word = true }) end, desc = "Search on current file" },
-    },
-  },
-
   -- Icon Picker
   {
     "ziontee113/icon-picker.nvim",
@@ -248,79 +222,6 @@ return {
     },
   },
 
-  -- Zen-Mode
-  {
-    "folke/zen-mode.nvim",
-    opts = {
-      window = {
-        width = 120,
-        height = 1,
-        options = {
-          number = false,
-          relativenumber = false,
-          signcolumn = "no",
-          cursorline = false,
-          foldcolumn = "0",
-        },
-      },
-      plugins = {
-        kitty = {
-          enabled = true,
-          font = "+2",
-        },
-        gitsigns = { enabled = true },
-        options = {
-          enabled = true,
-          ruler = true,
-          showcmd = true,
-        },
-      },
-      on_open = function()
-        if vim.g.neovide then
-          vim.g.neovide_zen_old_scale = vim.g.neovide_scale_factor
-          vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.5
-        end
-      end,
-      on_close = function()
-        if vim.g.neovide then
-          vim.g.neovide_scale_factor = vim.g.neovide_zen_old_scale or 1.0
-        end
-      end,
-    },
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>z"] = { name = "+zen" },
-      })
-    end,
-    commands = { "ZenMode" },
-    keys = {
-      { "<leader>zz", "<CMD>ZenMode<CR>", desc = "Start Zen Mode" },
-    },
-  },
-
-  -- Dim inactive portions of code
-  {
-    "folke/twilight.nvim",
-    lazy = false,
-    opts = {
-      context = 10,
-      expand = {
-        "function",
-        "method",
-        "table",
-        "if_statement",
-        "preproc_function_def",
-        "function_definition",
-        "paragraph",
-        "list",
-      },
-    },
-    keys = {
-      { "<leader>zt", "<CMD>Twilight<CR>", desc = "Toggle Twilight" },
-    },
-  },
-
   -- Code outline and navigation
   {
     "stevearc/aerial.nvim",
@@ -351,33 +252,6 @@ return {
     dependencies = { "winston0410/cmd-parser.nvim" },
     event = { "BufEnter", "BufWinEnter" },
     opts = {},
-  },
-
-  -- buffer switcher
-  {
-    "matbme/JABS.nvim",
-    cmd = "JABSOpen",
-    main = "jabs",
-    opts = {
-      relative = "cursor",
-      border = "rounded",
-      split_filename = true,
-      symbols = {
-        current = "󰄾",
-        split = "",
-        alternate = "⫝",
-        hidden = "󰘓",
-        locked = "",
-        ro = "",
-        edited = "",
-        terminal = "",
-        default_file = "",
-        terminal_symbol = "",
-      },
-    },
-    keys = {
-      { "<leader>bj", "<cmd>JABSOpen<cr>", desc = "JABS Open" },
-    },
   },
 
   -- Better tab scoping
@@ -445,31 +319,6 @@ return {
     version = "*",
     event = { "BufEnter", "BufWinEnter" },
     opts = {},
-  },
-
-  -- Headlines
-  {
-    "lukas-reineke/headlines.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    ft = { "org", "norg", "markdown" },
-    opts = {
-      markdown = {
-        fat_headlines = false,
-        codeblock_highlight = false,
-      },
-      org = {
-        fat_headlines = false,
-        codeblock_highlight = false,
-      },
-      norg = {
-        fat_headlines = false,
-        codeblock_highlight = false,
-      },
-      rmd = {
-        fat_headlines = false,
-        codeblock_highlight = false,
-      },
-    },
   },
 
   -- Table mode for creating tables

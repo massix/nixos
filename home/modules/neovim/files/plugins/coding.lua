@@ -179,7 +179,6 @@ return {
   -- better diagnostics list and others
   {
     "folke/trouble.nvim",
-    branch = "dev",
     cmd = { "Trouble" },
     event = { "LspAttach" },
     opts = { use_diagnostic_signs = true },
@@ -202,17 +201,6 @@ return {
     end,
     keys = {
       { "<leader>ne", "<cmd>DirenvExport<cr>", desc = "Direnv Export" },
-    },
-  },
-
-  -- Enter nix develop automagically
-  {
-    "figsoda/nix-develop.nvim",
-    event = "VeryLazy",
-    config = function() end,
-    keys = {
-      { "<leader>nd", "<cmd>NixDevelop<cr>", desc = "Nix Develop" },
-      { "<leader>ns", "<cmd>NixShell<cr>", desc = "Nix Shell" },
     },
   },
 
@@ -260,10 +248,6 @@ return {
 
       -- Capabilities
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
 
       ---@param client lsp.Client
       ---@param bufnr integer
@@ -460,11 +444,9 @@ return {
     "L3MON4D3/LuaSnip",
     dependencies = {
       { "rafamadriz/friendly-snippets" },
-      { "honza/vim-snippets" },
     },
     config = function(_, opts)
       require("luasnip.loaders.from_vscode").lazy_load()
-      require("luasnip.loaders.from_snipmate").lazy_load()
       require("luasnip").config.set_config(opts)
     end,
     opts = function()
@@ -723,6 +705,10 @@ return {
       { "<leader>cdl", "<cmd>Lspsaga show_line_diagnostics<cr>", desc = "Line diagnostics" },
       { "<leader>cdc", "<cmd>Lspsaga show_cursor_diagnostics<cr>", desc = "Line diagnostics" },
     },
+    config = function(_, opts)
+      require("lspsaga").setup(opts)
+      vim.lsp.inlay_hint.enable(true)
+    end,
     init = function()
       local wk = require("which-key")
       wk.register({
@@ -857,8 +843,6 @@ return {
               R = { vim.lsp.codelens.refresh, "Force refresh Codelens" },
             },
           }, { mode = "n", buffer = bufnr, prefix = "<C-c>" })
-
-          vim.lsp.codelens.refresh()
         end,
 
         settings = {
@@ -924,31 +908,19 @@ return {
       local wk = require("which-key")
       wk.register({
         ["<C-c>o"] = { name = "+overseer" },
+        ["<C-c>oT"] = {
+          name = "+toggle",
+          l = { "<cmd>OverseerToggle left<cr>", "Toggle left" },
+          r = { "<cmd>OverseerToggle right<cr>", "Toggle right" },
+          b = { "<cmd>OverseerToggle bottom<cr>", "Toggle bottom" },
+        },
       })
     end,
     keys = {
       { "<C-c>or", [[<cmd>OverseerRun<cr>]], desc = "Overseer Run" },
-      { "<C-c>ot", [[<cmd>OverseerToggle<cr>]], desc = "Overseer Toggle" },
+      { "<C-c>ot", [[<cmd>OverseerToggle left<cr>]], desc = "Overseer Toggle" },
       { "<C-c>oq", [[<cmd>OverseerQuickAction<cr>]], desc = "Overseer Quick Action" },
       { "<C-c>ob", [[<cmd>OverseerBuild<cr>]], desc = "Overseer Build" },
-    },
-  },
-
-  -- ScratchPad
-  {
-    "LintaoAmons/scratch.nvim",
-    lazy = true,
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>cs"] = { "+scratch" },
-      })
-    end,
-    keys = {
-      { "<leader>csn", [[<CMD>Scratch<CR>]], desc = "Create new scratch" },
-      { "<leader>cso", [[<CMD>ScratchOpen<CR>]], desc = "Open existing scratch" },
-      { "<leader>css", [[<CMD>ScratchOpenFzf<CR>]], desc = "Search in scratches" },
-      { "<leader>csp", [[<CMD>ScratchPad<CR>]], desc = "Open ScratchPad" },
     },
   },
 }

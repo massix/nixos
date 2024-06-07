@@ -133,6 +133,14 @@ return {
           end
         end,
       },
+
+      {
+        "leoluz/nvim-dap-go",
+        opts = {},
+        config = function(_, opts)
+          require("dap-go").setup(opts)
+        end,
+      },
     },
 
     --- @type any[]

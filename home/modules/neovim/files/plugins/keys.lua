@@ -51,27 +51,6 @@ return {
     end,
   },
 
-  -- Command Palette
-  {
-    "mrjones2014/legendary.nvim",
-    priority = 10000,
-    lazy = false,
-    enabled = true,
-    opts = {
-      extensions = {
-        lazy_nvim = true,
-        which_key = {
-          auto_register = true,
-          do_binding = false,
-          use_groups = true,
-        },
-      },
-    },
-    keys = {
-      { "<leader><space>", "<cmd>Legendary<cr>", desc = "Legendary" },
-    },
-  },
-
   -- Flash.nvim
   {
     "folke/flash.nvim",

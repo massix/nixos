@@ -26,7 +26,9 @@ return {
             },
             discovery_root = "solution",
           }),
-          require("neotest-golang"),
+          require("neotest-golang")({
+            dap_go_enabled = true,
+          }),
         },
         output_panel = {
           open = "botright split | resize 15",
