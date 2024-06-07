@@ -120,7 +120,12 @@
   console.keyMap = "us-acentos";
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ hplipWithPlugin ];
+  };
+
+  services.avahi.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -161,6 +166,7 @@
       "surface-control"
       "video"
       "vboxusers"
+      "scanner"
     ];
     shell = pkgs.fish;
   };

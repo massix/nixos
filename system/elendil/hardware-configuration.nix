@@ -51,6 +51,11 @@
   hardware = {
     enableAllFirmware = true;
 
+    sane = {
+      enable = true;
+      extraBackends = with pkgs; [ hplipWithPlugin sane-airscan ];
+    };
+
     # Enable OpenGL
     opengl = {
       enable = true;
