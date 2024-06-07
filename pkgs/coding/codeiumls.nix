@@ -1,7 +1,7 @@
 { pkgs }:
 let
   inherit (pkgs) lib;
-  version = "1.8.45";
+  version = "1.8.49";
   fetchCodeium = version: hash: builtins.fetchurl {
     url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_linux_x64.gz";
     sha256 = hash;
@@ -13,7 +13,7 @@ pkgs.stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
-  src = fetchCodeium version "sha256:0m3y4zm2pl126kz2iqf7fslv1z9qkcdv6jkr012kgdjvdmhyyjp3";
+  src = fetchCodeium version "sha256:1aj9kzjzrrc1dqk6k0vqfgihg23y85z165vpjiz5bk5pb00xwiyv";
 
   dontBuild = true;
   dontUnpack = true;
