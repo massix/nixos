@@ -162,7 +162,7 @@ in
     gaming = {
       enable = true;
       dwarfFortress = {
-        enable = true;
+        enable = false;
         config = {
           theme = with pkgs.dwarf-fortress-packages; themes.ironhand;
           enableDwarfTherapist = false;
