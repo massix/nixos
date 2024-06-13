@@ -357,7 +357,7 @@ in
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = false;
+      tap-to-click = true;
       tap-and-drag = true;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
@@ -380,7 +380,7 @@ in
       package = pkgs.papirus-icon-theme;
     };
     cursorTheme = {
-      name = "Catppuccin-Mocha-Mauve-Cursors";
+      name = "catppuccin-mocha-mauve-cursors";
       package = pkgs.catppuccin-cursors.mochaMauve;
       size = 32;
     };
@@ -437,6 +437,7 @@ in
         libnatpmp
 
         obsidian
+        proton-pass
       ];
 
       other-packages = [ ];
