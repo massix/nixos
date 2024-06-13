@@ -305,7 +305,18 @@ return {
         },
       })
 
-      lspconfig.yamlls.setup(cfg)
+      lspconfig.yamlls.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+        settings = {
+          yaml = {
+            schemas = {
+              ["kubernetes"] = "/*.k8s.yaml",
+            },
+            schemaDownload = { enable = true },
+          },
+        },
+      })
 
       lspconfig.clangd.setup({
         cmd = {
@@ -342,7 +353,7 @@ return {
             enableEnhancedValidation = true,
           },
           experimentalFeatures = {
-            prefillRequiredFields = true,
+            prefillRequiredFields = false,
           },
         },
       })

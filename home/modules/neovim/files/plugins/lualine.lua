@@ -264,7 +264,7 @@ return {
                 return package.loaded["nomodoro"] and require("nomodoro").status() ~= nil
               end,
             },
-            { function() return " " .. os.date("%R") end, }
+            { function() return "  " .. os.date("%R") end, }
           },
         },
         extensions = { "lazy", "trouble" },
