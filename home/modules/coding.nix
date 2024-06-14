@@ -156,6 +156,7 @@ in
       yamlTooling = with pkgs; [
         yaml-language-server /* language server for yaml */
         yamllint /* linter for yaml */
+        yamlfmt /* formatter for yaml */
       ];
 
       miscTooling = with pkgs; [

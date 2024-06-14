@@ -18,7 +18,7 @@ return {
               ---@type lsp.Client[]
               local clients = vim.lsp.get_active_clients({ bufnr = args.buf })
               for _, client in ipairs(clients) do
-                if client.name == "yamlls" or client.name == "null-ls" then
+                if client.name == "yamlls" then
                   if vim.lsp.buf_is_attached(args.buf, client.id) then
                     vim.lsp.buf_detach_client(args.buf, client.id)
 

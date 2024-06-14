@@ -122,47 +122,44 @@ return {
   -- Comments
   { "numToStr/Comment.nvim", lazy = false, config = true },
 
-  -- Fork of null-ls
   {
-    "nvimtools/none-ls.nvim",
-    name = "null-ls",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "ThePrimeagen/refactoring.nvim",
-      "ckolkey/ts-node-action",
-    },
-    event = { "BufReadPre", "BufNewFile" },
-    opts = function()
-      local nls = require("null-ls")
-      local diagnostics = nls.builtins.diagnostics
-      local code_actions = nls.builtins.code_actions
+    "ThePrimeagen/refactoring.nvim",
+    cmd = "Refactor",
+    opts = {},
+    config = false,
+  },
 
-      return {
-        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
-        notify_format = nil,
-        sources = {
-          -- Diagnostics --
-          diagnostics.actionlint,
-          diagnostics.ansiblelint,
-          diagnostics.commitlint,
-          diagnostics.deadnix,
-          diagnostics.dotenv_linter,
-          diagnostics.editorconfig_checker,
-          diagnostics.fish,
-          diagnostics.golangci_lint,
-          diagnostics.gitlint,
-          diagnostics.hadolint,
-          diagnostics.ktlint,
-          diagnostics.statix,
-          diagnostics.terraform_validate,
-          diagnostics.tfsec,
-          diagnostics.trivy,
-          diagnostics.yamllint,
-
-          -- Code Actions --
-          code_actions.statix,
+  {
+    "mfussenegger/nvim-lint",
+    event = "VeryLazy",
+    opts = {},
+    config = function()
+      -- Add custom filetype for GitHub actions
+      vim.filetype.add({
+        pattern = {
+          [".*/.github/workflows/.*%.yml"] = "yaml.ghaction",
+          [".*/.github/workflows/.*%.yaml"] = "yaml.ghaction",
         },
+      })
+
+      require("lint").linters_by_ft = {
+        yaml = { "yamllint" },
+        terraform = { "tfsec", "trivy", "terraform_validate" },
+        nix = { "statix", "deadnix" },
+        dockerfile = { "hadolint" },
+        fish = { "fish", "shellcheck" },
+        bash = { "shellcheck" },
+        sh = { "shellcheck" },
+        go = { "golangcilint" },
+        ghaction = { "actionlint" },
+        lua = { "luacheck" },
       }
+
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
     end,
   },
 
@@ -263,17 +260,18 @@ return {
         end
       end
 
-      local cfg = require("yaml-companion").setup({
-        lspconfig = {
-          capabilities = capabilities,
-          ---@param bufnr integer
-          on_attach = function(client, bufnr)
-            -- stylua: ignore
-            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
-            attach_trouble(client, bufnr)
-          end,
-        },
-      })
+      -- TODO: uncomment this when upstream issue has been solved
+      -- local cfg = require("yaml-companion").setup({
+      --   lspconfig = {
+      --     capabilities = capabilities,
+      --     ---@param bufnr integer
+      --     on_attach = function(client, bufnr)
+      --       -- stylua: ignore
+      --       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
+      --       attach_trouble(client, bufnr)
+      --     end,
+      --   },
+      -- })
 
       lspconfig.nixd.setup({
         capabilities = capabilities,
@@ -769,6 +767,7 @@ return {
         java = { "google-java-format" },
         rust = { "rustfmt" },
         go = { "gofumpt" },
+        yaml = { "yamlfmt" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then

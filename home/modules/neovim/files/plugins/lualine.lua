@@ -69,11 +69,8 @@ return {
                 local bufft = vim.api.nvim_buf_get_option(bufnr, "filetype")
                 local clients = {}
 
-                -- filter out null-ls
                 for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
-                  if client.name ~= "null-ls" then
-                    table.insert(clients, client)
-                  end
+                  table.insert(clients, client)
                 end
 
                 if next(clients) == nil then
