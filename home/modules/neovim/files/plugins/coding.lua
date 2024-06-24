@@ -445,6 +445,26 @@ return {
           },
         },
       })
+
+      -- Make sure that inlay hints are always enabled
+      vim.api.nvim_create_augroup("LspInlayHints", {})
+      vim.api.nvim_create_autocmd({ "LspAttach" }, {
+        group = "LspInlayHints",
+        callback = function(args)
+          if not (args.data and args.data.client_id) then
+            return
+          end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client then
+            return
+          end
+          local ip = client.server_capabilities.inlayHintProvider
+          if ip == nil or ip == false then
+            return
+          end
+          vim.lsp.inlay_hint.enable()
+        end,
+      })
     end,
   },
 

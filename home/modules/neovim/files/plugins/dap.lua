@@ -137,6 +137,7 @@ return {
       {
         "leoluz/nvim-dap-go",
         opts = {},
+        enabled = false,
         config = function(_, opts)
           require("dap-go").setup(opts)
         end,

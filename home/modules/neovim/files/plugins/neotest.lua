@@ -12,7 +12,10 @@ return {
       { "rcasia/neotest-java" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
-      { "fredrikaverpil/neotest-golang" },
+      {
+        "fredrikaverpil/neotest-golang",
+        commit = "264920296106a492cdfc708ad065b6c3fa7a9f65",
+      },
     },
     opts = function()
       return {
