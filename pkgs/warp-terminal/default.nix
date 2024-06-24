@@ -4,11 +4,12 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "warp-terminal";
-  version = "0.2024.04.30.08.02";
+  version = "0.2024.06.18.08.02";
 
+  # https://releases.warp.dev/stable/v0.2024.06.18.08.02.stable_04/warp-terminal_0.2024.06.18.08.02.stable.04_amd64.deb
   src = pkgs.fetchurl {
-    url = "https://releases.warp.dev/stable/v${version}.stable_02/warp-terminal_${version}.stable.02_amd64.deb";
-    hash = "sha256-LkwVcfUMT7MMeptGwKRwfEwjJ9fDJFMMy6D4BVLf11o=";
+    url = "https://releases.warp.dev/stable/v${version}.stable_04/warp-terminal_${version}.stable.04_amd64.deb";
+    hash = "sha256-siPa1NRRl06UYp7TNjceEDuUlFsqnZvo7J2c4DNlti8=";
   };
 
   nativeBuildInputs = with pkgs; [
