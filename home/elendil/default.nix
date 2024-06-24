@@ -393,6 +393,7 @@ in
 
   services.protrans = {
     enable = true;
+    configuration.nat.portLifeTime = 60;
   };
 
   home.sessionVariables = {
