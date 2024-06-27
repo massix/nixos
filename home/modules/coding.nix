@@ -1,4 +1,4 @@
-{ pkgs, config, lib, master, ... }:
+{ pkgs, config, lib, ... }:
 let
   inherit (lib) mkOption types;
   cfg = config.my-modules.coding;
@@ -131,7 +131,7 @@ in
       ];
 
       luaTooling = with pkgs; [
-        stylua /* Formatter for lua */
+        (stylua.override { features = [ "lua54" "luau" ]; }) /* Formatter for lua */
         lua-language-server /* language server for lua */
       ];
 
@@ -139,7 +139,8 @@ in
         rust-analyzer /* language server for rust */
         cargo-nextest /* test runner for rust */
         rustfmt /* formatter for rust */
-      ] ++ [ master.vscode-extensions.vadimcn.vscode-lldb ];
+        vscode-extensions.vadimcn.vscode-lldb /* debugger for rust */
+      ];
 
       javaTooling = with pkgs; [
         jdt-language-server /* language server for java */
