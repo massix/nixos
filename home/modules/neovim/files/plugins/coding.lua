@@ -641,7 +641,6 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "mkdnflow" },
           { name = "orgmode" },
           { name = "path" },
           { name = "emoji" },

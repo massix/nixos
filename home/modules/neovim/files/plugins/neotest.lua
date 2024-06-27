@@ -9,6 +9,9 @@ return {
       })
     end,
     dependencies = {
+      { "nvim-neotest/nvim-nio" },
+      { "nvim-lua/plenary.nvim" },
+      { "antoinemadec/FixCursorHold.nvim" },
       { "rcasia/neotest-java" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },

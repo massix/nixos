@@ -111,10 +111,13 @@ in
       withNodeJs = true;
       withPython3 = true;
       withRuby = true;
+
       extraLuaPackages = ps: [ ps.magick ];
     };
 
-    home.packages = mkIf cfg.gui.enable [ cfg.gui.package ];
+    # The extra packages are needed for luarocks
+    home.packages = (if cfg.gui.enable then [ cfg.gui.package ] else [ ])
+      ++ (with pkgs; [ lua5_1 lua51Packages.luarocks readline python3 ]);
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
