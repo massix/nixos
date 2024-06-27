@@ -59,7 +59,6 @@ return {
         "markdown",
         "markdown_inline",
         "nix",
-        "norg",
         "purescript",
         "query",
         "racket",
@@ -641,6 +640,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
+          { name = "neorg" },
           { name = "orgmode" },
           { name = "path" },
           { name = "emoji" },

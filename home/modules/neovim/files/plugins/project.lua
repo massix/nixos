@@ -23,6 +23,7 @@ return {
         "justfile",
         "package.json",
         "index.org",
+        "index.norg",
         "flake.nix",
         "shell.nix",
         "cargo.toml",
