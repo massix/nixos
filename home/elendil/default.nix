@@ -444,6 +444,7 @@ in
 
         obsidian
         proton-pass
+        unzip
       ];
 
       other-packages = [ ];
