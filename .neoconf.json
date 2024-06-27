@@ -29,7 +29,14 @@
         "?/init.lua",
         "${workspace}/home/modules/neovim/files/?.lua",
         "${workspace}/home/modules/neovim/files/?/init.lua"
-      ]
+      ],
+      "Lua.hint.enable": true,
+      "Lua.hint.setType": true,
+      "Lua.hint.paramName": "All",
+      "Lua.hint.semicolon": "Disable",
+      "Lua.hint.arrayIndex": "Disable",
+      "Lua.hint.await": true,
+      "Lua.hint.paramType": true
     },
     "nixd": {
       "nixd": {
