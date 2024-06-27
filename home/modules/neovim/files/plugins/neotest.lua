@@ -22,7 +22,9 @@ return {
         adapters = {
           require("rustaceanvim.neotest"),
           require("neotest-haskell"),
-          require("neotest-java"),
+          require("neotest-java")({
+            ignore_wrapper = true,
+          }),
           require("neotest-dotnet")({
             custom_attributes = {
               xunit = { "SkippableEnvironmentFact" },

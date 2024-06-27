@@ -48,6 +48,32 @@ let
     cargoSha256 = "sha256-ntOlz0jP5csVQnopu2BixXuVSFCFI7pwqG+H8hCu0dA=";
     doCheck = false;
   };
+  vscode-extension = pname: { version, hash }: pkgs.stdenvNoCC.mkDerivation {
+    inherit version pname;
+
+    nativeBuildInputs = with pkgs; [ unzip ];
+
+    src = builtins.fetchurl {
+      url = "https://openvsxorg.blob.core.windows.net/resources/vscjava/${pname}/${version}/vscjava.${pname}-${version}.vsix";
+      sha256 = hash;
+    };
+
+    dontConfigure = true;
+    dontBuild = true;
+
+    unpackPhase = ''
+      mkdir tmp
+      unzip -x $src -d tmp
+    '';
+
+    installPhase = ''
+      mkdir -p $out/lib
+      ls -l tmp/
+      cp tmp/extension/server/*.jar $out/lib/
+    '';
+  };
+  vscode-java-test = vscode-extension "vscode-java-test" { version = "0.41.1"; hash = "sha256:1hk4x08w8kv485kjwrygay04b9z7629gcv613dnv7m579i71wwl9"; };
+  vscode-java-debug = vscode-extension "vscode-java-debug" { version = "0.57.0"; hash = "sha256:1jc8wg207fg6w4hwhb6hpcdyid4a63d721hrzavy1bgqh4w7jicx"; };
   configPath = "${config.xdg.configHome}/nixos";
   modulePath = "home/modules/neovim";
   mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
@@ -115,8 +141,8 @@ in
         "${util}/nix.lua".text = ''
           -- Some variables that are injected automatically by nix
           local bundles = {}
-          local debug_bundles = vim.split(vim.fn.glob("${pkgs.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/*.jar"), "\n")
-          local test_bundles = vim.split(vim.fn.glob("${pkgs.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar"), "\n")
+          local debug_bundles = vim.split(vim.fn.glob("${vscode-java-debug}/lib/*.jar"), "\n")
+          local test_bundles = vim.split(vim.fn.glob("${vscode-java-test}/lib/*.jar"), "\n")
 
           vim.list_extend(bundles, debug_bundles)
           vim.list_extend(bundles, test_bundles)
