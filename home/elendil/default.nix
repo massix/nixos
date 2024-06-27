@@ -42,7 +42,7 @@ let
   };
 
   terminalFont = rec {
-    name = "IBM Plex Mono";
+    name = "Recursive Mn Csl St";
     italic = "${name} Italic";
     bold = "${name} Bold";
     size = 9;
@@ -290,6 +290,7 @@ in
         settings = {
           italic_font = terminalFont.italic;
           bold_font = terminalFont.bold;
+
           cursor_shape = "beam";
           cursor_beam_thickness = "2.0";
           scrollback_lines = 10000;
@@ -306,6 +307,10 @@ in
           allow_remote_control = true;
           listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
         };
+        extraConfig = ''
+          font_features RecursiveMonoCslSt-Regular +liga +dlig +ss10 +ss20
+          font_features RecursiveMonoCslSt-Italic +liga +dlig +ss10 +ss20
+        '';
       };
 
     rio = {
