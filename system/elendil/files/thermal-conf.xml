@@ -14,14 +14,14 @@
       <TripPoints>
         <TripPoint>
           <SensorType>x86_pkg_temp</SensorType>
-          <Temperature>65000</Temperature>
+          <Temperature>70000</Temperature>
           <type>passive</type>
           <ControlType>SEQUENTIAL</ControlType>
           <CoolingDevice>
             <index>1</index>
             <Type>rapl_controller</Type>
-            <SamplingPeriod>2</SamplingPeriod>
             <influence>100</influence>
+            <SamplingPeriod>10</SamplingPeriod>
           </CoolingDevice>
         </TripPoint>
       </TripPoints>

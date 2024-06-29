@@ -41,13 +41,6 @@
   # Enable DHCP on all interfaces
   networking.useDHCP = lib.mkDefault true;
 
-  microsoft-surface = {
-
-    # Enable surface-control
-    surface-control.enable = true;
-    ipts.enable = true;
-  };
-
   hardware = {
     enableAllFirmware = true;
 
@@ -57,8 +50,10 @@
     };
 
     # Enable OpenGL
-    opengl = {
+    graphics = {
       enable = true;
+
+      # Force newer versions of GL packages
       extraPackages = with pkgs; lib.mkDefault [
         intel-media-driver
         vaapiVdpau
@@ -82,7 +77,7 @@
   };
 
   services.auto-cpufreq = {
-    enable = true;
+    enable = false;
     settings =
       let
         governor = "powersave";
@@ -162,7 +157,7 @@
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         PrivateNetwork = true;
-        ExecStart = ''
+        ExecStart = lib.mkForce ''
           ${pkgs.thermald}/sbin/thermald \
               --loglevel=info \
               --dbus-enable \

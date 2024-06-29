@@ -273,6 +273,9 @@ in
     };
 
     kitty =
+      let
+        fontFeatures = ffs: builtins.concatStringsSep "\n" (builtins.map (ff: "font_features ${ff}") ffs);
+      in
       {
         enable = true;
         package = pkgs.kitty;
@@ -307,10 +310,10 @@ in
           allow_remote_control = true;
           listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
         };
-        extraConfig = ''
-          font_features RecursiveMonoCslSt-Regular +liga +dlig +ss10 +ss20
-          font_features RecursiveMonoCslSt-Italic +liga +dlig +ss10 +ss20
-        '';
+        extraConfig =
+          fontFeatures
+            (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20")
+              [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]);
       };
 
     rio = {
@@ -351,7 +354,7 @@ in
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+      name = "catppuccin-mocha-mauve-compact+default";
     };
 
     "org/gnome/desktop/background" = rec {
@@ -372,7 +375,7 @@ in
   gtk = {
     enable = true;
     theme = {
-      name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+      name = "catppuccin-mocha-mauve-compact+default";
       package = pkgs.catppuccin-gtk.override {
         accents = [ "mauve" ];
         size = "compact";
