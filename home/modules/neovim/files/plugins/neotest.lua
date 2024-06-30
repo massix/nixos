@@ -15,10 +15,7 @@ return {
       { "rcasia/neotest-java" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
-      {
-        "fredrikaverpil/neotest-golang",
-        commit = "264920296106a492cdfc708ad065b6c3fa7a9f65",
-      },
+      { "fredrikaverpil/neotest-golang" },
     },
     opts = function()
       return {
@@ -66,19 +63,12 @@ return {
     end,
     -- stylua: ignore
     keys = {
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nT", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run All Test Files" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nr", function() require("neotest").run.run() end, desc = "Run Nearest" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>ns", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>no", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
-      ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nS", function() require("neotest").run.stop() end, desc = "Stop" },
       ---@diagnostic disable-next-line: missing-fields
       { "<C-c>nd", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Debug Nearest" },

@@ -135,9 +135,11 @@ return {
       },
 
       {
+        -- Make sure it is loaded before dap itself
         "leoluz/nvim-dap-go",
         opts = {},
-        enabled = false,
+        enabled = true,
+        event = "VeryLazy",
         config = function(_, opts)
           require("dap-go").setup(opts)
         end,
