@@ -28,21 +28,9 @@ local spec = {
     },
     --stylua: ignore
     keys = {
-      { "<leader>gn", function() require("neogit").open({ kind = "tab" }) end, desc = "Neogit", },
+      { "<leader>gg", function() require("neogit").open() end, desc = "Neogit", },
     },
     cmd = { "Neogit" },
-  },
-
-  -- Fugitive
-  {
-    "tpope/vim-fugitive",
-    opts = {},
-    config = function() end,
-    cmd = { "G", "Git", "Gstatus", "Gllog" },
-    keys = {
-      { "<leader>gg", "<cmd>G<cr>", desc = "Fugitive" },
-      { "<leader>g<space>", ":G ", desc = "Fugitive <space>" },
-    },
   },
 
   -- Git signs
@@ -69,6 +57,7 @@ local spec = {
       { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage hunk", mode = { "n", "v" } },
       { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Undo stage Hunk" },
       { "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", desc = "Reset hunk", mode = { "n", "v" } },
+      { "<leader>gb", "<cmd>Gitsigns blame<cr>", desc = "Blame file" },
     },
   },
 

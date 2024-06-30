@@ -82,17 +82,17 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHo
 vim.api.nvim_create_autocmd("Filetype", {
   group = vim.api.nvim_create_augroup("QLeave", { clear = true }),
   pattern = {
-    "fugitive",
-    "fugitiveblame",
     "neotest-summary",
     "neotest-output",
     "neotest-output-panel",
+    "neotest-attach",
     "dapui_console",
     "dapui_watches",
     "qf",
     "help",
     "man",
     "git",
+    "gitsigns.blame",
   },
   callback = function(args)
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = args.buf })
@@ -105,5 +105,25 @@ vim.api.nvim_create_autocmd("BufRead", {
   group = vim.api.nvim_create_augroup("Typst", { clear = true }),
   callback = function()
     vim.bo.filetype = "typst"
+  end,
+})
+
+-- Syntax in markdown file is sometimes reset
+local markdown_syntax = vim.api.nvim_create_augroup("MarkdownSyntax", { clear = true })
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = markdown_syntax,
+  pattern = "markdown",
+  callback = function()
+    vim.bo.syntax = "markdown"
+  end,
+})
+
+-- Activate spelling in org, norg and markdown files
+local text_spelling = vim.api.nvim_create_augroup("TextSpelling", { clear = true })
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = text_spelling,
+  pattern = { "org", "norg", "markdown" },
+  callback = function()
+    vim.opt_local.spell = true
   end,
 })
