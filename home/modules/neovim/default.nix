@@ -36,16 +36,16 @@ let
     { code = "en"; hash = "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA="; }];
   sniprun = rustPlatform.buildRustPackage rec {
     pname = "sniprun";
-    version = "1.3.11";
+    version = "1.3.14";
 
     src = fetchFromGitHub {
       owner = "michaelb";
       repo = "sniprun";
-      sha256 = "sha256-f/EifFvlHr41wP0FfkwSGVdXLyz739st/XtnsSbzNT4=";
+      sha256 = "sha256-9vglmQ9sy0aCbj4H81ublHclpoSfOA7ss5CNdoX54sY=";
       rev = "v${version}";
     };
 
-    cargoSha256 = "sha256-ntOlz0jP5csVQnopu2BixXuVSFCFI7pwqG+H8hCu0dA=";
+    cargoSha256 = "sha256-UiE8VgqQedWlqYZIWJr3Pjgw5lODDmRqzpvVKG1XX0Q=";
     doCheck = false;
   };
   vscode-extension = pname: { version, hash }: pkgs.stdenvNoCC.mkDerivation {

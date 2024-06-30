@@ -251,8 +251,8 @@ return {
 
   {
     "michaelb/sniprun",
-    lazy = false,
-    version = "v1.3.9",
+    ft = { "org" },
+    version = "v1.3.14",
     opts = {
       binary_path = util.sniprun,
 
@@ -262,6 +262,27 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      require("sniprun").setup(opts)
+
+      -- Configure keys for orgmode files
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "org" },
+        callback = function(args)
+          local wk = require("which-key")
+          wk.register({
+            s = {
+              name = "+sniprun",
+              ["<CR>"] = { "<cmd>SnipRun<cr>", "Run" },
+              r = { "<cmd>SnipReset<cr>", "Reset" },
+              c = { "<cmd>SnipClose<cr>", "Close" },
+              i = { "<cmd>SnipInfo<cr>", "Info" },
+              C = { "<cmd>SnipReplMemoryClean<cr>", "Cancel" },
+            },
+          }, { prefix = "<C-c>", mode = "n", buffer = args.buf })
+        end,
+      })
+    end,
   },
 
   {
