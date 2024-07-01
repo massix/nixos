@@ -96,6 +96,16 @@ in
       font = {
         name = mkStringOption "Font" "FiraCode";
         size = mkIntOption "Font Size" 10;
+        features = mkOption {
+          type = with types; listOf (submodule {
+            options = {
+              name = mkOption { type = string; };
+              features = mkOption { type = listOf string; };
+            };
+          });
+          default = [ ];
+          description = "Font Features to activate";
+        };
       };
       scaleFactor = mkIntOption "Scale Factor" 1.0;
     };
@@ -229,13 +239,22 @@ in
     };
 
 
-    xdg.configFile = mkIf cfg.gui.enable {
-      "neovide/config.toml".text = ''
-        [font]
-        normal = ["${cfg.gui.font.name}"]
-        size = ${builtins.toString cfg.gui.font.size}
-      '';
-    };
+    xdg.configFile =
+      let
+        mkFontFeature = { name, features }: ''
+          "${name}" = [${builtins.concatStringsSep ", " (builtins.map (f: "\"${f}\"") features)}]
+        '';
+      in
+      mkIf cfg.gui.enable {
+        "neovide/config.toml".text = ''
+          [font]
+          normal = "${cfg.gui.font.name}"
+          size = ${builtins.toString cfg.gui.font.size}
+        '' + (if (builtins.length cfg.gui.font.features) > 0 then ''
+          [font.features]
+          ${builtins.concatStringsSep "\n" (builtins.map mkFontFeature cfg.gui.font.features)}
+        '' else "");
+      };
 
   };
 }

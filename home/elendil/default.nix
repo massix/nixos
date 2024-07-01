@@ -194,8 +194,12 @@ in
       defaultEditor = true;
       gui = {
         enable = true;
-        font.name = terminalFont.name;
-        font.size = terminalFont.size;
+        font = {
+          inherit (terminalFont) name size;
+          features = [
+            { name = "Recursive Mn Csl St"; features = [ "+liga" "+dlig" "+ss10" "+ss20" ]; }
+          ];
+        };
       };
     };
 
