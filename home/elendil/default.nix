@@ -48,6 +48,12 @@ let
     size = 9;
   };
 
+  uiFont = {
+    name = "Roboto";
+    size = 11;
+    package = pkgs.roboto;
+  };
+
   hl = {
     enabled = false;
     file = "$HOME/org/.hledger.journal";
@@ -99,12 +105,10 @@ in
   my-modules = {
     fonts = {
       enable = true;
+      typefonts = false;
       families = {
         extra = with pkgs; [
-          mplus-outline-fonts.githubRelease
-          proggyfonts
           monaspace
-          meslo-lg
           ibm-plex
           recursive
           _0xproto
@@ -355,6 +359,12 @@ in
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       enable-hot-corners = true;
+      show-battery-percentage = true;
+      clock-show-date = true;
+      document-font-name = "${uiFont.name} ${builtins.toString uiFont.size}";
+      monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
+      font-hinting = "slight";
+      font-antialiasing = "grayscale";
     };
 
     "org/gnome/shell/extensions/user-theme" = {
@@ -396,6 +406,7 @@ in
       package = pkgs.catppuccin-cursors.mochaMauve;
       size = 32;
     };
+    font = uiFont;
   };
 
   services.syncthing = {

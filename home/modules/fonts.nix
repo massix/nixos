@@ -13,7 +13,7 @@ in
       type = types.listOf types.package;
       default = [ ];
       description = "Extra fonts to be installed";
-      example = [ "proggyfonts" ];
+      example = [ "pkgs.proggyfonts" ];
     };
   };
 
