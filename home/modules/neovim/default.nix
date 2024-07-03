@@ -73,7 +73,7 @@ let
     '';
   };
   vscode-java-test = vscode-extension "vscode-java-test" { version = "0.41.1"; hash = "sha256:1hk4x08w8kv485kjwrygay04b9z7629gcv613dnv7m579i71wwl9"; };
-  vscode-java-debug = vscode-extension "vscode-java-debug" { version = "0.57.0"; hash = "sha256:1jc8wg207fg6w4hwhb6hpcdyid4a63d721hrzavy1bgqh4w7jicx"; };
+  vscode-java-debug = vscode-extension "vscode-java-debug" { version = "0.58.0"; hash = "sha256:0wa40rhfhkxhql16whylar8ciagvlb8xg97fixb5wxwvggzc8x23"; };
   configPath = "${config.xdg.configHome}/nixos";
   modulePath = "home/modules/neovim";
   mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
