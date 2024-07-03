@@ -19,6 +19,7 @@
     kernelParams = [
       "acpi_osi=\"!Windows 2020\""
     ];
+    blacklistedKernelModules = [ "int3403_thermal" ];
   };
 
   fileSystems."/" = {
@@ -76,115 +77,16 @@
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
-  services.auto-cpufreq = {
-    enable = false;
-    settings =
-      let
-        governor = "powersave";
-        scaling_min_freq = "400000";
-        scaling_max_freq.charger = "3900000";
-        scaling_max_freq.battery = "3300000";
-        turbo.charger = "auto";
-        turbo.battery = "never";
-        options = builtins.map
-          (setting: {
-            name = setting;
-            value = {
-              inherit governor scaling_min_freq;
-
-              scaling_max_freq = scaling_max_freq."${setting}";
-              turbo = turbo."${setting}";
-            };
-          }) [ "charger" "battery" ];
-      in
-      builtins.listToAttrs options;
+  services.thermald = {
+    enable = true;
+    configFile = ./files/thermal-conf.xml;
   };
-
-  services.throttled = {
-    enable = false;
-    extraConfig = ''
-      [GENERAL]
-      Enabled: True
-      Sysfs_Power_Path: /sys/class/power_supply/ADP*/online
-      Autoreload: True
-
-      [BATTERY]
-      Update_Rate_s: 20
-      PL1_Tdp_W: 29
-      PL1_Duration_s: 28
-      PL2_Tdp_W: 44
-      PL2_Duration_S: 0.002
-      Trip_Temp_C: 75
-      HWP_Mode: False
-      cTDP: 0
-      Disable_BDPROCHOT: True
-
-      [AC]
-      Update_Rate_s: 5
-      PL1_Tdp_W: 44
-      PL1_Duration_s: 28
-      PL2_Tdp_W: 44
-      PL2_Duration_S: 0.002
-      Trip_Temp_C: 80
-      HWP_Mode: True
-      cTDP: 2
-      Disable_BDPROCHOT: False
-
-      [UNDERVOLT.BATTERY]
-      CORE: 0
-      GPU: 0
-      CACHE: 0
-      UNCORE: 0
-      ANALOGIO: 0
-
-      [UNDERVOLT.AC]
-      CORE: 0
-      GPU: 0
-      CACHE: 0
-      UNCORE: 0
-      ANALOGIO: 0
-    '';
-  };
-
-  # Custom thermald implementation
-  services.dbus.packages = [ pkgs.thermald ];
-  systemd.services.thermald =
-    let
-      configFile = ./files/thermal-conf.xml;
-    in
-    {
-      description = "Thermal Daemon Service";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        PrivateNetwork = true;
-        ExecStart = lib.mkForce ''
-          ${pkgs.thermald}/sbin/thermald \
-              --loglevel=info \
-              --dbus-enable \
-              --no-daemon \
-              --systemd \
-              --ignore-default-control \
-              --config-file ${configFile}
-        '';
-      };
-    };
 
   powerManagement = {
     enable = true;
     cpuFreqGovernor = lib.mkDefault "powersave";
-    powertop.enable = true;
-
-    powerDownCommands = ''
-      echo "Removing ipts"
-      systemctl stop iptsd
-      ${pkgs.kmod}/bin/modprobe -r ipts
-    '';
-
-    resumeCommands = ''
-      echo "Reloading ipts"
-      ${pkgs.kmod}/bin/modprobe ipts
-      systemctl start iptsd
-    '';
+    powertop.enable = false;
+    cpufreq.min = 800000;
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
