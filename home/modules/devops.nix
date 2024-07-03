@@ -107,7 +107,8 @@ in
             };
             logger = {
               buffer = 5000;
-              sinceSeconds = -1;
+              tail = 2000;
+              sinceSeconds = 3600;
             };
           };
         };
