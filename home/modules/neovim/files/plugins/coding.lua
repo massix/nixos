@@ -201,15 +201,19 @@ return {
   },
 
   -- yaml and json ls companion
+  -- TODO: revert back to upstream once https://github.com/someone-stole-my-name/yaml-companion.nvim/pull/50 gets merged
   {
-    "someone-stole-my-name/yaml-companion.nvim",
+    "agorgl/yaml-companion.nvim",
+    branch = "patch-1",
     dependencies = {
       { "neovim/nvim-lspconfig" },
       { "nvim-lua/plenary.nvim" },
       { "nvim-telescope/telescope.nvim" },
     },
     event = { "VeryLazy" },
-    config = false,
+    config = function()
+      require("telescope").load_extension("yaml_schema")
+    end,
   },
 
   -- lspconfig
@@ -259,18 +263,30 @@ return {
         end
       end
 
-      -- TODO: uncomment this when upstream issue has been solved
-      -- local cfg = require("yaml-companion").setup({
-      --   lspconfig = {
-      --     capabilities = capabilities,
-      --     ---@param bufnr integer
-      --     on_attach = function(client, bufnr)
-      --       -- stylua: ignore
-      --       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
-      --       attach_trouble(client, bufnr)
-      --     end,
-      --   },
-      -- })
+      local cfg = require("yaml-companion").setup({
+        lspconfig = {
+          capabilities = capabilities,
+          settings = {
+            redhat = { telemetry = { enabled = false } },
+            yaml = {
+              validate = true,
+              format = { enable = false },
+              hover = true,
+              schemaStore = {
+                enable = true,
+                url = "https://www.schemastore.org/api/json/catalog.json",
+              },
+              schemaDownload = { enable = true },
+            },
+          },
+          ---@param bufnr integer
+          on_attach = function(client, bufnr)
+            -- stylua: ignore
+            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
+            attach_trouble(client, bufnr)
+          end,
+        },
+      })
 
       lspconfig.nixd.setup({
         capabilities = capabilities,
@@ -302,18 +318,7 @@ return {
         },
       })
 
-      lspconfig.yamlls.setup({
-        capabilities = capabilities,
-        on_attach = attach_trouble,
-        settings = {
-          yaml = {
-            schemas = {
-              ["kubernetes"] = "/*.k8s.yaml",
-            },
-            schemaDownload = { enable = true },
-          },
-        },
-      })
+      lspconfig.yamlls.setup(cfg)
 
       lspconfig.clangd.setup({
         cmd = {
