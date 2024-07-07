@@ -420,7 +420,11 @@ in
   };
 
   home.sessionVariables = {
-    LEDGER_FILE = hl.file;
+    GI_TYPELIB_PATH = builtins.concatStringsSep ":" [
+      "${pkgs.libgtop}/lib/girepository-1.0"
+      "${pkgs.clutter}/lib/girepository-1.0"
+      "${pkgs.cogl}/lib/girepository-1.0"
+    ];
   };
 
   home.packages =
@@ -444,6 +448,10 @@ in
         spotube
 
         gnomeExtensions.gsconnect
+        gnomeExtensions.tophat
+        libgtop
+        clutter
+        cogl
         onedriver
         tana
 
