@@ -29,10 +29,8 @@ return {
           lookahead = true,
         },
       },
-      highlight = {
-        enable = true,
-      },
-      indent = { enable = true },
+      highlight = { enable = true },
+      indent = { enable = false },
       ensure_installed = {
         "bash",
         "c_sharp",
@@ -166,7 +164,7 @@ return {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    lazy = false,
+    event = "VeryLazy",
     config = function(_, opts)
       require("todo-comments").setup(opts)
     end,
@@ -246,8 +244,8 @@ return {
       require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
 
-      -- Capabilities
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      -- -- Capabilities
+      local capabilities = require("cmp_nvim_lsp").default_capabilities({ dynamicRegistration = true })
 
       ---@param client lsp.Client
       ---@param bufnr integer
@@ -266,6 +264,7 @@ return {
       local cfg = require("yaml-companion").setup({
         lspconfig = {
           capabilities = capabilities,
+          filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.ghaction" },
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
@@ -277,6 +276,7 @@ return {
                 url = "https://www.schemastore.org/api/json/catalog.json",
               },
               schemaDownload = { enable = true },
+              schemas = {},
             },
           },
           ---@param bufnr integer

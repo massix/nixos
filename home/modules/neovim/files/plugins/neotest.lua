@@ -15,7 +15,7 @@ return {
       { "rcasia/neotest-java" },
       { "mrcjkb/neotest-haskell" },
       { "Issafalcon/neotest-dotnet" },
-      { "fredrikaverpil/neotest-golang" },
+      { "fredrikaverpil/neotest-golang", version = "*" },
     },
     opts = function()
       return {
