@@ -3,7 +3,6 @@
 }:
 let
   wrapperDir = "/run/wrappers/";
-  inherit (pkgs) lib fetchFromGitHub;
 
   mOnedriverService = { pkgs, mountpoint }: {
     Unit = {
@@ -52,53 +51,6 @@ let
     name = "Roboto";
     size = 11;
     package = pkgs.roboto;
-  };
-
-  hl = {
-    enabled = false;
-    file = "$HOME/org/.hledger.journal";
-  };
-
-  rioThemes = pkgs.stdenvNoCC.mkDerivation {
-    pname = "catppuccin-rio-themes";
-    version = "0.0.1";
-
-    src = fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "rio";
-      rev = "a8d3d3c";
-      hash = "sha256-bT789sEDJl3wQh/yfbmjD/J7XNr2ejOd0UsASguyCQo=";
-    };
-
-    dontBuild = true;
-    dontCheck = true;
-    dontConfigure = true;
-
-    installPhase = ''
-      mkdir -p $out/rio/themes
-      cp *.toml $out/rio/themes/
-    '';
-  };
-
-  warpThemes = pkgs.stdenvNoCC.mkDerivation {
-    pname = "catppuccin-warp-themes";
-    version = "0.0.1";
-
-    src = fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "warp";
-      rev = "5d88d7e";
-      hash = "sha256-Q1N9Vwrv+Ub4jprb/Ys8p8GfNs1sN7Q1fLFHVAeH1e0=";
-    };
-
-    dontBuild = true;
-    dontCheck = true;
-    dontConfigure = true;
-
-    installPhase = ''
-      mkdir -p $out/warp/themes
-      cp dist/*.yml $out/warp/themes/
-    '';
   };
 in
 {
@@ -184,12 +136,6 @@ in
       };
     };
 
-    helix = {
-      enable = false;
-      defaultEditor = false;
-      configuration.theme = "tokyonight_storm";
-    };
-
     im.enable = true;
 
     neovim = {
@@ -234,7 +180,6 @@ in
       };
     };
 
-
     zed = {
       enable = false;
       settings = {
@@ -245,24 +190,6 @@ in
   };
 
   programs = {
-
-    vscode = {
-      enable = true;
-      mutableExtensionsDir = true;
-      package = pkgs.vscode-fhs;
-    };
-
-    nushell = {
-      enable = true;
-      package = pkgs.nushell;
-      configFile.source = ./files/nushell_config.nu;
-      envFile.source = ./files/nushell_env.nu;
-    };
-
-    firefox = {
-      enable = true;
-      package = pkgs.firefox;
-    };
 
     direnv = {
       enable = true;
@@ -323,27 +250,6 @@ in
             (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20")
               [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]);
       };
-
-    rio = {
-      enable = true;
-      package = pkgs.rio;
-      settings = {
-        cursor = "_";
-        blinking-cursor = true;
-        hide-cursor-when-typing = false;
-        renderer = {
-          performance = "High";
-        };
-        fonts = {
-          size = terminalFont.size + 6;
-          regular = {
-            family = terminalFont.name;
-            style = "normal";
-          };
-          extras = [{ family = "Symbols Nerd Font Mono"; }];
-        };
-      } // builtins.fromTOML (builtins.readFile "${rioThemes}/rio/themes/catppuccin-mocha.toml");
-    };
 
     command-not-found.enable = false;
 
@@ -427,63 +333,42 @@ in
     ];
   };
 
-  home.packages =
-    let
-      unstable-packages = with pkgs; [
-        # Only for Teams PWA
-        ungoogled-chromium
-        flameshot
-        just
-        powertop
-        (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland"; })
-        pbpctrl
-        gtk-engine-murrine
-        gnome.dconf-editor
-        gnome3.gnome-tweaks
+  home.packages = with pkgs; [
+    # Only for Teams PWA
+    just
+    powertop
+    (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland"; })
+    pbpctrl
+    gnome.dconf-editor
+    gnome3.gnome-tweaks
 
-        # document conversion
-        pandoc
+    spotify
+    spotube
 
-        spotify
-        spotube
+    gnomeExtensions.gsconnect
+    gnomeExtensions.tophat
+    libgtop
+    clutter
+    cogl
+    onedriver
+    tana
 
-        gnomeExtensions.gsconnect
-        gnomeExtensions.tophat
-        libgtop
-        clutter
-        cogl
-        onedriver
-        tana
+    protonvpn-gui
 
-        warp-terminal
-        protonvpn-gui
+    slack
+    hypnotix
 
-        slack
-        hypnotix
+    todoist
+    todoist-electron
 
-        todoist
-        todoist-electron
+    inkscape-with-extensions
+    (transmission_4.override { enableGTK3 = true; })
+    libnatpmp
 
-        inkscape-with-extensions
-        (transmission_4.override { enableGTK3 = true; })
-        libnatpmp
-
-        obsidian
-        proton-pass
-        unzip
-      ];
-
-      other-packages = [ ];
-
-      hledger-packages =
-        if hl.enabled then with pkgs; [
-          hledger
-          hledger-ui
-          hledger-web
-          hledger-utils
-        ] else [ ];
-    in
-    unstable-packages ++ other-packages ++ hledger-packages;
+    obsidian
+    proton-pass
+    unzip
+  ];
 
   systemd.user.startServices = "sd-switch";
 
@@ -498,14 +383,6 @@ in
   xdg = {
     enable = true;
     mime.enable = true;
-
-    dataFile."warp-terminal/themes".source = "${warpThemes}/warp/themes";
-
-    configFile."flameshot/flameshot.ini".text = lib.generators.toINI { } {
-      General = {
-        savePath = "/home/massi/Pictures/Screenshots";
-      };
-    };
 
     # Patch to allow Kitty to use Monaspace font
     configFile."fontconfig/conf.d/99-monaspace-monospace.conf".text = ''
