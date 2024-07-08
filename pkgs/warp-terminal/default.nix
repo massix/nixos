@@ -1,15 +1,15 @@
 { pkgs }:
 let
-  inherit (pkgs) stdenv;
+  inherit (pkgs) stdenv lib;
 in
 stdenv.mkDerivation rec {
   pname = "warp-terminal";
-  version = "0.2024.06.18.08.02";
+  version = "0.2024.06.25.08.02";
 
-  # https://releases.warp.dev/stable/v0.2024.06.18.08.02.stable_04/warp-terminal_0.2024.06.18.08.02.stable.04_amd64.deb
+  # https://releases.warp.dev/stable/v0.2024.06.25.08.02.stable_01/warp-terminal_0.2024.06.25.08.02.stable.01_amd64.deb
   src = pkgs.fetchurl {
-    url = "https://releases.warp.dev/stable/v${version}.stable_04/warp-terminal_${version}.stable.04_amd64.deb";
-    hash = "sha256-siPa1NRRl06UYp7TNjceEDuUlFsqnZvo7J2c4DNlti8=";
+    url = "https://releases.warp.dev/stable/v${version}.stable_01/warp-terminal_${version}.stable.01_amd64.deb";
+    hash = "sha256-bNKDSiGHwogtbiroG61EO9cAKLJ+RFnXDTzI7eJkapQ=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
   ] ++ [ stdenv.cc.cc.lib ];
 
   runtimeDependencies = with pkgs; [
+    curl
     mesa
     libglvnd
     libxkbcommon
