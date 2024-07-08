@@ -103,7 +103,7 @@ in
             ui = {
               enableMouse = true;
               reactive = true;
-              skin = "catppuccin-mocha";
+              skin = "catppuccin-macchiato";
             };
             logger = {
               buffer = 5000;

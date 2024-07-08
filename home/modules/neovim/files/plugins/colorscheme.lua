@@ -6,7 +6,7 @@ return {
     name = "catppuccin",
     enabled = true,
     opts = {
-      flavour = "mocha",
+      flavour = "macchiato",
       no_italic = false,
       term_colors = true,
       transparent_background = false,

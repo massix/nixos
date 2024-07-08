@@ -287,7 +287,7 @@ in
       {
         enable = true;
         package = pkgs.kitty;
-        theme = "Catppuccin-Mocha";
+        theme = "Catppuccin-Macchiato";
 
         shellIntegration = {
           mode = "enabled";
@@ -368,7 +368,7 @@ in
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "catppuccin-mocha-mauve-compact+default";
+      name = "catppuccin-macchiato-mauve-compact+default";
     };
 
     "org/gnome/desktop/background" = rec {
@@ -389,21 +389,21 @@ in
   gtk = {
     enable = true;
     theme = {
-      name = "catppuccin-mocha-mauve-compact+default";
+      name = "catppuccin-macchiato-mauve-compact+default";
       package = pkgs.catppuccin-gtk.override {
         accents = [ "mauve" ];
         size = "compact";
         tweaks = [ ];
-        variant = "mocha";
+        variant = "macchiato";
       };
     };
     iconTheme = {
-      name = "Papirus";
-      package = pkgs.papirus-icon-theme;
+      name = "Pop";
+      package = pkgs.pop-icon-theme;
     };
     cursorTheme = {
-      name = "catppuccin-mocha-mauve-cursors";
-      package = pkgs.catppuccin-cursors.mochaMauve;
+      name = "catppuccin-macchiato-mauve-cursors";
+      package = pkgs.catppuccin-cursors.macchiatoMauve;
       size = 32;
     };
     font = uiFont;
