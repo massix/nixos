@@ -234,6 +234,7 @@
     zsh.enable = false;
     fish.enable = true;
     command-not-found.enable = false;
+    steam.enable = true;
   };
 
   xdg.portal = {

@@ -380,6 +380,8 @@ in
     obsidian
     proton-pass
     unzip
+
+    flameshot
   ];
 
   systemd.user.startServices = "sd-switch";
