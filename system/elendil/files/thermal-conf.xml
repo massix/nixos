@@ -10,10 +10,10 @@
   <Preference>QUIET</Preference>
   <PPCC>
     <PowerLimitIndex>0</PowerLimitIndex>
-    <PowerLimitMinimum>8000</PowerLimitMinimum>
-    <PowerLimitMaximum>39000</PowerLimitMaximum>
-    <TimeWindowMinimum>12000</TimeWindowMinimum>
-    <TimeWindowMaximum>32000</TimeWindowMaximum>
+    <PowerLimitMinimum>12000</PowerLimitMinimum>
+    <PowerLimitMaximum>44000</PowerLimitMaximum>
+    <TimeWindowMinimum>6000</TimeWindowMinimum>
+    <TimeWindowMaximum>24000</TimeWindowMaximum>
     <StepSize>500</StepSize>
   </PPCC>
   <ThermalZones>
@@ -22,7 +22,7 @@
       <TripPoints>
         <TripPoint>
           <SensorType>x86_pkg_temp</SensorType>
-          <Temperature>60000</Temperature>
+          <Temperature>65000</Temperature>
           <type>passive</type>
           <ControlType>PARALLEL</ControlType>
           <CoolingDevice>
@@ -38,7 +38,7 @@
             <SamplingPeriod>5</SamplingPeriod>
           </CoolingDevice>
           <CoolingDevice>
-            <index>2</index>
+            <index>3</index>
             <type>intel_powerclamp</type>
             <influence>50</influence>
             <SamplingPeriod>5</SamplingPeriod>
