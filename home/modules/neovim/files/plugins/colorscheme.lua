@@ -14,7 +14,7 @@ return {
       dim_inactive = {
         enabled = true,
         shade = "dark",
-        percentage = 0.15,
+        percentage = 0.40,
       },
       integrations = {
         alpha = true,

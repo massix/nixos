@@ -612,8 +612,14 @@ return {
             "TelescopePrompt",
             "toggleterm",
           }
+          local disabled_bts = {
+            "nofile",
+          }
+
           local ftype = vim.api.nvim_buf_get_option(0, "filetype")
-          return not vim.tbl_contains(disabled_fts, ftype)
+          local btype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
+
+          return not (vim.tbl_contains(disabled_fts, ftype) or vim.tbl_contains(disabled_bts, btype))
         end,
         completion = {
           completeopt = "menuone,noinsert,noselect,preview",

@@ -16,7 +16,8 @@ return {
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       {
-        "lyz-code/telescope-orgmode.nvim",
+        "nvim-orgmode/telescope-orgmode.nvim",
+        version = "1.1.0",
         config = function()
           require("telescope").load_extension("orgmode")
         end,
@@ -33,6 +34,17 @@ return {
         "massix/org-checkbox.nvim",
         opts = {},
         main = "orgcheckbox",
+      },
+      {
+        "nvim-orgmode/org-bullets.nvim",
+        opts = {},
+      },
+      {
+        "chipsenkbeil/org-roam.nvim",
+        opts = {
+          directory = "~/org/roam",
+          bindings = { prefix = "<leader>on" },
+        },
       },
     },
     config = function(_, opts)
@@ -167,7 +179,7 @@ return {
           },
         },
         org_agenda_files = {
-          "~/org/*.org",
+          "~/org/**/*.org",
         },
         org_todo_keywords = {
           "TODO(t)",
