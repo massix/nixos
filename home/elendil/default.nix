@@ -286,7 +286,7 @@ in
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "catppuccin-macchiato-mauve-compact+default";
+      name = "catppuccin-macchiato-mauve-compact";
     };
 
     "org/gnome/desktop/background" = rec {
@@ -307,7 +307,7 @@ in
   gtk = {
     enable = true;
     theme = {
-      name = "catppuccin-macchiato-mauve-compact+default";
+      name = "catppuccin-macchiato-mauve-compact";
       package = pkgs.catppuccin-gtk.override {
         accents = [ "mauve" ];
         size = "compact";
@@ -351,8 +351,8 @@ in
     powertop
     (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland"; })
     pbpctrl
-    gnome.dconf-editor
-    gnome3.gnome-tweaks
+    dconf-editor
+    gnome-tweaks
 
     spotify
     spotube
