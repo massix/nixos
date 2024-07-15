@@ -236,7 +236,7 @@ in
           tab_bar_style = "powerline";
           tab_bar_align = "left";
 
-          background_opacity = "1";
+          background_opacity = "0.9";
           dynamic_background_opacity = true;
           enable_audio_bell = false;
 
@@ -244,6 +244,18 @@ in
 
           allow_remote_control = true;
           listen_on = "unix:$\{HOME}/.kitty-{kitty_pid}";
+
+          # UI Tweaks
+          hide_window_decorations = false;
+          draw_minimal_borders = false;
+          inactive_text_alpha = "0.1";
+          remember_window_size = true;
+
+          window_margin_width = "2";
+          single_window_margin_width = "2";
+          window_padding_width = "2";
+          single_window_padding_width = "2";
+          window_border_width = "1";
         };
         extraConfig =
           fontFeatures
