@@ -44,7 +44,50 @@ return {
         opts = {
           directory = "~/org/roam",
           bindings = { prefix = "<leader>on" },
+          database = {
+            persist = true,
+            update_on_save = true,
+          },
         },
+        config = function(_, opts)
+          require("org-roam").setup(opts)
+
+          require("which-key").add({
+            { "<leader>on", group = "roam" },
+            { "<leader>ona", group = "alias" },
+            { "<leader>ond", group = "daily" },
+            { "<leader>ono", group = "origin" },
+          })
+
+          -- Add some bindings while in insert mode (only in org files)
+          local group = vim.api.nvim_create_augroup("OrgRoam", { clear = true })
+          vim.api.nvim_create_autocmd({ "FileType" }, {
+            pattern = "org",
+            group = group,
+            callback = function(args)
+              local roam = require("org-roam")
+              local wk = require("which-key")
+              local prefix = "<C-c>n"
+
+              wk.add({
+                {
+                  mode = "i",
+                  buffer = args.buf,
+                  { prefix, group = "roam" },
+                  { prefix .. ".", roam.api.complete_node, desc = "Complete node" },
+                  { prefix .. "i", roam.api.insert_node, desc = "Insert node" },
+                  {
+                    prefix .. "m",
+                    function()
+                      roam.api.insert_node({ immediate = true })
+                    end,
+                    desc = "Insert node (immediate)",
+                  },
+                },
+              })
+            end,
+          })
+        end,
       },
     },
     config = function(_, opts)
@@ -204,6 +247,9 @@ return {
         org_hide_emphasis_markers = true,
         org_log_into_drawer = "LOGBOOK",
         org_startup_folded = "content",
+        org_id_link_to_org_use_id = true,
+        org_id_method = "uuid",
+        org_id_uuid_program = "uuidgen",
         org_capture_templates = {
           r = {
             description = "Refilable Task",
