@@ -116,7 +116,7 @@ return {
       end
 
       return {
-        defaults = vim.tbl_extend("force", require("telescope.themes").get_ivy(), {
+        defaults = vim.tbl_extend("force", require("telescope.themes").get_dropdown(), {
           prompt_prefix = " ",
           selection_caret = " ",
           mappings = {
