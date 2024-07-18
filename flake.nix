@@ -142,11 +142,6 @@
             deadnix /* dead code for nix */
             nixpkgs-fmt /* Formatter for nix */
             statix /* Static analyzer for nix */
-            stylua /* Formatter for lua */
-            nil /* language server for nix */
-            lua-language-server /* language server for lua */
-            vscode-langservers-extracted /* language server for json */
-            lua51Packages.luacheck /* linter for lua */
           ];
         };
 

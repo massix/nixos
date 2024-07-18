@@ -1,14 +1,4 @@
 {
-  "neodev": {
-    "library": {
-      "enabled": true,
-      "plugins": true,
-      "runtime": true,
-      "types": true
-    },
-    "pathStrict": false,
-    "lspconfig": true
-  },
   "neoconf": {
     "live_reload": true,
     "filetype_jsonc": true,
@@ -23,13 +13,6 @@
   },
   "lspconfig": {
     "lua_ls": {
-      "Lua.runtime.pathStrict": false,
-      "Lua.runtime.path": [
-        "?.lua",
-        "?/init.lua",
-        "${workspace}/home/modules/neovim/files/?.lua",
-        "${workspace}/home/modules/neovim/files/?/init.lua"
-      ],
       "Lua.hint.enable": true,
       "Lua.hint.setType": true,
       "Lua.hint.paramName": "All",

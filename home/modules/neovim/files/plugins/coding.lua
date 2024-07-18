@@ -214,6 +214,20 @@ return {
     end,
   },
 
+  -- lazydev
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    dependencies = {
+      { "Bilal2453/luvit-meta", lazy = true },
+    },
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
   -- lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -222,32 +236,19 @@ return {
     dependencies = {
       -- Similar to .vscode things
       { "folke/neoconf.nvim" },
-      { "folke/neodev.nvim" },
       { "hrsh7th/cmp-nvim-lsp" },
       { "b0o/schemastore.nvim" },
       { "Hoffs/omnisharp-extended-lsp.nvim" },
     },
     config = function()
-      -- Make sure we load neoconf and neodev before configuring the lsp
+      -- Make sure we load neoconf before configuring the lsp
       require("neoconf").setup()
-      local neodev_opts = {}
-
-      if require("util.nix").dapConfigured then
-        neodev_opts = {
-          library = {
-            plugins = { "nvim-dap-ui" },
-            types = true,
-          },
-        }
-      end
-
-      require("neodev").setup(neodev_opts)
       local lspconfig = require("lspconfig")
 
       -- -- Capabilities
       local capabilities = require("cmp_nvim_lsp").default_capabilities({ dynamicRegistration = true })
 
-      ---@param client lsp.Client
+      ---@param client vim.lsp.Client
       ---@param bufnr integer
       local attach_trouble = function(client, bufnr)
         if client.server_capabilities.documentSymbolProvider then
@@ -294,7 +295,6 @@ return {
       })
 
       lspconfig.lua_ls.setup({
-        capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
@@ -649,6 +649,7 @@ return {
           ["<S-Tab>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
         }),
         sources = cmp.config.sources({
+          { name = "lazydev", group_index = 0 },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "neorg" },
