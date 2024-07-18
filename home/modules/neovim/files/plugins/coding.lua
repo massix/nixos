@@ -750,12 +750,12 @@ return {
     end,
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>cd"] = { name = "+diagnostics" },
-        ["<leader>cp"] = { name = "+peek" },
-        ["<leader>cg"] = { name = "+goto" },
-        ["gp"] = { name = "+peek" },
+      wk.add({
+        { "<leader>c", group = "code" },
+        { "<leader>cd", group = "diagnostics" },
+        { "<leader>cp", group = "peek" },
+        { "<leader>cg", group = "goto" },
+        { "gp", group = "peek" },
       })
     end,
   },
@@ -766,8 +766,8 @@ return {
     event = "BufEnter",
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["<leader>cF"] = { name = "+format" },
+      wk.add({
+        { "<leader>cF", group = "format" },
       })
 
       vim.g.conform_autoformat = true
@@ -870,19 +870,20 @@ return {
           jdtls.setup_dap()
           jdtls_dap.setup_dap_main_class_configs()
 
-          require("which-key").register({
-            ["j"] = {
-              name = "+jdt",
-              c = { "<CMD>JdtCompile<CR>", "Jdt Compile" },
-              u = { "<CMD>JdtUpdateDebugConfig<CR>", "Jdt Update Debug Config" },
-              U = { "<CMD>JdtUpdateConfig<CR>", "Jdt Update Config" },
-              h = { "<CMD>JdtUpdateHotcode<CR>", "Jdt Hot Replace" },
-              r = { "<CMD>JdtRestart<CR>", "Jdt Restart" },
-              b = { "<CMD>JdtBytecode<CR>", "Jdt Bytecode" },
-              S = { "<CMD>JdtJshell<CR>", "Jdt JShell" },
-              R = { vim.lsp.codelens.refresh, "Force refresh Codelens" },
+          require("which-key").add({
+            {
+              buffer = bufnr,
+              { "<C-c>j", group = "jdt" },
+              { "<C-c>jc", "<cmd>JdtCompile<CR>", desc = "Jdt Compile" },
+              { "<C-c>ju", "<cmd>JdtUpdateDebugConfig<CR>", desc = "Jdt Update Debug Config" },
+              { "<C-c>jU", "<cmd>JdtUpdateConfig<CR>", desc = "Jdt Update Config" },
+              { "<C-c>jh", "<cmd>JdtUpdateHotcode<CR>", desc = "Jdt Hot Replace" },
+              { "<C-c>jr", "<cmd>JdtRestart<CR>", desc = "Jdt Restart" },
+              { "<C-c>jb", "<cmd>JdtBytecode<CR>", desc = "Jdt Bytecode" },
+              { "<C-c>jS", "<cmd>JdtJshell<CR>", desc = "Jdt JShell" },
+              { "<C-c>jR", vim.lsp.codelens.refresh, desc = "Force refresh Codelens" },
             },
-          }, { mode = "n", buffer = bufnr, prefix = "<C-c>" })
+          })
         end,
 
         settings = {
@@ -914,21 +915,21 @@ return {
 
           -- Register keys when in Java files
           local wk = require("which-key")
-          wk.register({
-            ["<leader>cx"] = { name = "+extract" },
-            ["<leader>cxv"] = { jdtls.extract_variable_all, "Extract Variable" },
-            ["<leader>cxc"] = { jdtls.extract_constant, "Extract Constant" },
-            ["<leader>co"] = { jdtls.organize_imports, "Organize Imports" },
-            ["gs"] = { jdtls.super_implementation, "Goto Super" },
-          }, { mode = "n", buffer = args.buf })
-
-          wk.register({
-            ["t"] = { jdtls_dap.test_class, "[jdtls] run all test in class" },
-            ["d"] = { jdtls_dap.test_nearest_method, "[jdtls] debug nearest" },
-            ["r"] = { jdtls_dap.pick_test, "[jdtls] run test from buffer" },
-            ["g"] = { jdtls_tests.generate, "[jdtls] generate test class" },
-            ["G"] = { jdtls_tests.goto_subjects, "Goto Subjects" },
-          }, { mode = "n", buffer = args.buf, prefix = "<C-c>n" })
+          wk.add({
+            {
+              buffer = args.buf,
+              { "<leader>cx", group = "extract" },
+              { "<leader>cxv", jdtls.extract_variable_all, desc = "Extract Variable" },
+              { "<leader>cxc", jdtls.extract_constant, desc = "Extract Constant" },
+              { "<leader>co", jdtls.organize_imports, desc = "Organize Imports" },
+              { "gs", jdtls.super_implementation, desc = "Goto Super" },
+              { "<C-c>nt", jdtls_dap.test_class, desc = "[jdtls] run all test in class" },
+              { "<C-c>nd", jdtls_dap.test_nearest_method, desc = "[jdtls] debug nearest" },
+              { "<C-c>nr", jdtls_dap.pick_test, desc = "[jdtls] run test from buffer" },
+              { "<C-c>ng", jdtls_tests.generate, desc = "[jdtls] generate test class" },
+              { "<C-c>nG", jdtls_tests.goto_subjects, desc = "Goto Subjects" },
+            },
+          })
         end,
       })
 
@@ -946,14 +947,12 @@ return {
     lazy = true,
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["<C-c>o"] = { name = "+overseer" },
-        ["<C-c>oT"] = {
-          name = "+toggle",
-          l = { "<cmd>OverseerToggle left<cr>", "Toggle left" },
-          r = { "<cmd>OverseerToggle right<cr>", "Toggle right" },
-          b = { "<cmd>OverseerToggle bottom<cr>", "Toggle bottom" },
-        },
+      wk.add({
+        { "<C-c>o", group = "overseer" },
+        { "<C-c>oT", group = "toggle" },
+        { "<C-c>oTl", "<CMD>OverseerToggle left<cr>", desc = "Toggle left" },
+        { "<C-c>oTr", "<CMD>OverseerToggle right<cr>", desc = "Toggle right" },
+        { "<C-c>oTb", "<CMD>OverseerToggle bottom<cr>", desc = "Toggle bottom" },
       })
     end,
     keys = {

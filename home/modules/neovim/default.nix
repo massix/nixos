@@ -205,12 +205,10 @@ in
             vim.g.neovide_scale_factor = M.default_scale
 
             -- Register keybinding to modify the scale
-            require("which-key").register({
-              ["<leader>+"] = {
-                name = "+scale",
-                ["+"] = { function() require("config.gui").change_scale_factor(1.25) end, "Increase scale" },
-                ["-"] = { function() require("config.gui").change_scale_factor(1/1.25) end, "Decrease scale" },
-              },
+            require("which-key").add({
+              { "<leader>+", group = "scale" },
+              { "<leader>++", function() require("config.gui").change_scale_factor(1.25) end, desc = "Increase scale" },
+              { "<leader>+-", function() require("config.gui").change_scale_factor(1/1.25) end, desc = "Decrease scale" },
             })
 
             -- Also create some more immediate bindings

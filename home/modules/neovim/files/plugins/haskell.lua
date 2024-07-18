@@ -34,18 +34,24 @@ return {
         callback = function(args)
           local wk = require("which-key")
           local ht = require("haskell-tools")
-          -- stylua: ignore
-          wk.register({
-            h = {
-              name = "+haskell",
-              c = { vim.lsp.codelens.run, "Refresh Codelens", },
-              s = { ht.hoogle.hoogle_signature, "Hoogle Signature", },
-              R = { ht.repl.toggle, "Toggle REPL for current package", },
-              r = { function() ht.repl.toggle(vim.api.nvim_buf_get_name(0)) end, "Toggle REPL for current buffer", },
-              q = { ht.repl.quit, "Quit REPL", },
-              e = { ht.lsp.buf_eval_all, "Evaluate all", },
+          wk.add({
+            {
+              buffer = args.buf,
+              { "<leader>ch", group = "haskell" },
+              { "<leader>chc", vim.lsp.codelens.run, desc = "Run Codelens" },
+              { "<leader>chs", ht.hoogle.hoogle_signature, desc = "Hoogle Signature" },
+              { "<leader>chR", ht.repl.toggle, desc = "Toggle REPL" },
+              {
+                "<leader>chr",
+                function()
+                  ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+                end,
+                desc = "Toggle REPL for current buffer",
+              },
+              { "<leader>chq", ht.repl.quit, desc = "Quit REPL" },
+              { "<leader>che", ht.lsp.buf_eval_all, desc = "Evaluate all" },
             },
-          }, { prefix = "<leader>c", buffer = args.buf })
+          })
         end,
       })
     end,

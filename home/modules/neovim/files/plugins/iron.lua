@@ -55,49 +55,23 @@ return {
           local wk = require("which-key")
 
           -- stylua: ignore
-          wk.register({
-            r = {
-              name = "+repl",
-              f = { "<CMD>IronFocus<CR>", "Start or focus REPL" },
-              r = { "<CMD>IronRestart<CR>", "Restart REPL" },
-              h = { "<CMD>IronHide<CR>", "Hide REPL" },
-              ["<CR>"] = {
-                function() require("iron.core").send(nil, string.char(13)) end,
-                "Send <CR> to REPL"
-              },
-              ["<space>"] = {
-                function() require("iron.core").send(nil, string.char(03)) end,
-                "Send Interrupt to REPL"
-              },
-              q = {
-                function() require("iron.core").close_repl() end,
-                "Close REPL"
-              },
-              l = {
-                function() require("iron.core").send(nil, string.char(12)) end,
-                "Clear REPL"
-              },
-              F = {
-                function() require("iron.core").send_file() end,
-                "Send current file to REPL"
-              },
-              e = {
-                function() require("iron.core").send_line() end,
-                "Send line to REPL"
-              }
+          wk.add({
+            { buffer = args.buf, noremap = false, mode = { "n" },
+              { "<C-c>r", group = "repl" },
+              { "<C-c>rf", "<CMD>IronReplFocus<CR>", desc = "Focus REPL" },
+              { "<C-c>rh", "<CMD>IronReplHide<CR>", desc = "Hide REPL" },
+              { "<C-c>r<CR>", function() require("iron.core").send(nil, string.char(13)) end, desc = "Send <CR> to REPL" },
+              { "<C-c>r<space>", function() require("iron.core").send(nil, string.char(03)) end, desc = "Send Interrupt to REPL" },
+              { "<C-c>rq", function() require("iron.core").close_repl() end, desc = "Close REPL" },
+              { "<C-c>rl", function() require("iron.core").send(nil, string.char(12)) end, desc = "Clear REPL" },
+              { "<C-c>rf", function() require("iron.core").send_file() end, desc = "Send current file to REPL" },
+              { "<C-c>re", function() require("iron.core").send_line() end, desc = "Send line to REPL" },
             },
-          }, { buffer = args.buf, noremap = false, prefix = "<C-c>", mode = "n" })
-
-          -- stylua: ignore
-          wk.register({
-            r = {
-              name = "+repl",
-              e = {
-                function() require("iron.core").visual_send() end,
-                "Send line to REPL"
-              },
-            },
-          }, { buffer = args.buf, noremap = false, prefix = "<C-c>", mode = "v" })
+            { mode = "v", buffer = args.buf,
+              { "<C-c>r", group = "repl" },
+              { "<C-c>re", function() require("iron.core").visual_send() end, desc = "Send line to REPL" },
+            }
+          })
         end,
       })
     end,

@@ -20,33 +20,29 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    version = "*",
     opts = {
-      key_labels = {
-        ["<space>"] = "SPC",
-        ["<cr>"] = "RET",
-        ["<tab>"] = "TAB",
-      },
+      preset = "helix",
     },
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
       local wk = require("which-key")
-      wk.register({
+      wk.add({
         -- Lazy Handling
-        ["<leader>l"] = { name = "+lazy" },
-        ["<leader>ll"] = { "<cmd>Lazy<cr>", "UI" },
-        ["<leader>lh"] = { "<cmd>Lazy health<cr>", "HealthCheck" },
-
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>f"] = { name = "+file" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>u"] = { name = "+misc" },
-        ["<leader>x"] = { name = "+list" },
-        ["<leader>q"] = { name = "+quit" },
-        ["<leader>w"] = { name = "+window" },
-        ["<leader><tab>"] = { name = "+tab" },
-        ["<leader>n"] = { name = "+nix" },
+        { "<leader>l", group = "lazy" },
+        { "<leader>ll", "<cmd>Lazy<cr>", desc = "UI" },
+        { "<leader>lh", "<cmd>Lazy health<cr>", desc = "HealthCheck" },
+        { "<leader>s", group = "search" },
+        { "<leader>g", group = "git" },
+        { "<leader>f", group = "file" },
+        { "<leader>b", group = "buffer" },
+        { "<leader>u", group = "misc" },
+        { "<leader>x", group = "list" },
+        { "<leader>q", group = "quit" },
+        { "<leader>w", group = "window" },
+        { "<leader><tab>", group = "tab" },
+        { "<leader>n", group = "nix" },
       })
     end,
   },

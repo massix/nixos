@@ -22,27 +22,26 @@ return {
         server = {
           on_attach = function(_, bufnr)
             local wk = require("which-key")
-            wk.register({
-              r = {
-                name = "+rust",
-                d = {
-                  name = "+debuggables",
-                  a = { "<cmd>RustLsp debuggables<CR>", "All Debuggables" },
-                  d = { "<cmd>RustLsp debug<CR>", "From current position" },
-                },
-                r = {
-                  name = "+runnables",
-                  a = { "<cmd>RustLsp runnables<CR>", "All Runnables" },
-                  r = { "<cmd>RustLsp run<CR>", "From current position" },
-                },
-                M = { "<cmd>RustLsp expandMacro<CR>", "Expand macro" },
-                e = { "<cmd>RustLsp explainError<CR>", "Explain error" },
-                D = { "<cmd>RustLsp renderDiagnostic<CR>", "Render Diagnostic" },
-                c = { "<cmd>RustLsp openCargo<CR>", "Open Cargo" },
-                k = { "<cmd>RustLsp openDocs<CR>", "Open docs.rs" },
-                p = { "<cmd>RustLsp parentModule<CR>", "Parent Module" },
+            wk.add({
+              {
+                buffer = bufnr,
+                { "<C-c>r", group = "rust" },
+                { "<C-c>rM", "<CMD>RustLsp expandMacro<CR>", desc = "Expand macro" },
+                { "<C-c>re", "<CMD>RustLsp explainError<CR>", desc = "Explain error" },
+                { "<C-c>rD", "<CMD>RustLsp renderDiagnostic<CR>", desc = "Render diagnostic" },
+                { "<C-c>rc", "<CMD>RustLsp openCargo<CR>", desc = "Open Cargo" },
+                { "<C-c>rk", "<cmd>RustLsp openDocs<CR>", desc = "Open docs.rs" },
+                { "<C-c>rp", "<cmd>RustLsp parentModule<CR>", desc = "Parent Module" },
+
+                { "<C-c>rd", group = "debuggables" },
+                { "<C-c>rda", "<CMD>RustLsp debuggables<CR>", desc = "All debuggables" },
+                { "<C-c>rdd", "<CMD>RustLsp debug<CR>", desc = "From current position" },
+
+                { "<C-c>rr", group = "runnables" },
+                { "<C-c>rra", "<CMD>RustLsp runnables<CR>", desc = "All runnables" },
+                { "<C-c>rrr", "<CMD>RustLsp run<CR>", desc = "From current position" },
               },
-            }, { buffer = bufnr, prefix = "<C-c>" })
+            })
 
             vim.lsp.codelens.refresh()
           end,

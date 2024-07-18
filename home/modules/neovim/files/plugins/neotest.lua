@@ -4,8 +4,8 @@ return {
     "nvim-neotest/neotest",
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["<C-c>n"] = { name = "+test" },
+      wk.add({
+        { "<C-c>n", group = "test" },
       })
     end,
     dependencies = {

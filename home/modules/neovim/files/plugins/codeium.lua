@@ -24,18 +24,18 @@ return {
     }
 
     -- Register keymaps
-    wk.register({
-      -- stylua: ignore
-      ["<C-c>c"] = {
-        name = "+codeium",
-        t =        { function() return vim.fn["codeium#Chat"]() end, "Open Chat", silent = true, expr = true },
-        n =        { function() return vim.fn["codeium#CycleCompletions"](1) end, "Next Suggestion", silent = true, expr = true },
-        p =        { function() return vim.fn["codeium#CycleCompletions"](-1) end, "Previous Suggestion", silent = true, expr = true },
-        c =        { function() return vim.fn["codeium#Clear"]() end, "Clear Suggestion", silent = true, expr = true },
-        C =        { function() return vim.fn["codeium#Complete"]() end, "Force Suggestion", silent = true, expr = true },
-        ["<CR>"] = { function() return vim.fn["codeium#Accept"]() end, "Accept Suggestion", silent = true, expr = true },
+    -- stylua: ignore
+    wk.add({
+      {
+        mode = { "i", "n" },
+        { "<C-c>C", group = "codeium" },
+        { "<C-c>Ct", function() return vim.fn["codeium#Chat"]() end, desc = "Open Chat", silent = true, expr = true },
+        { "<C-c>Cn", function() return vim.fn["codeium#CycleCompletions"](1) end, desc = "Next Suggestion", silent = true, expr = true },
+        { "<C-c>Cp", function() return vim.fn["codeium#CycleCompletions"](-1) end, desc = "Previous Suggestion", silent = true, expr = true },
+        { "<C-c>Cc", function() return vim.fn["codeium#Clear"]() end, desc = "Clear Suggestion", silent = true, expr = true },
+        { "<C-c>CC", function() return vim.fn["codeium#Complete"]() end, desc = "Force Suggestion", silent = true, expr = true },
+        { "<C-c>C<CR>", function() return vim.fn["codeium#Accept"]() end, desc = "Accept Suggestion", silent = true, expr = true },
       },
-      mode = { "i", "n" },
     })
   end,
 }

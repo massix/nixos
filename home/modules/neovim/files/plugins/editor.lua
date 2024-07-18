@@ -164,8 +164,8 @@ return {
     },
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["<leader>I"] = { name = "+insert" },
+      wk.add({
+        { "<leader>I", group = "insert" },
       })
     end,
     keys = {
@@ -192,8 +192,8 @@ return {
     config = true,
     init = function()
       local wk = require("which-key")
-      wk.register({
-        ["gs"] = { name = "+surround" },
+      wk.add({
+        { "gs", group = "surround" },
       })
     end,
     opts = {
@@ -314,8 +314,8 @@ return {
     event = { "BufEnter", "BufWinEnter" },
     init = function()
       vim.g.table_mode_syntax = 0
-      require("which-key").register({
-        ["<leader>t"] = { name = "+table" },
+      require("which-key").add({
+        { "<leader>t", group = "table" },
       })
     end,
     config = false,

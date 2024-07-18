@@ -282,16 +282,17 @@ return {
         pattern = { "org" },
         callback = function(args)
           local wk = require("which-key")
-          wk.register({
-            s = {
-              name = "+sniprun",
-              ["<CR>"] = { "<cmd>SnipRun<cr>", "Run" },
-              r = { "<cmd>SnipReset<cr>", "Reset" },
-              c = { "<cmd>SnipClose<cr>", "Close" },
-              i = { "<cmd>SnipInfo<cr>", "Info" },
-              C = { "<cmd>SnipReplMemoryClean<cr>", "Cancel" },
+          wk.add({
+            {
+              buffer = args.buf,
+              { "<C-c>s", group = "sniprun" },
+              { "<C-c>s<CR>", "<cmd>SnipRun<cr>", desc = "Run" },
+              { "<C-c>sr", "<cmd>SnipReset<cr>", desc = "Reset" },
+              { "<C-c>sc", "<cmd>SnipClose<cr>", desc = "Close" },
+              { "<C-c>si", "<cmd>SnipInfo<cr>", desc = "Info" },
+              { "<C-c>sC", "<cmd>SnipReplMemoryClean<cr>", desc = "Cancel" },
             },
-          }, { prefix = "<C-c>", mode = "n", buffer = args.buf })
+          })
         end,
       })
     end,
