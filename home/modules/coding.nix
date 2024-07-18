@@ -133,6 +133,7 @@ in
       luaTooling = with pkgs; [
         (stylua.override { features = [ "lua54" "luau" ]; }) /* Formatter for lua */
         lua-language-server /* language server for lua */
+        lua54Packages.luacheck
       ];
 
       rustTooling = with pkgs; [

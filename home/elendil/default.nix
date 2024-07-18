@@ -248,7 +248,7 @@ in
           # UI Tweaks
           hide_window_decorations = false;
           draw_minimal_borders = false;
-          inactive_text_alpha = "0.1";
+          inactive_text_alpha = "0.6";
           remember_window_size = true;
 
           window_margin_width = "2";
@@ -349,7 +349,7 @@ in
     # Only for Teams PWA
     just
     powertop
-    (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland"; })
+    (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland --force-dark-mode"; })
     pbpctrl
     dconf-editor
     gnome-tweaks
