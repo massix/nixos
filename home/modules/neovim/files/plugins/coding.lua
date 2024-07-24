@@ -47,6 +47,7 @@ return {
         "javascript",
         "jsdoc",
         "json",
+        "jsonc",
         "just",
         "kdl",
         "kotlin",
@@ -199,10 +200,8 @@ return {
   },
 
   -- yaml and json ls companion
-  -- TODO: revert back to upstream once https://github.com/someone-stole-my-name/yaml-companion.nvim/pull/50 gets merged
   {
-    "agorgl/yaml-companion.nvim",
-    branch = "patch-1",
+    "someone-stole-my-name/yaml-companion.nvim",
     dependencies = {
       { "neovim/nvim-lspconfig" },
       { "nvim-lua/plenary.nvim" },
@@ -224,6 +223,7 @@ return {
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
+        "lazy.nvim",
       },
     },
   },
@@ -701,15 +701,24 @@ return {
         extend_gitsigns = false,
       },
       lightbulb = {
-        virtual_text = true,
+        virtual_text = false,
+        sign = true,
       },
       outline = {
         win_position = "left",
         close_after_jump = true,
-        auto_preview = false,
+        auto_preview = true,
+      },
+      implement = {
+        enable = true,
+        sign = true,
       },
       finder = {
         default = "ref+def+impl",
+      },
+      breadcrumb = {
+        enable = true,
+        hide_keyword = true,
       },
       ui = {
         code_action = util_defaults.icons.diagnostics.Hint,

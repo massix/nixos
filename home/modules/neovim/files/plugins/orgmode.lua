@@ -1,18 +1,16 @@
 local util = require("util.nix")
 
-_G.org_toggle_conceal = function()
-  if vim.wo.conceallevel > 0 then
-    vim.wo.conceallevel = 0
-  else
-    vim.wo.conceallevel = 3
-  end
-end
-
+--- @type LazyPluginSpec[]
 return {
   {
     "nvim-orgmode/orgmode",
     enabled = true,
     ft = { "org", "orgagenda" },
+    init = function()
+      require("which-key").add({
+        { "<leader>o", group = "orgmode" },
+      })
+    end,
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       {
@@ -43,21 +41,63 @@ return {
         "chipsenkbeil/org-roam.nvim",
         opts = {
           directory = "~/org/roam",
-          bindings = { prefix = "<leader>on" },
+          bindings = {
+            prefix = "<leader>on",
+            add_alias = "<leader>onAa",
+            remove_alias = "<leader>onAr",
+          },
           database = {
             persist = true,
             update_on_save = true,
           },
         },
-        config = function(_, opts)
-          require("org-roam").setup(opts)
-
+        init = function()
           require("which-key").add({
             { "<leader>on", group = "roam" },
-            { "<leader>ona", group = "alias" },
+            { "<leader>onA", group = "alias" },
             { "<leader>ond", group = "daily" },
             { "<leader>ono", group = "origin" },
           })
+        end,
+        keys = {
+          {
+            "<leader>onf",
+            function()
+              require("org-roam").api.find_node()
+            end,
+            desc = "Find node",
+          },
+          {
+            "<leader>ondn",
+            function()
+              require("org-roam").ext.dailies.goto_today()
+            end,
+            desc = "Today's note",
+          },
+          {
+            "<leader>ondd",
+            function()
+              require("org-roam").ext.dailies.goto_date()
+            end,
+            desc = "Go to specific date",
+          },
+          {
+            "<leader>ondy",
+            function()
+              require("org-roam").ext.dailies.goto_yesterday()
+            end,
+            desc = "Yesterday's note",
+          },
+          {
+            "<leader>ondt",
+            function()
+              require("org-roam").ext.dailies.goto_tomorrow()
+            end,
+            desc = "Tomorrow's note",
+          },
+        },
+        config = function(_, opts)
+          require("org-roam").setup(opts)
 
           -- Add some bindings while in insert mode (only in org files)
           local group = vim.api.nvim_create_augroup("OrgRoam", { clear = true })
@@ -89,6 +129,7 @@ return {
           })
         end,
       },
+      { "andreadev-it/orgmode-multi-key", opts = {} },
     },
     config = function(_, opts)
       local orgmode = require("orgmode")
@@ -98,10 +139,10 @@ return {
       local orgmode_group = vim.api.nvim_create_augroup("OrgMode", { clear = true })
 
       -- Set conceal stuff when in orgmode
-      vim.api.nvim_create_autocmd({ "Filetype" }, {
-        pattern = { "org" },
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = "org",
         group = orgmode_group,
-        callback = function()
+        callback = function(args)
           vim.wo.concealcursor = "nvic"
           vim.wo.conceallevel = 3
 
@@ -113,18 +154,36 @@ return {
           vim.opt_local.modeline = true
           vim.opt_local.modelines = 30
 
-          local map = function(modes, lhs)
-            -- stylua: ignore
-            if type(modes) == "table" then
-              for _, mode in ipairs(modes) do
-                vim.api.nvim_buf_set_keymap(0, mode, lhs, "<cmd>lua org_toggle_conceal()<CR>", { desc = "Toggle conceal" })
-              end
-            else
-              vim.api.nvim_buf_set_keymap(0, modes, lhs, "<cmd>lua org_toggle_conceal()<CR>", { desc = "Toggle conceal" })
-            end
-          end
+          -- Allow the cursor to go one character past the end of the line
+          vim.opt_local.virtualedit = "onemore"
 
-          map({ "n", "v", "i" }, "<C-c><C-c>")
+          require("which-key").add({
+            {
+              buffer = args.buf,
+              {
+                "<C-c>c",
+                function()
+                  if vim.wo.conceallevel > 0 then
+                    vim.wo.conceallevel = 0
+                    vim.notify("Conceal off", vim.log.levels.INFO)
+                  else
+                    vim.wo.conceallevel = 3
+                    vim.notify("Conceal on", vim.log.levels.INFO)
+                  end
+                end,
+                desc = "Toggle conceal",
+                mode = { "n", "i", "v" },
+              },
+              {
+                "<C-c><CR>",
+                function()
+                  require("orgmode").action("org_mappings.meta_return")
+                end,
+                desc = "Org Meta Return",
+                mode = { "i", "n" },
+              },
+            },
+          })
         end,
       })
     end,
@@ -222,7 +281,9 @@ return {
           },
         },
         org_agenda_files = {
-          "~/org/**/*.org",
+          "~/org/*.org",
+          "~/org/roam/*.org",
+          "~/org/roam/daily/*.org",
         },
         org_todo_keywords = {
           "TODO(t)",
@@ -235,16 +296,17 @@ return {
           "CANCELLED(c)",
           "DELEGATED(l)",
         },
+        org_todo_repeat_to_state = "NEXT",
         org_default_notes_file = "~/org/refile.org",
         org_agenda_text_search_extra_files = { "agenda-archives" },
         org_startup_indented = true,
         org_adapt_indentation = false,
         org_indent_mode_turns_off_org_adapt_indentation = true,
-        org_tags_column = 80,
+        org_tags_column = -80,
         win_split_mode = "bo 20sp",
         win_border = "rounded",
         org_hide_leading_stars = false,
-        org_hide_emphasis_markers = true,
+        org_hide_emphasis_markers = false,
         org_log_into_drawer = "LOGBOOK",
         org_startup_folded = "content",
         org_id_link_to_org_use_id = true,
@@ -285,6 +347,15 @@ return {
         mappings = {
           org = {
             org_toggle_checkbox = "<C-p>",
+          },
+          capture = {
+            org_capture_finalize = "<C-c>O<CR>",
+            org_capture_refile = "<C-c>Or",
+            org_capture_kill = "<C-c>Ok",
+          },
+          note = {
+            org_note_finalize = "<C-c>O<CR>",
+            org_note_kill = "<C-c>Ok",
           },
         },
         notifications = {
@@ -394,5 +465,26 @@ return {
       -- stylua: ignore
       vim.api.nvim_set_keymap( "n", "<leader>Iv", "<cmd>lua Toggle_Venn()<CR>", { noremap = true, desc = "Toggle Venn Mode" })
     end,
+  },
+
+  -- Show images
+  {
+    "3rd/image.nvim",
+    -- ft = { "markdown", "org", "html", "css" },
+    event = "VeryLazy",
+    opts = {
+      backend = "kitty",
+      integrations = {
+        markdown = {
+          enabled = true,
+        },
+        html = {
+          enabled = true,
+        },
+        css = {
+          enabled = true,
+        },
+      },
+    },
   },
 }

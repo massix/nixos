@@ -4,6 +4,7 @@ return {
   event = { "VeryLazy" },
   init = function()
     local wk = require("which-key")
+
     -- Do not use default bindings
     vim.g.codeium_disable_bindings = 1
 

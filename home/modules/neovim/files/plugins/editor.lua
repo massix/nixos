@@ -278,7 +278,7 @@ return {
       )
 
       local group = vim.api.nvim_create_augroup("TrimWhitespaces", { clear = true })
-      vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+      vim.api.nvim_create_autocmd("BufWritePre", {
         group = group,
         pattern = "*",
         callback = function()

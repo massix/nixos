@@ -1,3 +1,5 @@
+require("lazy")
+
 --- @type LazyPluginSpec[]
 return {
   {
@@ -13,7 +15,10 @@ return {
       { "nvim-lua/plenary.nvim" },
       { "antoinemadec/FixCursorHold.nvim" },
       { "rcasia/neotest-java" },
-      { "mrcjkb/neotest-haskell" },
+      {
+        "mrcjkb/neotest-haskell",
+        version = "2.0.0",
+      },
       { "Issafalcon/neotest-dotnet" },
       { "fredrikaverpil/neotest-golang", version = "*" },
     },

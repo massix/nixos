@@ -8,6 +8,11 @@ return {
         version = "1.*",
         opts = {
           prompt_end = { "❯ ", "> ", "%$ " },
+          mapping = {
+            n = {
+              i = "<C-i>",
+            },
+          },
         },
       },
     },
@@ -20,8 +25,6 @@ return {
       shade_terminals = true,
       autochdir = true,
     },
-    config = true,
-    lazy = false,
     cmd = { "ToggleTerm" },
     init = function()
       local wk = require("which-key")
