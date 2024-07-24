@@ -18,6 +18,7 @@
     extraModulePackages = [ ];
     kernelParams = [
       "acpi_osi=\"!Windows 2020\""
+      "mem_sleep_default=deep"
     ];
     blacklistedKernelModules = [ "int3403_thermal" ];
   };
