@@ -41,7 +41,7 @@ let
   };
 
   terminalFont = rec {
-    name = "Recursive Mn Csl St";
+    name = "0xProto";
     italic = "${name} Italic";
     bold = "${name} Bold";
     size = 9;
@@ -257,10 +257,10 @@ in
           single_window_padding_width = "2";
           window_border_width = "1";
         };
-        extraConfig =
-          fontFeatures
-            (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20")
-              [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]);
+        extraConfig = builtins.concatStringsSep "\n" [
+          (fontFeatures (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20") [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]))
+          (fontFeatures (builtins.map (style: "0xProto${style} +ss01") [ "Regular" "Italic" ]))
+        ];
       };
 
     command-not-found.enable = false;
