@@ -91,16 +91,6 @@ return {
               end,
               icon = " ",
             },
-            -- Get current nix shell
-            {
-              function()
-                return vim.env.IN_NIX_SHELL
-              end,
-              cond = function()
-                return vim.env.IN_NIX_SHELL ~= nil
-              end,
-              icon = " ",
-            },
 
             -- orgmode statusline
             {
@@ -234,7 +224,6 @@ return {
              cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
              color = Util.fg("Debug"),
             },
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
             {
               "diff",
               symbols = {
@@ -247,9 +236,7 @@ return {
           lualine_y = {
             -- Codeium status
             -- stylua: ignore
-            {
-              function() return vim.fn["codeium#GetStatusString"]() end,
-            },
+            { function() return vim.fn["codeium#GetStatusString"]() end },
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
@@ -262,6 +249,51 @@ return {
               end,
             },
             { function() return "  " .. os.date("%R") end, }
+          },
+        },
+        inactive_sections = {},
+        tabline = {
+          lualine_a = {
+            {
+              "buffers",
+              mode = 4,
+              use_mode_colors = false,
+              filetype_names = {
+                ["oil"] = "Oil",
+                ["spectre_panel"] = "Spectre",
+                ["OverseerList"] = "Overseer List",
+                ["lazy"] = "Lazy",
+              },
+            },
+          },
+          lualine_b = {},
+          lualine_c = {},
+          lualine_x = {
+            -- Print current filetype
+            {
+              function()
+                return vim.bo.filetype
+              end,
+              cond = function()
+                return vim.bo.buftype == ""
+              end,
+            },
+            -- Get current nix shell
+            {
+              function()
+                return vim.env.IN_NIX_SHELL
+              end,
+              cond = function()
+                return vim.env.IN_NIX_SHELL ~= nil
+              end,
+              icon = " ",
+            },
+          },
+          lualine_y = {
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
+          },
+          lualine_z = {
+            { "tabs", use_mode_colors = true },
           },
         },
         extensions = { "lazy", "trouble" },
