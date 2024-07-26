@@ -1,10 +1,9 @@
---- @type LazyPluginSpec[]
-
 -- Configuration for Rust-Tools
--- TODO: move to rustaceans.nvim asap
+--- @type LazyPluginSpec[]
 return {
   {
     "mrcjkb/rustaceanvim",
+    version = "^5",
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     ft = { "rust" },
     init = function()
