@@ -7,4 +7,5 @@
   spotube = import ./spotube { inherit pkgs; };
   tana = import ./tana { inherit pkgs; };
   warp-terminal = import ./warp-terminal { inherit pkgs; };
+  custom-kernel = pkgs.callPackage ./kernel { };
 }
