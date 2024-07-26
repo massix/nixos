@@ -93,6 +93,7 @@ vim.api.nvim_create_autocmd("Filetype", {
     "man",
     "git",
     "gitsigns.blame",
+    "org-roam-node-buffer",
   },
   callback = function(args)
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = args.buf })

@@ -6,7 +6,6 @@ local opt = vim.opt
 local api = vim.api
 
 opt.autowrite = true -- Enable auto write
-opt.clipboard = "unnamedplus" -- Sync with system clipboard
 opt.completeopt = "menu,menuone,noselect"
 opt.conceallevel = 3 -- Hide * markup for bold and italic
 opt.concealcursor = "vn" -- Hide stuff when not editing
@@ -18,6 +17,7 @@ opt.foldlevel = 5
 opt.foldlevelstart = 5
 opt.foldcolumn = "0"
 opt.foldclose = ""
+opt.foldtext = ""
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
@@ -35,7 +35,7 @@ opt.scrolloff = 4 -- Lines of context
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
 opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
-opt.shortmess:append({ W = true, I = true, c = true })
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.showmode = false -- Dont show mode since we have a statusline
 opt.sidescrolloff = 8 -- Columns of context
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
@@ -44,6 +44,7 @@ opt.smartindent = true -- Insert indents automatically
 opt.spell = false -- Disable spelling
 opt.spelllang = { "en", "fr", "it" } -- Enable 3 languages
 opt.splitbelow = true -- Put new windows below current
+opt.splitkeep = "screen"
 opt.splitright = true -- Put new windows right of current
 opt.swapfile = false -- Do not create swapfiles
 opt.tabstop = 2 -- Number of spaces tabs count for
@@ -56,13 +57,9 @@ opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 
-if vim.fn.has("nvim-0.9.0") == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess:append({ C = true })
-end
-
 -- Highlight yanked text
 api.nvim_create_autocmd("TextYankPost", {
+  group = api.nvim_create_augroup("HighlightYankedText", { clear = true }),
   callback = function()
     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 250 })
   end,

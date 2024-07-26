@@ -100,7 +100,7 @@ return {
           require("org-roam").setup(opts)
 
           -- Add some bindings while in insert mode (only in org files)
-          local group = vim.api.nvim_create_augroup("OrgRoam", { clear = true })
+          local group = vim.api.nvim_create_augroup("OrgRoamCustom", { clear = true })
           vim.api.nvim_create_autocmd({ "FileType" }, {
             pattern = "org",
             group = group,

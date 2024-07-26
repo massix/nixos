@@ -13,7 +13,7 @@ return {
         width_preview = 70,
       },
       options = {
-        use_as_default_explorer = true,
+        use_as_default_explorer = false,
       },
     },
 
@@ -23,56 +23,51 @@ return {
     },
   },
 
-  -- Dired
-  {
-    "X3eRo0/dired.nvim",
-    opts = {
-      show_icons = true,
-      show_banner = true,
-      hide_details = false,
-      keybinds = {
-        dired_enter = "<cr>",
-        dired_back = "-",
-        dired_up = "_",
-        dired_rename = "R",
-        dired_create = "d",
-        dired_delete = "D",
-        dired_delete_range = "D",
-        dired_copy = "C",
-        dired_copy_range = "C",
-        dired_copy_marked = "MC",
-        dired_move = "X",
-        dired_move_range = "X",
-        dired_move_marked = "MX",
-        dired_paste = "P",
-        dired_mark = "M",
-        dired_mark_range = "M",
-        dired_delete_marked = "MD",
-        dired_toggle_hidden = ".",
-        dired_toggle_sort_order = ",",
-        dired_toggle_icons = "*",
-        dired_toggle_colors = "c",
-        dired_toggle_hide_details = "(",
-        dired_quit = "q",
-      },
-    },
-    cmd = { "Dired" },
-    keys = {
-      { "<leader>fd", "<cmd>Dired<cr>", desc = "Dired" },
-    },
-  },
-
   -- Oil
   {
     "stevearc/oil.nvim",
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
-      { "SirZenith/oil-vcs-status" },
+      {
+        "SirZenith/oil-vcs-status",
+        config = function()
+          local status_const = require("oil-vcs-status.constant.status")
+          local StatusType = status_const.StatusType
+          require("oil-vcs-status").setup({
+            status_symbol = {
+              [StatusType.Added] = "",
+              [StatusType.Copied] = "󰆏",
+              [StatusType.Deleted] = "",
+              [StatusType.Ignored] = "",
+              [StatusType.Modified] = "",
+              [StatusType.Renamed] = "",
+              [StatusType.TypeChanged] = "󰉺",
+              [StatusType.Unmodified] = " ",
+              [StatusType.Unmerged] = "",
+              [StatusType.Untracked] = "",
+              [StatusType.External] = "",
+              [StatusType.UpstreamAdded] = "󰈞",
+              [StatusType.UpstreamCopied] = "󰈢",
+              [StatusType.UpstreamDeleted] = "",
+              [StatusType.UpstreamIgnored] = " ",
+              [StatusType.UpstreamModified] = "󰏫",
+              [StatusType.UpstreamRenamed] = "",
+              [StatusType.UpstreamTypeChanged] = "󱧶",
+              [StatusType.UpstreamUnmodified] = " ",
+              [StatusType.UpstreamUnmerged] = "",
+              [StatusType.UpstreamUntracked] = " ",
+              [StatusType.UpstreamExternal] = "",
+            },
+          })
+        end,
+      },
     },
+    event = "VeryLazy",
     opts = {
-      default_file_explorer = false,
+      default_file_explorer = true,
       constrain_cursor = "editable",
-      experimental_watch_for_changes = true,
+      watch_for_changes = true,
+      skip_confirm_for_simple_edits = true,
       win_options = {
         signcolumn = "yes:2",
       },

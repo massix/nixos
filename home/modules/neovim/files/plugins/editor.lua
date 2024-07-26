@@ -260,29 +260,38 @@ return {
       require("mini.trailspace").setup(opts)
       vim.g.remove_trailspaces = true
 
-      function _G.Toggle_trailspaces()
-        if vim.g.remove_trailspaces then
-          vim.notify("Disabling automatic trim of whitespaces", vim.log.levels.INFO)
-          vim.g.remove_trailspaces = false
-        else
-          vim.notify("Enabling automatic trim of whitespaces", vim.log.levels.INFO)
-          vim.g.remove_trailspaces = true
-        end
-      end
-
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>cw",
-        "<cmd>lua Toggle_trailspaces()<CR>",
-        { noremap = true, desc = "Toggle Trailspaces" }
-      )
+      require("which-key").add({
+        {
+          "<leader>cw",
+          function()
+            vim.g.remove_trailspaces = not vim.g.remove_trailspaces
+            vim.notify(
+              "Automatic trim of whitespaces: " .. (vim.g.remove_trailspaces and "enabled" or "disabled"),
+              vim.log.levels.INFO
+            )
+          end,
+          noremap = true,
+          silent = true,
+          desc = "Toggle mini.trailspace",
+        },
+      })
 
       local group = vim.api.nvim_create_augroup("TrimWhitespaces", { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = group,
         pattern = "*",
         callback = function()
-          if vim.g.remove_trailspaces and vim.bo.buftype == "" then
+          local ignored_filetypes = {
+            "taskedit",
+            "oil",
+            "term",
+            "alpha",
+          }
+          if
+            vim.g.remove_trailspaces
+            and vim.bo.buftype == ""
+            and not vim.tbl_contains(ignored_filetypes, vim.bo.filetype)
+          then
             ---@diagnostic disable-next-line: undefined-global
             MiniTrailspace.trim()
           end
