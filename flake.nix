@@ -115,15 +115,6 @@
         ];
       };
 
-      homeConfigurations."massi@coravandil" = helpers.mkHome {
-        inherit stable stateVersion master username;
-        pkgs = unstable;
-        extraModules = [
-          protrans.homeManagerModules.default
-          ./home/coravandil
-        ];
-      };
-
       nixosConfigurations."elendil" = helpers.mkSystem {
         inherit stable stateVersion system;
         pkgs = unstable;
