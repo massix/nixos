@@ -472,6 +472,9 @@ return {
     "3rd/image.nvim",
     -- ft = { "markdown", "org", "html", "css" },
     event = "VeryLazy",
+    cond = function()
+      return not vim.g.neovide
+    end,
     opts = {
       backend = "kitty",
       integrations = {
