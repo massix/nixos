@@ -1,0 +1,45 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  lint-nix-and-lua:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Load Nix Configuration
+        uses: aldoborrero/use-nix-action@v2
+      - name: Lint nix
+        run: statix check
+      - name: Find nix dead code
+        run: deadnix -f
+      - name: Check Lua files
+        uses: nebularg/actions-luacheck@v1
+        with:
+          files: ./home/modules/neovim/files
+  build-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Install Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: surface-zen
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - run: nix flake show
+      - name: Build packages
+        run: |
+          nix build \
+            .#codeium-ls \
+            .#jdtls \
+            .#lombok \
+            .#onedriver \
+            .#spotube \
+            .#tana \
+            .#vscode-js-debug \
+            .#warp-terminal
+
+          for f in result*; do \
+            cachix push surface-zen "$f"; \
+          done

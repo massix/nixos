@@ -1,4 +1,5 @@
-![Nix and Lua Linting](https://github.com/massix/nixos/actions/workflows/lint-lua-nix.yml/badge.svg)
+![Lua Linting and Packages](https://github.com/massix/nixos/actions/workflows/ci.yml/badge.svg)
+![Last System Update](https://github.com/massix/nixos/actions/workflows/cachix.yml/badge.svg)
 
 # Massi's NixOS Configuration
 

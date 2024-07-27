@@ -46,10 +46,13 @@ jobs:
       - name: Build Packages
         run: |
           nix build \
+            .#codeium-ls \
+            .#jdtls \
+            .#lombok \
             .#onedriver \
-            .#vscode-js-debug \
             .#spotube \
             .#tana \
+            .#vscode-js-debug \
             .#warp-terminal
 
           for f in result*; do \
