@@ -3,105 +3,54 @@
 
 # Massi's NixOS Configuration
 
-<!--toc:start-->
-- [Massi's NixOS Configuration](#massis-nixos-configuration)
-  - [Elendil's Configuration](#elendils-configuration)
-  - [Coravandil's Configuration](#coravandils-configuration)
-  - [Users](#users)
-  - [Home Manager Modules](#home-manager-modules)
-    - [Base](#base)
-    - [Fish](#fish)
-    - [Fonts](#fonts)
-    - [Helix](#helix)
-    - [IM](#im)
-    - [Coding](#coding)
-    - [NeoVim](#neovim)
-<!--toc:end-->
+Personal NixOS configuration and packages for my different systems.
 
-Welcome to my personal NixOS configuration.  This repository has been made mostly
-for testing out what NixOS can do and see how I can leverage on the paradigm of
-immutable systems in order to build the _perfect_ configuration (at least for my own needs).
+## Systems
 
-At the moment of writing this file, it does contain the configuration for two
-different systems:
- * **elendil**: my personal laptop (Microsoft Surface Laptop 3 running NixOS)
- * **coravandil**: the WSL on Windows 11 that I use at work, which uses Ubuntu
- 23.04 as the base system.
+### Elendil
+* [Main System's configuration here](./system/elendil/configuration.nix);
+* [Hardware Configuration's here](./system/elendil/hardware-configuration.nix).
 
-I plan to add a third one (a Lenovo Yoga currently running Fedora) in the near
-future.
-
-The whole configuration uses the _not-so-experimental_ feature of
-[Nix Flakes](https://nixos.wiki/wiki/Flakes) along with a bunch of dependencies
-and tries to be _as generic as possible_ in regarding of the system itself.
-
-## Elendil's Configuration
-You will find the configuration for **elendil** in the [system/elendil](./system/elendil)
-folder, it is composed of the classic `configuration.nix` file, containing the
-system itself and `hardware-configuration.nix`, which contains the custom
-linux kernel configuration.
-
-## Coravandil's Configuration
-Since this is not a physical machine, there's nothing under the system folder
-for Coravandil, everything is in the configuration of the user, made using
-the excellent home-manager module.
+A Surface Laptop 3 computer, using NixOS as my daily driver.  For this system I am using
+a [custom kernel](./pkgs/kernel/default.nix) based off of the [zen kernel](https://github.com/zen-kernel/zen-kernel) and the [linux-surface](https://github.com/linux-surface/linux-surface) patches.  This allows
+me to have a good configuration for this system, which I mostly use for gaming and
+developing.
 
 ## Users
-Two users are currently configured: `massi@elendil` and `massi@coravandil`. Since
-the two users share most of the things, I created reusable home-manager modules
-to easily configure them.
 
-## Home Manager Modules
-I have created multiple modules for the users.
+### massi@elendil
+* [Home Manager's configuration](./home/elendil/default.nix);
 
-### Base
-As the name suggets, this is the base module, containing the initial things
-that have to be configured. Here I am using `homeage` in order to safely encrypt
-and decrypt the secrets for my users (for example the SSH key).
+Main (and only) user of Elendil.
 
-### Fish
-This is the module for the `fish` shell, which also installs a bunch of tools,
-configures some of the aliases and abbrs that I use on all the systems.
+## Packages
+All the packages are defined [here](./pkgs/default.nix).
 
-### Fonts
-This is the first module I wrote: it just installs a bunch of fonts and configures
-the fontconfig.
+### Onedriver
+Custom compilation of the [onedriver](https://github.com/jstaf/onedriver) software, for which I am also the official maintainer
+for [nixpkgs](https://github.com/nixos/nixpkgs).  The only difference between this package and the one in nixpkgs is that here
+I am using the latest version from the master branch.
 
-### Helix
-This is the module for the `helix` editor.
+### Lombok
+Simple derivation to download a specific version of the Lombok jar, mostly to be used with
+the JDTLS package.
 
-### IM
-A module that simply installs `whatsapp`, `telegram` and `discord`. In the future I
-will most probably add some serious email client, since the GNOME's integrated
-one isn't **that** useful.
+### Codeium Language Server
+Download and patching of the [Codeium's language server](https://github.com/Exafunction/codeium), which I use extensively in Neovim.
+The version here is **not always the latest** available, but the one needed for their vim plugin.
 
-### Coding
-Adds a lot of useful stuff for developers, like language servers, linters,
-formatters and such. This stuff is mostly then re-used by the [NeoVim](#neovim) module
-to provide *Intellisense*, automatic formatting, integration with LSPs, etc.
-For now, the following languages are supported:
-  * C#
-  * Haskell
-  * Java
-  * Javascript (and Typescript)
-  * Json/Yaml via VSCode's LSP
-  * Lua
-  * Nix
-  * Purescript
-  * Racket
-  * Rust
-  * Terraform
+### VSCode JS Debug
+Download, compilation and patching of VSCode's JS Debug extension, to be used with the DAP
+adapter for Neovim.
 
-On top of that, some other useful LSPs are installed:
-  * Dockerfile Language Server
-  * Helm Language Server
-  * Codeium AI Language Server
-  * Marksman for Markdown editing
+### Spotube
+Audio player for my music collection.
 
-### NeoVim
-This is the most complex and unstable module I wrote, the idea was to port my
-whole nvim configuration (which was quite old since I switched to VSCode) to
-the Nix ecosystem, make it immutable and such. It is kinda working right now,
-there are still a couple of bugs that I have to fix but it can be used for Java
-development without any issues.
+### Tana
+Note-taking tool, this is a mirror of the package which is available on `nixpkgs`, for which I
+am also the maintainer.
+
+### Warp Terminal
+Terminal with AI, I use this instead of the one available in `nixpkgs` because I do not want
+to always use the latest version, due to some incompatibilities with GTK from time to time.
 
