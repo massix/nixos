@@ -1,0 +1,69 @@
+name: Update System
+on:
+  workflow_dispatch:
+    inputs:
+      updateFlakes:
+        description: Whether or not to update the flakes
+        type: boolean
+        default: true
+        required: true
+      commitMessage:
+        description: Commit message to use
+        type: string
+        default: "chore: System update [ci skip]"
+        required: true
+permissions:
+  actions: write
+  contents: write
+jobs:
+  update-system:
+    name: Update System
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Install Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: surface-zen
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+      - name: Update flakes
+        run: nix flake update
+        if: ${{ github.event.inputs.updateFlakes }}
+      - name: Build Elendil
+        run: |
+          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
+          cachix push surface-zen result
+      - name: Clean cache
+        run: |
+          rm -f result
+          nix-collect-garbage -d
+      - name: Build Packages
+        run: |
+          nix build \
+            .#onedriver \
+            .#vscode-js-debug \
+            .#spotube \
+            .#tana \
+            .#warp-terminal
+
+          for f in result*; do \
+            cachix push surface-zen "$f"; \
+          done
+      - name: Clean cache
+        run: |
+          rm -f result
+          nix-collect-garbage -d
+      - name: Push flake.lock back to repository
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git add flake.lock
+          git commit -m "${{ github.event.inputs.commitMessage }}"
+          git push origin trunk
+        if: ${{ github.event.inputs.updateFlakes }}
