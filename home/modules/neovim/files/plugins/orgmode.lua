@@ -381,7 +381,7 @@ return {
   {
     "michaelb/sniprun",
     ft = { "org" },
-    version = "v1.3.14",
+    version = "v1.3.15",
     opts = {
       binary_path = util.sniprun,
 
