@@ -44,7 +44,7 @@ let
     name = "0xProto";
     italic = "${name} Italic";
     bold = "${name} Bold";
-    size = 9;
+    size = 10;
   };
 
   uiFont = {

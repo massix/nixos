@@ -102,11 +102,8 @@ in
         du = "dust";
         df = "duf";
         htop = "btop";
-        diff = "difftastic";
         dig = "dog";
         find = "fd";
-        jq = "jiq";
-        ping = "gping";
         less = "moar";
         traceroute = "mtr";
         ps = "procs";
