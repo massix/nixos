@@ -18,12 +18,16 @@ return {
     },
     version = "*",
     opts = {
-      float_opts = { border = "double" },
+      float_opts = {
+        border = "single",
+        title_pos = "left",
+      },
       winbar = { enabled = true },
       open_mapping = false,
       insert_mappings = false,
       shade_terminals = true,
       autochdir = true,
+      close_on_exit = false,
     },
     cmd = { "ToggleTerm" },
     init = function()

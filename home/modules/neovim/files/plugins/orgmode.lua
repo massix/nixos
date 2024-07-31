@@ -146,10 +146,6 @@ return {
           vim.wo.concealcursor = "nvic"
           vim.wo.conceallevel = 3
 
-          -- Make sure we only move one character when tabbing
-          vim.opt_local.shiftwidth = 1
-          vim.opt_local.tabstop = 1
-
           -- Enable modeline for org buffers
           vim.opt_local.modeline = true
           vim.opt_local.modelines = 30

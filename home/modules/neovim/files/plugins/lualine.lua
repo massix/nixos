@@ -9,7 +9,7 @@ return {
       return {
         options = {
           theme = "catppuccin",
-          globalstatus = true,
+          globalstatus = false,
           icons_enabled = true,
           section_separators = { left = "", right = "" },
           component_separators = { left = "", right = "" },
@@ -251,7 +251,16 @@ return {
             { function() return "  " .. os.date("%R") end, }
           },
         },
-        inactive_sections = {},
+        inactive_sections = {
+          lualine_c = {
+            { "filetype", icon_only = true, separator = "" },
+            { "filename", path = 0 },
+          },
+          lualine_x = {
+            { "progress" },
+            { "location" },
+          },
+        },
         tabline = {
           lualine_a = {
             {

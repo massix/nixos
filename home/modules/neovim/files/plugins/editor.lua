@@ -349,4 +349,16 @@ return {
       { "gA", mode = { "n", "v" }, desc = "Align with preview" },
     },
   },
+
+  -- Headlines
+  {
+    "lukas-reineke/headlines.nvim",
+    ft = { "org", "markdown" },
+    config = function()
+      require("headlines").setup({
+        org = { fat_headlines = false },
+        markdown = { fat_headlines = false },
+      })
+    end,
+  },
 }
