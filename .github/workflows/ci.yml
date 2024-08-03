@@ -30,16 +30,7 @@ jobs:
       - run: nix flake show
       - name: Build packages
         run: |
-          nix build \
-            .#codeium-ls \
-            .#jdtls \
-            .#lombok \
-            .#onedriver \
-            .#spotube \
-            .#tana \
-            .#vscode-js-debug \
-            .#warp-terminal
-
-          for f in result*; do \
-            cachix push surface-zen "$f"; \
+          for pkg in codeium-ls jdtls lombok onedriver spotube tana vscode-js-debug warp-terminal; do
+            nix build ".#${pkg}"
+            cachix push surface-zen result
           done

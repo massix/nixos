@@ -39,24 +39,11 @@ jobs:
         run: |
           nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
           cachix push surface-zen result
-      - name: Clean cache
-        run: |
-          rm -f result
-          nix-collect-garbage -d
       - name: Build Packages
         run: |
-          nix build \
-            .#codeium-ls \
-            .#jdtls \
-            .#lombok \
-            .#onedriver \
-            .#spotube \
-            .#tana \
-            .#vscode-js-debug \
-            .#warp-terminal
-
-          for f in result*; do \
-            cachix push surface-zen "$f"; \
+          for pkg in codeium-ls jdtls lombok onedriver spotube tana vscode-js-debug warp-terminal; do
+            nix build ".#${pkg}"
+            cachix push surface-zen result
           done
       - name: Clean cache
         run: |
