@@ -44,7 +44,7 @@ return {
           open = "botright split | resize 15",
         },
         summary = {
-          open = "aboveleft vsplit | vertical resize 50",
+          open = "botright vsplit | vertical resize 50",
         },
         discovery = {
           concurrent = 2,
