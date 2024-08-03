@@ -18,7 +18,7 @@ permissions:
 jobs:
   update-system:
     name: Update System
-    runs-on: ubuntu-latest
+    runs-on: azure
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,9 +35,9 @@ jobs:
       - name: Update flakes
         run: nix flake update
         if: ${{ github.event.inputs.updateFlakes }}
-      - name: Build Kernel
+      - name: Build Elendil
         run: |
-          nix build ".#custom-kernel"
+          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
           cachix push surface-zen result
       - name: Clean cache
         run: |
