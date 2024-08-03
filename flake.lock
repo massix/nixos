@@ -1,27 +1,5 @@
 {
   "nodes": {
-    "emacs-overlay": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "unstablepkgs"
-        ],
-        "nixpkgs-stable": "nixpkgs-stable"
-      },
-      "locked": {
-        "lastModified": 1722045512,
-        "narHash": "sha256-hD6VYdbx6//KZ3RMPiR3zdbUeAAte4ypDuRbgQG14ec=",
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
-        "rev": "aa74b71e29e612818a23cf2a973728d412f8f46b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -179,24 +157,6 @@
       "original": {
         "owner": "srid",
         "repo": "flake-root",
-        "type": "github"
-      }
-    },
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1710146030,
-        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -484,22 +444,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable": {
-      "locked": {
-        "lastModified": 1721949857,
-        "narHash": "sha256-DID446r8KsmJhbCzx4el8d9SnPiE8qa6+eEQOJ40vR0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a1cc729dcbc31d9b0d11d86dc7436163548a9665",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-24.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nmd": {
       "flake": false,
       "locked": {
@@ -576,7 +520,6 @@
     },
     "root": {
       "inputs": {
-        "emacs-overlay": "emacs-overlay",
         "flake-compat": "flake-compat",
         "home-manager": "home-manager",
         "homeage": "homeage",
@@ -610,21 +553,6 @@
       "original": {
         "owner": "thomashoneyman",
         "repo": "slimlock",
-        "type": "github"
-      }
-    },
-    "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
         "type": "github"
       }
     },

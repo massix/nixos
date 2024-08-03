@@ -34,9 +34,6 @@
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly.inputs.nixpkgs.follows = "unstablepkgs";
 
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    emacs-overlay.inputs.nixpkgs.follows = "unstablepkgs";
-
     protrans.url = "github:massix/protrans";
     protrans.inputs.nixpkgs.follows = "unstablepkgs";
   };
@@ -52,7 +49,6 @@
     , nix-direnv
     , masterpkgs
     , purescript-overlay
-    , emacs-overlay
     , protrans
     , self
     , ...
@@ -65,7 +61,6 @@
         (_final: _prev: self.packages."${system}")
         nix-direnv.overlays.default
         purescript-overlay.overlays.default
-        emacs-overlay.overlays.default
       ];
 
       config = {
