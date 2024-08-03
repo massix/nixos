@@ -4,11 +4,11 @@ let
 in
 stdenv.mkDerivation {
   pname = "lombok";
-  version = "1.18.30";
+  version = "1.18.34";
 
   src = pkgs.fetchurl {
     url = "https://projectlombok.org/downloads/lombok.jar";
-    hash = "sha256-1+4SLu4erutFGCqJ/zb8LdCGhY0bL1S2Fcb+97odYBI=";
+    hash = "sha256-wn1rKv9WJB0bB/y8xrGDcJ5rQyyA9zdO6x2CPobUuBo=";
   };
 
   dontBuild = true;
