@@ -34,7 +34,7 @@ jobs:
           skipPush: true
       - name: Update flakes
         run: nix flake update
-        if: ${{ github.event.inputs.updateFlakes }}
+        if: ${{ inputs.updateFlakes }}
       - name: Build Elendil
         run: |
           nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
@@ -67,6 +67,6 @@ jobs:
           git config user.email "github-actions@github.com"
           git config user.name "github-actions[bot]"
           git add flake.lock
-          git commit -m "${{ github.event.inputs.commitMessage }}"
+          git commit -m "${{ inputs.commitMessage }}"
           git push origin trunk
-        if: ${{ github.event.inputs.updateFlakes }}
+        if: ${{ inputs.updateFlakes }}
