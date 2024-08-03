@@ -35,9 +35,9 @@ jobs:
       - name: Update flakes
         run: nix flake update
         if: ${{ github.event.inputs.updateFlakes }}
-      - name: Build Elendil
+      - name: Build Kernel
         run: |
-          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
+          nix build ".#custom-kernel"
           cachix push surface-zen result
       - name: Clean cache
         run: |
