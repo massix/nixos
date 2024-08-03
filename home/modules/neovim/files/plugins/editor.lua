@@ -333,9 +333,6 @@ return {
   -- Better quickfix
   {
     "kevinhwang91/nvim-bqf",
-    dependencies = {
-      "junegunn/fzf",
-    },
     opts = {},
     ft = { "qf" },
   },

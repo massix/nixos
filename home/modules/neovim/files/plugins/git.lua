@@ -5,7 +5,6 @@ local spec = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
       { "sindrets/diffview.nvim", lazy = false },
-      { "ibhagwan/fzf-lua", lazy = false },
     },
     opts = {
       disable_hint = false,
