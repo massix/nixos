@@ -41,10 +41,10 @@ let
   };
 
   terminalFont = rec {
-    name = "0xProto";
+    name = "Comic Mono";
     italic = "${name} Italic";
     bold = "${name} Bold";
-    size = 10;
+    size = 11;
   };
 
   uiFont = {
