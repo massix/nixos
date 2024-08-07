@@ -297,7 +297,7 @@ in
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = true;
+      tap-to-click = false;
       tap-and-drag = true;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
