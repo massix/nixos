@@ -153,6 +153,9 @@ return {
           -- Allow the cursor to go one character past the end of the line
           vim.opt_local.virtualedit = "onemore"
 
+          -- Add a marker at the 80th column
+          vim.opt_local.colorcolumn = "80"
+
           require("which-key").add({
             {
               buffer = args.buf,
