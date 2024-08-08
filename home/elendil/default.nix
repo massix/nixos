@@ -41,7 +41,7 @@ let
   };
 
   terminalFont = rec {
-    name = "Comic Mono";
+    name = "0xProto";
     italic = "${name} Italic";
     bold = "${name} Bold";
     size = 11;
@@ -337,13 +337,7 @@ in
     configuration.nat.portLifeTime = 60;
   };
 
-  home.sessionVariables = {
-    GI_TYPELIB_PATH = builtins.concatStringsSep ":" [
-      "${pkgs.libgtop}/lib/girepository-1.0"
-      "${pkgs.clutter}/lib/girepository-1.0"
-      "${pkgs.cogl}/lib/girepository-1.0"
-    ];
-  };
+  home.sessionVariables = { };
 
   home.packages = with pkgs; [
     # Only for Teams PWA
@@ -358,10 +352,6 @@ in
     spotube
 
     gnomeExtensions.gsconnect
-    gnomeExtensions.tophat
-    libgtop
-    clutter
-    cogl
     onedriver
     tana
 

@@ -8,6 +8,7 @@ in
     enable = mkEnableOption "Enable fonts handling";
     typefonts = mkEnableOption "install typeface fonts" // { default = true; };
     monospace = mkEnableOption "install monospace fonts" // { default = true; };
+    nerdfonts = mkEnableOption "install nerdfonts";
 
     families.extra = mkOption {
       type = types.listOf types.package;
@@ -25,7 +26,6 @@ in
           liberation_ttf
           fira-code
           fira-code-symbols
-          nerdfonts
         ]);
       typeface-fonts =
         orEmpty cfg.typefonts (with pkgs; [
@@ -36,9 +36,10 @@ in
           noto-fonts-cjk
           noto-fonts-emoji
         ]);
+      nerd-fonts = orEmpty cfg.nerdfonts (with pkgs; [ nerdfonts ]);
     in
     mkIf cfg.enable {
       fonts.fontconfig.enable = true;
-      home.packages = monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
+      home.packages = nerd-fonts ++ monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
     };
 }
