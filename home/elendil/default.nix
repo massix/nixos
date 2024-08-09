@@ -41,7 +41,7 @@ let
   };
 
   terminalFont = rec {
-    name = "0xProto";
+    name = "Monaspace Neon";
     italic = "${name} Italic";
     bold = "${name} Bold";
     size = 11;
@@ -260,6 +260,7 @@ in
         extraConfig = builtins.concatStringsSep "\n" [
           (fontFeatures (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20") [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]))
           (fontFeatures (builtins.map (style: "0xProto${style} +ss01") [ "Regular" "Italic" ]))
+          (fontFeatures (builtins.map (style: "MonaspaceNeon-${style} +liga +ss01 +ss02 +ss03 +ss04 +ss05 +ss06 +ss07 +ss08 +ss09 +cv61") [ "Regular" "Italic" "Bold" ]))
         ];
       };
 
