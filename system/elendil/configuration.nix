@@ -268,7 +268,7 @@
 
     virtualbox.host = {
       enable = true;
-      enableKvm = true;
+      enableKvm = false;
       enableExtensionPack = true;
       enableHardening = false;
       addNetworkInterface = false;
