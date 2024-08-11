@@ -35,20 +35,14 @@ jobs:
       - name: Update flakes
         run: nix flake update
         if: ${{ inputs.updateFlakes }}
-      - name: Build Elendil
+      - name: Build System configuration
         run: |
           nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
           cachix push surface-zen result
-      - name: Build Packages
+      - name: Build Home Manager configuration
         run: |
-          for pkg in codeium-ls jdtls lombok onedriver spotube tana vscode-js-debug warp-terminal; do
-            nix build ".#${pkg}"
-            cachix push surface-zen result
-          done
-      - name: Clean cache
-        run: |
-          rm -f result
-          nix-collect-garbage -d
+          nix build ".#homeConfigurations.massi@elendil.activationPackage"
+          cachix push surface-zen result
       - name: Push flake.lock back to repository
         run: |
           git config user.email "github-actions@github.com"
