@@ -1,12 +1,12 @@
 { pkgs }:
 let
   inherit (pkgs) lib stdenv;
-  version = "3.7.1";
+  version = "3.8.0";
 
   src = pkgs.fetchurl {
     url = "https://github.com/KRTirtho/spotube/releases/download/v${version}/spotube-linux-${version}-x86_64.tar.xz";
     name = "spotube-linux-${version}-x86_64.tar.xz";
-    sha256 = "sha256-PVMnKh7HRhWlnosc1r2ch56SzPIGc/C8EnIDuNWaiuU=";
+    sha256 = "sha256-J1Bx7TBZfKVI+p7mbsk1x4WeZe2tJUg6L4kM5YBPWmc=";
   };
 
   buildInputs = with pkgs; [
@@ -27,6 +27,8 @@ let
     libsecret
     mpv
     pango
+    webkitgtk_4_1
+    libsoup_3
   ];
 in
 stdenv.mkDerivation {
