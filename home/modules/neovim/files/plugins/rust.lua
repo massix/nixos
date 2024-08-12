@@ -13,7 +13,7 @@ return {
 
       vim.g.rustaceanvim = {
         tools = {
-          executor = require("rustaceanvim.executors").toggleterm,
+          executor = require("rustaceanvim.executors").neotest,
         },
         dap = {
           adapter = require("rustaceanvim.config").get_codelldb_adapter(nix.rustWrapper, liblldb_path),

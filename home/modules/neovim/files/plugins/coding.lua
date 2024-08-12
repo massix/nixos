@@ -952,7 +952,7 @@ return {
   {
     "stevearc/overseer.nvim",
     opts = {
-      dap = false,
+      dap = true,
     },
     lazy = true,
     init = function()
