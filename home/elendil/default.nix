@@ -41,8 +41,8 @@ let
   };
 
   terminalFont = rec {
-    name = "Monaspace Neon";
-    italic = "${name} Italic";
+    name = "Comic Mono";
+    italic = "0xProto Italic";
     bold = "${name} Bold";
     size = 11;
   };
@@ -261,6 +261,7 @@ in
           (fontFeatures (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20") [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]))
           (fontFeatures (builtins.map (style: "0xProto${style} +ss01") [ "Regular" "Italic" ]))
           (fontFeatures (builtins.map (style: "MonaspaceNeon-${style} +liga +ss01 +ss02 +ss03 +ss04 +ss05 +ss06 +ss07 +ss08 +ss09 +cv61") [ "Regular" "Italic" "Bold" ]))
+          "symbol_map U+e000-U+e00a,U+ea60-U+ebeb,U+e0a0-U+e0c8,U+e0ca,U+e0cc-U+e0d4,U+e200-U+e2a9,U+e300-U+e3e3,U+e5fa-U+e6b1,U+e700-U+e7c5,U+f000-U+f2e0,U+f300-U+f372,U+f400-U+f532,U+f0001-U+f1af0 Symbols Nerd Font Mono"
         ];
       };
 
