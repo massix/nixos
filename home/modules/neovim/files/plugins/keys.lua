@@ -28,14 +28,13 @@ return {
     opts = {
       preset = "helix",
       triggers = {
-        { "<auto>", mode = "nixsotcs" },
+        { "<auto>", mode = "nixsotc" },
         { "<C-c>", mode = { "n", "i", "v", "x", "c" } },
       },
     },
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
+    config = function(_, opts)
       local wk = require("which-key")
+      wk.setup(opts)
       wk.add({
         -- Lazy Handling
         { "<leader>l", group = "lazy" },
