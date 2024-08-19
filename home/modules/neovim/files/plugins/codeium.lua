@@ -1,6 +1,10 @@
 ---@type LazyPluginSpec
 return {
   "Exafunction/codeium.vim",
+  enabled = function()
+    -- Only enable Codeium in Elendil
+    return vim.fn.hostname() == "elendil"
+  end,
   event = { "VeryLazy" },
   init = function()
     local wk = require("which-key")

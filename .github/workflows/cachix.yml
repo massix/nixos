@@ -35,13 +35,21 @@ jobs:
       - name: Update flakes
         run: nix flake update
         if: ${{ inputs.updateFlakes }}
-      - name: Build System configuration
+      - name: Build Elendil
         run: |
           nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
           cachix push surface-zen result
-      - name: Build Home Manager configuration
+      - name: Build Aiwendil
+        run: |
+          nix build ".#nixosConfigurations.aiwendil.config.system.build.toplevel"
+          cachix push surface-zen result
+      - name: Build Elendil Home Manager
         run: |
           nix build ".#homeConfigurations.massi@elendil.activationPackage"
+          cachix push surface-zen result
+      - name: Build Aiwendil Home Manager
+        run: |
+          nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
           cachix push surface-zen result
       - name: Push flake.lock back to repository
         run: |

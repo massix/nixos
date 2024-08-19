@@ -36,6 +36,9 @@
 
     protrans.url = "github:massix/protrans";
     protrans.inputs.nixpkgs.follows = "unstablepkgs";
+
+    nixos-wsl.url = "github:nix-community/nixos-wsl/main";
+    nixos-wsl.inputs.nixpkgs.follows = "unstablepkgs";
   };
 
   outputs =
@@ -50,6 +53,7 @@
     , masterpkgs
     , purescript-overlay
     , protrans
+    , nixos-wsl
     , self
     , ...
     }:
@@ -100,6 +104,14 @@
         ];
       };
 
+      homeConfigurations."massi@aiwendil" = helpers.mkHome {
+        inherit stable stateVersion master username;
+        pkgs = unstable;
+        extraModules = [
+          ./home/aiwendil
+        ];
+      };
+
       nixosConfigurations."elendil" = helpers.mkSystem {
         inherit stable stateVersion system;
         pkgs = unstable;
@@ -107,6 +119,15 @@
           ./system/elendil/configuration.nix
           ./system/elendil/hardware-configuration.nix
           nixos-hardware.nixosModules.microsoft-surface-pro-intel
+        ];
+      };
+
+      nixosConfigurations."aiwendil" = helpers.mkSystem {
+        inherit stable stateVersion system;
+        pkgs = unstable;
+        extraModules = [
+          ./system/aiwendil/configuration.nix
+          nixos-wsl.nixosModules.default
         ];
       };
 
