@@ -54,6 +54,14 @@ in
       ZELLIJ_AUTO_EXIT = boolToStr cfg.configuration.autoExit;
     };
 
+    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
+      zj = "zellij";
+      zjl = "zellij ls";
+      zja = "zellij attach";
+      zjd = "zellij delete-session";
+      zjda = "zellij delete-all-sessions";
+    };
+
     home.file =
       let
         configurableOptions = [

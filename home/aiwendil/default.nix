@@ -19,6 +19,12 @@
 
     fish = {
       enable = true;
+      configuration = {
+        extraShellAbbrs = {
+          j = "just";
+          mk = "make";
+        };
+      };
     };
 
     neovim = {
@@ -27,6 +33,8 @@
       defaultEditor = true;
       gui.enable = false;
     };
+
+    zellij.enable = true;
 
     git = {
       enable = true;

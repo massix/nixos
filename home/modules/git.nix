@@ -71,7 +71,7 @@ in
       ];
     };
 
-    programs.fish.shellAbbrs = mkIf config.my-modules.fish.enable {
+    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
       g = "git";
       gco = "git checkout";
       gcl = "git clone";

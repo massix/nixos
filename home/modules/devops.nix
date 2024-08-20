@@ -68,6 +68,15 @@ in
       in
       k9sPackages ++ azCliPackages ++ miscPackages;
 
+    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
+      tf = "terraform";
+      k = "kubectl";
+      kg = "kubectl get";
+      kgp = "kubectl get pods";
+      kgs = "kubectl get svc";
+      kk = "k9s";
+    };
+
     home.file = {
       ".azure/config" = mkIf cfg.azure-cli.enable {
         text = iniGenerator {

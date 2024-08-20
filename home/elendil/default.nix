@@ -98,19 +98,7 @@ in
       configuration = {
         extraShellAbbrs = {
           j = "just";
-          tf = "terraform";
-          g = "git";
           mk = "make";
-          zj = "zellij";
-          zjl = "zellij ls";
-          zja = "zellij attach";
-          zjd = "zellij delete-session";
-          zjda = "zellij delete-all-sessions";
-          k = "kubectl";
-          kg = "kubectl get";
-          kgp = "kubectl get pods";
-          kgs = "kubectl get svc";
-          kk = "k9s";
         };
       };
     };
