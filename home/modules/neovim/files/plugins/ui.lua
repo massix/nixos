@@ -88,4 +88,23 @@ return {
       vim.wo.cursorline = true
     end,
   },
+
+  -- Smarter buf remove
+  {
+    "echasnovski/mini.bufremove",
+    event = "VeryLazy",
+    version = "*",
+    opts = {
+      set_vim_settings = true,
+      silent = false,
+    },
+    config = function(_, opts)
+      require("mini.bufremove").setup(opts)
+      -- stylua: ignore
+      require("which-key").add({
+        { "<leader>bd", function() MiniBufremove.delete() end, desc = "Delete buffer" },
+        { "<leader>bD", function() MiniBufremove.wipeout() end, desc = "Wipeout buffer", },
+      })
+    end,
+  },
 }
