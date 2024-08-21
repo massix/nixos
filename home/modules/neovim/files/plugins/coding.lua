@@ -451,6 +451,11 @@ return {
         },
       })
 
+      lspconfig.gleam.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+      })
+
       -- Make sure that inlay hints are always enabled
       vim.api.nvim_create_augroup("LspInlayHints", {})
       vim.api.nvim_create_autocmd({ "LspAttach" }, {
@@ -801,6 +806,7 @@ return {
         },
       },
       formatters_by_ft = {
+        gleam = { "gleam" },
         lua = { "stylua" },
         nix = { "nixpkgs_fmt" },
         purescript = { "purstidy" },
