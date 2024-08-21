@@ -4,7 +4,7 @@
 let
   wrapperDir = "/run/wrappers/";
 
-  mOnedriverService = { pkgs, mountpoint }: {
+  mkOnedriverService = { pkgs, mountpoint }: {
     Unit = {
       Description = "onedriver";
     };
@@ -368,7 +368,7 @@ in
 
   # Automount Onedriver
   systemd.user.services = {
-    "onedriver@home-massi-OneDrive" = mOnedriverService {
+    "onedriver@home-massi-OneDrive" = mkOnedriverService {
       inherit pkgs;
       mountpoint = "\${HOME}/OneDrive";
     };
