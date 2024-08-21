@@ -1,4 +1,4 @@
-{ pkgs, wsl, stateVersion, ... }:
+{ pkgs, stateVersion, ... }:
 {
 
   # Basic Nix configuration
@@ -49,6 +49,7 @@
     {
       enable = true;
       defaultUser = user;
+      useWindowsDriver = true;
 
       wslConf = {
         network.hostname = "aiwendil";
