@@ -44,7 +44,7 @@ let
     name = "Comic Mono";
     italic = "0xProto Italic";
     bold = "${name} Bold";
-    size = 11;
+    size = 12;
   };
 
   uiFont = {
@@ -74,6 +74,7 @@ in
       languages = {
         c = false;
         c_sharp = true;
+        gleam = true;
         go = true;
         haskell = false;
         javascript = true;
@@ -178,6 +179,10 @@ in
   };
 
   programs = {
+    google-chrome = {
+      enable = true;
+      package = pkgs.google-chrome;
+    };
 
     direnv = {
       enable = true;
