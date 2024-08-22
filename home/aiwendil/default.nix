@@ -14,6 +14,7 @@
         terraform = true;
         yaml = true;
         misc = true;
+        ansible = true;
       };
     };
 

@@ -129,6 +129,41 @@ return {
   },
 
   {
+    "mfussenegger/nvim-ansible",
+    event = "VeryLazy",
+    opts = {},
+    config = function()
+      vim.filetype.add({
+        pattern = {
+          [".*playbook.*%.ya?ml"] = "yaml.ansible",
+          [".*roles/.*/defaults/.*%.ya?ml"] = "yaml.ansible",
+        },
+      })
+
+      local group = vim.api.nvim_create_augroup("AnsibleAutoCmds", { clear = true })
+      vim.api.nvim_create_autocmd("Filetype", {
+        pattern = "yaml.ansible",
+        group = group,
+        callback = function(evt)
+          require("which-key").add({
+            buffer = evt.buf,
+            mode = { "i", "n", "v" },
+            { "<C-c>a", group = "ansible" },
+            {
+              "<C-c>ar",
+              function()
+                require("ansible").run()
+              end,
+              desc = "Run playbook",
+              silent = true,
+            },
+          })
+        end,
+      })
+    end,
+  },
+
+  {
     "mfussenegger/nvim-lint",
     event = "VeryLazy",
     opts = {},
@@ -152,6 +187,7 @@ return {
         go = { "golangcilint" },
         ghaction = { "actionlint" },
         lua = { "luacheck" },
+        ansible = { "ansible_lint" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -454,6 +490,34 @@ return {
       lspconfig.gleam.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
+      })
+
+      lspconfig.ansiblels.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+        settings = {
+          -- We don't want IBM to collect our usage data
+          redhat = {
+            telemetry = {
+              enabled = false,
+            },
+          },
+          ansible = {
+            -- We already do the linting with ansible-lint
+            validation = {
+              enabled = false,
+            },
+            -- No need to use Docker for Ansible
+            executionEnvironment = {
+              enabled = false,
+            },
+            -- Enable extra module completions
+            completion = {
+              provideRedirectModules = true,
+              provideModuleOptionAliases = true,
+            },
+          },
+        },
       })
 
       -- Make sure that inlay hints are always enabled

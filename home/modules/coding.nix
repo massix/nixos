@@ -14,6 +14,7 @@ in
   options.my-modules.coding = {
     enable = mkEnDef "Enable coding goodies" false;
     languages = {
+      ansible = mkEnDef "Enable Ansible tooling" false;
       c = mkEnDef "Enable Clang tooling" false;
       c_sharp = mkEnDef "Enable C# tooling" false;
       gleam = mkEnDef "Enable Gleam tooling" false;
@@ -39,6 +40,12 @@ in
   config =
     let
       whenT = k: t: if k then t else [ ];
+      ansibleTooling = with pkgs; [
+        ansible-language-server
+        ansible-lint
+        ansible
+      ];
+
       baseTooling = with pkgs; [
         gcc
         wl-clipboard
@@ -188,6 +195,7 @@ in
     {
       home.packages =
         baseTooling ++
+        (whenT cfg.languages.ansible ansibleTooling) ++
         (whenT cfg.languages.c clangTooling) ++
         (whenT cfg.languages.c_sharp c_sharpTooling) ++
         (whenT cfg.languages.gleam gleamTooling) ++
