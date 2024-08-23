@@ -68,3 +68,11 @@ api.nvim_create_autocmd("TextYankPost", {
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 vim.g.markdown_minlines = 2000
+
+-- Fix undercurl not working in Wezterm and WSL2
+if vim.env.TERM_PROGRAM == "WezTerm" then
+  vim.cmd([[hi SpellBad cterm=underline gui=underline]])
+  vim.cmd([[hi SpellCap cterm=underline gui=underline]])
+  vim.cmd([[hi SpellRare cterm=underline gui=underline]])
+  vim.cmd([[hi SpellLocal cterm=underline gui=underline]])
+end
