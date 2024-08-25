@@ -11,7 +11,7 @@ let
 
     Service = {
       ExecStart = "${pkgs.onedriver}/bin/onedriver ${mountpoint}";
-      ExecStopPost = "${wrapperDir}/bin/fusermount -uz ${mountpoint}";
+      ExecStopPost = "${wrapperDir}/bin/fusermount3 -uz ${mountpoint}";
       Restart = "on-abnormal";
       RestartSec = "3";
       RestartForceExitStatus = "2";
@@ -45,12 +45,6 @@ let
     italic = "0xProto Italic";
     bold = "${name} Bold";
     size = 12;
-  };
-
-  uiFont = {
-    name = "Roboto";
-    size = 11;
-    package = pkgs.roboto;
   };
 in
 {
@@ -273,18 +267,17 @@ in
   # system.
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
       enable-hot-corners = true;
       show-battery-percentage = true;
       clock-show-date = true;
-      document-font-name = "${uiFont.name} ${builtins.toString uiFont.size}";
+      document-font-name = "Cantarell 11";
       monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
       font-hinting = "slight";
       font-antialiasing = "grayscale";
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "catppuccin-macchiato-mauve-compact";
+      name = "Adwaita";
     };
 
     "org/gnome/desktop/background" = rec {
@@ -295,38 +288,15 @@ in
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = false;
+      tap-to-click = true;
       tap-and-drag = true;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
     };
   };
 
-  gtk = {
-    enable = true;
-    theme = {
-      name = "catppuccin-macchiato-mauve-compact";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "mauve" ];
-        size = "compact";
-        tweaks = [ ];
-        variant = "macchiato";
-      };
-    };
-    iconTheme = {
-      name = "Pop";
-      package = pkgs.pop-icon-theme;
-    };
-    cursorTheme = {
-      name = "catppuccin-macchiato-mauve-cursors";
-      package = pkgs.catppuccin-cursors.macchiatoMauve;
-      size = 32;
-    };
-    font = uiFont;
-  };
-
   services.syncthing = {
-    enable = true;
+    enable = false;
     tray.enable = false;
   };
 
@@ -358,14 +328,10 @@ in
     slack
     hypnotix
 
-    todoist
-    todoist-electron
-
     inkscape-with-extensions
     (transmission_4.override { enableGTK3 = true; })
     libnatpmp
 
-    obsidian
     proton-pass
     unzip
 

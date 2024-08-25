@@ -58,10 +58,13 @@ in
           noto-fonts-cjk
           noto-fonts-emoji
         ]);
+      default-fonts = with pkgs; [
+        cantarell-fonts
+      ];
       nerd-fonts = orEmpty cfg.nerdfonts (with pkgs; [ nerdfonts ]);
     in
     mkIf cfg.enable {
       fonts.fontconfig.enable = true;
-      home.packages = nerd-fonts ++ monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
+      home.packages = default-fonts ++ nerd-fonts ++ monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
     };
 }
