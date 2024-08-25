@@ -39,6 +39,9 @@
 
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-wsl.inputs.nixpkgs.follows = "unstablepkgs";
+
+    cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    cosmic.inputs.nixpkgs.follows = "unstablepkgs";
   };
 
   outputs =
@@ -54,6 +57,7 @@
     , purescript-overlay
     , protrans
     , nixos-wsl
+    , cosmic
     , self
     , ...
     }:
@@ -119,6 +123,7 @@
           ./system/elendil/configuration.nix
           ./system/elendil/hardware-configuration.nix
           nixos-hardware.nixosModules.microsoft-surface-pro-intel
+          cosmic.nixosModules.default
         ];
       };
 
