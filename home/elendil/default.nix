@@ -267,17 +267,10 @@ in
   # system.
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      enable-hot-corners = true;
       show-battery-percentage = true;
       clock-show-date = true;
-      document-font-name = "Cantarell 11";
+      clock-show-weekday = true;
       monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
-      font-hinting = "slight";
-      font-antialiasing = "grayscale";
-    };
-
-    "org/gnome/shell/extensions/user-theme" = {
-      name = "Adwaita";
     };
 
     "org/gnome/desktop/background" = rec {
@@ -292,6 +285,49 @@ in
       tap-and-drag = true;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
+    };
+
+    "org/gnome/shell" = {
+      allow-extension-installation = true;
+      enabled-extensions = [
+        "appindicatorsupport@rgcjonas.gmail.com"
+        "blur-my-shell@aunetx"
+        "colosseum@sereneblue"
+        "dash-to-dock@micxgx.gmail.com"
+        "emoji-copy@felipeftn"
+        "fullscreen-avoider@noobsai.github.com"
+        "grand-theft-focus@zalckos.github.com"
+        "mprisLabel@moon-0xff.github.com"
+        "nothing-to-say@extensions.gnome.wouter.bolsterl.ee"
+        "peek-top-bar-on-fullscreen@marcinjahn.com"
+        "unblank@sun.wxg@gmail.com"
+        "upower-battery@codilia.com"
+        "quick-settings-avatar@d-go"
+        "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+        "gsconnect@andyholmes.github.io"
+        "drive-menu@gnome-shell-extensions.gcampax.github.com"
+        "screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com"
+        "system-monitor@gnome-shell-extensions.gcampax.github.com"
+        "user-theme@gnome-shell-extensions.gcampax.github.com"
+        "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
+      ];
+    };
+
+    "org/gnome/shell/extensions/auto-move-windows".application-list = [
+      "org.telegram.desktop.desktop:3"
+      "webcord.desktop:3"
+      "com.rtosta.zapzap.desktop:3"
+    ];
+
+    "org/gnome/shell/extensions/colosseum" = {
+      compact-mode = true;
+      fifawc-enabled = true;
+      seriea-enabled = true;
+      seriea-int = true;
+      seriea-roma = true;
+      seriea-bol = true;
+      uefachampions-enabled = true;
+      uefaeuro-enabled = true;
     };
   };
 
@@ -319,7 +355,6 @@ in
     spotify
     spotube
 
-    gnomeExtensions.gsconnect
     onedriver
     tana
 
@@ -336,7 +371,28 @@ in
     unzip
 
     flameshot
-  ];
+  ] ++ (with pkgs.gnomeExtensions; [
+    appindicator
+    blur-my-shell
+    colosseum
+    dash-to-dock
+    emoji-copy
+    fullscreen-avoider
+    grand-theft-focus
+    media-controls
+    nothing-to-say
+    peek-top-bar-on-fullscreen
+    unblank
+    upower-battery
+    user-avatar-in-quick-settings
+    auto-move-windows
+    gsconnect
+    removable-drive-menu
+    screenshot-window-sizer
+    system-monitor
+    user-themes
+    windownavigator
+  ]);
 
   systemd.user.startServices = "sd-switch";
 
