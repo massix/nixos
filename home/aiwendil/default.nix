@@ -73,7 +73,7 @@
     home-manager.enable = true;
   };
 
-  home.packages = with pkgs; [ just ];
+  home.packages = with pkgs; [ just xdg-utils ];
 
   systemd.user.startServices = "sd-switch";
 
