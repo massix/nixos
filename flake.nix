@@ -37,6 +37,9 @@
     protrans.url = "github:massix/protrans";
     protrans.inputs.nixpkgs.follows = "unstablepkgs";
 
+    gleeter.url = "github:massix/gleeter";
+    gleeter.inputs.nixpkgs.follows = "unstablepkgs";
+
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-wsl.inputs.nixpkgs.follows = "unstablepkgs";
 
@@ -58,6 +61,7 @@
     , protrans
     , nixos-wsl
     , cosmic
+    , gleeter
     , self
     , ...
     }:
@@ -69,6 +73,7 @@
         (_final: _prev: self.packages."${system}")
         nix-direnv.overlays.default
         purescript-overlay.overlays.default
+        (_final: _prev: { gleeter = gleeter.packages.${system}.default; })
       ];
 
       config = {

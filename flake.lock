@@ -305,6 +305,26 @@
         "type": "github"
       }
     },
+    "gleeter": {
+      "inputs": {
+        "nixpkgs": [
+          "unstablepkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724691332,
+        "narHash": "sha256-u3DaSTQmJBUB7z9i7y7Uk39PPHaFEnge4e6I1zEPI64=",
+        "owner": "massix",
+        "repo": "gleeter",
+        "rev": "f41b0aa271e8705f69dac1b067cc5194e9d9649e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "massix",
+        "repo": "gleeter",
+        "type": "github"
+      }
+    },
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -681,6 +701,7 @@
       "inputs": {
         "cosmic": "cosmic",
         "flake-compat": "flake-compat_2",
+        "gleeter": "gleeter",
         "home-manager": "home-manager",
         "homeage": "homeage",
         "masterpkgs": "masterpkgs",

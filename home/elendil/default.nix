@@ -371,6 +371,7 @@ in
     unzip
 
     flameshot
+    gleeter
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
