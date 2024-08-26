@@ -120,7 +120,7 @@ in
       ];
 
       scriptingTooling = with pkgs; [
-        nodePackages.bash-language-server /* language server for bash */
+        bash-language-server
       ];
 
       nixTooling = with pkgs; [
