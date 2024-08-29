@@ -65,7 +65,7 @@ in
       let
         k9sPackages = if cfg.k9s.enable then [ k9s ] else [ ];
         azCliPackages = if cfg.azure-cli.enable then [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ] else [ ];
-        tanzuPackages = if cfg.tanzu.enable then [ tanzu ] else [ ];
+        tanzuPackages = if cfg.tanzu.enable then [ tanzu ytt kapp vendir ] else [ ];
         miscPackages = [ kubectl kubernetes-helm ];
       in
       k9sPackages ++ azCliPackages ++ tanzuPackages ++ miscPackages;
