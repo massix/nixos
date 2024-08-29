@@ -56,6 +56,7 @@ in
         };
       };
     };
+    tanzu.enable = mkEnableOption "tanzu";
   };
 
   config = mkIf cfg.enable {
@@ -64,9 +65,10 @@ in
       let
         k9sPackages = if cfg.k9s.enable then [ k9s ] else [ ];
         azCliPackages = if cfg.azure-cli.enable then [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ] else [ ];
+        tanzuPackages = if cfg.tanzu.enable then [ tanzu ] else [ ];
         miscPackages = [ kubectl kubernetes-helm ];
       in
-      k9sPackages ++ azCliPackages ++ miscPackages;
+      k9sPackages ++ azCliPackages ++ tanzuPackages ++ miscPackages;
 
     my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
       tf = "terraform";
