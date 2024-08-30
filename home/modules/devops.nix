@@ -32,6 +32,16 @@ in
 {
   options.my-modules.devops = {
     enable = mkEnableOption "devops module";
+    terraform = {
+      enable = mkEnableOption "terraform";
+      flavour = mkOption {
+        type = types.enum [ "terraform" "opentofu" ];
+        description = "Choose which flavor of Terraform to install";
+        default = "opentofu";
+        example = "terraform";
+      };
+    };
+    ansible.enable = mkEnableOption "ansible";
     azure-cli = {
       enable = mkEnableOption "Azure CLI";
       extensions = mkOption {
@@ -39,6 +49,7 @@ in
         default = [ ];
       };
     };
+    kubernetes.enable = mkEnableOption "kubernetes tools";
     k9s = {
       enable = mkEnableOption "k9s";
       aliases = mkOption {
@@ -63,21 +74,48 @@ in
     home.packages =
       with pkgs;
       let
-        k9sPackages = if cfg.k9s.enable then [ k9s ] else [ ];
-        azCliPackages = if cfg.azure-cli.enable then [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ] else [ ];
-        tanzuPackages = if cfg.tanzu.enable then [ tanzu ytt kapp vendir ] else [ ];
-        miscPackages = [ kubectl kubernetes-helm ];
+        orEmpty = bool: pkgs: if bool then pkgs else [ ];
+        k9sPackages = orEmpty cfg.k9s.enable [ k9s ];
+        azCliPackages = orEmpty cfg.azure-cli.enable [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ];
+        tanzuPackages = orEmpty cfg.tanzu.enable [ tanzu ytt kapp vendir pinniped ];
+        terraformPackages = orEmpty cfg.terraform.enable [ (if cfg.terraform.flavour == "terraform" then terraform else opentofu) ];
+        ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
+        kubernetesPackages = orEmpty cfg.kubernetes.enable [ kubectl kubernetes-helm ];
       in
-      k9sPackages ++ azCliPackages ++ tanzuPackages ++ miscPackages;
+      k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages;
 
-    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
-      tf = "terraform";
-      k = "kubectl";
-      kg = "kubectl get";
-      kgp = "kubectl get pods";
-      kgs = "kubectl get svc";
-      kk = "k9s";
-    };
+    my-modules.fish.configuration.extraShellAbbrs =
+      let
+        orEmpty = bool: attrs: if bool then attrs else { };
+        kubernetesAbbrs =
+          orEmpty cfg.kubernetes.enable {
+            k = "kubectl";
+            kc = "kubectl config";
+            kg = "kubectl get";
+            kgp = "kubectl get pods";
+            kgs = "kubectl get svc";
+            kgn = "kubectl get nodes";
+          };
+        terraformAbbrs =
+          orEmpty cfg.terraform.enable {
+            tf = if cfg.terraform.flavour == "terraform" then "terraform" else "tofu";
+          };
+        ansibleAbbrs =
+          orEmpty cfg.ansible.enable {
+            anp = "ansible-playbook";
+            an = "ansible";
+          };
+        tanzuAbbrs =
+          orEmpty cfg.tanzu.enable {
+            tz = "tanzu";
+          };
+        k9sAbbrs =
+          orEmpty cfg.k9s.enable {
+            kk = "k9s";
+            kkc = "k9s --context";
+          };
+      in
+      kubernetesAbbrs // tanzuAbbrs // k9sAbbrs // terraformAbbrs // ansibleAbbrs;
 
     home.file = {
       ".azure/config" = mkIf cfg.azure-cli.enable {
