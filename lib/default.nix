@@ -22,6 +22,7 @@
         ../home/modules/gaming.nix
         ../home/modules/devops.nix
         ../home/modules/zed.nix
+        ../home/modules/kitty.nix
       ] ++ extraModules;
     };
 
