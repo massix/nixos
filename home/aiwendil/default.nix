@@ -66,9 +66,16 @@
 
     devops = {
       enable = true;
+
       k9s.enable = true;
       tanzu.enable = true;
       azure-cli.enable = false;
+      ansible.enable = true;
+      terraform = {
+        enable = true;
+        flavour = "terraform";
+      };
+      kubernetes.enable = true;
     };
   };
 
