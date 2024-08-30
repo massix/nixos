@@ -8,6 +8,8 @@
       typefonts = false;
     };
 
+    gleeter.enable = true;
+
     kitty = {
       enable = true;
       font = {
@@ -99,7 +101,7 @@
     home-manager.enable = true;
   };
 
-  home.packages = with pkgs; [ just xdg-utils gleeter ];
+  home.packages = with pkgs; [ just xdg-utils ];
 
   systemd.user.startServices = "sd-switch";
 

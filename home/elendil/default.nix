@@ -63,6 +63,8 @@ in
       };
     };
 
+    gleeter.enable = true;
+
     coding = {
       enable = true;
       languages = {
@@ -322,7 +324,6 @@ in
     unzip
 
     flameshot
-    gleeter
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
