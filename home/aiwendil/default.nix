@@ -3,6 +3,24 @@
 }:
 {
   my-modules = {
+    fonts = {
+      enable = true;
+      typefonts = false;
+    };
+
+    kitty = {
+      enable = true;
+      font = {
+        name = "Comic Mono";
+        size = 15;
+        italic = "0xProto Italic";
+        packages = [
+          pkgs.comic-mono
+          pkgs._0xproto
+        ];
+      };
+    };
+
     coding = {
       enable = true;
       languages = {
