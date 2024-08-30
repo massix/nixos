@@ -180,7 +180,7 @@ in
       enable = true;
       font = {
         inherit (terminalFont) name size;
-        package = pkgs.comic-mono;
+        packages = with pkgs; [ comic-mono _0xproto ];
         italic = "0xProto Italic";
       };
     };
