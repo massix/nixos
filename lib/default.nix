@@ -23,6 +23,7 @@
         ../home/modules/devops.nix
         ../home/modules/zed.nix
         ../home/modules/kitty.nix
+        ../home/modules/gleeter.nix
       ] ++ extraModules;
     };
 
