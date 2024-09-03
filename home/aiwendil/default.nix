@@ -16,9 +16,10 @@
         name = "Comic Mono";
         size = 15;
         italic = "0xProto Italic";
-        packages = [
-          pkgs.comic-mono
-          pkgs._0xproto
+        packages = with pkgs; [
+          comic-mono
+          _0xproto
+          noto-fonts-emoji
         ];
       };
     };
