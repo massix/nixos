@@ -2,7 +2,8 @@
 return {
   {
     "towolf/vim-helm",
-    event = "VeryLazy",
+    ft = "helm",
     opts = {},
+    config = function() end,
   },
 }
