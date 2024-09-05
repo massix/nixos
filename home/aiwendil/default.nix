@@ -99,6 +99,9 @@
       };
     };
 
+    # No configuration needed since I use this only to Multiplex from Windows
+    wezterm.enable = true;
+
     home-manager.enable = true;
   };
 
