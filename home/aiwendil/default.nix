@@ -78,7 +78,10 @@
         enable = true;
         flavour = "terraform";
       };
-      kubernetes.enable = true;
+      kubernetes = {
+        enable = true;
+        colored = true;
+      };
     };
   };
 

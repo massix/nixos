@@ -49,7 +49,10 @@ in
         default = [ ];
       };
     };
-    kubernetes.enable = mkEnableOption "kubernetes tools";
+    kubernetes = {
+      enable = mkEnableOption "kubernetes tools";
+      colored = mkEnableOption "kubecolor";
+    };
     k9s = {
       enable = mkEnableOption "k9s";
       aliases = mkOption {
@@ -80,7 +83,7 @@ in
         tanzuPackages = orEmpty cfg.tanzu.enable [ tanzu ytt kapp vendir pinniped ];
         terraformPackages = orEmpty cfg.terraform.enable [ (if cfg.terraform.flavour == "terraform" then terraform else opentofu) ];
         ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
-        kubernetesPackages = orEmpty cfg.kubernetes.enable [ kubectl kubernetes-helm ];
+        kubernetesPackages = orEmpty cfg.kubernetes.enable [ kubectl kubernetes-helm ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
       in
       k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages;
 
@@ -116,6 +119,10 @@ in
           };
       in
       kubernetesAbbrs // tanzuAbbrs // k9sAbbrs // terraformAbbrs // ansibleAbbrs;
+
+    my-modules.fish.configuration.extraShellAliases = mkIf cfg.kubernetes.colored {
+      kubectl = "kubecolor";
+    };
 
     home.file = {
       ".azure/config" = mkIf cfg.azure-cli.enable {

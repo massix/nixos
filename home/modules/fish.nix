@@ -20,6 +20,12 @@ in
       default = { };
       description = "Extra abbreviations for fish";
     };
+
+    configuration.extraShellAliases = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "Extra shell aliases for fish";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -109,7 +115,7 @@ in
         ps = "procs";
         ls = "eza --icons";
         iftop = "bmon";
-      };
+      } // cfg.configuration.extraShellAliases;
     };
 
     home.sessionVariables = {
