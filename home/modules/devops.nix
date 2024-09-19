@@ -90,7 +90,12 @@ in
         ];
         terraformPackages = orEmpty cfg.terraform.enable [ (if cfg.terraform.flavour == "terraform" then terraform else opentofu) ];
         ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
-        kubernetesPackages = orEmpty cfg.kubernetes.enable [ kubectl kubernetes-helm ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
+        kubernetesPackages = orEmpty cfg.kubernetes.enable [
+          kubectl
+          kubernetes-helm
+          kustomize
+          kubectx
+        ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
       in
       k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages;
 
@@ -105,6 +110,8 @@ in
             kgp = "kubectl get pods";
             kgs = "kubectl get svc";
             kgn = "kubectl get nodes";
+            kx = "kubectx";
+            kn = "kubens";
           };
         terraformAbbrs =
           orEmpty cfg.terraform.enable {
