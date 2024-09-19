@@ -80,7 +80,14 @@ in
         orEmpty = bool: pkgs: if bool then pkgs else [ ];
         k9sPackages = orEmpty cfg.k9s.enable [ k9s ];
         azCliPackages = orEmpty cfg.azure-cli.enable [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ];
-        tanzuPackages = orEmpty cfg.tanzu.enable [ tanzu ytt kapp vendir pinniped ];
+        tanzuPackages = orEmpty cfg.tanzu.enable [
+          tanzu
+          ytt
+          kapp
+          vendir
+          pinniped
+          tridentctl
+        ];
         terraformPackages = orEmpty cfg.terraform.enable [ (if cfg.terraform.flavour == "terraform" then terraform else opentofu) ];
         ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
         kubernetesPackages = orEmpty cfg.kubernetes.enable [ kubectl kubernetes-helm ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
@@ -111,6 +118,7 @@ in
         tanzuAbbrs =
           orEmpty cfg.tanzu.enable {
             tz = "tanzu";
+            tc = "tridentctl";
           };
         k9sAbbrs =
           orEmpty cfg.k9s.enable {
