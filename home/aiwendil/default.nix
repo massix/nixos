@@ -72,6 +72,7 @@
 
       k9s.enable = true;
       tanzu.enable = true;
+      vault.enable = true;
       azure-cli.enable = false;
       ansible.enable = true;
       terraform = {

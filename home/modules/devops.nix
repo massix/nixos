@@ -71,6 +71,7 @@ in
       };
     };
     tanzu.enable = mkEnableOption "tanzu";
+    vault.enable = mkEnableOption "hashicorp vault";
   };
 
   config = mkIf cfg.enable {
@@ -96,8 +97,9 @@ in
           kustomize
           kubectx
         ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
+        vaultPackages = orEmpty cfg.vault.enable [ vault ];
       in
-      k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages;
+      k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages ++ vaultPackages;
 
     my-modules.fish.configuration.extraShellAbbrs =
       let
