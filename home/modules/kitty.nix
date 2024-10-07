@@ -60,7 +60,9 @@ in
       in
       {
         enable = true;
-        inherit (cfg) package theme;
+        inherit (cfg) package;
+
+        themeFile = cfg.theme;
 
         shellIntegration = {
           mode = "enabled";
