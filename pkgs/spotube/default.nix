@@ -1,12 +1,12 @@
 { pkgs }:
 let
   inherit (pkgs) lib stdenv;
-  version = "3.8.1";
+  version = "3.8.2";
 
   src = pkgs.fetchurl {
     url = "https://github.com/KRTirtho/spotube/releases/download/v${version}/spotube-linux-${version}-x86_64.tar.xz";
     name = "spotube-linux-${version}-x86_64.tar.xz";
-    sha256 = "sha256-Qu03F+rQn6i0Znlu407APltg0EFK6/ylbVQBbqgfqiE=";
+    sha256 = "sha256-FR1DCKfpKnHlxEUBiZHLi+ga1TozZhdgaNzT38/0fXQ=";
   };
 
   buildInputs = with pkgs; [
