@@ -39,6 +39,7 @@ return {
         "elisp",
         "elvish",
         "fish",
+        "gitcommit",
         "go",
         "gleam",
         "haskell",
