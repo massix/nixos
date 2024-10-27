@@ -162,8 +162,16 @@ in
     devops = {
       enable = true;
       k9s.enable = true;
-      azure-cli = {
+      kubernetes = {
         enable = true;
+        colored = true;
+      };
+      terraform = {
+        enable = true;
+        flavour = "terraform";
+      };
+      azure-cli = {
+        enable = false;
         extensions = with pkgs.azure-cli-extensions; [ k8s-extension ];
       };
     };
