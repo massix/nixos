@@ -14,7 +14,7 @@ local spec = {
       status = {
         recent_commit_count = 50,
       },
-      graph_style = "unicode",
+      graph_style = "kitty",
       signs = {
         hunk = { "", "" },
         item = { " ", " " },
