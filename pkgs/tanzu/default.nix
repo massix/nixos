@@ -1,15 +1,14 @@
 { pkgs, ... }:
 pkgs.stdenv.mkDerivation rec {
   pname = "tanzu";
-  version = "1.4.1";
+  version = "1.5.1";
 
   src = builtins.fetchurl {
-    url = "https://storage.googleapis.com/tanzu-cli-os-packages/apt/pool/main/t/tanzu-cli/tanzu-cli_${version}_linux_amd64.deb";
-    sha256 = "sha256:0gjsvnn1cg0dq5h8nqmbnfkv7d99zd2ksac620vp8lpgmg603qzp";
+    url = "https://github.com/vmware-tanzu/tanzu-cli/releases/download/v${version}/tanzu-cli-linux-amd64.tar.gz";
+    sha256 = "sha256:144635rh8nqxxnivpn9801lyqiqzxv094vgp9n60s0xfgs0paxiy";
   };
 
   nativeBuildInputs = with pkgs; [
-    dpkg
     stdenv.cc.cc.lib
     installShellFiles
     autoPatchelfHook
@@ -20,7 +19,7 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
     mkdir -p $out/bin
-    install -m 0555 usr/bin/tanzu $out/bin/tanzu
+    install -m 0555 tanzu-cli-linux_amd64 $out/bin/tanzu
     runHook postInstall
   '';
 
