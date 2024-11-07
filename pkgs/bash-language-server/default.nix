@@ -19,9 +19,9 @@ pkgs.stdenv.mkDerivation rec {
     hash = "sha256-yJ81oGd9aNsWQMLvDSgMVVH1//Mw/SVFYFIPsJTQYzE=";
   };
 
-  pnpmWorkspace = "bash-language-server";
+  pnpmWorkspaces = [ "bash-language-server" ];
   pnpmDeps = pkgs.pnpm_8.fetchDeps {
-    inherit pname version src pnpmWorkspace;
+    inherit pname version src pnpmWorkspaces;
     hash = "sha256-W25xehcxncBs9QgQBt17F5YHK0b+GDEmt27XzTkyYWg=";
   };
 
