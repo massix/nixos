@@ -24,12 +24,12 @@ let
 
   catppuccin-backgrounds = pkgs.stdenvNoCC.mkDerivation {
     pname = "catppuccin-backgrounds";
-    version = "0.0.1";
+    version = "2024-11-07";
     nativeBuildInputs = [ pkgs.unzip ];
 
     src = pkgs.fetchurl {
-      url = "https://github.com/Gingeh/wallpapers/archive/refs/heads/main.zip";
-      hash = "sha256-I00clrtirzZYPSxGcg5Fkv0vuFHX9uF5UcMv1JZ+7iE=";
+      url = "https://github.com/VipinVIP/wallpapers/archive/refs/heads/main.zip";
+      hash = "sha256-9v5VZc0nZf7N12HUKaY78DQKbjadyM6NcD3EWYFpqY4=";
     };
 
     phases = [ "installPhase" ];
@@ -235,7 +235,7 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/doggocat.png";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/feet-on-the-dashboard.png";
       picture-uri-dark = picture-uri;
       picture-options = "zoom";
     };
