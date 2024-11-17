@@ -131,7 +131,7 @@ in
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
       gui = {
-        enable = true;
+        enable = false;
         font = {
           inherit (terminalFont) name size;
           features = [
