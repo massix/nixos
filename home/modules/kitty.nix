@@ -79,6 +79,7 @@ in
 
           cursor_shape = "beam";
           cursor_beam_thickness = "2.0";
+          cursor_trail = 1;
           scrollback_lines = 10000;
 
           tab_bar_style = "powerline";
@@ -95,7 +96,7 @@ in
 
           # UI Tweaks
           hide_window_decorations = false;
-          draw_minimal_borders = false;
+          draw_minimal_borders = true;
           inactive_text_alpha = "0.6";
           remember_window_size = true;
 
