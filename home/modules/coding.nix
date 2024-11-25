@@ -43,7 +43,6 @@ in
       ansibleTooling = with pkgs; [
         ansible-language-server
         ansible-lint
-        ansible
       ];
 
       baseTooling = with pkgs; [

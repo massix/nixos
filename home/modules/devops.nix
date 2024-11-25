@@ -90,7 +90,7 @@ in
           tridentctl
         ];
         terraformPackages = orEmpty cfg.terraform.enable [ (if cfg.terraform.flavour == "terraform" then terraform else opentofu) ];
-        ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
+        ansiblePackages = orEmpty cfg.ansible.enable [ ansible_2_16 ];
         kubernetesPackages = orEmpty cfg.kubernetes.enable [
           kubectl
           kubernetes-helm
