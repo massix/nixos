@@ -1,6 +1,21 @@
 { pkgs
+, username
 , ...
 }:
+let
+  load-ssh-key = pkgs.writeScriptBin "load-ssh-key" ''
+    #!${pkgs.bash}/bin/bash
+
+    RESCUE_PASSPHRASE="$(cat /home/${username}/.ssh/rescuep)"
+
+    ${pkgs.expect}/bin/expect <<EOF
+      spawn ssh-add /home/${username}/.ssh/rescue
+      expect "Enter passphrase"
+      send "$RESCUE_PASSPHRASE\r"
+      expect eof
+    EOF
+  '';
+in
 {
   my-modules = {
     fonts = {
@@ -109,7 +124,33 @@
     home-manager.enable = true;
   };
 
-  home.packages = with pkgs; [ just xdg-utils ];
+  homeage.file.avp = {
+    source = ./secrets/avp.age;
+    symlinks = [ "/home/${username}/.ansible-vault-password" ];
+  };
+
+  home.packages = with pkgs; [
+    just
+    xdg-utils
+    load-ssh-key
+  ];
+
+  home.file.".ansible.cfg" = {
+    text = ''
+      [defaults]
+      vault_password_file = /home/${username}/.ansible-vault-password
+      host_key_checking = false
+
+      [inventory]
+      enable_plugins = vmware_vm_inventory, yaml
+    '';
+  };
+
+  home.sessionVariables = {
+    ANSIBLE_CONFIG = "/home/${username}/.ansible.cfg";
+    ANSIBLE_VAULT_PASSWORD_FILE = "/home/${username}/.ansible-vault-password";
+    GITLAB_VIM_URL = "https://git.questel.com";
+  };
 
   systemd.user.startServices = "sd-switch";
 
