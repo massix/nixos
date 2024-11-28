@@ -98,7 +98,7 @@ in
           hide_window_decorations = false;
           draw_minimal_borders = true;
           inactive_text_alpha = "0.6";
-          remember_window_size = true;
+          remember_window_size = false;
 
           window_margin_width = "2";
           single_window_margin_width = "2";
