@@ -33,6 +33,9 @@
           OTJnj+ihESpaTCVLQzrhCO3CDCI70PFUk0dhly4Y/6AxLH+4G4zWggcD07+1GSTeVXhmyrxT7poenjQ+XauiLNKf7Vo1W1TiunsprAscuz6dgGadyWLoiGuhw+oFv8PpQBGH4ROpbzsQ5AduxUcR4sOp5fkPvdFSEBddm4rRuPBSuBuWNc+Po/xSEOipYepfgf3qv+yKmSUPP16+UeWA9icJCzopIEygVOJa
           VsanZc5LKdiLJ2i/xPZje8ovhGrroUpaoSHAYQ==
         '';
+        ".ssh/mgengarelli.pub".text = ''
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPXHh+tZRsY6tE0cmLntMofkWQrbx7sStJzjlQbbrLTv mgengarelli@aiwendil
+        '';
       };
   };
 
@@ -66,6 +69,11 @@
       "tanzu" = {
         source = ./secrets/tanzu.age;
         symlinks = [ "/home/${username}/.ssh/tanzu" ];
+      };
+
+      "mgengarelli" = {
+        source = ./secrets/mgengarelli.age;
+        symlinks = [ "/home/${username}/.ssh/mgengarelli" ];
       };
     };
   };

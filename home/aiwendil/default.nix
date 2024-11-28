@@ -14,6 +14,8 @@ let
       send "$RESCUE_PASSPHRASE\r"
       expect eof
     EOF
+
+    ssh-add /home/${username}/.ssh/mgengarelli
   '';
 in
 {
