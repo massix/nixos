@@ -297,6 +297,25 @@ in
     tray.enable = false;
   };
 
+  services.flameshot = {
+    enable = true;
+    package = pkgs.flameshot;
+    settings = {
+      General = {
+        showDesktopNotification = true;
+        savePathFixed = false;
+      };
+    };
+  };
+
+  # Fix for Flameshot service requiring a non-existing target
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager system tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
+
   services.protrans = {
     enable = true;
     configuration.nat.portLifeTime = 60;
@@ -330,8 +349,6 @@ in
 
     proton-pass
     unzip
-
-    flameshot
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
