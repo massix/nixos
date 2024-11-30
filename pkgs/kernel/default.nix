@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
-  kernelBaseVersion = "6.10";
-  kernelVersion = "6.10.10";
+  kernelBaseVersion = "6.11";
+  kernelVersion = "6.11.4";
   version = "${kernelVersion}-zen1";
   inherit (pkgs) lib fetchFromGitHub;
 
@@ -9,14 +9,14 @@ let
     repo = "linux-surface";
     owner = "linux-surface";
     rev = "arch-${kernelVersion}-1";
-    hash = "sha256-AX48oDmzzEoYQkCmF/201opXuVofwGMUI9qvRt+YVHc=";
+    hash = "sha256-5rKfAIkGoD5Y4nMobr7wGvzZqN2yFElXqHdcQS2VL14=";
   };
 
   linuxZen = fetchFromGitHub {
     repo = "zen-kernel";
     owner = "zen-kernel";
     rev = "v${version}";
-    hash = "sha256-Hx3+mQQ8uPiZe17DRpANpgsQ5ADNWMcZzsgfyHCLEqI=";
+    hash = "sha256-rlSGKRm/3PUCe7tO0BlQ2cHmSy/cGktvsD4DF6mQ1Dc=";
   };
 
   getPatch = name: {
