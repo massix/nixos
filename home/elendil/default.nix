@@ -220,6 +220,14 @@ in
 
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
+
+    gh = {
+      enable = true;
+      settings = {
+        git_protocol = "ssh";
+        editor = "nvim";
+      };
+    };
   };
 
   # FIXME: extensions have been manually installed, modify this part to
