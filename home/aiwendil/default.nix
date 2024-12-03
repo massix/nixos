@@ -63,6 +63,9 @@ in
           j = "just";
           mk = "make";
         };
+        extraInit = [
+          "test -f ~/.env.fish; and source ~/.env.fish"
+        ];
       };
     };
 
@@ -126,9 +129,15 @@ in
     home-manager.enable = true;
   };
 
-  homeage.file.avp = {
-    source = ./secrets/avp.age;
-    symlinks = [ "/home/${username}/.ansible-vault-password" ];
+  homeage.file = {
+    avp = {
+      source = ./secrets/avp.age;
+      symlinks = [ "/home/${username}/.ansible-vault-password" ];
+    };
+    "environment.fish" = {
+      source = ./secrets/environment.fish.age;
+      symlinks = [ "/home/${username}/.env.fish" ];
+    };
   };
 
   home.packages = with pkgs; [

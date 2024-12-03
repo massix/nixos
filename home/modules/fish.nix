@@ -26,6 +26,13 @@ in
       default = { };
       description = "Extra shell aliases for fish";
     };
+
+    configuration.extraInit = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Extra init options for fish";
+      example = [ "source ~/file" "echo 'Hello World'" ];
+    };
   };
 
   config = mkIf cfg.enable {
@@ -116,6 +123,8 @@ in
         ls = "eza --icons";
         iftop = "bmon";
       } // cfg.configuration.extraShellAliases;
+
+      interactiveShellInit = builtins.concatStringsSep "\n" cfg.configuration.extraInit;
     };
 
     home.sessionVariables = {
