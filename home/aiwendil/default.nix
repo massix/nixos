@@ -127,6 +127,13 @@ in
     wezterm.enable = true;
 
     home-manager.enable = true;
+    gh = {
+      enable = true;
+      settings = {
+        git_protocol = "ssh";
+        editor = "nvim";
+      };
+    };
   };
 
   homeage.file = {
