@@ -220,6 +220,42 @@
         "systems": "systems"
       },
       "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
         "lastModified": 1726560853,
         "narHash": "sha256-X6rJYSESBVr3hBoH0WbKE5KvhPU5bloyZ2L4K60/fPQ=",
         "owner": "numtide",
@@ -284,16 +320,17 @@
     },
     "gleeter": {
       "inputs": {
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "unstablepkgs"
         ]
       },
       "locked": {
-        "lastModified": 1725690706,
-        "narHash": "sha256-UZHi8OoFb/dTwfbErQPAGslBe1mNHNV4EO6nvw72VDg=",
+        "lastModified": 1733735381,
+        "narHash": "sha256-Tw64UUbajAPgM0wSblbsTOCPKaxlSpNhYd4sQTpqQkE=",
         "owner": "massix",
         "repo": "gleeter",
-        "rev": "3649f55806ddcb057709ce7ee1cfe00e0feb6615",
+        "rev": "e368c7ea7e3c57edbc336aac5aee615ab6ea631a",
         "type": "github"
       },
       "original": {
@@ -352,15 +389,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1669234151,
-        "narHash": "sha256-TwT87E3m2TZLgwYJESlype14HxUOrRGojPM5C2akrMg=",
-        "owner": "jordanisaacs",
+        "lastModified": 1712137309,
+        "narHash": "sha256-2aYwKzVftIGvd6q7VzhlEwg97ENk9mfpeBppH6ZowLc=",
+        "owner": "aarongpower",
         "repo": "homeage",
-        "rev": "02bfe4ca06962d222e522fff0240c93946b20278",
+        "rev": "f37ccab7f396c74d0dcbc2c66331568e2367d718",
         "type": "github"
       },
       "original": {
-        "owner": "jordanisaacs",
+        "owner": "aarongpower",
         "repo": "homeage",
         "type": "github"
       }
@@ -507,7 +544,7 @@
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat_5",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "unstablepkgs"
         ]
@@ -655,6 +692,7 @@
       "inputs": {
         "cosmic": "cosmic",
         "flake-compat": "flake-compat_2",
+        "flake-utils": "flake-utils",
         "gleeter": "gleeter",
         "home-manager": "home-manager",
         "homeage": "homeage",
@@ -714,6 +752,36 @@
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

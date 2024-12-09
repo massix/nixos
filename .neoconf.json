@@ -28,10 +28,10 @@
         },
         "options": {
           "nixos": {
-            "expr": "(builtins.getFlake \"/home/massi/.config/nixos\").nixosConfigurations.elendil.options"
+            "expr": "(builtins.getFlake \"/Users/mgengarelli/.config/nixos\").nixosConfigurations.elendil.options"
           },
           "home-manager": {
-            "expr": "(builtins.getFlake \"/home/massi/.config/nixos\").homeConfigurations.\"massi@elendil\".options"
+            "expr": "(builtins.getFlake \"/Users/mgengarelli/.config/nixos\").homeConfigurations.\"massi@elendil\".options"
           }
         }
       }

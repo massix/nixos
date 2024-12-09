@@ -4,9 +4,9 @@
 , ...
 }: {
   mkHome =
-    { pkgs, stable, master, stateVersion, username, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
+    { pkgs, stable, master, stateVersion, username, system, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit stable master stateVersion username; };
+      extraSpecialArgs = { inherit stable master stateVersion username system; };
 
       modules = [
         homeage.homeManagerModules.homeage
@@ -45,7 +45,7 @@
               keep-outputs = true;
               keep-derivations = true;
               warn-dirty = true;
-              trusted-users = [ "root" "massi" ];
+              trusted-users = [ "root" "massi" "mgengarelli" ];
               trusted-public-keys = [
                 "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
                 "surface-zen.cachix.org-1:8OXCpyGHk4UL+BDkgJYW1bGf/ULbNGKLiBjaTELJwaQ="

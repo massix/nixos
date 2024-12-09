@@ -139,7 +139,6 @@ in
       btop # Modern Unix `htop`
       chafa # Terminal image viewer
       cheat # Modern Unix `man`
-      chroma # Code syntax highlighter
       curlie # Terminal HTTP client
       dconf2nix # Nix code from Dconf files
       difftastic # Modern Unix `diff`
@@ -149,7 +148,6 @@ in
       du-dust # Modern Unix `du`
       entr # Modern Unix `watch`
       eza # Modern Unix `ls`
-      fast-cli # Terminal fast.com
       fd # Modern Unix `find`
       glow # Terminal Markdown renderer
       gping # Modern Unix `ping`
@@ -157,18 +155,14 @@ in
       httpie # Terminal HTTP client
       hyperfine # Terminal benchmarking
       iperf3 # Terminal network benchmarking
-      iw # Terminal WiFi info
       jpegoptim # Terminal JPEG optimizer
       jiq # Modern Unix `jq`
       lazygit # Terminal Git client
-      libva-utils # Terminal VAAPI info
-      lurk # Modern Unix `strace`
       mdp # Terminal Markdown presenter
       moar # Modern Unix `less`
       mtr # Modern Unix `traceroute`
       ncdu # Modern Unix `du`
       netdiscover # Modern Unix `arp`
-      nethogs # Modern Unix `iftop`
       nixpkgs-review # Nix code review
       nurl # Nix URL fetcher
       nyancat # Terminal rainbow spewing feline
@@ -183,7 +177,6 @@ in
       thefuck # Correct last command
       tldr # Modern Unix `man`
       tokei # Modern Unix `wc` for code
-      wavemon # Terminal WiFi monitor
       yq-go # Terminal `jq` for YAML
     ];
 

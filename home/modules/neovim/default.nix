@@ -167,7 +167,7 @@ in
               bundles = bundles,
               lombok = "${pkgs.lombok}/lombok.jar",
             },
-            codeium = "${pkgs.codeium-ls}/bin/codeium-ls_server_linux_x64",
+            codeium = "${lib.getExe pkgs.codeium-ls}",
             vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",

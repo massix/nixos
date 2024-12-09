@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     unstablepkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     /* Warning: packages from this repo are subject to change rapidly!. */
     masterpkgs.url = "github:NixOS/nixpkgs/master";
 
@@ -16,7 +18,7 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    homeage.url = "github:jordanisaacs/homeage";
+    homeage.url = "github:aarongpower/homeage";
     homeage.inputs.nixpkgs.follows = "unstablepkgs";
 
     nixd.url = "github:nix-community/nixd";
@@ -49,6 +51,7 @@
 
   outputs =
     { nixpkgs
+    , flake-utils
     , unstablepkgs
     , home-manager
     , nixos-hardware
@@ -66,119 +69,143 @@
     , ...
     }:
     let
-      system = "x86_64-linux";
+      allSystems = [ "x86_64-linux" "aarch64-darwin" ];
       stateVersion = "24.05";
-      overlays = [
-        (_final: _prev: { nixd-nightly = nixd.packages."${system}".nixd; })
-        (_final: _prev: self.packages."${system}")
-        nix-direnv.overlays.default
-        purescript-overlay.overlays.default
-        (_final: _prev: { gleeter = gleeter.packages.${system}.default; })
-      ];
-
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = _: true;
-        permittedInsecurePackages = [ "electron-25.9.0" ];
+      pkgSet = system: rec {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+          permittedInsecurePackages = [ "electron-25.9.0" ];
+        };
+        overlays = [
+          (_: _: { nixd-nightly = nixd.packages.${system}.nixd; })
+          (_: _: self.packages."${system}")
+          nix-direnv.overlays.default
+          purescript-overlay.overlays.default
+          (_: _: { gleeter = gleeter.packages.${system}.default; })
+        ];
+        unstable = import unstablepkgs {
+          inherit system config overlays;
+        };
+        stable = import nixpkgs {
+          inherit system config overlays;
+        };
+        master = import masterpkgs {
+          inherit system config overlays;
+        };
+        helpers = import ./lib {
+          inherit home-manager homeage;
+          nixpkgs = unstablepkgs;
+        };
       };
-
-      stable = import nixpkgs {
-        inherit system overlays config;
+      darwinSet = with pkgSet "aarch64-darwin"; {
+        homeConfigurations."mgengarelli" = helpers.mkHome {
+          inherit stable stateVersion master system;
+          username = "mgengarelli";
+          pkgs = unstable;
+          extraModules = [
+            ./home/work-darwin
+          ];
+        };
       };
-
-      unstable = import unstablepkgs {
-        inherit system overlays config;
+      linuxSet = with (pkgSet "x86_64-linux"); {
+        nixosConfigurations = {
+          "elendil" = helpers.mkSystem {
+            inherit stable stateVersion system;
+            pkgs = unstable;
+            extraModules = [
+              ./system/elendil/configuration.nix
+              ./system/elendil/hardware-configuration.nix
+              nixos-hardware.nixosModules.microsoft-surface-pro-intel
+              cosmic.nixosModules.default
+            ];
+          };
+          "aiwendil" = helpers.mkSystem {
+            inherit stable stateVersion system;
+            pkgs = unstable;
+            extraModules = [
+              ./system/aiwendil/configuration.nix
+              nixos-wsl.nixosModules.default
+            ];
+          };
+        };
+        homeConfigurations = {
+          "massi@elendil" = helpers.mkHome {
+            inherit stable stateVersion master system;
+            username = "massi";
+            pkgs = unstable;
+            extraModules = [
+              protrans.homeManagerModules.default
+              ./home/elendil
+            ];
+          };
+          "massi@aiwendil" = helpers.mkHome {
+            inherit stable stateVersion master system;
+            username = "massi";
+            pkgs = unstable;
+            extraModules = [
+              ./home/aiwendil
+            ];
+          };
+        };
       };
+      commonStuff = flake-utils.lib.eachSystem allSystems (system:
+        let
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+            permittedInsecurePackages = [ "electron-25.9.0" ];
+          };
+          overlays = [
+            (_: _: { nixd-nightly = nixd.packages.nixd; })
+            (_: _: self.packages)
+            nix-direnv.overlays.default
+            purescript-overlay.overlays.default
+            (_: _: { gleeter = gleeter.packages.default; })
+          ];
+          unstable = import unstablepkgs {
+            inherit system config overlays;
+          };
+        in
+        {
+          devShells = {
+            default = unstable.mkShell {
+              packages = with unstable; [
+                deadnix
+                nixpkgs-fmt
+                statix
+              ];
+            };
+            purescript = unstable.mkShell {
+              packages = with unstable; [
+                spago-unstable
+                purs
+                nodejs
+              ];
+            };
+            haskell = unstable.mkShell {
+              packages = with unstable; [
+                cabal-install
+                ghc
+                stack
+              ];
+            };
+          };
 
-      master = import masterpkgs {
-        inherit system overlays config;
-      };
+          formatter = nix-formatter-pack.lib.mkFormatter {
+            pkgs = unstable;
+            config.tools = {
+              alejandra.enable = false;
+              deadnix.enable = true;
+              nixpkgs-fmt.enable = true;
+              statix.enable = true;
+            };
+          };
 
-      helpers = import ./lib {
-        inherit home-manager homeage;
-        nixpkgs = unstablepkgs;
-      };
-
-      username = "massi";
+          packages = import ./pkgs { pkgs = unstable; };
+        });
     in
-    {
-      nix.nixPath = [ "nixpkgs=${unstablepkgs}" ];
-
-      homeConfigurations."massi@elendil" = helpers.mkHome {
-        inherit stable stateVersion master username;
-        pkgs = unstable;
-        extraModules = [
-          protrans.homeManagerModules.default
-          ./home/elendil
-        ];
-      };
-
-      homeConfigurations."massi@aiwendil" = helpers.mkHome {
-        inherit stable stateVersion master username;
-        pkgs = unstable;
-        extraModules = [
-          ./home/aiwendil
-        ];
-      };
-
-      nixosConfigurations."elendil" = helpers.mkSystem {
-        inherit stable stateVersion system;
-        pkgs = unstable;
-        extraModules = [
-          ./system/elendil/configuration.nix
-          ./system/elendil/hardware-configuration.nix
-          nixos-hardware.nixosModules.microsoft-surface-pro-intel
-          cosmic.nixosModules.default
-        ];
-      };
-
-      nixosConfigurations."aiwendil" = helpers.mkSystem {
-        inherit stable stateVersion system;
-        pkgs = unstable;
-        extraModules = [
-          ./system/aiwendil/configuration.nix
-          nixos-wsl.nixosModules.default
-        ];
-      };
-
-      packages."${system}" = import ./pkgs { pkgs = unstable; };
-
-      devShells."${system}" = {
-        default = unstable.mkShell {
-          packages = with unstable; [
-            deadnix /* dead code for nix */
-            nixpkgs-fmt /* Formatter for nix */
-            statix /* Static analyzer for nix */
-          ];
-        };
-
-        /* Useful shell to kickstart a new project */
-        purescript = with unstable; mkShell {
-          packages = [
-            spago-unstable
-            purs
-            nodejs
-          ];
-        };
-
-        /* Starter shell for haskell */
-        haskell = with unstable; mkShell {
-          packages = [
-            cabal-install
-            ghc
-            stack
-          ];
-        };
-      };
-
-      formatter.${system} = nix-formatter-pack.lib.mkFormatter {
-        pkgs = stable;
-        config.tools = {
-          alejandra.enable = false;
-          deadnix.enable = true;
-          nixpkgs-fmt.enable = true;
-          statix.enable = true;
-        };
-      };
-    };
+    commonStuff // linuxSet // { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
 }
+

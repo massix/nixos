@@ -88,6 +88,8 @@ in
           background_opacity = "0.9";
           dynamic_background_opacity = true;
           enable_audio_bell = false;
+          macos_option_as_alt = "left";
+          macos_quit_when_last_window_closed = true;
 
           disable_ligatures = "cursor";
 

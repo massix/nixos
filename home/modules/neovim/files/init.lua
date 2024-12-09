@@ -60,7 +60,7 @@ require("lazy").setup({
 -- Keymaps
 require("config.keymaps")
 
-vim.cmd.language("en_US.utf8")
+-- vim.cmd.language("en_US.utf8")
 vim.cmd.colorscheme("catppuccin")
 
 if vim.g.neovide then

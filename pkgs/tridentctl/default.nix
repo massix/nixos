@@ -6,11 +6,11 @@ in
 stdenv.mkDerivation {
   inherit version;
   pname = "tridentctl";
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = with pkgs; if pkgs.hostPlatform.isLinux then [
     stdenv.cc.cc.lib
     patchelf
     installShellFiles
-  ];
+  ] else [ installShellFiles ];
 
   dontBuild = true;
   dontConfigure = true;
@@ -25,7 +25,11 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
     mkdir -p $out/share/trident/
 
+    ${if pkgs.hostPlatform.isLinux then ''
     install -m 0555 tridentctl $out/bin/tridentctl
+    '' else ''
+    install -m 0555 extras/macos/bin/tridentctl $out/bin/tridentctl
+    ''}
     cp -R sample-input/* $out/share/trident/
     runHook postInstall
   '';

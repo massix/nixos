@@ -403,7 +403,7 @@ return {
         on_attach = attach_trouble,
       })
 
-      lspconfig.tsserver.setup({
+      lspconfig.ts_ls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
@@ -465,7 +465,7 @@ return {
         on_attach = attach_trouble,
       })
 
-      lspconfig.typst_lsp.setup({
+      lspconfig.tinymist.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })

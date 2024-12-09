@@ -2,11 +2,15 @@
 , username
 , pkgs
 , config
+, system
 , ...
-}: {
+}: 
+let
+    homeDirectory = if system == "aarch64-darwin" then "/Users/${username}" else "/home/${username}";
+in
+{
   home = {
-    inherit stateVersion username;
-    homeDirectory = "/home/${username}";
+    inherit stateVersion username homeDirectory;
     activation.report-changes = config.lib.dag.entryAnywhere ''
       ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
     '';
@@ -42,38 +46,39 @@
   homeage = {
     # This is true for all users, the file must exist
     identityPaths = [ "~/.age/key.txt" ];
-    installationType = "systemd";
     pkg = pkgs.rage;
+    installationType = if system == "aarch64-darwin" then "activation" else "systemd";
+    mount = if system == "aarch64-darwin" then "/${homeDirectory}/secrets" else "/run/user/$UID/secrets";
 
     file = {
       "idrsa" = {
         source = ./secrets/id_rsa.age;
-        symlinks = [ "/home/${username}/.ssh/id_rsa" ];
+        symlinks = [ "${homeDirectory}/.ssh/id_rsa" ];
       };
 
       "sshconfig" = {
         source = ./secrets/ssh_config.age;
-        symlinks = [ "/home/${username}/.ssh/config" ];
+        symlinks = [ "${homeDirectory}/.ssh/config" ];
       };
 
       "rescue" = {
         source = ./secrets/rescue.age;
-        symlinks = [ "/home/${username}/.ssh/rescue" ];
+        symlinks = [ "${homeDirectory}/.ssh/rescue" ];
       };
 
       "rescuep" = {
         source = ./secrets/rescuep.age;
-        symlinks = [ "/home/${username}/.ssh/rescuep" ];
+        symlinks = [ "${homeDirectory}/.ssh/rescuep" ];
       };
 
       "tanzu" = {
         source = ./secrets/tanzu.age;
-        symlinks = [ "/home/${username}/.ssh/tanzu" ];
+        symlinks = [ "${homeDirectory}/.ssh/tanzu" ];
       };
 
       "mgengarelli" = {
         source = ./secrets/mgengarelli.age;
-        symlinks = [ "/home/${username}/.ssh/mgengarelli" ];
+        symlinks = [ "${homeDirectory}/.ssh/mgengarelli" ];
       };
     };
   };
