@@ -127,18 +127,65 @@ in
   ];
 
   launchd.enable = true;
-  launchd.agents.colima = {
-    enable = true;
-    config = {
-      ProgramArguments = [ "${lib.getExe pkgs.colima}" "start" "--foreground" ];
-      RunAtLoad = true;
-      KeepAlive = true;
+  launchd.agents =
+    let
+      binPath = lib.getExe pkgs.colima;
+      mkColimaAgent =
+        { enable ? true
+        , numCpus ? 8
+        , memory ? 8
+        , arch ? "x86_64"
+        , vmType ? "vz"
+        , vzRosetta ? false
+        , profileName
+        }: {
+          inherit enable;
+          config = {
+            ProgramArguments = [
+              "${binPath}"
+              "start"
+              "--foreground"
+              "--cpu"
+              "${builtins.toString numCpus}"
+              "--memory"
+              "${builtins.toString memory}"
+              "--arch"
+              "${arch}"
+              "--vm-type"
+              "${vmType}"
+              "--profile"
+              "${profileName}"
+            ] ++ (if vzRosetta then [ "--vz-rosetta" ] else [ ]);
 
-      EnvironmentVariables = {
-        PATH = "${pkgs.colima}/bin:${pkgs.docker}/bin:/usr/bin/:/bin:/usr/sbin:/sbin";
+            Label = "massix.colima.${profileName}";
+
+            RunAtLoad = true;
+            KeepAlive = true;
+
+            EnvironmentVariables = {
+              PATH = "${pkgs.colima}/bin:${pkgs.docker}/bin:/usr/bin/:/bin:/usr/sbin:/sbin";
+            };
+          };
+        };
+    in
+    {
+      "colima-aarch64" = mkColimaAgent {
+        enable = true;
+        arch = "aarch64";
+        vzRosetta = false;
+        memory = 4;
+        numCpus = 2;
+        profileName = "aarch64";
+      };
+      "colima-x86_64" = mkColimaAgent {
+        enable = true;
+        arch = "x86_64";
+        vzRosetta = true;
+        memory = 8;
+        numCpus = 4;
+        profileName = "x86_64";
       };
     };
-  };
 }
 
 
