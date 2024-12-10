@@ -4,7 +4,7 @@ return {
     "Exafunction/codeium.vim",
     enabled = function()
       -- Only enable Codeium in Elendil
-      return vim.fn.hostname() == "elendil"
+      return vim.fn.hostname() == "elendil" or vim.fn.hostname() == "M-G6R1WM94QJ"
     end,
     event = { "VeryLazy" },
     init = function()

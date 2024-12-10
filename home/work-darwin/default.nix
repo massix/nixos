@@ -33,13 +33,18 @@ in
       enable = true;
       font = {
         name = "Comic Mono";
-        size = 15;
+        size = 13;
         italic = "0xProto Italic";
         packages = with pkgs; [
           comic-mono
           _0xproto
           noto-fonts-emoji
         ];
+      };
+      extraSettings = {
+        macos_option_as_alt = "left";
+        macos_quit_when_last_window_closed = true;
+        background_blur = 64;
       };
     };
     fish = {
@@ -125,6 +130,23 @@ in
     docker
     colima
   ];
+
+  home.sessionVariables = {
+    K9S_CONFIG_DIR = "/Users/${username}/.config/k9s";
+    ANSIBLE_CONFIG = "/Users/${username}/.ansible.cfg";
+    ANSIBLE_VAULT_PASSWORD_FILE = "/Users/${username}/.ansible-vault-password";
+  };
+
+  home.file.".ansible.cfg" = {
+    text = ''
+      [defaults]
+      vault_password_file = /Users/${username}/.ansible-vault-password
+      host_key_checking = false
+
+      [inventory]
+      enable_plugins = vmware_vm_inventory, yaml
+    '';
+  };
 
   launchd.enable = true;
   launchd.agents =

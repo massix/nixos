@@ -50,6 +50,12 @@ in
         default = "${cfg.font.name} Bold";
       };
     };
+
+    extraSettings = mkOption {
+      type = with types; attrsOf (oneOf [ str bool int float ]);
+      description = "Extra settings to pass to Kitty";
+      default = { };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -88,8 +94,6 @@ in
           background_opacity = "0.9";
           dynamic_background_opacity = true;
           enable_audio_bell = false;
-          macos_option_as_alt = "left";
-          macos_quit_when_last_window_closed = true;
 
           disable_ligatures = "cursor";
 
@@ -107,7 +111,7 @@ in
           window_padding_width = "2";
           single_window_padding_width = "2";
           window_border_width = "1";
-        };
+        } // cfg.extraSettings;
         extraConfig = builtins.concatStringsSep "\n" [
           (fontFeatures (builtins.map (style: "RecursiveMonoCslSt-${style} +liga +dlig +ss10 +ss20") [ "Regular" "Italic" "Bold" "BdItalic" "Med" ]))
           (fontFeatures (builtins.map (style: "0xProto${style} +ss01") [ "Regular" "Italic" ]))
