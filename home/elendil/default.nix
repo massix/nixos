@@ -298,6 +298,8 @@ in
       uefachampions-enabled = true;
       uefaeuro-enabled = true;
     };
+
+    "org/gnome/desktop/wm/preferences".button-layout = "close,minimize,maximize:appmenu";
   };
 
   services.syncthing = {
