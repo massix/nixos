@@ -194,13 +194,14 @@ in
   launchd.agents =
     let
       binPath = lib.getExe pkgs.colima;
+      inherit (lib) optional;
       mkColimaAgent =
         { enable ? true
         , numCpus ? 8
         , memory ? 8
-        , arch ? "x86_64"
         , vmType ? "vz"
-        , vzRosetta ? false
+        , maxCpu ? false
+        , arch
         , profileName
         }: {
           inherit enable;
@@ -209,17 +210,14 @@ in
               "${binPath}"
               "start"
               "--foreground"
-              "--cpu"
-              "${builtins.toString numCpus}"
-              "--memory"
-              "${builtins.toString memory}"
-              "--arch"
-              "${arch}"
-              "--vm-type"
-              "${vmType}"
-              "--profile"
-              "${profileName}"
-            ] ++ (if vzRosetta then [ "--vz-rosetta" ] else [ ]);
+              "--cpu=${builtins.toString numCpus}"
+              "--memory=${builtins.toString memory}"
+              "--arch=${arch}"
+              "--vm-type=${vmType}"
+              "--profile=${profileName}"
+            ]
+            ++ optional (vmType == "vz") "--vz-rosetta"
+            ++ optional maxCpu "--cpu-type=max";
 
             Label = "massix.colima.${profileName}";
 
@@ -234,9 +232,8 @@ in
     in
     {
       "colima-aarch64" = mkColimaAgent {
-        enable = true;
+        enable = false;
         arch = "aarch64";
-        vzRosetta = false;
         memory = 4;
         numCpus = 2;
         profileName = "aarch64";
@@ -244,9 +241,9 @@ in
       "colima-x86_64" = mkColimaAgent {
         enable = true;
         arch = "x86_64";
-        vzRosetta = true;
-        memory = 8;
-        numCpus = 4;
+        memory = 14;
+        numCpus = 8;
+        maxCpu = true;
         profileName = "x86_64";
       };
     };
