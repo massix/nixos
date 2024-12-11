@@ -1,23 +1,64 @@
 { pkgs
-, username
+, config
 , ...
 }:
 let
   inherit (pkgs) lib;
+  inherit (config.home) homeDirectory;
   load-ssh-key = pkgs.writeScriptBin "load-ssh-key" ''
     #!${lib.getExe pkgs.bash}
 
-    RESCUE_PASSPHRASE="$(cat /Users/${username}/.ssh/rescuep)"
+    RESCUE_PASSPHRASE="$(cat ${homeDirectory}/.ssh/rescuep)"
 
     ${lib.getExe pkgs.expect} <<EOF
-        spawn ssh-add /Users/${username}/.ssh/rescue
+        spawn ssh-add ${homeDirectory}/.ssh/rescue
         expect "Enter passphrase"
         send "$RESCUE_PASSPHRASE\r"
         expect eof
     EOF
 
-    ssh-add /Users/${username}/.ssh/mgengarelli
+    ssh-add ${homeDirectory}/.ssh/mgengarelli
   '';
+  windsurf = assert pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64;
+    pkgs.stdenvNoCC.mkDerivation rec {
+      pname = "windsurf";
+      version = "1.0.7";
+
+      nativeBuildInputs = [ pkgs.undmg ];
+      propagatedBuildInputs = with pkgs; [
+        electron
+      ];
+
+      src = builtins.fetchurl {
+        url = "https://windsurf-stable.codeiumdata.com/darwin-arm64-dmg/stable/bf4345439764c543a1e5ff3517bbce5a22128bca/Windsurf-darwin-arm64-${version}.dmg";
+        sha256 = "sha256:1n5m3avmprvb1lyggdahbqgmwkqxiffjl5gqxg49p6f0rdnv0z49";
+      };
+
+      sourceRoot = ".";
+
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out/Applications/
+        cp -a "Windsurf.app" $out/Applications/
+
+        mkdir -p $out/bin
+        ln -s "$out/Applications/Windsurf.app/Contents/Resources/app/bin/windsurf" "$out/bin/windsurf"
+
+        runHook postInstall
+      '';
+
+      # The code from Windsurf is signed, so we cannot manipulate it
+      dontFixup = true;
+
+      meta = with lib; {
+        description = "Windsurf IDE by Codeium";
+        homepage = "https://www.codeium.com/";
+        platforms = [ "aarch64-darwin" ];
+        sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+        license = licenses.unfree;
+      };
+    };
 in
 {
   my-modules = {
@@ -97,11 +138,11 @@ in
         global.disable_stdin = true;
         global.strict_env = true;
 
-        whitelist.prefix = let home = "/Users/mgengarelli"; in [
-          "${home}/dev"
-          "${home}/Development"
-          "${home}/.config/nvim"
-          "${home}/.config/nixos"
+        whitelist.prefix = [
+          "${homeDirectory}/dev"
+          "${homeDirectory}/Development"
+          "${homeDirectory}/.config/nvim"
+          "${homeDirectory}/.config/nixos"
         ];
       };
     };
@@ -118,7 +159,7 @@ in
   homeage.file = {
     avp = {
       source = ./secrets/avp.age;
-      symlinks = [ "/Users/${username}/.ansible-vault-password" ];
+      symlinks = [ "${homeDirectory}/.ansible-vault-password" ];
     };
   };
 
@@ -129,18 +170,19 @@ in
     gleeter
     docker
     colima
+    windsurf
   ];
 
   home.sessionVariables = {
-    K9S_CONFIG_DIR = "/Users/${username}/.config/k9s";
-    ANSIBLE_CONFIG = "/Users/${username}/.ansible.cfg";
-    ANSIBLE_VAULT_PASSWORD_FILE = "/Users/${username}/.ansible-vault-password";
+    K9S_CONFIG_DIR = "${homeDirectory}/.config/k9s";
+    ANSIBLE_CONFIG = "${homeDirectory}/.ansible.cfg";
+    ANSIBLE_VAULT_PASSWORD_FILE = "${homeDirectory}/.ansible-vault-password";
   };
 
   home.file.".ansible.cfg" = {
     text = ''
       [defaults]
-      vault_password_file = /Users/${username}/.ansible-vault-password
+      vault_password_file = ${homeDirectory}/.ansible-vault-password
       host_key_checking = false
 
       [inventory]
@@ -209,5 +251,3 @@ in
       };
     };
 }
-
-

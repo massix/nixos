@@ -4,9 +4,9 @@
 , config
 , system
 , ...
-}: 
+}:
 let
-    homeDirectory = if system == "aarch64-darwin" then "/Users/${username}" else "/home/${username}";
+  homeDirectory = if system == "aarch64-darwin" then "/Users/${username}" else "/home/${username}";
 in
 {
   home = {
