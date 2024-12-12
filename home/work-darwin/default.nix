@@ -3,7 +3,7 @@
 , ...
 }:
 let
-  inherit (pkgs) lib;
+  inherit (pkgs) lib stdenv stdenvNoCC;
   inherit (config.home) homeDirectory;
   load-ssh-key = pkgs.writeScriptBin "load-ssh-key" ''
     #!${lib.getExe pkgs.bash}
@@ -19,8 +19,8 @@ let
 
     ssh-add ${homeDirectory}/.ssh/mgengarelli
   '';
-  windsurf = assert pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64;
-    pkgs.stdenvNoCC.mkDerivation rec {
+  windsurf = assert stdenv.isDarwin && stdenv.isAarch64;
+    stdenvNoCC.mkDerivation rec {
       pname = "windsurf";
       version = "1.0.7";
 
@@ -95,15 +95,19 @@ in
     coding = {
       enable = true;
       languages = {
+        ansible = true;
+        gleam = true;
         go = true;
+        haskell = true;
+        javascript = true;
         json = true;
         lua = true;
+        misc = true;
         nix = true;
+        purescript = true;
         scripting = true;
         terraform = true;
         yaml = true;
-        misc = true;
-        ansible = true;
       };
     };
     git = {
@@ -170,6 +174,7 @@ in
     load-ssh-key
     gleeter
     docker
+    lima
     colima
     windsurf
   ];
