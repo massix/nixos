@@ -77,6 +77,16 @@ in
 
         /* Extensions for HLS */
         haskellPackages.ghcide
+
+        haskellPackages.haskell-debug-adapter /* debugger for haskell */
+        haskellPackages.haskell-dap /* dap interface for haskell */
+        haskellPackages.ghci-dap /* dap interface for haskell-ghci */
+        haskellPackages.hlint /* linter for haskell */
+
+        /* Tools */
+        haskellPackages.hoogle /* Hoogle search tool */
+      ] ++ (if pkgs.stdenv.isLinux then [
+        # The following packages are marked as broken, probably only on Darwin
         haskellPackages.hls-eval-plugin
         haskellPackages.hls-class-plugin
         haskellPackages.hls-hlint-plugin
@@ -94,15 +104,7 @@ in
         haskellPackages.hls-overloaded-record-dot-plugin
         haskellPackages.hls-qualify-imported-names-plugin
         haskellPackages.hls-explicit-record-fields-plugin
-
-        haskellPackages.haskell-debug-adapter /* debugger for haskell */
-        haskellPackages.haskell-dap /* dap interface for haskell */
-        haskellPackages.ghci-dap /* dap interface for haskell-ghci */
-        haskellPackages.hlint /* linter for haskell */
-
-        /* Tools */
-        haskellPackages.hoogle /* Hoogle search tool */
-      ];
+      ] else [ ]);
 
       purescriptTooling = with pkgs; [
         purs-tidy-bin.purs-tidy-0_10_0 /* Formatter for purescript */
