@@ -1,5 +1,6 @@
 { pkgs
 , config
+, username
 , ...
 }:
 let
@@ -253,4 +254,29 @@ in
         profileName = "x86_64";
       };
     };
+
+  nix = {
+    gc.automatic = true;
+    gc.options = "--delete-older-than 10d";
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = [ "nix-command" "flakes" ];
+      keep-outputs = true;
+      keep-derivations = true;
+      warn-dirty = true;
+      trusted-users = [ "root" username ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "surface-zen.cachix.org-1:8OXCpyGHk4UL+BDkgJYW1bGf/ULbNGKLiBjaTELJwaQ="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
+      ];
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://surface-zen.cachix.org"
+        "https://cache.nixos.org"
+        "https://cosmic.cachix.org/"
+      ];
+    };
+  };
 }
