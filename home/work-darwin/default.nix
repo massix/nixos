@@ -85,6 +85,7 @@ in
       extraSettings = {
         macos_option_as_alt = "left";
         macos_quit_when_last_window_closed = true;
+        macos_traditional_fullscreen = true;
         background_blur = 64;
       };
     };

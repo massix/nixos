@@ -88,8 +88,9 @@ in
           cursor_trail = 1;
           scrollback_lines = 10000;
 
-          tab_bar_style = "powerline";
+          tab_bar_style = "fade";
           tab_bar_align = "left";
+          tab_bar_min_tabs = 1;
 
           background_opacity = "0.9";
           dynamic_background_opacity = true;
