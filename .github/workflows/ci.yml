@@ -17,20 +17,30 @@ jobs:
         with:
           files: ./home/modules/neovim/files
   build-packages:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os_version }}
+    strategy:
+      matrix:
+        os_version: [ubuntu-latest, macos-15]
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v30
       - name: Install Cachix
         uses: cachix/cachix-action@v15
         with:
           name: surface-zen
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - run: nix flake show
-      - name: Build packages
+      - name: Build Common Packages
         run: |
-          for pkg in codeium-ls jdtls lombok onedriver spotube tana vscode-js-debug; do
+          for pkg in lombok jdtls codeium-ls vscode-js-debug bash-language-server tanzu tridentctl; do
             nix build ".#${pkg}"
             cachix push surface-zen result
           done
+      - name: Build Linux Packages
+        run: |
+          for pkg in onedriver spotube tana; do
+          nix build ".#${pkg}"
+          cachix push surface-zen result
+          done
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
