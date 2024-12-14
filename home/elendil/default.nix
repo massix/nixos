@@ -236,7 +236,7 @@ in
   # system.
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      show-battery-percentage = true;
+      show-battery-percentage = false;
       clock-show-date = true;
       clock-show-weekday = true;
       monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
