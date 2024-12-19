@@ -687,7 +687,7 @@ return {
             "nofile",
           }
 
-          local ftype = vim.api.nvim_buf_get_option(0, "filetype")
+          local ftype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
           local btype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
 
           return not (vim.tbl_contains(disabled_fts, ftype) or vim.tbl_contains(disabled_bts, btype))

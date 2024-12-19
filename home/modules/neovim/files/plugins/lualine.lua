@@ -66,10 +66,10 @@ return {
               function()
                 local msg = "No LSP"
                 local bufnr = vim.api.nvim_get_current_buf()
-                local bufft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+                local bufft = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
                 local clients = {}
 
-                for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+                for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
                   table.insert(clients, client)
                 end
 
@@ -89,7 +89,7 @@ return {
                 end
                 return msg
               end,
-              icon = " ",
+              icon = " ",
             },
 
             -- orgmode statusline

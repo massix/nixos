@@ -1,32 +1,6 @@
 -- Here all the plugins for the editor
 return {
 
-  -- Better `vim.notify()`
-  {
-    "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Dismiss all Notifications",
-      },
-    },
-    opts = {
-      timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-      render = "default",
-      stages = "slide",
-      top_down = true,
-    },
-  },
-
   -- Noice
   {
     "folke/noice.nvim",
@@ -152,25 +126,6 @@ return {
         desc = "Scroll backward",
         mode = { "i", "n", "s" },
       },
-    },
-  },
-
-  -- Icon Picker
-  {
-    "ziontee113/icon-picker.nvim",
-    cmd = { "IconPickerNormal", "IconPickerYank", "IconPickerInsert" },
-    opts = {
-      disable_legacy_commands = true,
-    },
-    init = function()
-      local wk = require("which-key")
-      wk.add({
-        { "<leader>I", group = "insert" },
-      })
-    end,
-    keys = {
-      { "<leader>Ii", "<cmd>IconPickerNormal<cr>", desc = "Icon Picker" },
-      { "<C-i>", mode = "i", "<cmd>IconPickerInsert<cr>", desc = "Icon Picker (insert)" },
     },
   },
 
