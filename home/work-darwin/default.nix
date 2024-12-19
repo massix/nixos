@@ -26,9 +26,6 @@ let
       version = "1.0.7";
 
       nativeBuildInputs = [ pkgs.undmg ];
-      propagatedBuildInputs = with pkgs; [
-        electron
-      ];
 
       src = builtins.fetchurl {
         url = "https://windsurf-stable.codeiumdata.com/darwin-arm64-dmg/stable/bf4345439764c543a1e5ff3517bbce5a22128bca/Windsurf-darwin-arm64-${version}.dmg";
