@@ -96,6 +96,9 @@ in
           kubernetes-helm
           kustomize
           kubectx
+          kubectl-node-shell
+          kubectl-klock
+          kubectl-ktop
         ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
         vaultPackages = orEmpty cfg.vault.enable [ vault ];
       in
