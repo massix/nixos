@@ -175,6 +175,7 @@ in
     lima
     colima
     windsurf
+    spotify
   ];
 
   home.sessionVariables = {
