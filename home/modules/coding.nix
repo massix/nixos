@@ -189,7 +189,7 @@ in
       ];
 
       typstTooling = with pkgs; [
-        typst-lsp /* lsp for typst */
+        tinymist /* lsp for typst */
         typstfmt /* experimental formatter for typst */
       ];
     in
