@@ -86,10 +86,7 @@ in
         scripting = true;
         terraform = true;
         yaml = true;
-        # FIXME: Typst is broken with rust 1.80, re-enable it once the
-        # upstream https://github.com/nvarner/typst-lsp/pull/515 will
-        # be merged and nixos modules refreshed
-        typst = false;
+        typst = true;
       };
     };
 
@@ -359,6 +356,7 @@ in
 
     proton-pass
     unzip
+    stremio
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
