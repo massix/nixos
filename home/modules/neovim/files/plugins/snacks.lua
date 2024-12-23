@@ -22,6 +22,25 @@ end
 local is_dim_enabled = false
 
 return {
+
+  --- This is only for vim.ui.select
+  {
+    "stevearc/dressing.nvim",
+    lazy = false,
+    opts = {
+      input = { enabled = false },
+      select = {
+        enabled = true,
+        backend = { "telescope" },
+        trim_prompt = true,
+        telescope = require("telescope.themes").get_ivy({}),
+      },
+    },
+    config = function(_, opts)
+      require("dressing").setup(opts)
+    end,
+  },
+
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -39,6 +58,9 @@ return {
       Snacks.input.enable()
       Snacks.dim.enable()
       is_dim_enabled = true
+
+      -- Override the default vim.ui.input
+      vim.ui.input = Snacks.input.input
     end,
 
     ---@type snacks.Config
@@ -59,6 +81,7 @@ return {
         filter = filter_filetypes,
       },
       git = { enabled = false },
+      win = { enabled = true },
       input = { enabled = true },
       notifier = {
         enabled = true,
