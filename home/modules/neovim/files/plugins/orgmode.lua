@@ -14,16 +14,6 @@ return {
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       {
-        "nvim-orgmode/telescope-orgmode.nvim",
-        version = "1.1.0",
-        config = function()
-          require("telescope").load_extension("orgmode")
-        end,
-        keys = {
-          { "<leader>sO", "<cmd>Telescope orgmode search_headings<cr>", desc = "Search org headings" },
-        },
-      },
-      {
         "danilshvalov/org-modern.nvim",
         opts = {},
         config = function() end,

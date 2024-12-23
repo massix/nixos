@@ -127,7 +127,17 @@ in
 
     # The extra packages are needed for luarocks
     home.packages = (if cfg.gui.enable then [ cfg.gui.package ] else [ ])
-      ++ (with pkgs; [ lua5_1 lua51Packages.luarocks readline python3 ]);
+      ++ (with pkgs; [
+      lua5_1
+      lua51Packages.luarocks
+      readline
+      python3
+
+      # The following are needed by different plugins
+      fzf
+      ripgrep
+      skim
+    ]);
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =

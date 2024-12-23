@@ -25,7 +25,6 @@ return {
         orgagenda = false,
         md = false,
         toggleterm = false,
-        TelescopePrompt = false,
         vimwiki = false,
       }
 

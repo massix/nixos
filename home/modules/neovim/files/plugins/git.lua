@@ -3,7 +3,6 @@ local spec = {
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
       { "sindrets/diffview.nvim", lazy = false },
     },
     opts = {
@@ -21,7 +20,7 @@ local spec = {
         section = { " ", " " },
       },
       integrations = {
-        telescope = true,
+        fzf_lua = true,
         diffview = true,
       },
     },

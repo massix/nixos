@@ -22,6 +22,7 @@ return {
           enabled = true,
           indentscope_color = "mauve",
         },
+        fzf = true,
         neotest = true,
         rainbow_delimiters = true,
         overseer = true,
@@ -40,9 +41,6 @@ return {
         gitsigns = true,
         headlines = false,
         markdown = true,
-        telescope = {
-          enabled = true,
-        },
         indent_blankline = {
           enabled = true,
           scope_color = "mauve",

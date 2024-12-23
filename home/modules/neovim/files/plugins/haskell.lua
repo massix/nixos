@@ -10,7 +10,7 @@ return {
     opts = {
       tools = {
         codeLens = { autoRefresh = true },
-        hoogle = { mode = "telescope-local" },
+        hoogle = { mode = "auto" },
         hover = { enable = true },
         definition = { hoogle_signature_fallback = true },
         repl = { handler = "toggleterm" },
@@ -22,9 +22,6 @@ return {
     },
     config = function(_, opts)
       vim.g.haskell_tools = opts
-
-      require("telescope").load_extension("ht")
-      require("telescope").load_extension("hoogle")
 
       -- Set bindings only when the plugin is loaded
       local group = vim.api.nvim_create_augroup("HaskellTools", { clear = true })

@@ -243,12 +243,9 @@ return {
     dependencies = {
       { "neovim/nvim-lspconfig" },
       { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope.nvim" },
     },
     event = { "VeryLazy" },
-    config = function()
-      require("telescope").load_extension("yaml_schema")
-    end,
+    config = function() end,
   },
 
   -- lazydev
@@ -321,7 +318,7 @@ return {
           ---@param bufnr integer
           on_attach = function(client, bufnr)
             -- stylua: ignore
-            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", "<cmd>Telescope yaml_schema<CR>", { desc = "Switch YAML Schema" })
+            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", [[<cmd>lua require("yaml-companion").open_ui_select()<cr>]], { desc = "Switch YAML Schema" })
             attach_trouble(client, bufnr)
           end,
         },
@@ -452,7 +449,7 @@ return {
             bufnr,
             "n",
             "gD",
-            "<cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<CR>",
+            "<cmd>lua require('omnisharp_extended').lsp_definition()<CR>",
             { desc = "C# Goto definition" }
           )
 
@@ -680,7 +677,6 @@ return {
       return {
         enabled = function()
           local disabled_fts = {
-            "TelescopePrompt",
             "toggleterm",
           }
           local disabled_bts = {
