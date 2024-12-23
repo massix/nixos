@@ -269,9 +269,9 @@ return {
               use_mode_colors = false,
               filetype_names = {
                 ["oil"] = "Oil",
-                ["spectre_panel"] = "Spectre",
                 ["OverseerList"] = "Overseer List",
                 ["lazy"] = "Lazy",
+                ["grug-far"] = "Grug Far",
               },
             },
           },

@@ -53,7 +53,6 @@ return {
         api.button("SPC s M", "󰆍 " .. " Search man pages"),
         api.button("SPC SPC", " " .. " Legendary"),
         api.button("SPC g g", "󰊢 " .. " Neogit"),
-        api.button("SPC S o", "󰊠 " .. " Spectre"),
         api.button("SPC p p", "󱎫 " .. " Pomodoro"),
         api.button("SPC l l", "󰒲 " .. " Lazy UI"),
         api.button("SPC n d", " " .. " Nix Development"),
