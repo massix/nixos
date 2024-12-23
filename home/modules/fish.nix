@@ -107,6 +107,15 @@ in
             hash = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
           };
         }
+        {
+          name = "fzf";
+          src = fetchFromGitHub {
+            repo = "fzf.fish";
+            owner = "PatrickF1";
+            rev = "8920367cf85eee5218cc25a11e209d46e2591e7a";
+            hash = "sha256-T8KYLA/r/gOKvAivKRoeqIwE2pINlxFQtZJHpOy9GMM=";
+          };
+        }
       ];
 
       shellAliases = {
@@ -149,6 +158,7 @@ in
       entr # Modern Unix `watch`
       eza # Modern Unix `ls`
       fd # Modern Unix `find`
+      fzf # Fuzzy finder
       glow # Terminal Markdown renderer
       gping # Modern Unix `ping`
       hexyl # Modern Unix `hexedit`
