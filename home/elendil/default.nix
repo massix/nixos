@@ -276,9 +276,9 @@ in
     };
 
     "org/gnome/shell/extensions/auto-move-windows".application-list = [
-      "org.telegram.desktop.desktop:3"
-      "webcord.desktop:3"
-      "com.rtosta.zapzap.desktop:3"
+      "org.telegram.desktop.desktop:2"
+      "webcord.desktop:2"
+      "com.rtosta.zapzap.desktop:2"
     ];
 
     "org/gnome/shell/extensions/colosseum" = {
