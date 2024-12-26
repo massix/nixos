@@ -7,7 +7,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Load Nix Configuration
-        uses: aldoborrero/use-nix-action@v2
+        uses: rrbutani/use-nix-shell-action@v1
       - name: Lint nix
         run: statix check
       - name: Find nix dead code
