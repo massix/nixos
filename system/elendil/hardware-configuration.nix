@@ -8,25 +8,18 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot =
-    let
-      kernelPackages = pkgs.linuxPackagesFor pkgs.custom-kernel;
-    in
-    {
-      initrd = {
-        availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-        kernelModules = [ "i915" ];
-      };
-
-      kernelModules = [ "kvm-intel" ];
-      extraModulePackages = [ ];
-      kernelParams = lib.mkForce [
-        "acpi_osi=\"!Windows 2020\""
-        "mem_sleep_default=deep"
-      ];
-      blacklistedKernelModules = [ "int3403_thermal" ];
-      kernelPackages = lib.mkForce kernelPackages;
+  boot = {
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+      kernelModules = [ "i915" ];
+      systemd.enable = true;
     };
+
+    kernelModules = [ "kvm-intel" "i915" ];
+    extraModulePackages = [ ];
+    blacklistedKernelModules = [ "int3403_thermal" ];
+    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.custom-kernel);
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e9f57e65-2d06-4fd1-bdfa-e79212b90efa";
@@ -41,7 +34,7 @@
   swapDevices = [
     {
       device = "/var/lib/swapfile";
-      size = 8 * 1024;
+      size = 18 * 1024;
     }
   ];
 

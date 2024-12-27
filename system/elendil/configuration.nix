@@ -107,6 +107,16 @@
     };
   };
 
+  services.logind = {
+    powerKey = "suspend-then-hibernate";
+    lidSwitch = "suspend-then-hibernate";
+  };
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=4h
+    HibernateLocation=/var/lib/swapfile
+  '';
+
   # Configure console keymap
   console.keyMap = "us-acentos";
 
