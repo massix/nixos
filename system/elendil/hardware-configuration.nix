@@ -13,12 +13,35 @@
       availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ "i915" ];
       systemd.enable = true;
+      verbose = false;
     };
 
     kernelModules = [ "kvm-intel" "i915" ];
     extraModulePackages = [ ];
     blacklistedKernelModules = [ "int3403_thermal" ];
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.custom-kernel);
+    consoleLogLevel = 0;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+
+    loader.timeout = 0;
+
+    plymouth = {
+      enable = true;
+      theme = "glitch";
+      themePackages = with pkgs; [
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "glitch" ];
+        })
+      ];
+    };
   };
 
   fileSystems."/" = {

@@ -113,7 +113,7 @@
   };
 
   systemd.sleep.extraConfig = ''
-    HibernateDelaySec=4h
+    HibernateDelaySec=${builtins.toString (3600 * 4)}
     HibernateLocation=/var/lib/swapfile
   '';
 
