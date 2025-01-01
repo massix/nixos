@@ -47,6 +47,9 @@
 
     cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     cosmic.inputs.nixpkgs.follows = "unstablepkgs";
+
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "unstablepkgs";
   };
 
   outputs =
@@ -65,6 +68,7 @@
     , nixos-wsl
     , cosmic
     , gleeter
+    , zen-browser
     , self
     , ...
     }:
@@ -84,6 +88,8 @@
           nix-direnv.overlays.default
           purescript-overlay.overlays.default
           (_: _: { gleeter = gleeter.packages.${system}.default; })
+          (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
+          (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
         ];
         unstable = import unstablepkgs {
           inherit system config overlays;

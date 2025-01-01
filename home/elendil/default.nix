@@ -301,7 +301,7 @@ in
   };
 
   services.flameshot = {
-    enable = true;
+    enable = false;
     package = pkgs.flameshot;
     settings = {
       General = {
@@ -353,6 +353,7 @@ in
     proton-pass
     unzip
     stremio
+    zen-browser-beta
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
