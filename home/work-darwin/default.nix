@@ -61,7 +61,7 @@ in
 {
   my-modules = {
     fonts = {
-      enable = false;
+      enable = true;
     };
     neovim = {
       enable = true;
@@ -71,13 +71,22 @@ in
     kitty = {
       enable = true;
       font = {
-        name = "Comic Mono";
+        name = "NovaMono";
+        italic = "auto";
+        bold = "auto";
         size = 13;
-        italic = "0xProto Italic";
         packages = with pkgs; [
           comic-mono
           _0xproto
           noto-fonts-emoji
+          recursive
+          (google-fonts.override {
+            fonts = [
+              "SyneMono"
+              "JetBrainsMono"
+              "NovaMono"
+            ];
+          })
         ];
       };
       extraSettings = {
