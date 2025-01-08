@@ -410,6 +410,11 @@ return {
         on_attach = attach_trouble,
       })
 
+      lspconfig.roc_ls.setup({
+        capabilities = capabilities,
+        on_attach = attach_trouble,
+      })
+
       lspconfig.marksman.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
