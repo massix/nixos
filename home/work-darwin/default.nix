@@ -20,6 +20,31 @@ let
 
     ssh-add ${homeDirectory}/.ssh/mgengarelli
   '';
+  macpass = assert stdenv.isDarwin && stdenv.isAarch64;
+    stdenvNoCC.mkDerivation rec {
+      pname = "macpass";
+      version = "0.8.1";
+
+      nativeBuildInputs = [ pkgs.unzip ];
+
+      src = builtins.fetchurl {
+        url = "https://github.com/MacPass/MacPass/releases/download/${version}/MacPass-${version}.zip";
+        sha256 = "sha256:0wxifcl4klvkdllalmpwixv5z6wnwmsfpcbrzv0w0hjvjkf3n39d";
+      };
+
+      sourceRoot = ".";
+      dontBuild = true;
+      doCheck = false;
+
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out/Applications/
+        cp -a "MacPass.app" "$out/Applications/"
+
+        runHook postInstall
+      '';
+    };
   windsurf = assert stdenv.isDarwin && stdenv.isAarch64;
     stdenvNoCC.mkDerivation rec {
       pname = "windsurf";
@@ -185,6 +210,7 @@ in
     colima
     windsurf
     spotify
+    macpass
   ];
 
   home.sessionVariables = {
