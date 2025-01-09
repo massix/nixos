@@ -40,10 +40,8 @@ let
     '';
   };
 
-  terminalFont = rec {
-    name = "Comic Mono";
-    italic = "0xProto Italic";
-    bold = "${name} Bold";
+  terminalFont = {
+    name = "Recursive Mono Casual Static";
     size = 12;
   };
 in

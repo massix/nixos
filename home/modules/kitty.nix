@@ -42,12 +42,12 @@ in
 
       italic = mkOption {
         type = types.str;
-        default = "${cfg.font.name} Italic";
+        default = "auto";
       };
 
       bold = mkOption {
         type = types.str;
-        default = "${cfg.font.name} Bold";
+        default = "auto";
       };
     };
 
