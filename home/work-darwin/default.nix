@@ -96,10 +96,10 @@ in
     kitty = {
       enable = true;
       font = {
-        name = "NovaMono";
+        name = "Recursive Mono Casual Static";
         italic = "auto";
         bold = "auto";
-        size = 13;
+        size = 12;
         packages = with pkgs; [
           comic-mono
           _0xproto
