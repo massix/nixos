@@ -18,7 +18,7 @@ let
       version = "1.0.0";
       spellFile = "${code}.utf-8.spl";
       src = pkgs.fetchurl {
-        url = "http://ftp.vim.org/pub/vim/runtime/spell/${spellFile}";
+        url = "https://ftp.nluug.nl/pub/vim/runtime/spell/${spellFile}";
         inherit hash;
       };
 
