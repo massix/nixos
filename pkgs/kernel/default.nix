@@ -25,8 +25,9 @@ let
   };
 in
 pkgs.buildLinux {
-  inherit version;
   pname = "linux-${kernelVersion}-surface-zen";
+  version = kernelVersion;
+  modDirVersion = version;
 
   src = linuxZen;
   ignoreConfigErrors = true;
