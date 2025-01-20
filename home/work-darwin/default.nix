@@ -292,7 +292,7 @@ in
     gc.automatic = true;
     gc.options = "--delete-older-than 10d";
     settings = {
-      auto-optimise-store = true;
+      auto-optimise-store = false;
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
       keep-derivations = true;
