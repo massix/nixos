@@ -329,6 +329,7 @@ return {
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.lua_ls.setup({
         on_attach = attach_trouble,
       })
@@ -338,10 +339,12 @@ return {
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.jsonls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
         settings = {
+          ---@diagnostic disable-next-line: missing-fields
           json = {
             schemas = require("schemastore").json.schemas(),
             validate = { enable = true },
@@ -355,6 +358,7 @@ return {
 
       lspconfig.yamlls.setup(cfg)
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.clangd.setup({
         cmd = {
           "clangd",
@@ -378,6 +382,7 @@ return {
         end,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.terraformls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -400,31 +405,37 @@ return {
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.ts_ls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.purescriptls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.roc_ls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.marksman.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.bashls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.kotlin_language_server.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -433,12 +444,14 @@ return {
         },
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.omnisharp.setup({
         cmd = { "OmniSharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
         handlers = {
           ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
         -- capabilities = capabilities,
+        ---@diagnostic disable-next-line: missing-fields
         settings = {
           RoslynExtensionsOptions = {
             EnableAnalyzersSupport = true,
@@ -467,6 +480,7 @@ return {
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.tinymist.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -764,6 +778,7 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
+    commit = "13b3cdc9a53ec821b9e693ee71501cc2d6cf206c",
     opts = {
       hover = {
         open_cmd = "!xdg-open",
@@ -864,6 +879,7 @@ return {
 
       vim.g.conform_autoformat = true
 
+      ---@diagnostic disable-next-line: duplicate-set-field
       vim.g.conform_toggle_autoformat = function()
         vim.g.conform_autoformat = not vim.g.conform_autoformat
         if vim.g.conform_autoformat then
