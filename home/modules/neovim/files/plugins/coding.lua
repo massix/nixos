@@ -842,6 +842,16 @@ return {
     end,
   },
 
+  -- Inline diagnostics
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("tiny-inline-diagnostic").setup({ preset = "modern" })
+      vim.diagnostic.config({ virtual_text = false })
+    end,
+  },
+
   -- Formatter
   {
     "stevearc/conform.nvim",
