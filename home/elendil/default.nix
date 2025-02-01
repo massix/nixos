@@ -234,15 +234,15 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/feet-on-the-dashboard.png";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/comfy-home.png";
       picture-uri-dark = picture-uri;
       picture-options = "zoom";
     };
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = true;
-      tap-and-drag = true;
+      tap-to-click = false;
+      tap-and-drag = false;
       two-finger-scrolling-enabled = true;
       accel-profile = "adaptive";
     };
