@@ -42,7 +42,7 @@ let
 
   terminalFont = {
     name = "Recursive Mono Casual Static";
-    size = 12;
+    size = 10;
   };
 in
 {
