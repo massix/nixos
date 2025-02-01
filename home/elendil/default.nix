@@ -290,6 +290,12 @@ in
       uefaeuro-enabled = true;
     };
 
+    "org/gnome/mutter" = {
+      experimental-features = [ "scale-monitor-framebuffer" ];
+      dynamic-workspaces = true;
+      attach-modal-dialogs = true;
+    };
+
     "org/gnome/desktop/wm/preferences".button-layout = "close,minimize,maximize:appmenu";
   };
 
