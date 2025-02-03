@@ -82,6 +82,26 @@ let
         license = licenses.unfree;
       };
     };
+  tana = assert stdenv.isDarwin;
+    stdenvNoCC.mkDerivation rec {
+      pname = "tana";
+      version = "1.0.24";
+      nativeBuildInputs = [ pkgs.undmg ];
+
+      src = builtins.fetchurl {
+        url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v${version}/Tana-${version}-universal.dmg";
+        sha256 = "sha256:0jnm0drjpyj3mwd4yznvddvad5x80jjk1lgzv6np15i1f916mhfm";
+      };
+
+      sourceRoot = ".";
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/Applications/
+        cp -a *.app $out/Applications/
+        runHook postInstall
+      '';
+    };
 in
 {
   my-modules = {
@@ -211,6 +231,7 @@ in
     windsurf
     spotify
     macpass
+    tana
   ];
 
   home.sessionVariables = {
