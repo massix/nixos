@@ -907,6 +907,8 @@ return {
         rust = { "rustfmt" },
         go = { "gofumpt" },
         yaml = { "yamlfmt" },
+        typescript = { "prettier" },
+        javascript = { "prettier" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then
