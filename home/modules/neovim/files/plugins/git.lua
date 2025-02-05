@@ -4,6 +4,7 @@ local spec = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "sindrets/diffview.nvim", lazy = false },
+      "ibhagwan/fzf-lua",
     },
     opts = {
       disable_hint = false,
