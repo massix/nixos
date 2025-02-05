@@ -14,12 +14,12 @@ let
       sha256 = hash;
     };
   pname = "tanzu";
-  version = "1.5.1";
+  version = "1.5.3";
   src =
     if pkgs.hostPlatform.isLinux then
-      (fetchPkg version "x86-64_linux" "sha256:144635rh8nqxxnivpn9801lyqiqzxv094vgp9n60s0xfgs0paxiy")
+      (fetchPkg version "x86-64_linux" "sha256:1rgqvx589p7xb1b5i51f0z1w7p9psxllnd82scnqngn9r7qmx1jv")
     else
-      (fetchPkg version "aarch64-darwin" "sha256:1y043xmzn99nd0z991ykmii2k94byn7vigvlsz9q96ih8i06bslf");
+      (fetchPkg version "aarch64-darwin" "sha256:13p2dbknhzhqg4981h41px1ijp8ybc13hiyxqsp78bh9a38nnfqw");
 in
 pkgs.stdenv.mkDerivation {
   inherit pname version src;
