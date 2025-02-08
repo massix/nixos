@@ -778,7 +778,6 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
-    commit = "13b3cdc9a53ec821b9e693ee71501cc2d6cf206c",
     opts = {
       hover = {
         open_cmd = "!xdg-open",
@@ -844,6 +843,9 @@ return {
     config = function(_, opts)
       require("lspsaga").setup(opts)
       vim.lsp.inlay_hint.enable(true)
+      vim.diagnostic.config({
+        severity_sort = true,
+      })
     end,
     init = function()
       local wk = require("which-key")
