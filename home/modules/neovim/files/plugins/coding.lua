@@ -424,12 +424,6 @@ return {
       })
 
       ---@diagnostic disable-next-line: missing-fields
-      lspconfig.marksman.setup({
-        capabilities = capabilities,
-        on_attach = attach_trouble,
-      })
-
-      ---@diagnostic disable-next-line: missing-fields
       lspconfig.bashls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,

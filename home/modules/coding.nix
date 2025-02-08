@@ -178,7 +178,6 @@ in
         codeium-ls /* language server for codeium */
         gitlint /* linter for git commit messages */
         hadolint /* linter for Dockerfiles */
-        marksman /* language server for markdown */
         commitlint /* linter for commit messages */
         actionlint /* linter for github actions */
         cocogitto /* autogenerate changelogs */
