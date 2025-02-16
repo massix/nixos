@@ -400,6 +400,7 @@ return {
         },
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.dockerls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -469,6 +470,7 @@ return {
         end,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.gleam.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -480,6 +482,7 @@ return {
         on_attach = attach_trouble,
       })
 
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.gopls.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
@@ -498,11 +501,7 @@ return {
         },
       })
 
-      lspconfig.gleam.setup({
-        capabilities = capabilities,
-        on_attach = attach_trouble,
-      })
-
+      ---@diagnostic disable-next-line: missing-fields
       lspconfig.ansiblels.setup({
         capabilities = capabilities,
         on_attach = attach_trouble,
