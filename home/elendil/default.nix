@@ -117,6 +117,7 @@ in
           litCorridor = true;
         };
       };
+      cataclysm-dda.enable = true;
     };
 
     im.enable = true;
@@ -296,7 +297,7 @@ in
       attach-modal-dialogs = true;
     };
 
-    "org/gnome/desktop/wm/preferences".button-layout = "close,minimize,maximize:appmenu";
+    "org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,maximize,close";
   };
 
   services.syncthing = {
@@ -312,14 +313,6 @@ in
         showDesktopNotification = true;
         savePathFixed = false;
       };
-    };
-  };
-
-  # Fix for Flameshot service requiring a non-existing target
-  systemd.user.targets.tray = {
-    Unit = {
-      Description = "Home Manager system tray";
-      Requires = [ "graphical-session-pre.target" ];
     };
   };
 
