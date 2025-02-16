@@ -148,6 +148,7 @@
       PasswordAuthentication = false;
       StrictModes = false;
       AllowUsers = [ "massi" ];
+      MaxAuthTries = 3;
     };
     banner = ''
       You are now on the NixOS box. Be careful!
