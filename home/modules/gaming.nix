@@ -55,6 +55,9 @@ in
         enableStoneSense = mkEnableOption "StoneSense";
       };
     };
+    cataclysm-dda = {
+      enable = mkEnableOption "Install Cataclysm DDA";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -92,8 +95,9 @@ in
             })
           ] else [ ];
         netHack = if cfg.nethack.enable then (with pkgs; [ nethack ]) else [ ];
+        cataclysmdda = if cfg.cataclysm-dda.enable then (with pkgs; [ cataclysm-dda ]) else [ ];
       in
-      dwarfFortress ++ netHack;
+      dwarfFortress ++ netHack ++ cataclysmdda;
 
     xdg.desktopEntries."dwarf-fortress" = mkIf cfg.dwarfFortress.enable {
       name = "Dwarf Fortress";
