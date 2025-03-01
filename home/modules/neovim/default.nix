@@ -45,7 +45,7 @@ let
       rev = "v${version}";
     };
 
-    cargoHash = "sha256-0wkuJS5d4bSd1yTku4rcRnKKros8WzSGtV0QXEQl4tU=";
+    cargoHash = "sha256-dv9Ozw7iu74GnC/9+036W1LF6cxt4UXYGnoYqPbDHSM=";
     doCheck = false;
   };
   vscode-extension = pname: { version, hash }: pkgs.stdenvNoCC.mkDerivation {
