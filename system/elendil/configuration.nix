@@ -235,7 +235,10 @@
     zsh.enable = false;
     fish.enable = true;
     command-not-found.enable = false;
-    steam.enable = true;
+    steam = {
+      enable = true;
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+    };
   };
 
   xdg.portal = {
