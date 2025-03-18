@@ -21,6 +21,7 @@
     blacklistedKernelModules = [ "int3403_thermal" ];
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.custom-kernel);
     consoleLogLevel = 0;
+    supportedFilesystems = [ "ntfs" ];
     kernelParams = [
       "quiet"
       "splash"
