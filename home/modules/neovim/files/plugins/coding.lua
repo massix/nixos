@@ -16,6 +16,12 @@ return {
         config = false,
         enabled = true,
       },
+      {
+        "grafana/vim-alloy",
+        lazy = false,
+        config = false,
+        enabled = true,
+      },
     },
     cmd = { "TSUpdateSync" },
     keys = {
@@ -528,6 +534,11 @@ return {
             },
           },
         },
+      })
+
+      ---@diagnostic disable-next-line: missing-fields
+      lspconfig.nginx_language_server.setup({
+        capabilities = capabilities,
       })
 
       -- Make sure that inlay hints are always enabled

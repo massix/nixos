@@ -185,6 +185,7 @@ in
         editorconfig-checker /* linter for .editorconfig files */
         gnumake42 /* makefile */
         bear /* generate compilation database */
+        nginx-language-server /* language server for nginx */
       ];
 
       typstTooling = with pkgs; [
