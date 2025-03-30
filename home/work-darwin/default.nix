@@ -210,7 +210,95 @@ in
         editor = "nvim";
       };
     };
-
+    zed-editor = {
+      enable = true;
+      extraPackages = with pkgs; [
+        gitlab-ci-ls
+        terraform-ls
+        ansible-language-server
+        nixd
+        docker-ls
+        gleam
+        helm-ls
+        nginx-language-server
+      ];
+      extensions = [
+        "ansible"
+        "catppuccin"
+        "catppuccin-blur"
+        "catppuccin-blur-plus"
+        "catppuccin-icons"
+        "dockerfile"
+        "fish"
+        "gitlab-ci-ls"
+        "gleam"
+        "helm"
+        "jinja2"
+        "lua"
+        "make"
+        "nginx"
+        "nix"
+        "terraform"
+      ];
+      userSettings = {
+        ui_font_size = 14;
+        buffer_font_size = 13;
+        buffer_font_family = "Rec Mono Casual";
+        buffer_font_fallbacks = [ "Symbols Nerd Font Mono" ];
+        autosave = "on_window_change";
+        theme = "Catppuccin Macchiato (Blue Blur+)";
+        terminal = {
+          font_size = 12;
+          font_family = "0xProto";
+          font_fallbacks = [ "Symbols Nerd Font Mono" ];
+        };
+        file_types = {
+          Jinja2 = [
+            "*.j2"
+            "**.j2"
+          ];
+          Ansible = [
+            "**.ansible.yml"
+            "**/defaults/**.yml"
+            "**/defaults/**.yaml"
+            "**/meta/**.yml"
+            "**/meta/**.yaml"
+            "**/tasks/**.yml"
+            "**/tasks/*.yml"
+            "**/tasks/*.yaml"
+            "**/handlers/*.yml"
+            "**/handlers/*.yaml"
+            "**/group_vars/**.yml"
+            "**/group_vars/**.yaml"
+            "**playbook*.yaml"
+            "**playbook*.yml"
+          ];
+        };
+        languages = {
+          Nix = {
+            language_servers = [ "nixd" ];
+            enable_language_server = true;
+            formatter = {
+              external.command = "nixpkgs-fmt";
+            };
+          };
+        };
+        lsp = {
+          ansible-language-server = {
+            settings = {
+              ansible.path = "ansible";
+              executionEnvironment.enabled = false;
+              python.interpreterPath = "python3";
+              validation = {
+                enabled = true;
+                lint.enabled = true;
+                lint.path = "ansible-lint";
+              };
+            };
+          };
+        };
+      };
+    };
   };
 
   homeage.file = {
