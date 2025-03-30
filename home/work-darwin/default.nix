@@ -185,6 +185,7 @@ in
         colored = true;
       };
     };
+    gleeter.enable = true;
   };
   programs = {
     home-manager.enable = true;
