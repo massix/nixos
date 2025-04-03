@@ -9,7 +9,7 @@ return {
       return {
         options = {
           theme = "catppuccin",
-          globalstatus = false,
+          globalstatus = true,
           icons_enabled = true,
           section_separators = { left = "", right = "" },
           component_separators = { left = "", right = "" },
