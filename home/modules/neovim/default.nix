@@ -183,6 +183,7 @@ in
             rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
             sniprun = "${sniprun}/bin/sniprun",
+            vsCodeAnsible = "${pkgs.vscode-extensions.redhat.ansible}/share/vscode/extensions/redhat.ansible/out/server/src/server.js",
           }
         '';
 

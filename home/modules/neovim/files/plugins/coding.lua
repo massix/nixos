@@ -1,4 +1,5 @@
 local util_defaults = require("util.defaults")
+local nix = require("util.nix")
 
 return {
   -- Treesitter is a new parser generator tool that we can
@@ -509,31 +510,9 @@ return {
 
       ---@diagnostic disable-next-line: missing-fields
       lspconfig.ansiblels.setup({
+        cmd = { nix.nodePath, nix.vsCodeAnsible, "--stdio" },
         capabilities = capabilities,
         on_attach = attach_trouble,
-        settings = {
-          -- We don't want IBM to collect our usage data
-          redhat = {
-            telemetry = {
-              enabled = false,
-            },
-          },
-          ansible = {
-            -- We already do the linting with ansible-lint
-            validation = {
-              enabled = false,
-            },
-            -- No need to use Docker for Ansible
-            executionEnvironment = {
-              enabled = false,
-            },
-            -- Enable extra module completions
-            completion = {
-              provideRedirectModules = true,
-              provideModuleOptionAliases = true,
-            },
-          },
-        },
       })
 
       ---@diagnostic disable-next-line: missing-fields

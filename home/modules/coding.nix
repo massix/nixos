@@ -8,7 +8,6 @@ let
     type = types.bool;
     example = true;
   };
-
 in
 {
   options.my-modules.coding = {
@@ -41,8 +40,8 @@ in
     let
       whenT = k: t: if k then t else [ ];
       ansibleTooling = with pkgs; [
-        ansible-language-server
         ansible-lint
+        vscode-extensions.redhat.ansible
       ];
 
       baseTooling = with pkgs; [
