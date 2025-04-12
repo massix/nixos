@@ -137,6 +137,7 @@ in
       fzf
       ripgrep
       skim
+      goose-cli
     ]);
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
