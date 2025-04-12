@@ -17,17 +17,19 @@
   # Enable networking
   networking = {
     hostName = "elendil";
+    nameservers = [ "1.1.1.1" "8.8.4.4" "8.8.8.8" ];
     networkmanager = {
       enable = true;
-      dns = "dnsmasq";
       plugins = with pkgs; [
         networkmanager-openconnect
       ];
     };
 
-    resolvconf.enable = false;
+    resolvconf.enable = true;
     firewall.enable = false;
   };
+
+  services.resolved.enable = false;
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
