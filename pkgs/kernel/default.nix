@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
-  kernelBaseVersion = "6.11";
-  kernelVersion = "6.11.4";
+  kernelBaseVersion = "6.13";
+  kernelVersion = "6.13.6";
   version = "${kernelVersion}-zen1";
   inherit (pkgs) lib fetchFromGitHub;
 
@@ -9,14 +9,14 @@ let
     repo = "linux-surface";
     owner = "linux-surface";
     rev = "arch-${kernelVersion}-1";
-    hash = "sha256-5rKfAIkGoD5Y4nMobr7wGvzZqN2yFElXqHdcQS2VL14=";
+    hash = "sha256-otD1ckNxNnvV8xipf9SZpbfg+bBq5EPwyieYtLIV4Ck=";
   };
 
   linuxZen = fetchFromGitHub {
     repo = "zen-kernel";
     owner = "zen-kernel";
     rev = "v${version}";
-    hash = "sha256-rlSGKRm/3PUCe7tO0BlQ2cHmSy/cGktvsD4DF6mQ1Dc=";
+    hash = "sha256-eTYPnrcZXmOB1LpTIsd8C/7pvn251l2RMMA5HV7kwto=";
   };
 
   getPatch = name: {
@@ -175,7 +175,7 @@ pkgs.buildLinux {
 
   ] ++ (builtins.map getPatch [
     "0001-secureboot"
-    "0002-surface3-oemb"
+    "0002-surface3"
     "0003-mwifiex"
     "0004-ath10k"
     "0005-ipts"
