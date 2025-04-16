@@ -51,13 +51,16 @@ return {
         },
       },
     },
-    event = { "VeryLazy" },
+    opts = {},
     enabled = function()
       -- Enable only if goose binary is in the path
       return vim.fn.executable("goose") == 1
     end,
-    config = function()
-      require("goose").setup()
-    end,
+    cmd = { "GooseTogglePane", "Goose" },
+    keys = {
+      { "<leader>gg", "<cmd>GooseTogglePane<cr>", desc = "Toggle Goose UI" },
+      { "<leader>gi", "<cmd>GooseOpenInput<cr>", desc = "Goose focus input" },
+      { "<leader>go", "<cmd>GooseOpenOutput<cr>", desc = "Goose focus output" },
+    },
   },
 }
