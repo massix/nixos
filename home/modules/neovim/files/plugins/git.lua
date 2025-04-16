@@ -11,6 +11,7 @@ local spec = {
       disable_signs = false,
       disable_line_numbers = false,
       console_timeout = 15000,
+      disable_context_highlighting = true,
       status = {
         recent_commit_count = 50,
       },
@@ -24,10 +25,17 @@ local spec = {
         fzf_lua = true,
         diffview = true,
       },
+      git_services = {
+        ["github.com"] = "https://github.com/${owner}/${repository}/compare/${branch_name}?expand=1",
+        ["bitbucket.org"] = "https://bitbucket.org/${owner}/${repository}/pull-requests/new?source=${branch_name}&t=1",
+        ["gitlab.com"] = "https://gitlab.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
+        ["azure.com"] = "https://dev.azure.com/${owner}/_git/${repository}/pullrequestcreate?sourceRef=${branch_name}&targetRef=${target_branch}",
+        ["git.questel.com"] = "https://git.questel.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
+      },
     },
     --stylua: ignore
     keys = {
-      { "<leader>gg", function() require("neogit").open() end, desc = "Neogit", },
+      { "<leader>gG", function() require("neogit").open() end, desc = "Neogit", },
     },
     cmd = { "Neogit" },
   },
