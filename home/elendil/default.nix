@@ -235,17 +235,19 @@ in
     };
 
     "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/comfy-home.png";
+      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/feet-on-the-dashboard.png";
       picture-uri-dark = picture-uri;
       picture-options = "zoom";
     };
 
     "org/gnome/desktop/peripherals/touchpad" = {
       disable-while-typing = true;
-      tap-to-click = false;
+      tap-to-click = true;
       tap-and-drag = false;
       two-finger-scrolling-enabled = true;
-      accel-profile = "adaptive";
+      accel-profile = "default";
+      click-method = "fingers";
+      speed = 0.45;
     };
 
     "org/gnome/shell" = {
@@ -297,28 +299,43 @@ in
       attach-modal-dialogs = true;
     };
 
-    "org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,maximize,close";
-  };
-
-  services.syncthing = {
-    enable = false;
-    tray.enable = false;
-  };
-
-  services.flameshot = {
-    enable = false;
-    package = pkgs.flameshot;
-    settings = {
-      General = {
-        showDesktopNotification = true;
-        savePathFixed = false;
-      };
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:close";
+      audible-bell = false;
+      auto-raise = false;
+      resize-with-right-button = true;
     };
   };
 
-  services.protrans = {
-    enable = true;
-    configuration.nat.portLifeTime = 60;
+  services = {
+    ollama = {
+      enable = true;
+      acceleration = false;
+      environmentVariables = {
+        OLLAMA_KEEP_ALIVE = "-1";
+      };
+    };
+
+    syncthing = {
+      enable = false;
+      tray.enable = false;
+    };
+
+    flameshot = {
+      enable = false;
+      package = pkgs.flameshot;
+      settings = {
+        General = {
+          showDesktopNotification = true;
+          savePathFixed = false;
+        };
+      };
+    };
+
+    protrans = {
+      enable = true;
+      configuration.nat.portLifeTime = 60;
+    };
   };
 
   home.sessionVariables = { };
@@ -327,13 +344,11 @@ in
     # Only for Teams PWA
     just
     powertop
-    (microsoft-edge.override { commandLineArgs = "--ozone-platform=wayland --force-dark-mode"; })
     pbpctrl
     dconf-editor
     gnome-tweaks
 
     spotify
-    spotube
 
     onedriver
     tana
@@ -350,7 +365,6 @@ in
     proton-pass
     unzip
     stremio
-    zen-browser-beta
   ] ++ (with pkgs.gnomeExtensions; [
     appindicator
     blur-my-shell
