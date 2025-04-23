@@ -41,7 +41,7 @@ let
   };
 
   terminalFont = {
-    name = "Recursive Mono Casual Static";
+    name = "IBM Plex Mono";
     size = 10;
   };
 in
@@ -188,14 +188,14 @@ in
         italic = "0xProto Italic";
       };
     };
+
+    taskwarrior = {
+      enable = true;
+      withFish = true;
+    };
   };
 
   programs = {
-    google-chrome = {
-      enable = true;
-      package = pkgs.google-chrome;
-    };
-
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -308,21 +308,8 @@ in
   };
 
   services = {
-    ollama = {
-      enable = true;
-      acceleration = false;
-      environmentVariables = {
-        OLLAMA_KEEP_ALIVE = "-1";
-      };
-    };
-
-    syncthing = {
-      enable = false;
-      tray.enable = false;
-    };
-
     flameshot = {
-      enable = false;
+      enable = true;
       package = pkgs.flameshot;
       settings = {
         General = {
@@ -347,6 +334,7 @@ in
     pbpctrl
     dconf-editor
     gnome-tweaks
+    vivaldi
 
     spotify
 
