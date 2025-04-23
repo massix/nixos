@@ -19,7 +19,9 @@ return {
       return {
         config = {
           scratch_repl = false,
-          repl_open_cmd = require("iron.view").bottom(40),
+          close_window_on_exit = false,
+          buflisted = true,
+          repl_open_cmd = require("iron.view").split.belowright(40),
           repl_definition = {
             sh = { command = { "fish" } },
             typescript = { command = { "./node_modules/.bin/ts-node" } },
