@@ -71,7 +71,7 @@ in
             split = splitString ":";
             mkReport = description: filter: attrs:
               let
-                splitted = builtins.map split attrs;
+                splitted = builtins.map split (builtins.filter (s: s != "") attrs);
               in
               {
                 inherit filter description;
@@ -88,8 +88,8 @@ in
               "project:Project"
               "tags:Tag"
               "recur:Recur"
-              "jira:Jira"
-              "sprint:Sprint"
+              (if cfg.withJira then "jira:Jira" else "")
+              (if cfg.withJira then "sprint:Sprint" else "")
               "scheduled.countdown:S"
               "due.relative:Due"
               "until.remaining:Until"
@@ -100,8 +100,8 @@ in
             delegated = mkReport "Delegated tasks" "delegated.not: +PENDING" [
               "id:ID"
               "project:Project"
-              "jira:Jira"
-              "sprint:Sprint"
+              (if cfg.withJira then "jira:Jira" else "")
+              (if cfg.withJira then "sprint:Sprint" else "")
               "delegated:Delegated to"
               "description:Description"
             ];
@@ -114,8 +114,8 @@ in
               "project:Project"
               "tags:Tag"
               "recur:Recur"
-              "jira:Jira"
-              "sprint:Sprint"
+              (if cfg.withJira then "jira:Jira" else "")
+              (if cfg.withJira then "sprint:Sprint" else "")
               "scheduled.countdown:S"
               "due.relative:Due"
               "until.remaining:Until"
@@ -129,8 +129,8 @@ in
               "priority:P"
               "project:Project"
               "depends.list:Deps"
-              "jira:Jira"
-              "sprint:Sprint"
+              (if cfg.withJira then "jira:Jira" else "")
+              (if cfg.withJira then "sprint:Sprint" else "")
               "description.desc:Description"
             ]) // { sort = "project+,end+"; };
           };
