@@ -93,6 +93,7 @@ in
               "scheduled.countdown:S"
               "due.relative:Due"
               "until.remaining:Until"
+              "size:TSZ"
               "description:Description"
               "urgency:Urg"
             ];
@@ -119,6 +120,7 @@ in
               "scheduled.countdown:S"
               "due.relative:Due"
               "until.remaining:Until"
+              "size:TSZ"
               "description:Description"
               "urgency:Urg"
             ];
@@ -154,6 +156,20 @@ in
             label = "Delegated to";
             default = "";
           };
+
+          priority = {
+            type = "string";
+            label = "Priority";
+            values = [ "X" "H" "M" "L" ];
+            default = "M";
+          };
+
+          size = {
+            type = "string";
+            label = "T-Shirt Size";
+            values = [ "XS" "S" "M" "L" "XL" "XXL" "" ];
+            default = "";
+          };
         };
 
         urgency.uda = {
@@ -161,6 +177,23 @@ in
             past.coefficient = 8.0;
             current.coefficient = 1.3;
             future.coefficient = -1.0;
+          };
+
+          priority = {
+            X.coefficient = 10.0;
+            H.coefficient = 6.0;
+            M.coefficient = 3.9;
+            L.coefficient = 1.3;
+          };
+
+          size = {
+            XS.coefficient = 2.5;
+            S.coefficient = 2.0;
+            M.coefficient = 1.2;
+            L.coefficient = -0.3;
+            XL.coefficient = -0.6;
+            XXL.coefficient = -1.0;
+            "".coefficient = 1.0;
           };
         };
       };
