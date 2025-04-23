@@ -71,6 +71,7 @@ in
       } // cfg.configuration.extraShellAbbrs;
 
       plugins = [
+        { name = "grc"; src = pkgs.fishPlugins.grc; }
         {
           name = "puffer-fish";
           src = fetchFromGitHub {
@@ -133,7 +134,10 @@ in
         iftop = "bmon";
       } // cfg.configuration.extraShellAliases;
 
-      interactiveShellInit = builtins.concatStringsSep "\n" cfg.configuration.extraInit;
+      interactiveShellInit = ''
+        set fish_greeting
+        ${builtins.concatStringsSep "\n" cfg.configuration.extraInit}
+      '';
     };
 
     home.sessionVariables = {

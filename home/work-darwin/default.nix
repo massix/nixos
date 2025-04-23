@@ -186,6 +186,11 @@ in
       };
     };
     gleeter.enable = true;
+    taskwarrior = {
+      enable = true;
+      withJira = true;
+      withFish = true;
+    };
   };
   programs = {
     home-manager.enable = true;
