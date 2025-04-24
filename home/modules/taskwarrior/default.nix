@@ -24,8 +24,10 @@ in
     programs.taskwarrior = {
       enable = true;
       package = pkgs.taskwarrior3;
-      colorTheme = "dark-16";
+      colorTheme = "dark-256";
       config = {
+        # I do not want *all* tagged tasks to look different
+        color.tagged = "";
         confirmation = true;
         weekstart = "monday";
         calendar.details = "sparse";
@@ -100,6 +102,7 @@ in
 
             delegated = mkReport "Delegated tasks" "delegated.not: +PENDING" [
               "id:ID"
+              "status.short:S"
               "project:Project"
               (if cfg.withJira then "jira:Jira" else "")
               (if cfg.withJira then "sprint:Sprint" else "")
@@ -125,16 +128,35 @@ in
               "urgency:Urg"
             ];
 
-            completed-yesterday = (mkReport "Tasks completed yesterday" "status:completed end:yesterday -WAITING" [
-              "uuid:UUID"
-              "end.relative:Completed"
+            completed = (mkReport "Completed tasks" "status:completed -WAITING" [
+              "uuid.short:UUID"
+              "end.age:Completed"
+              "depends.count:Dep"
+              "tags:Tags"
               "priority:P"
+              "size:TSZ"
               "project:Project"
-              "depends.list:Deps"
               (if cfg.withJira then "jira:Jira" else "")
               (if cfg.withJira then "sprint:Sprint" else "")
               "description.desc:Description"
             ]) // { sort = "project+,end+"; };
+
+            waiting = (mkReport "Waiting tasks" "status:waiting" [
+              "id:ID"
+              "depends.indicator:D"
+              "priority:P"
+              "project:Project"
+              "recur.indicator:R"
+              "wait:Wait"
+              "wait.remaining:Remaining"
+              (if cfg.withJira then "jira:Jira" else "")
+              (if cfg.withJira then "sprint:Sprint" else "")
+              "scheduled:Sched"
+              "due:Due"
+              "until:Until"
+              "description:Description"
+              "urgency:Urg"
+            ]) // { sort = "due+,wait+,urgency-"; };
           };
 
         # User-defined attributes
@@ -142,6 +164,7 @@ in
           jira = mkIf cfg.withJira {
             type = "string";
             label = "Jira";
+            indicator = "J";
           };
 
           sprint = mkIf cfg.withJira {
@@ -155,6 +178,7 @@ in
             type = "string";
             label = "Delegated to";
             default = "";
+            indicator = "@";
           };
 
           priority = {
@@ -195,6 +219,12 @@ in
             XXL.coefficient = -1.0;
             "".coefficient = 1.0;
           };
+        };
+
+        # Color some common tags
+        color.tag = {
+          bug = "bold red on rgb000";
+          meeting = "bold yellow on rgb000";
         };
       };
     };
