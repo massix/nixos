@@ -1,9 +1,30 @@
 { config, pkgs, lib, ... }:
 let
   inherit (lib) mkEnableOption mkIf splitString;
+  inherit (pkgs) stdenv;
   cfg = config.my-modules.taskwarrior;
   orEmpty = bool: val: if bool then val else [ ];
   hooksHome = "${config.xdg.dataHome}/task/hooks";
+  frenchHolidaysPackage = stdenv.mkDerivation {
+    pname = "french-holidays-json";
+    version = "2025";
+    src = builtins.fetchurl {
+      url = "https://holidata.net/fr-FR/2025.json";
+      sha256 = "sha256:1lv2sk37inpvjg3snxz83a970xg601rh3vh2xishwwqc8il3aq05";
+    };
+
+    nativeBuildInputs = with pkgs; [ jq ];
+
+    sourceRoot = ".";
+
+    dontUnpack = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r $src $out/french-holidays.json
+      cat $out/french-holidays.json | jq -r '.date |= gsub("-"; "") | "holiday.\(.date[4:6])\(.date[6:8]).date=\(.date)\nholiday.\(.date[4:6])-\(.date[6:8]).name=\(.description)"' > $out/french-holidays.rc
+    '';
+  };
 in
 {
   options.my-modules.taskwarrior = {
@@ -25,6 +46,9 @@ in
       enable = true;
       package = pkgs.taskwarrior3;
       colorTheme = "dark-256";
+      extraConfig = ''
+        include ${frenchHolidaysPackage}/french-holidays.rc
+      '';
       config = {
         # I do not want *all* tagged tasks to look different
         color.tagged = "";
@@ -36,35 +60,6 @@ in
 
         journal.time = true;
         journal.info = true;
-
-        holiday = {
-          labourday.name = "Labour Day";
-          labourday.date = "20250501";
-
-          victoire.name = "Victoire 1945";
-          victoire.date = "20250508";
-
-          ascension.name = "Ascension";
-          ascension.date = "20250529";
-
-          pentecote.name = "Pentecôte";
-          pentecote.date = "20250609";
-
-          fetenationale.name = "Fête Nationale";
-          fetenationale.date = "20250714";
-
-          assomption.name = "Assomption";
-          assomption.date = "20250815";
-
-          toussaint.name = "Toussaint";
-          toussaint.date = "20251101";
-
-          armistice.name = "Armistice 1918";
-          armistice.date = "20251111";
-
-          noel.name = "Noël";
-          noel.date = "20251225";
-        };
 
         summary.all.projects = true;
 
