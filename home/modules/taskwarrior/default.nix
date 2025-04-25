@@ -100,7 +100,7 @@ in
               "urgency:Urg"
             ];
 
-            delegated = mkReport "Delegated tasks" "delegated.not: +PENDING" [
+            delegated = mkReport "Delegated tasks" "delegated.not:" [
               "id:ID"
               "status.short:S"
               "project:Project"
@@ -147,6 +147,7 @@ in
               "priority:P"
               "project:Project"
               "recur.indicator:R"
+              "delegated.indicator:@"
               "wait:Wait"
               "wait.remaining:Remaining"
               (if cfg.withJira then "jira:Jira" else "")
@@ -253,6 +254,11 @@ in
 
       "${hooksHome}/on-modify.add-jira-information.sh" = mkIf cfg.withJira {
         source = ./scripts/on-modify.add-jira-information.sh;
+        executable = true;
+      };
+
+      "${hooksHome}/on-add.delegate-someday.sh" = {
+        source = ./scripts/on-add.delegate-someday.sh;
         executable = true;
       };
     };
