@@ -5,15 +5,16 @@ let
   cfg = config.my-modules.taskwarrior;
   orEmpty = bool: val: if bool then val else [ ];
   hooksHome = "${config.xdg.dataHome}/task/hooks";
-  frenchHolidaysPackage = stdenv.mkDerivation {
-    pname = "french-holidays-json";
-    version = "2025";
+  mkHolidayFile = pname: year: locale: sha256: stdenv.mkDerivation {
+    inherit pname;
+    version = year;
+
     src = builtins.fetchurl {
-      url = "https://holidata.net/fr-FR/2025.json";
-      sha256 = "sha256:1lv2sk37inpvjg3snxz83a970xg601rh3vh2xishwwqc8il3aq05";
+      url = "https://holidata.net/${locale}/${year}.json";
+      inherit sha256;
     };
 
-    nativeBuildInputs = with pkgs; [ jq ];
+    buildInputs = with pkgs; [ jq ];
 
     sourceRoot = ".";
 
@@ -21,10 +22,11 @@ let
 
     installPhase = ''
       mkdir -p $out
-      cp -r $src $out/french-holidays.json
-      cat $out/french-holidays.json | jq -r '.date |= gsub("-"; "") | "holiday.\(.date[4:6])\(.date[6:8]).date=\(.date)\nholiday.\(.date[4:6])-\(.date[6:8]).name=\(.description)"' > $out/french-holidays.rc
+      cp $src $out/holidays.json
+      cat $out/holidays.json | jq -r '.date |= gsub("-"; "") | "holiday.\(.date[4:6])\(.date[6:8]).date=\(.date)\nholiday.\(.date[4:6])-\(.date[6:8]).name=\(.description)"' > $out/holidays.rc
     '';
   };
+  frenchHolidays2025 = mkHolidayFile "french-holidays" "2025" "fr-FR" "sha256:1lv2sk37inpvjg3snxz83a970xg601rh3vh2xishwwqc8il3aq05";
 in
 {
   options.my-modules.taskwarrior = {
@@ -47,7 +49,7 @@ in
       package = pkgs.taskwarrior3;
       colorTheme = "dark-256";
       extraConfig = ''
-        include ${frenchHolidaysPackage}/french-holidays.rc
+        include ${frenchHolidays2025}/holidays.rc
       '';
       config = {
         # I do not want *all* tagged tasks to look different
