@@ -23,7 +23,7 @@ let
     installPhase = ''
       mkdir -p $out
       cp $src $out/holidays.json
-      cat $out/holidays.json | jq -r '.date |= gsub("-"; "") | "holiday.\(.date[4:6])\(.date[6:8]).date=\(.date)\nholiday.\(.date[4:6])-\(.date[6:8]).name=\(.description)"' > $out/holidays.rc
+      cat $out/holidays.json | jq -r '.date |= gsub("-"; "") | "holiday.\(.date[4:6])\(.date[6:8]).date=\(.date)\nholiday.\(.date[4:6])\(.date[6:8]).name=\(.description)"' > $out/holidays.rc
     '';
   };
   frenchHolidays2025 = mkHolidayFile "french-holidays" "2025" "fr-FR" "sha256:1lv2sk37inpvjg3snxz83a970xg601rh3vh2xishwwqc8il3aq05";

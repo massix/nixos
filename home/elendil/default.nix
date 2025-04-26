@@ -139,15 +139,11 @@ in
 
     git = {
       enable = true;
-      workRepository = {
-        enabled = true;
-        workRoot = "~/Development/Work/";
-        workEmail = "massimo.gengarelli@alten.com";
-      };
+      workRepository.enabled = false;
     };
 
     zellij = {
-      enable = true;
+      enable = false;
       configuration = {
         autoAttach = false;
         autoExit = false;
@@ -156,7 +152,7 @@ in
     };
 
     devops = {
-      enable = true;
+      enable = false;
       k9s.enable = true;
       kubernetes = {
         enable = true;
