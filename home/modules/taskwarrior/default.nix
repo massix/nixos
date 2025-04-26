@@ -4,7 +4,6 @@ let
   inherit (pkgs) stdenv;
   cfg = config.my-modules.taskwarrior;
   orEmpty = bool: val: if bool then val else [ ];
-  hooksHome = "${config.xdg.dataHome}/task/hooks";
   mkHolidayFile = pname: year: locale: sha256: stdenv.mkDerivation {
     inherit pname;
     version = year;
@@ -33,6 +32,16 @@ in
     enable = mkEnableOption "taskwarrior";
     withJira = mkEnableOption "Jira integration";
     withFish = mkEnableOption "fish configuration";
+    dataLocation = lib.mkOption {
+      type = lib.types.str;
+      description = "Data location";
+      default = "${config.xdg.dataHome}/task";
+    };
+    hooksLocation = lib.mkOption {
+      type = lib.types.str;
+      description = "Hooks location";
+      default = "${config.xdg.dataHome}/task/hooks";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -48,6 +57,7 @@ in
       enable = true;
       package = pkgs.taskwarrior3;
       colorTheme = "dark-256";
+      dataLocation = cfg.dataLocation;
       extraConfig = ''
         include ${frenchHolidays2025}/holidays.rc
       '';
@@ -59,6 +69,7 @@ in
         calendar.details = "sparse";
         calendar.holidays = "full";
         news.version = "3.4.1";
+        hooks.location = cfg.hooksLocation;
 
         journal.time = true;
         journal.info = true;
@@ -244,17 +255,17 @@ in
     '';
 
     home.file = {
-      "${hooksHome}/on-add.add-jira-information.sh" = mkIf cfg.withJira {
+      "${cfg.hooksLocation}/on-add.add-jira-information.sh" = mkIf cfg.withJira {
         source = ./scripts/on-add.add-jira-information.sh;
         executable = true;
       };
 
-      "${hooksHome}/on-modify.add-jira-information.sh" = mkIf cfg.withJira {
+      "${cfg.hooksLocation}/on-modify.add-jira-information.sh" = mkIf cfg.withJira {
         source = ./scripts/on-modify.add-jira-information.sh;
         executable = true;
       };
 
-      "${hooksHome}/on-add.delegate-someday.sh" = {
+      "${cfg.hooksLocation}/on-add.delegate-someday.sh" = {
         source = ./scripts/on-add.delegate-someday.sh;
         executable = true;
       };
