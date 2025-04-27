@@ -54,10 +54,10 @@ in
     ]);
 
     programs.taskwarrior = {
+      inherit (cfg) dataLocation;
       enable = true;
       package = pkgs.taskwarrior3;
       colorTheme = "dark-256";
-      dataLocation = cfg.dataLocation;
       extraConfig = ''
         include ${frenchHolidays2025}/holidays.rc
       '';
@@ -272,6 +272,3 @@ in
     };
   };
 }
-
-
-
