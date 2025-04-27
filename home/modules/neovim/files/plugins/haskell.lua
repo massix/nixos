@@ -2,11 +2,12 @@
 return {
   {
     "MrcJkb/haskell-tools.nvim",
+    version = "^5",
     dependencies = {
       "mfussenegger/nvim-dap",
       "nvim-lua/plenary.nvim",
     },
-    ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
+    lazy = false,
     opts = {
       tools = {
         codeLens = { autoRefresh = true },
