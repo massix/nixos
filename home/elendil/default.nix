@@ -64,7 +64,7 @@ in
     gleeter.enable = true;
 
     coding = {
-      enable = true;
+      enable = false;
       languages = {
         c = false;
         c_sharp = true;
