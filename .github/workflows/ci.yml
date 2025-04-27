@@ -40,7 +40,7 @@ jobs:
       - name: Build Linux Packages
         run: |
           for pkg in onedriver spotube tana; do
-          nix build ".#${pkg}"
-          cachix push surface-zen result
+            nix build ".#${pkg}"
+            cachix push surface-zen result
           done
         if: ${{ matrix.os_version == 'ubuntu-latest' }}
