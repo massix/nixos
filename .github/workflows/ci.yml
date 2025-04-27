@@ -8,6 +8,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Load Nix Configuration
         uses: rrbutani/use-nix-shell-action@v1
+      - name: Check flake
+        run: nix flake check --all-systems
       - name: Lint nix
         run: statix check
       - name: Find nix dead code

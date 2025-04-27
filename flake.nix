@@ -166,12 +166,13 @@
             (_: _: {
               nixd-nightly = nixd.packages.${system}.nixd;
             })
+            purescript-overlay.overlays.default
           ];
           pkgs = import unstablepkgs {
             inherit system config overlays;
           };
 
-          otherDevShells = pkgs.callPackage ./devshells { };
+          otherDevShells = import ./devshells { inherit pkgs; };
         in
         {
           # This is the DevShell used by this project
@@ -193,13 +194,20 @@
                 lua-language-server
                 bash-language-server
                 yaml-language-server
+
+                # Task runners
+                just
               ];
             };
           } // otherDevShells;
 
           packages = import ./pkgs { inherit pkgs; };
         });
+      templates = import ./templates { };
     in
-    commonStuff // linuxSet // { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
+    commonStuff //
+    linuxSet //
+    templates //
+    { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
 }
 

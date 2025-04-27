@@ -1,7 +1,4 @@
 { pkgs }:
-let
-  orEmpty = bool: pkgs: if bool then pkgs else [ ];
-in
 with pkgs;
 {
   go = mkShell {
@@ -15,7 +12,11 @@ with pkgs;
   };
 
   gleam = mkShell {
-    packages = [ gleam ];
+    packages = [
+      gleam
+      erlang
+      rebar3
+    ];
   };
 
   haskell =
@@ -28,25 +29,7 @@ with pkgs;
         ghci-dap
         hlint
         hoogle
-      ] ++ (orEmpty pkgs.stdenv.isLinux [
-        hls-eval-plugin
-        hls-class-plugin
-        hls-hlint-plugin
-        hls-cabal-plugin
-        hls-retrie-plugin
-        hls-rename-plugin
-        hls-ormolu-plugin
-        hls-pragmas-plugin
-        hls-refactor-plugin
-        hls-code-range-plugin
-        hls-module-name-plugin
-        hls-call-hierarchy-plugin
-        hls-explicit-fixity-plugin
-        hls-explicit-imports-plugin
-        hls-overloaded-record-dot-plugin
-        hls-qualify-imported-names-plugin
-        hls-explicit-record-fields-plugin
-      ]);
+      ];
     in
     mkShell {
       packages = [

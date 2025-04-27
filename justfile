@@ -8,7 +8,7 @@ stylua := `which stylua`
 default: switch
 
 @format:
-  {{ nix }} fmt
+  {{ nixpkgs_fmt }} .
   {{ stylua }} .
 
 @system:
