@@ -115,7 +115,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   group = markdown_syntax,
   pattern = "markdown",
   callback = function()
-    vim.bo.syntax = "markdown"
+    vim.bo.syntax = "on"
   end,
 })
 

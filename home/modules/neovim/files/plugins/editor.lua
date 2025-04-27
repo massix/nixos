@@ -302,14 +302,25 @@ return {
     },
   },
 
-  -- Headlines
+  -- Markdown rendering
   {
-    "lukas-reineke/headlines.nvim",
-    ft = { "org", "markdown" },
-    config = function()
-      require("headlines").setup({
-        org = { fat_headlines = false },
-        markdown = { fat_headlines = false },
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    opts = {
+      anti_conceal = { enabled = false },
+    },
+    config = function(_, opts)
+      require("render-markdown").setup(opts)
+
+      -- Create autocommand to wrap Markdown files
+      local group = vim.api.nvim_create_augroup("MarkdownWrap", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "Filetype" }, {
+        group = group,
+        pattern = "markdown",
+        callback = function()
+          vim.opt_local.wrap = true
+        end,
       })
     end,
   },
