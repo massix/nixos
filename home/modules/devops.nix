@@ -27,7 +27,6 @@ let
       cp dist/*.yaml $out/k9s/skins/
     '';
   };
-
 in
 {
   options.my-modules.devops = {
@@ -79,6 +78,20 @@ in
       with pkgs;
       let
         orEmpty = bool: pkgs: if bool then pkgs else [ ];
+        # Ain't no way I am not using those packages in *every* damn project
+        basePackages = [
+          bash-language-server
+          dockerfile-language-server-nodejs
+          dotenv-linter
+          fish-lsp
+          hadolint
+          helm-ls
+          nginx-language-server
+          vscode-langservers-extracted
+          yamlfmt
+          yaml-language-server
+          yamllint
+        ];
         k9sPackages = orEmpty cfg.k9s.enable [ k9s ];
         azCliPackages = orEmpty cfg.azure-cli.enable [ (azure-cli.override { withExtensions = cfg.azure-cli.extensions; }) ];
         tanzuPackages = orEmpty cfg.tanzu.enable [
@@ -102,7 +115,14 @@ in
         ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
         vaultPackages = orEmpty cfg.vault.enable [ vault ];
       in
-      k9sPackages ++ azCliPackages ++ tanzuPackages ++ terraformPackages ++ ansiblePackages ++ kubernetesPackages ++ vaultPackages;
+      basePackages ++
+      k9sPackages ++
+      azCliPackages ++
+      tanzuPackages ++
+      terraformPackages ++
+      ansiblePackages ++
+      kubernetesPackages ++
+      vaultPackages;
 
     my-modules.fish.configuration.extraShellAbbrs =
       let

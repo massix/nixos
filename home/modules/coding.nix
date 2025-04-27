@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkOption types mkIf;
   cfg = config.my-modules.coding;
 
   mkEnDef = description: default: mkOption {
@@ -192,28 +192,29 @@ in
         typstfmt /* experimental formatter for typst */
       ];
     in
-    {
-      home.packages =
-        baseTooling ++
-        (whenT cfg.languages.ansible ansibleTooling) ++
-        (whenT cfg.languages.c clangTooling) ++
-        (whenT cfg.languages.c_sharp c_sharpTooling) ++
-        (whenT cfg.languages.gleam gleamTooling) ++
-        (whenT cfg.languages.go goTooling) ++
-        (whenT cfg.languages.haskell haskellTooling) ++
-        (whenT cfg.languages.purescript purescriptTooling) ++
-        (whenT cfg.languages.racket racketTooling) ++
-        (whenT cfg.languages.nix nixTooling) ++
-        (whenT cfg.languages.terraform terraformTooling) ++
-        (whenT cfg.languages.kotlin kotlinTooling) ++
-        (whenT cfg.languages.javascript javascriptTooling) ++
-        (whenT cfg.languages.lua luaTooling) ++
-        (whenT cfg.languages.rust rustTooling) ++
-        (whenT cfg.languages.java javaTooling) ++
-        (whenT cfg.languages.json jsonTooling) ++
-        (whenT cfg.languages.yaml yamlTooling) ++
-        (whenT cfg.languages.scripting scriptingTooling) ++
-        (whenT cfg.languages.misc miscTooling) ++
-        (whenT cfg.languages.typst typstTooling);
-    };
+    mkIf cfg.enable
+      {
+        home.packages =
+          baseTooling ++
+          (whenT cfg.languages.ansible ansibleTooling) ++
+          (whenT cfg.languages.c clangTooling) ++
+          (whenT cfg.languages.c_sharp c_sharpTooling) ++
+          (whenT cfg.languages.gleam gleamTooling) ++
+          (whenT cfg.languages.go goTooling) ++
+          (whenT cfg.languages.haskell haskellTooling) ++
+          (whenT cfg.languages.purescript purescriptTooling) ++
+          (whenT cfg.languages.racket racketTooling) ++
+          (whenT cfg.languages.nix nixTooling) ++
+          (whenT cfg.languages.terraform terraformTooling) ++
+          (whenT cfg.languages.kotlin kotlinTooling) ++
+          (whenT cfg.languages.javascript javascriptTooling) ++
+          (whenT cfg.languages.lua luaTooling) ++
+          (whenT cfg.languages.rust rustTooling) ++
+          (whenT cfg.languages.java javaTooling) ++
+          (whenT cfg.languages.json jsonTooling) ++
+          (whenT cfg.languages.yaml yamlTooling) ++
+          (whenT cfg.languages.scripting scriptingTooling) ++
+          (whenT cfg.languages.misc miscTooling) ++
+          (whenT cfg.languages.typst typstTooling);
+      };
 }

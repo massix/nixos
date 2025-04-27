@@ -58,7 +58,6 @@
     , unstablepkgs
     , home-manager
     , nixos-hardware
-    , nix-formatter-pack
     , homeage
     , nixd
     , nix-direnv
@@ -164,52 +163,41 @@
             permittedInsecurePackages = [ "electron-25.9.0" ];
           };
           overlays = [
-            (_: _: { nixd-nightly = nixd.packages.nixd; })
-            (_: _: self.packages)
-            nix-direnv.overlays.default
-            purescript-overlay.overlays.default
-            (_: _: { gleeter = gleeter.packages.default; })
+            (_: _: {
+              nixd-nightly = nixd.packages.${system}.nixd;
+            })
           ];
-          unstable = import unstablepkgs {
+          pkgs = import unstablepkgs {
             inherit system config overlays;
           };
+
+          otherDevShells = pkgs.callPackage ./devshells { };
         in
         {
+          # This is the DevShell used by this project
           devShells = {
-            default = unstable.mkShell {
-              packages = with unstable; [
+            default = pkgs.mkShell {
+              packages = with pkgs; [
+                # Linters and formatters
                 deadnix
                 nixpkgs-fmt
+                stylua
                 statix
-              ];
-            };
-            purescript = unstable.mkShell {
-              packages = with unstable; [
-                spago-unstable
-                purs
-                nodejs
-              ];
-            };
-            haskell = unstable.mkShell {
-              packages = with unstable; [
-                cabal-install
-                ghc
-                stack
-              ];
-            };
-          };
+                luaPackages.luacheck
+                yamllint
+                yamlfmt
+                actionlint
 
-          formatter = nix-formatter-pack.lib.mkFormatter {
-            pkgs = unstable;
-            config.tools = {
-              alejandra.enable = false;
-              deadnix.enable = true;
-              nixpkgs-fmt.enable = true;
-              statix.enable = true;
+                # Language servers
+                nixd-nightly
+                lua-language-server
+                bash-language-server
+                yaml-language-server
+              ];
             };
-          };
+          } // otherDevShells;
 
-          packages = import ./pkgs { pkgs = unstable; };
+          packages = import ./pkgs { inherit pkgs; };
         });
     in
     commonStuff // linuxSet // { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
