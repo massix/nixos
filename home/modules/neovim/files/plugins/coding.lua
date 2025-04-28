@@ -311,7 +311,7 @@ return {
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
-              validate = true,
+              validate = false,
               format = { enable = false },
               hover = true,
               schemaStore = {
@@ -510,7 +510,6 @@ return {
 
       ---@diagnostic disable-next-line: missing-fields
       lspconfig.ansiblels.setup({
-        cmd = { nix.nodePath, nix.vsCodeAnsible, "--stdio" },
         capabilities = capabilities,
         on_attach = attach_trouble,
       })
@@ -519,6 +518,8 @@ return {
       lspconfig.nginx_language_server.setup({
         capabilities = capabilities,
       })
+
+      vim.lsp.enable("fish_lsp")
 
       -- Make sure that inlay hints are always enabled
       vim.api.nvim_create_augroup("LspInlayHints", {})
