@@ -124,10 +124,10 @@ in
       ];
 
       nixTooling = with pkgs; [
+        nix
         deadnix /* dead code for nix */
         nixpkgs-fmt /* Formatter for nix */
         statix /* Static analyzer for nix */
-        nil /* language server for nix */
         nixd-nightly /* alternative language server for nix */
       ];
 

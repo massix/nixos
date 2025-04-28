@@ -40,7 +40,7 @@ let
         runHook preInstall
 
         mkdir -p $out/Applications/
-        cp -a "MacPass.app" "$out/Applications/"
+        cp -a *.app "$out/Applications/"
 
         runHook postInstall
       '';
@@ -143,24 +143,13 @@ in
     };
     fish = {
       enable = true;
+      configuration.extraShellAbbrs = {
+        tp = "task rc.data.location=~/OneDrive/TaskWarrior";
+      };
     };
     coding = {
       enable = true;
-      languages = {
-        ansible = true;
-        gleam = true;
-        go = true;
-        haskell = true;
-        javascript = true;
-        json = true;
-        lua = true;
-        misc = true;
-        nix = true;
-        purescript = true;
-        scripting = true;
-        terraform = true;
-        yaml = true;
-      };
+      languages.nix = true;
     };
     git = {
       enable = true;
@@ -173,7 +162,7 @@ in
     devops = {
       enable = true;
       k9s.enable = true;
-      ansible.enable = true;
+      ansible.enable = false;
       tanzu.enable = true;
       vault.enable = true;
       terraform = {
@@ -190,6 +179,7 @@ in
       enable = true;
       withJira = true;
       withFish = true;
+      dataLocation = "~/OneDrive - QUESTEL/TaskWarrior";
     };
   };
   programs = {
