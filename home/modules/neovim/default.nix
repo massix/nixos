@@ -138,6 +138,9 @@ in
       ripgrep
       skim
       goose-cli
+
+      # Needed for obsidian.nvim
+      (if stdenv.hostPlatform.isDarwin then pngpaste else wl-clipboard)
     ]);
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work

@@ -723,7 +723,6 @@ return {
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "neorg" },
-          { name = "orgmode" },
           { name = "path" },
           { name = "emoji" },
           { name = "calc" },
