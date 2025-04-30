@@ -10,27 +10,33 @@ return {
       -- stylua: ignore
       -- luacheck: ignore
       local logo = [[
-                                        _
-          88888b   d888b  888b  88 8P 888888    88888b    888     888b  88 88  d888b 88
-          88   88 88   88 88`8b 88      88      88   88  88 88    88`8b 88 88 88   ` 88
-          88   88 88   88 88 88 88      88      88888P  88   88   88 88 88 88 88     88
-          88   88 88   88 88 `8b88      88      88     d8888888b  88 `8b88 88 88   , ""
-          88888P   `888P  88  `888      88      88     88     `8b 88  `888 88  `888P 88
-
-                                        nnnmmm
-                        \||\       ;;;;%%%@@@@@@       \ //,        You're on Neovim now!
-                          V|/     %;;%%%%%@@@@@@@@@@  ===Y//
-                          68=== ;;;;%%%%%%@@@@@@@@@@@@    @Y
-                          ;Y   ;;%;%%%%%%@@@@@@@@@@@@@@    Y
-                          ;Y  ;;;+;%%%%%%@@@@@@@@@@@@@@@    Y
-                          ;Y__;;;+;%%%%%%@@@@@@@@@@@@@@i;;__Y
-                        iiY"";;   "uu%@@@@@@@@@@uu"   @"";;;>
-                                Y     "UUUUUUUUU"     @@
-                                `;       ___ _       @
-                                  `;.  ,====\\=.  .;'
-        You're on Nixos now!        ``""""`==\\=='
-                                          `;=====
-                                            ===            [massi_x86]
+              .-*#####*+-.              .-+######+-
+            :###############*:     .:*###############.
+          .=#########**+==+*#*=..+###**++=+**#########:
+          .######*:.         :+#+:...         .-#######:
+          -#####+.        .-#+.   ..*#:         .*#####=
+          -####*        .=#:          -*=.        +####=
+          .####:      .++.              .*=.      :####.
+          .*###     .+*.                  .#+     .###=
+            .###.   :#:                      -#:   :##%.
+            =##= .*+.                        .#+. =##:
+              =## =-.                          .+#:.#:
+              -#*..          Questel            +#=.
+              ..:#=.  IP Business Intelligence  ..*#+
+              +#:.#+.                          .#-.##=.
+            +##= .+*:                        :#-. -#-.
+            .###.   :#=.                    .=#.   :-...
+          .####.     -#:                 .-#-     .:.-+.
+          :####:    .. =#=              -#:.     .+.:#%:
+          -#####   .%    :%=.         *#:       -#.:##%=
+          -#####*. +#      :##-.  .:#*.       .#+.-###%=
+          .%#####%*#%        ..-*%#=..      .*%:.######.
+            -######%#########%#%#:.-#%%%#:.-#%=.*%####%:
+            .#%%%%%%%%%%%%%#=.      .- .*%#-.=%#%%%%*.
+                :=##%%%%-.          .:+%%#= -*###*=:
+                    =%%%%##=---=+##%%%#=.
+                    .#%%%%%%%%%%%%#-
+                        .-+###*=.
       ]]
 
       dashboard.header.val = vim.split(logo, "\n")
@@ -43,19 +49,12 @@ return {
       dashboard.buttons.val = {
         { type = "text", val = "Quick actions", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        api.button("SPC f f", " " .. " Find file"),
-        api.button("SPC s g", " " .. " Live Grep"),
-        api.button("SPC s p", " " .. " Open project"),
-        api.button("SPC s h", " " .. " Search Help"),
-        api.button("SPC s O", " " .. " Search Org Header"),
-        api.button("SPC o a", " " .. " Org Agenda"),
-        api.button("SPC s j", "󱕸 " .. " Jumplist"),
-        api.button("SPC s M", "󰆍 " .. " Search man pages"),
-        api.button("SPC SPC", " " .. " Legendary"),
-        api.button("SPC g g", "󰊢 " .. " Neogit"),
-        api.button("SPC p p", "󱎫 " .. " Pomodoro"),
+        api.button("SPC .", " " .. " Find file"),
+        api.button("SPC /", " " .. " Live Grep"),
+        api.button("SPC ,", " " .. " Find Buffer"),
+        api.button("SPC ;", "󰊢 " .. " Find Files (Git)"),
+        api.button("SPC g G", "󰊢 " .. " Neogit"),
         api.button("SPC l l", "󰒲 " .. " Lazy UI"),
-        api.button("SPC n d", " " .. " Nix Development"),
         { type = "padding", val = 1 },
         api.button("SPC q q", " " .. " Quit"),
       }

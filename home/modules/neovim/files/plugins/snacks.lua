@@ -140,6 +140,7 @@ return {
       { "<leader>pH", function() Snacks.picker.command_history() end, desc = "Pick commands" },
       { "<leader>pH", function() Snacks.picker.registers() end, desc = "Pick registers" },
       { "<leader>pd", function() Snacks.picker.diagnostics() end, desc = "Pick diagnostics" },
+      { "<leader>pj", function() Snacks.picker.jumps() end, desc = "Pick jumps" },
 
       -- Picker git submenu
       { "<leader>pgb", function() Snacks.picker.git_branches() end, desc = "Pick git branches" },
