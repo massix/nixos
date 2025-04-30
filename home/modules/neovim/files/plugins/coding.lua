@@ -285,10 +285,6 @@ return {
     config = function()
       -- Make sure we load neoconf before configuring the lsp
       require("neoconf").setup()
-      local lspconfig = require("lspconfig")
-
-      -- -- Capabilities
-      local capabilities = require("cmp_nvim_lsp").default_capabilities({ dynamicRegistration = true })
 
       ---@param client vim.lsp.Client
       ---@param bufnr integer
@@ -306,7 +302,6 @@ return {
 
       local cfg = require("yaml-companion").setup({
         lspconfig = {
-          capabilities = capabilities,
           filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.ghaction" },
           settings = {
             redhat = { telemetry = { enabled = false } },
@@ -331,27 +326,25 @@ return {
         },
       })
 
-      lspconfig.nixd.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("nixd")
+      vim.lsp.config("nixd", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.lua_ls.setup({
+      vim.lsp.enable("lua_ls")
+      vim.lsp.config("lua_ls", {
         on_attach = attach_trouble,
       })
 
-      lspconfig.helm_ls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("helm_ls")
+      vim.lsp.config("helm_ls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.jsonls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("jsonls")
+      vim.lsp.config("jsonls", {
         on_attach = attach_trouble,
         settings = {
-          ---@diagnostic disable-next-line: missing-fields
           json = {
             schemas = require("schemastore").json.schemas(),
             validate = { enable = true },
@@ -363,10 +356,11 @@ return {
         },
       })
 
-      lspconfig.yamlls.setup(cfg)
+      vim.lsp.enable("yamlls")
+      vim.lsp.config("yamlls", cfg)
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.clangd.setup({
+      vim.lsp.enable("clangd")
+      vim.lsp.config("clangd", {
         cmd = {
           "clangd",
           "--all-scopes-completion",
@@ -379,7 +373,6 @@ return {
           "--background-index",
           "--pch-storage=memory",
         },
-        capabilities = capabilities,
         ---@param bufnr integer
         on_attach = function(client, bufnr)
           -- stylua: ignore
@@ -389,11 +382,9 @@ return {
         end,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.terraformls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("terraformls")
+      vim.lsp.config("terraformls", {
         on_attach = attach_trouble,
-        -- See https://github.com/hashicorp/terraform-ls/issues/1655
         init_options = {
           terraform = {
             timeout = "30s",
@@ -407,52 +398,45 @@ return {
         },
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.dockerls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("dockerls")
+      vim.lsp.config("dockerls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.ts_ls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("ts_ls")
+      vim.lsp.config("ts_ls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.purescriptls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("purescriptls")
+      vim.lsp.config("purescriptls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.roc_ls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("roc_ls")
+      vim.lsp.config("roc_ls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.bashls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("bashls")
+      vim.lsp.config("bashls", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.kotlin_language_server.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("kotlin_language_server")
+      vim.lsp.config("kotlin_language_server", {
         on_attach = attach_trouble,
         init_options = {
           storage_path = "/tmp/kotlinlangserver/",
         },
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.omnisharp.setup({
+      vim.lsp.enable("omnisharp")
+      vim.lsp.config("omnisharp", {
         cmd = { "OmniSharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
         handlers = {
           ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
-        -- capabilities = capabilities,
         ---@diagnostic disable-next-line: missing-fields
         settings = {
           RoslynExtensionsOptions = {
@@ -477,21 +461,18 @@ return {
         end,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.gleam.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("gleam")
+      vim.lsp.config("gleam", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.tinymist.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("tinymist")
+      vim.lsp.config("tinymist", {
         on_attach = attach_trouble,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.gopls.setup({
-        capabilities = capabilities,
+      vim.lsp.enable("gopls")
+      vim.lsp.config("gopls", {
         on_attach = attach_trouble,
         settings = {
           gopls = {
@@ -508,17 +489,8 @@ return {
         },
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.ansiblels.setup({
-        capabilities = capabilities,
-        on_attach = attach_trouble,
-      })
-
-      ---@diagnostic disable-next-line: missing-fields
-      lspconfig.nginx_language_server.setup({
-        capabilities = capabilities,
-      })
-
+      vim.lsp.enable("ansiblels")
+      vim.lsp.enable("nginx_language_server")
       vim.lsp.enable("fish_lsp")
 
       -- Make sure that inlay hints are always enabled
