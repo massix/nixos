@@ -38,13 +38,18 @@ return {
       },
 
       picker = {
-        name = "fzf-lua",
+        name = "snacks.pick",
       },
 
       ---@param spec { dir: obsidian.Path, id: string, title: string }
       note_path_func = function(spec)
         local path = spec.dir / (tostring(spec.id) .. "-" .. spec.title)
         return path:with_suffix(".md")
+      end,
+
+      follow_url_func = function(url)
+        local cmd = vim.loop.os_uname().sysname == "Darwin" and "open" or "xdg-open"
+        vim.fn.jobstart({ cmd, url })
       end,
 
       -- We are using the other Markdown rendering plugin
