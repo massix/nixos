@@ -1,5 +1,4 @@
 local util_defaults = require("util.defaults")
-local nix = require("util.nix")
 
 return {
   -- Treesitter is a new parser generator tool that we can
