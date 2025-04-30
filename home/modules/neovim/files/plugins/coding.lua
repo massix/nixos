@@ -244,17 +244,6 @@ return {
     },
   },
 
-  -- yaml and json ls companion
-  {
-    "someone-stole-my-name/yaml-companion.nvim",
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-      { "nvim-lua/plenary.nvim" },
-    },
-    event = { "VeryLazy" },
-    config = function() end,
-  },
-
   -- lazydev
   {
     "folke/lazydev.nvim",
@@ -300,32 +289,6 @@ return {
         end
       end
 
-      local cfg = require("yaml-companion").setup({
-        lspconfig = {
-          filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.ghaction" },
-          settings = {
-            redhat = { telemetry = { enabled = false } },
-            yaml = {
-              validate = false,
-              format = { enable = false },
-              hover = true,
-              schemaStore = {
-                enable = true,
-                url = "https://www.schemastore.org/api/json/catalog.json",
-              },
-              schemaDownload = { enable = true },
-              schemas = {},
-            },
-          },
-          ---@param bufnr integer
-          on_attach = function(client, bufnr)
-            -- stylua: ignore
-            vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cS", [[<cmd>lua require("yaml-companion").open_ui_select()<cr>]], { desc = "Switch YAML Schema" })
-            attach_trouble(client, bufnr)
-          end,
-        },
-      })
-
       vim.lsp.enable("nixd")
       vim.lsp.config("nixd", {
         on_attach = attach_trouble,
@@ -357,7 +320,20 @@ return {
       })
 
       vim.lsp.enable("yamlls")
-      vim.lsp.config("yamlls", cfg)
+      vim.lsp.config("yamlls", {
+        settings = {
+          redhat = { telemetry = { enabled = false } },
+          yaml = {
+            validate = false,
+            format = { enable = false },
+            schemaStore = {
+              enable = true,
+              url = "https://www.schemastore.org/api/json/catalog.json",
+            },
+            schemaDownload = { enable = true },
+          },
+        },
+      })
 
       vim.lsp.enable("clangd")
       vim.lsp.config("clangd", {
