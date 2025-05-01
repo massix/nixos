@@ -97,6 +97,7 @@
             extraModules = [
               ./system/elendil/configuration.nix
               ./system/elendil/hardware-configuration.nix
+              ./system/elendil/hardware-extension.nix
               nixos-hardware.nixosModules.microsoft-surface-pro-intel
               cosmic.nixosModules.default
             ];
