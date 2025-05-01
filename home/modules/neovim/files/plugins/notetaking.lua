@@ -9,54 +9,64 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    opts = {
-      workspaces = {
-        -- FIXME: Make this configuration coming from default.nix
-        { name = "Work", path = "~/OneDrive - QUESTEL/Vault" },
-        { name = "Personal", path = "~/OneDrive/Vault" },
-      },
+    opts = function()
+      local workspaces = {}
+      local personal_path = vim.fn.expand("~/OneDrive")
+      local work_path = vim.fn.expand("~/OneDrive - QUESTEL")
 
-      daily_notes = {
-        folder = "journal",
-        date_format = "%Y-%m-%d",
-      },
+      if vim.fn.isdirectory(work_path) == 1 then
+        table.insert(workspaces, { name = "Work", path = work_path .. "/Vault" })
+      end
 
-      completion = {
-        nvim_cmp = true,
-        blink = false,
-        min_chars = 2,
-      },
+      if vim.fn.isdirectory(personal_path) then
+        table.insert(workspaces, { name = "Personal", path = personal_path .. "/Vault" })
+      end
 
-      preferred_link_style = "wiki",
+      return {
+        workspaces = workspaces,
 
-      -- TODO: Create some templates
-      templates = {
-        folder = "templates",
-        date_format = "%Y-%m-%d",
-        time_format = "%H:%M",
-        substitutions = {},
-      },
+        daily_notes = {
+          folder = "journal",
+          date_format = "%Y-%m-%d",
+        },
 
-      picker = {
-        name = "snacks.pick",
-      },
+        completion = {
+          nvim_cmp = true,
+          blink = false,
+          min_chars = 2,
+        },
 
-      ---@param spec { dir: obsidian.Path, id: string, title: string }
-      note_path_func = function(spec)
-        local path = spec.dir / (tostring(spec.id) .. "-" .. spec.title)
-        return path:with_suffix(".md")
-      end,
+        preferred_link_style = "wiki",
 
-      follow_url_func = function(url)
-        local cmd = vim.loop.os_uname().sysname == "Darwin" and "open" or "xdg-open"
-        vim.fn.jobstart({ cmd, url })
-      end,
+        -- TODO: Create some templates
+        templates = {
+          folder = "templates",
+          date_format = "%Y-%m-%d",
+          time_format = "%H:%M",
+          substitutions = {},
+        },
 
-      -- We are using the other Markdown rendering plugin
-      ui = {
-        enable = false,
-      },
-    },
+        picker = {
+          name = "snacks.pick",
+        },
+
+        ---@param spec { dir: obsidian.Path, id: string, title: string }
+        note_path_func = function(spec)
+          local path = spec.dir / (tostring(spec.id) .. "-" .. spec.title)
+          return path:with_suffix(".md")
+        end,
+
+        follow_url_func = function(url)
+          local cmd = vim.loop.os_uname().sysname == "Darwin" and "open" or "xdg-open"
+          vim.fn.jobstart({ cmd, url })
+        end,
+
+        -- We are using the other Markdown rendering plugin
+        ui = {
+          enable = false,
+        },
+      }
+    end,
   },
 
   {
