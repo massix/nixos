@@ -4,7 +4,6 @@ let
   onlyLinuxPkgs = {
     onedriver = callPackage ./onedriver { };
     custom-kernel = callPackage ./kernel { };
-    spotube = callPackage ./spotube { };
     tana = callPackage ./tana { };
   };
   commonPkgs = {
@@ -12,7 +11,6 @@ let
     jdtls = callPackage ./jdtls-helix { };
     codeium-ls = callPackage ./coding/codeiumls.nix { };
     vscode-js-debug = callPackage ./coding/vscodejsdebug.nix { };
-    bash-language-server = callPackage ./bash-language-server { };
     tanzu = callPackage ./tanzu { };
     tridentctl = callPackage ./tridentctl { };
   };

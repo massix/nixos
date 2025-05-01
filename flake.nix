@@ -1,67 +1,51 @@
 {
-  description = "Elendil configuration via Flakes";
+  description = "My multisystem configuration using flakes";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    unstablepkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    /* Warning: packages from this repo are subject to change rapidly!. */
-    masterpkgs.url = "github:NixOS/nixpkgs/master";
-
     home-manager.url = "github:nix-community/home-manager/master";
-    home-manager.inputs.nixpkgs.follows = "unstablepkgs";
-
-    nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
-    nix-formatter-pack.inputs.nixpkgs.follows = "unstablepkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     homeage.url = "github:aarongpower/homeage";
-    homeage.inputs.nixpkgs.follows = "unstablepkgs";
+    homeage.inputs.nixpkgs.follows = "nixpkgs";
 
     nixd.url = "github:nix-community/nixd";
-    nixd.inputs.nixpkgs.follows = "unstablepkgs";
-
-    flake-compat.url = "github:inclyc/flake-compat";
-    flake-compat.flake = false;
+    nixd.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-direnv.url = "github:nix-community/nix-direnv";
-    nix-direnv.inputs.nixpkgs.follows = "unstablepkgs";
+    nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
 
     purescript-overlay.url = "github:thomashoneyman/purescript-overlay";
-    purescript-overlay.inputs.nixpkgs.follows = "unstablepkgs";
-
-    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly.inputs.nixpkgs.follows = "unstablepkgs";
+    purescript-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     protrans.url = "github:massix/protrans";
-    protrans.inputs.nixpkgs.follows = "unstablepkgs";
+    protrans.inputs.nixpkgs.follows = "nixpkgs";
 
     gleeter.url = "github:massix/gleeter";
-    gleeter.inputs.nixpkgs.follows = "unstablepkgs";
+    gleeter.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
-    nixos-wsl.inputs.nixpkgs.follows = "unstablepkgs";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
     cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-    cosmic.inputs.nixpkgs.follows = "unstablepkgs";
+    cosmic.inputs.nixpkgs.follows = "nixpkgs";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    zen-browser.inputs.nixpkgs.follows = "unstablepkgs";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { nixpkgs
+    inputs@{ nixpkgs
     , flake-utils
-    , unstablepkgs
     , home-manager
     , nixos-hardware
     , homeage
     , nixd
     , nix-direnv
-    , masterpkgs
     , purescript-overlay
     , protrans
     , nixos-wsl
@@ -90,25 +74,17 @@
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
         ];
-        unstable = import unstablepkgs {
-          inherit system config overlays;
-        };
-        stable = import nixpkgs {
-          inherit system config overlays;
-        };
-        master = import masterpkgs {
+        pkgs = import nixpkgs {
           inherit system config overlays;
         };
         helpers = import ./lib {
-          inherit home-manager homeage;
-          nixpkgs = unstablepkgs;
+          inherit home-manager homeage nixpkgs;
         };
       };
       darwinSet = with pkgSet "aarch64-darwin"; {
         homeConfigurations."mgengarelli" = helpers.mkHome {
-          inherit stable stateVersion master system;
+          inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
-          pkgs = unstable;
           extraModules = [
             ./home/work-darwin
           ];
@@ -117,8 +93,7 @@
       linuxSet = with (pkgSet "x86_64-linux"); {
         nixosConfigurations = {
           "elendil" = helpers.mkSystem {
-            inherit stable stateVersion system;
-            pkgs = unstable;
+            inherit stateVersion system pkgs;
             extraModules = [
               ./system/elendil/configuration.nix
               ./system/elendil/hardware-configuration.nix
@@ -127,8 +102,7 @@
             ];
           };
           "aiwendil" = helpers.mkSystem {
-            inherit stable stateVersion system;
-            pkgs = unstable;
+            inherit stateVersion system pkgs;
             extraModules = [
               ./system/aiwendil/configuration.nix
               nixos-wsl.nixosModules.default
@@ -137,18 +111,16 @@
         };
         homeConfigurations = {
           "massi@elendil" = helpers.mkHome {
-            inherit stable stateVersion master system;
+            inherit inputs stateVersion system pkgs;
             username = "massi";
-            pkgs = unstable;
             extraModules = [
               protrans.homeManagerModules.default
               ./home/elendil
             ];
           };
           "massi@aiwendil" = helpers.mkHome {
-            inherit stable stateVersion master system;
+            inherit inputs stateVersion system pkgs;
             username = "massi";
-            pkgs = unstable;
             extraModules = [
               ./home/aiwendil
             ];
@@ -168,7 +140,7 @@
             })
             purescript-overlay.overlays.default
           ];
-          pkgs = import unstablepkgs {
+          pkgs = import nixpkgs {
             inherit system config overlays;
           };
 

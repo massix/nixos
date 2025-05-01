@@ -4,11 +4,14 @@
 , ...
 }: {
   mkHome =
-    { pkgs, stable, master, stateVersion, username, system, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
+    { inputs, pkgs, stateVersion, username, system, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit stable master stateVersion username system; };
+      extraSpecialArgs = { inherit stateVersion username system; };
 
       modules = [
+        {
+          nix.nixPath = [ "nixpkgs=${inputs.nixpkgs})" ];
+        }
         homeage.homeManagerModules.homeage
         ../home/modules/base
         ../home/modules/neovim
@@ -29,10 +32,10 @@
     };
 
   mkSystem =
-    { pkgs, stable, stateVersion, system, extraModules ? [ ] }:
+    { pkgs, stateVersion, system, extraModules ? [ ] }:
     nixpkgs.lib.nixosSystem {
       inherit pkgs system;
-      specialArgs = { inherit stable stateVersion; };
+      specialArgs = { inherit stateVersion; };
       modules = [
         # This nix configuration applies to all systems
         {

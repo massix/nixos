@@ -35,13 +35,13 @@ jobs:
       - run: nix flake show
       - name: Build Common Packages
         run: |
-          for pkg in lombok jdtls codeium-ls vscode-js-debug bash-language-server tanzu tridentctl; do
+          for pkg in lombok jdtls codeium-ls vscode-js-debug tanzu tridentctl; do
             nix build ".#${pkg}"
             cachix push surface-zen result
           done
       - name: Build Linux Packages
         run: |
-          for pkg in onedriver spotube tana; do
+          for pkg in onedriver tana; do
             nix build ".#${pkg}"
             cachix push surface-zen result
           done

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, master, username, ... }:
+{ config, lib, pkgs, username, ... }:
 let
   cfg = config.my-modules.neovim;
   inherit (pkgs) rustPlatform fetchFromGitHub;
@@ -184,7 +184,7 @@ in
             codeium = "${lib.getExe pkgs.codeium-ls}",
             vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",
             nodePath = "${pkgs.nodejs}/bin/node",
-            rustDebugger = "${master.vscode-extensions.vadimcn.vscode-lldb}",
+            rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
             sniprun = "${sniprun}/bin/sniprun",
             vsCodeAnsible = "${pkgs.vscode-extensions.redhat.ansible}/share/vscode/extensions/redhat.ansible/out/server/src/server.js",
@@ -242,7 +242,7 @@ in
           executable = true;
           text = ''
             #!/usr/bin/env bash
-            exec ${master.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
+            exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
           '';
         };
       } // (lib.listToAttrs langFiles);
@@ -268,6 +268,5 @@ in
           ${builtins.concatStringsSep "\n" (builtins.map mkFontFeature cfg.gui.font.features)}
         '' else "");
       };
-
   };
 }
