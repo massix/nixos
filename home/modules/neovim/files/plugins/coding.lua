@@ -269,10 +269,52 @@ return {
       { "hrsh7th/cmp-nvim-lsp" },
       { "b0o/schemastore.nvim" },
       { "Hoffs/omnisharp-extended-lsp.nvim" },
+      { "chlihismail/yaml-companion.nvim", branch = "fix/deprecation" },
     },
     config = function()
       -- Make sure we load neoconf before configuring the lsp
       require("neoconf").setup()
+      local lspconfig = require("lspconfig")
+
+      local yaml_configuration = require("yaml-companion").setup({
+        schemas = {
+          {
+            name = "Kubernetes 1.30.2",
+            uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.30.2-standalone-strict/all.json",
+          },
+        },
+        lspconfig = {
+          flags = { debounce_text_changes = 150 },
+          settings = {
+            redhat = { telemetry = { enabled = false } },
+            yaml = {
+              validate = true,
+              format = { enable = false },
+              schemaStore = {
+                enable = true,
+                url = "https://www.schemastore.org/api/json/catalog.json",
+              },
+              schemaDownload = { enable = true },
+              schemas = {
+                kubernetes = "",
+              },
+            },
+          },
+          on_attach = function()
+            vim.keymap.set("n", "<leader>ys", function()
+              require("yaml-companion").open_ui_select()
+            end, { desc = "Select YAML Schema", buffer = true })
+            vim.keymap.set("n", "<leader>yy", function()
+              local schema = require("yaml-companion").get_buf_schema(0)
+              if schema.result[1].name == "none" then
+                vim.notify("No schema found", vim.log.levels.WARN)
+              else
+                vim.notify(schema.result[1].name, vim.log.levels.INFO)
+              end
+            end, { desc = "Print YAML Schema", buffer = true })
+          end,
+        },
+      })
 
       ---@param client vim.lsp.Client
       ---@param bufnr integer
@@ -318,21 +360,8 @@ return {
         },
       })
 
-      vim.lsp.enable("yamlls")
-      vim.lsp.config("yamlls", {
-        settings = {
-          redhat = { telemetry = { enabled = false } },
-          yaml = {
-            validate = false,
-            format = { enable = false },
-            schemaStore = {
-              enable = true,
-              url = "https://www.schemastore.org/api/json/catalog.json",
-            },
-            schemaDownload = { enable = true },
-          },
-        },
-      })
+      -- FIXME: find a better way to make this work
+      lspconfig.yamlls.setup(yaml_configuration)
 
       vim.lsp.enable("clangd")
       vim.lsp.config("clangd", {
