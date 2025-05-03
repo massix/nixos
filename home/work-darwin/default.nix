@@ -45,43 +45,6 @@ let
         runHook postInstall
       '';
     };
-  windsurf = assert stdenv.isDarwin && stdenv.isAarch64;
-    stdenvNoCC.mkDerivation rec {
-      pname = "windsurf";
-      version = "1.0.7";
-
-      nativeBuildInputs = [ pkgs.undmg ];
-
-      src = builtins.fetchurl {
-        url = "https://windsurf-stable.codeiumdata.com/darwin-arm64-dmg/stable/bf4345439764c543a1e5ff3517bbce5a22128bca/Windsurf-darwin-arm64-${version}.dmg";
-        sha256 = "sha256:1n5m3avmprvb1lyggdahbqgmwkqxiffjl5gqxg49p6f0rdnv0z49";
-      };
-
-      sourceRoot = ".";
-
-      installPhase = ''
-        runHook preInstall
-
-        mkdir -p $out/Applications/
-        cp -a "Windsurf.app" $out/Applications/
-
-        mkdir -p $out/bin
-        ln -s "$out/Applications/Windsurf.app/Contents/Resources/app/bin/windsurf" "$out/bin/windsurf"
-
-        runHook postInstall
-      '';
-
-      # The code from Windsurf is signed, so we cannot manipulate it
-      dontFixup = true;
-
-      meta = with lib; {
-        description = "Windsurf IDE by Codeium";
-        homepage = "https://www.codeium.com/";
-        platforms = [ "aarch64-darwin" ];
-        sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-        license = licenses.unfree;
-      };
-    };
   tana = assert stdenv.isDarwin;
     stdenvNoCC.mkDerivation rec {
       pname = "tana";
@@ -145,11 +108,8 @@ in
       enable = true;
       configuration.extraShellAbbrs = {
         tp = "task rc.data.location=~/OneDrive/TaskWarrior";
+        j = "just";
       };
-    };
-    coding = {
-      enable = true;
-      languages.nix = true;
     };
     git = {
       enable = true;
@@ -206,95 +166,6 @@ in
         editor = "nvim";
       };
     };
-    zed-editor = {
-      enable = true;
-      extraPackages = with pkgs; [
-        gitlab-ci-ls
-        terraform-ls
-        ansible-language-server
-        nixd
-        docker-ls
-        gleam
-        helm-ls
-        nginx-language-server
-      ];
-      extensions = [
-        "ansible"
-        "catppuccin"
-        "catppuccin-blur"
-        "catppuccin-blur-plus"
-        "catppuccin-icons"
-        "dockerfile"
-        "fish"
-        "gitlab-ci-ls"
-        "gleam"
-        "helm"
-        "jinja2"
-        "lua"
-        "make"
-        "nginx"
-        "nix"
-        "terraform"
-      ];
-      userSettings = {
-        ui_font_size = 14;
-        buffer_font_size = 13;
-        buffer_font_family = "Rec Mono Casual";
-        buffer_font_fallbacks = [ "Symbols Nerd Font Mono" ];
-        autosave = "on_window_change";
-        theme = "Catppuccin Macchiato (Blue Blur+)";
-        terminal = {
-          font_size = 12;
-          font_family = "0xProto";
-          font_fallbacks = [ "Symbols Nerd Font Mono" ];
-        };
-        file_types = {
-          Jinja2 = [
-            "*.j2"
-            "**.j2"
-          ];
-          Ansible = [
-            "**.ansible.yml"
-            "**/defaults/**.yml"
-            "**/defaults/**.yaml"
-            "**/meta/**.yml"
-            "**/meta/**.yaml"
-            "**/tasks/**.yml"
-            "**/tasks/*.yml"
-            "**/tasks/*.yaml"
-            "**/handlers/*.yml"
-            "**/handlers/*.yaml"
-            "**/group_vars/**.yml"
-            "**/group_vars/**.yaml"
-            "**playbook*.yaml"
-            "**playbook*.yml"
-          ];
-        };
-        languages = {
-          Nix = {
-            language_servers = [ "nixd" ];
-            enable_language_server = true;
-            formatter = {
-              external.command = "nixpkgs-fmt";
-            };
-          };
-        };
-        lsp = {
-          ansible-language-server = {
-            settings = {
-              ansible.path = "ansible";
-              executionEnvironment.enabled = false;
-              python.interpreterPath = "python3";
-              validation = {
-                enabled = true;
-                lint.enabled = true;
-                lint.path = "ansible-lint";
-              };
-            };
-          };
-        };
-      };
-    };
   };
 
   homeage.file = {
@@ -312,7 +183,6 @@ in
     docker
     lima
     colima
-    windsurf
     spotify
     macpass
     tana

@@ -188,13 +188,20 @@ return {
         terraform = { "tfsec", "trivy", "terraform_validate" },
         nix = { "statix", "deadnix" },
         dockerfile = { "hadolint" },
-        fish = { "fish", "shellcheck" },
+        fish = { "fish" },
         bash = { "shellcheck" },
         sh = { "shellcheck" },
         go = { "golangcilint" },
         ghaction = { "actionlint" },
         lua = { "luacheck" },
         ansible = { "ansible_lint" },
+        git = { "gitlint" },
+        haskell = { "hlint" },
+        dotenv = { "dotenv_linter" },
+        editorconfig = { "editorconfig-checker" },
+        gitcommit = { "commitlint" },
+        c = { "clangtidy" },
+        cpp = { "clangtidy" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -285,6 +292,7 @@ return {
         },
         lspconfig = {
           flags = { debounce_text_changes = 150 },
+          filetypes = { "yaml", "yaml.ghaction", "yaml.ansible" },
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
@@ -417,22 +425,9 @@ return {
         on_attach = attach_trouble,
       })
 
-      vim.lsp.enable("roc_ls")
-      vim.lsp.config("roc_ls", {
-        on_attach = attach_trouble,
-      })
-
       vim.lsp.enable("bashls")
       vim.lsp.config("bashls", {
         on_attach = attach_trouble,
-      })
-
-      vim.lsp.enable("kotlin_language_server")
-      vim.lsp.config("kotlin_language_server", {
-        on_attach = attach_trouble,
-        init_options = {
-          storage_path = "/tmp/kotlinlangserver/",
-        },
       })
 
       vim.lsp.enable("omnisharp")

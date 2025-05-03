@@ -1,29 +1,26 @@
-nixpkgs_fmt := `which nixpkgs-fmt`
-statix := `which statix`
-nix := `which nix`
-nixosrb := `which nixos-rebuild`
-home_manager := `which home-manager`
-stylua := `which stylua`
+nixpkgs_fmt := `command -v nixpkgs-fmt`
+statix := `command -v statix`
+stylua := `command -v stylua`
+deadnix := `command -v deadnix`
+luacheck := `command -v luacheck`
 
-default: switch
+[private]
+default:
+  just -l
 
-@format:
+[doc("Run linters")]
+lint:
+  {{ statix }} check
+  {{ deadnix }} -f
+  {{ luacheck }} home/modules/neovim/files
+
+[doc("Checks formatting of nix and lua files")]
+check-format:
+  {{ nixpkgs_fmt }} --check .
+  {{ stylua }} --check home/modules/neovim/files
+
+[doc("Reformats nix and lua files")]
+format:
   {{ nixpkgs_fmt }} .
   {{ stylua }} .
 
-@system:
-  sudo {{ nixosrb }} switch
-
-@update: && system
-  {{ nix }} flake update
-  {{ home_manager }} switch
-
-@switch:
-  {{ home_manager }} switch
-
-@build:
-  {{ home_manager }} build
-  echo "built result"
-
-@clean:
-  rm -f result

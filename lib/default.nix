@@ -21,7 +21,6 @@
         ../home/modules/fonts.nix
         ../home/modules/im.nix
         ../home/modules/git.nix
-        ../home/modules/coding.nix
         ../home/modules/gaming.nix
         ../home/modules/devops.nix
         ../home/modules/zed.nix

@@ -1,4 +1,8 @@
-{ config, lib, pkgs, username, ... }:
+{ config
+, lib
+, pkgs
+, ...
+}:
 let
   cfg = config.my-modules.neovim;
   inherit (pkgs) rustPlatform fetchFromGitHub;
@@ -76,9 +80,16 @@ let
   vscode-java-debug = vscode-extension "vscode-java-debug" { version = "0.58.0"; hash = "sha256:0wa40rhfhkxhql16whylar8ciagvlb8xg97fixb5wxwvggzc8x23"; };
   configPath = "${config.xdg.configHome}/nixos";
   modulePath = "home/modules/neovim";
+  lldb-wrapper = pkgs.writeScriptBin "lldb-wrapper" ''
+    #!${lib.getExe pkgs.bash}
+    exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
+
+  '';
   mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
 in
 {
+  imports = [ ./languages ];
+
   options.my-modules.neovim = {
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
@@ -183,11 +194,10 @@ in
             },
             codeium = "${lib.getExe pkgs.codeium-ls}",
             vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",
-            nodePath = "${pkgs.nodejs}/bin/node",
+            nodePath = "${lib.getExe pkgs.nodejs}",
             rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
-            rustWrapper = "/home/${username}/${nvimHome}/lldb-wrapper.sh",
-            sniprun = "${sniprun}/bin/sniprun",
-            vsCodeAnsible = "${pkgs.vscode-extensions.redhat.ansible}/share/vscode/extensions/redhat.ansible/out/server/src/server.js",
+            rustWrapper = "${lib.getExe lldb-wrapper}",
+            sniprun = "${lib.getExe' sniprun "sniprun"}",
           }
         '';
 
@@ -236,21 +246,11 @@ in
 
         # Plugins configurations
         "${plugins}".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/plugins");
-
-        /* For reasons I still do not know, I have to create a wrapper for the codelldb extension to work, probably it's the env */
-        "${nvimHome}/lldb-wrapper.sh" = {
-          executable = true;
-          text = ''
-            #!/usr/bin/env bash
-            exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
-          '';
-        };
       } // (lib.listToAttrs langFiles);
 
     home.sessionVariables = mkIf cfg.defaultEditor {
       EDITOR = "nvim";
     };
-
 
     xdg.configFile =
       let

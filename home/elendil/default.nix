@@ -63,31 +63,6 @@ in
 
     gleeter.enable = true;
 
-    coding = {
-      enable = false;
-      languages = {
-        c = false;
-        c_sharp = true;
-        gleam = true;
-        go = true;
-        haskell = false;
-        javascript = true;
-        java = true;
-        json = true;
-        kotlin = false;
-        lua = true;
-        misc = true;
-        nix = true;
-        purescript = true;
-        racket = false;
-        rust = true;
-        scripting = true;
-        terraform = true;
-        yaml = true;
-        typst = true;
-      };
-    };
-
     fish = {
       enable = true;
       configuration = {
