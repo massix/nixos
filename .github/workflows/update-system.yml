@@ -2,15 +2,10 @@ name: Update System
 on:
   workflow_dispatch:
     inputs:
-      updateFlakes:
-        description: Whether or not to update the flakes
-        type: boolean
-        default: true
-        required: true
       commitMessage:
         description: Commit message to use
         type: string
-        default: "chore: System update [ci skip]"
+        default: "chore: system update"
         required: true
 permissions:
   actions: write
@@ -18,36 +13,20 @@ permissions:
 jobs:
   update-system:
     name: Update System
-    runs-on: azure
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Install Cachix
-        uses: cachix/cachix-action@v15
+      - uses: cachix/install-nix-action@v27
+      - run: nix flake update
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
         with:
-          name: surface-zen
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          skipPush: true
-      - name: Update flakes
-        run: nix flake update
-        if: ${{ inputs.updateFlakes }}
-      - name: Build Elendil
-        run: |
-          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
-          cachix push surface-zen result
-      - name: Build Elendil Home Manager
-        run: |
-          nix build ".#homeConfigurations.massi@elendil.activationPackage"
-          cachix push surface-zen result
-      - name: Push flake.lock back to repository
-        run: |
-          git config user.email "github-actions@github.com"
-          git config user.name "github-actions[bot]"
-          git add flake.lock
-          git commit -m "${{ inputs.commitMessage }}"
-          git push origin trunk
-        if: ${{ inputs.updateFlakes }}
+          commit-message: ${{ inputs.commitMessage }}
+          branch: chore/system-update
+          base: trunk
+          delete-branch: true
+          title: System Update
+          body: |
+            - Update flake.lock
