@@ -8,7 +8,6 @@ let
   };
   commonPkgs = {
     lombok = callPackage ./lombok { };
-    jdtls = callPackage ./jdtls-helix { };
     codeium-ls = callPackage ./coding/codeiumls.nix { };
     vscode-js-debug = callPackage ./coding/vscodejsdebug.nix { };
     tanzu = callPackage ./tanzu { };

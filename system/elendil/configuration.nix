@@ -178,7 +178,6 @@
     systemPackages = with pkgs; [
       wget
       curl
-      helix
       jq
       htop
       bat

@@ -17,7 +17,6 @@
         ../home/modules/neovim
         ../home/modules/zellij
         ../home/modules/taskwarrior
-        ../home/modules/helix.nix
         ../home/modules/fish.nix
         ../home/modules/fonts.nix
         ../home/modules/im.nix

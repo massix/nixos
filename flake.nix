@@ -183,4 +183,3 @@
     templates //
     { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
 }
-
