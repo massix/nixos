@@ -1,48 +1,61 @@
 name: CI
-on: [push, pull_request]
+on: push
 jobs:
-  lint-nix-and-lua:
-    runs-on: ubuntu-latest
+  check-flake:
+    strategy:
+      matrix:
+        os_version: [azure, macos-15]
+    runs-on: ${{ matrix.os_version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Load Nix Configuration
-        uses: rrbutani/use-nix-shell-action@v1
-      - name: Check flake
-        run: nix flake check --all-systems
-      - name: Lint nix
-        run: statix check
-      - name: Find nix dead code
-        run: deadnix -f
-      - name: Check Lua files
-        uses: nebularg/actions-luacheck@v1
-        with:
-          files: ./home/modules/neovim/files
-  build-packages:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+      - uses: nicknovitski/nix-develop@v1
+      - run: nix flake check
+      - run: nix flake show
+  lint-and-format:
+    runs-on: azure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+      - uses: nicknovitski/nix-develop@v1
+      - name: Lint
+        run: just lint
+      - name: Check format
+        run: just check-format
+  build-configurations:
     runs-on: ${{ matrix.os_version }}
     strategy:
       matrix:
-        os_version: [ubuntu-latest, macos-15]
+        os_version: [azure, macos-15]
     steps:
       - uses: actions/checkout@v4
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
-      - name: Install Cachix
-        uses: cachix/cachix-action@v15
+      - uses: cachix/install-nix-action@v30
+      - uses: cachix/cachix-action@v15
         with:
           name: surface-zen
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - run: nix flake show
-      - name: Build Common Packages
+      - name: Build Elendil NixOS Configuration
         run: |
-          for pkg in lombok jdtls codeium-ls vscode-js-debug tanzu tridentctl; do
-            nix build ".#${pkg}"
-            cachix push surface-zen result
-          done
-      - name: Build Linux Packages
+          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'azure' }}
+      - name: Build Elendil Home Manager Configuration
         run: |
-          for pkg in onedriver tana; do
-            nix build ".#${pkg}"
-            cachix push surface-zen result
-          done
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
+          nix build ".#homeConfigurations.massi@elendil.activationPackage"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'azure' }}
+      - name: Build WSL NixOS Configuration
+        run: |
+          nix build ".#nixosConfigurations.aiwendil.config.system.build.toplevel"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'azure' }}
+      - name: Build WSL Home Manager Configuration
+        run: |
+          nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'azure' }}
+      - name: Build Darwin Home Manager
+        run: |
+          nix build ".#homeConfigurations.mgengarelli.activationPackage"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'macos-15' }}

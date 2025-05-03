@@ -41,21 +41,6 @@ in
       };
     };
 
-    coding = {
-      enable = true;
-      languages = {
-        go = true;
-        json = true;
-        lua = true;
-        nix = true;
-        scripting = true;
-        terraform = true;
-        yaml = true;
-        misc = true;
-        ansible = true;
-      };
-    };
-
     fish = {
       enable = true;
       configuration = {
