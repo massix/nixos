@@ -3,4 +3,5 @@ result
 .direnv
 .luarc.json
 outputs/
+/.neoconf.json
 
