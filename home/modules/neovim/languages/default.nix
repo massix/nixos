@@ -47,8 +47,8 @@ let
     rustfmt
   ];
 
-  # INFO: ansible-lint does not currently compile on Darwin due to python3Packages.mocket
   linters = with pkgs; [
+    ansible-lint
     golangci-lint
     haskellPackages.hlint
     statix
@@ -59,7 +59,7 @@ let
     actionlint
     dotenv-linter
     editorconfig-checker
-  ] ++ lib.optionals stdenv.isLinux [ ansible-lint ];
+  ];
 
   misc = with pkgs; [
     gcc

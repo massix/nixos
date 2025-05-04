@@ -78,6 +78,18 @@
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default
+          # FIXME: temporary workaround to ansible not compiling on Darwin
+          (final: prev: {
+            python312 = prev.python312.override {
+              packageOverrides = _: prev: {
+                mocket = prev.mocket.overridePythonAttrs (oldAttrs: {
+                  disabledTests = oldAttrs.disabledTests ++ [ "test_httprettish_httpx_session" ];
+                });
+              };
+            };
+
+            python312Packages = final.python312.pkgs;
+          })
         ];
         pkgs = import nixpkgs {
           inherit system config overlays;

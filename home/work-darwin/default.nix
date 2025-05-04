@@ -122,7 +122,7 @@ in
     devops = {
       enable = true;
       k9s.enable = true;
-      ansible.enable = false;
+      ansible.enable = true;
       tanzu.enable = true;
       vault.enable = true;
       terraform = {
