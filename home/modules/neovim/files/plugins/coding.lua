@@ -1,4 +1,5 @@
 local util_defaults = require("util.defaults")
+local nix = require("util.nix")
 
 return {
   -- Treesitter is a new parser generator tool that we can
@@ -340,6 +341,19 @@ return {
 
       vim.lsp.enable("nixd")
       vim.lsp.config("nixd", {
+        settings = {
+          nixd = {
+            nixpkgs = { expr = "import <nixpkgs> {}" },
+            options = {
+              nixos = {
+                expr = '(builtins.getFlake "' .. nix.flakePath .. '").nixosConfigurations.elendil.options',
+              },
+              ["home-manager"] = {
+                expr = '(builtins.getFlake "' .. nix.flakePath .. '").homeConfigurations."massi@elendil".options',
+              },
+            },
+          },
+        },
         on_attach = attach_trouble,
       })
 

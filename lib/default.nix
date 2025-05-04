@@ -8,25 +8,54 @@
       inherit pkgs;
       extraSpecialArgs = { inherit stateVersion username system; };
 
-      modules = [
-        {
-          nix.nixPath = [ "nixpkgs=${inputs.nixpkgs})" ];
-        }
-        homeage.homeManagerModules.homeage
-        ../home/modules/base
-        ../home/modules/neovim
-        ../home/modules/zellij
-        ../home/modules/taskwarrior
-        ../home/modules/fish.nix
-        ../home/modules/fonts.nix
-        ../home/modules/im.nix
-        ../home/modules/git.nix
-        ../home/modules/gaming.nix
-        ../home/modules/devops.nix
-        ../home/modules/zed.nix
-        ../home/modules/kitty.nix
-        ../home/modules/gleeter.nix
-      ] ++ extraModules;
+      modules =
+        let
+          inherit (pkgs.stdenv) isDarwin;
+          homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
+        in
+        [
+          # The following is true for all users
+          ({ config, ... }: {
+            nix = {
+              nixPath = [ "nixpkgs=${inputs.nixpkgs})" ];
+              settings = {
+                experimental-features = [ "nix-command" "flakes" ];
+                keep-outputs = true;
+                keep-derivations = true;
+                warn-dirty = true;
+              };
+
+              package = pkgs.nix;
+            };
+            home = {
+              inherit username homeDirectory stateVersion;
+              activation.report-changes = config.lib.dag.entryAnywhere ''
+                ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+              '';
+            };
+
+            homeage = {
+              pkg = pkgs.rage;
+              identityPaths = [ "${homeDirectory}/.age/key.txt" ];
+              mount = if isDarwin then "${homeDirectory}/secrets" else "/run/user/$UID/secrets";
+              installationType = if isDarwin then "activation" else "systemd";
+            };
+          })
+          homeage.homeManagerModules.homeage
+          ../home/modules/secrets
+          ../home/modules/neovim
+          ../home/modules/zellij
+          ../home/modules/taskwarrior
+          ../home/modules/fish.nix
+          ../home/modules/fonts.nix
+          ../home/modules/im.nix
+          ../home/modules/git.nix
+          ../home/modules/gaming.nix
+          ../home/modules/devops.nix
+          ../home/modules/zed.nix
+          ../home/modules/kitty.nix
+          ../home/modules/gleeter.nix
+        ] ++ extraModules;
     };
 
   mkSystem =
