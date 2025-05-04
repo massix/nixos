@@ -7,9 +7,6 @@ on:
         type: string
         default: "chore: system update"
         required: true
-permissions:
-  actions: write
-  contents: write
 jobs:
   update-system:
     name: Update System
@@ -23,6 +20,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.PAT_TOKEN }}
           commit-message: ${{ inputs.commitMessage }}
           branch: chore/system-update
           base: trunk
