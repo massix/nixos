@@ -47,6 +47,7 @@ let
 in
 {
   my-modules = {
+    firefox.enable = true;
     fonts = {
       enable = true;
       typefonts = false;
@@ -306,7 +307,6 @@ in
     pbpctrl
     dconf-editor
     gnome-tweaks
-    vivaldi
 
     spotify
 

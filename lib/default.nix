@@ -55,6 +55,7 @@
           ../home/modules/zed.nix
           ../home/modules/kitty.nix
           ../home/modules/gleeter.nix
+          ../home/modules/firefox.nix
         ] ++ extraModules;
     };
 
