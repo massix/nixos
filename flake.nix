@@ -5,6 +5,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
+    nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -40,6 +43,7 @@
 
   outputs =
     inputs@{ nixpkgs
+    , nur
     , flake-utils
     , home-manager
     , nixos-hardware
@@ -73,6 +77,7 @@
           (_: _: { gleeter = gleeter.packages.${system}.default; })
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
+          nur.overlays.default
         ];
         pkgs = import nixpkgs {
           inherit system config overlays;
