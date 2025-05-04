@@ -3,12 +3,19 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { pkgs
 , stateVersion
+, lib
 , ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
   ];
+
+  # NVD Diffing tool
+  system.activationScripts.report-changes = ''
+    PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.nvd]}
+    ${lib.getExe pkgs.nvd} diff $(ls -dv /nix/var/nix/profiles/system-*-link | tail -2)
+  '';
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
