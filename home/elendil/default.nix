@@ -47,7 +47,12 @@ let
 in
 {
   my-modules = {
-    firefox.enable = true;
+    firefox = {
+      enable = true;
+      extraExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        proton-pass
+      ];
+    };
     fonts = {
       enable = true;
       typefonts = false;

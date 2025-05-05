@@ -68,6 +68,18 @@ let
 in
 {
   my-modules = {
+    firefox = {
+      enable = true;
+      extraExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        bitwarden
+      ];
+      extraEngines = {
+        Jira = {
+          urls = [{ template = "https://jira.questel.com/browse/{searchTerms}"; }];
+          definedAliases = [ "@jira" ];
+        };
+      };
+    };
     fonts = {
       enable = true;
     };
