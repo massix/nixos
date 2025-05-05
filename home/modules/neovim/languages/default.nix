@@ -33,6 +33,7 @@ let
     tinymist
     rust-analyzer
     purescript-language-server
+    yaml-language-server
   ];
 
   formatters = with pkgs; [
