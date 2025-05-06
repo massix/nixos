@@ -285,14 +285,14 @@ in
     };
 
     "org/gnome/desktop/wm/keybindings" = {
-      close = "['<Super>q']";
-      maximize = "[]";
-      minimize = "[]";
-      switch-to-workspace-left = "['<Super><Alt>Left']";
-      switch-to-workspace-right = "['<Super><Alt>Right']";
-      move-to-workspace-left = "['<Shift><Super>Left']";
-      move-to-workspace-right = "['<Shift><Super>Right']";
-      toggle-fullscreen = "['<Super><Alt>f']";
+      close = [ "<Super>q" ];
+      maximize = [ ];
+      minimize = [ ];
+      switch-to-workspace-left = [ "<Super><Alt>Left" ];
+      switch-to-workspace-right = [ "<Super><Alt>Right" ];
+      move-to-workspace-left = [ "<Shift><Super>Left" ];
+      move-to-workspace-right = [ "<Shift><Super>Right" ];
+      toggle-fullscreen = [ "<Super><Alt>f" ];
     };
   };
 
