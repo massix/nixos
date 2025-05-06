@@ -65,6 +65,7 @@ in
         "Noogle" = mkEngine "https://noogle.dev/q?term={searchTerms}" "@noogle";
         "Hoogle" = mkEngine "https://hoogle.haskell.org/?hoogle={searchTerms}&scope=set%3Astackage" "@hoogle";
         "Amazon" = mkEngine "https://www.amazon.fr/s?k={searchTerms}" "@az";
+        "Gleam Packages" = mkEngine "https://packages.gleam.run/?search={searchTerms}" "@gleam";
       } // cfg.extraEngines;
     in
     mkIf cfg.enable {
