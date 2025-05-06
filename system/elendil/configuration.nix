@@ -62,9 +62,6 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Enable the COSMIC Desktop Environment.
-  # services.displayManager.cosmic-greeter.enable = true;
-  # services.desktopManager.cosmic.enable = true;
   services.flatpak.enable = true;
 
   services.libinput = {
