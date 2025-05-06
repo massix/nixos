@@ -91,7 +91,7 @@ in
     kitty = {
       enable = true;
       font = {
-        name = "Recursive Mono Casual Static";
+        name = "IBM Plex Mono";
         italic = "auto";
         bold = "auto";
         size = 12;
