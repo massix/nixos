@@ -34,9 +34,6 @@
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
-    cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-    cosmic.inputs.nixpkgs.follows = "nixpkgs";
-
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -53,7 +50,6 @@
     , purescript-overlay
     , protrans
     , nixos-wsl
-    , cosmic
     , gleeter
     , zen-browser
     , self
@@ -116,7 +112,6 @@
               ./system/elendil/hardware-configuration.nix
               ./system/elendil/hardware-extension.nix
               nixos-hardware.nixosModules.microsoft-surface-pro-intel
-              cosmic.nixosModules.default
             ];
           };
           "aiwendil" = helpers.mkSystem {
