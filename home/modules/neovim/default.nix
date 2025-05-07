@@ -190,7 +190,7 @@ in
             dapConfigured = true,
             jdtls = {
               bundles = bundles,
-              lombok = "${pkgs.lombok}/lombok.jar",
+              lombok = "${pkgs.lombok}/share/java/lombok.jar",
             },
             codeium = "${lib.getExe pkgs.codeium-ls}",
             vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",

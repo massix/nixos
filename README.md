@@ -31,10 +31,6 @@ Custom compilation of the [onedriver](https://github.com/jstaf/onedriver) softwa
 for [nixpkgs](https://github.com/nixos/nixpkgs).  The only difference between this package and the one in nixpkgs is that here
 I am using the latest version from the master branch.
 
-### Lombok
-Simple derivation to download a specific version of the Lombok jar, mostly to be used with
-the JDTLS package.
-
 ### Codeium Language Server
 Download and patching of the [Codeium's language server](https://github.com/Exafunction/codeium), which I use extensively in Neovim.
 The version here is **not always the latest** available, but the one needed for their vim plugin.
