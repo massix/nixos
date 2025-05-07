@@ -7,7 +7,6 @@ let
     tana = callPackage ./tana { };
   };
   commonPkgs = {
-    lombok = callPackage ./lombok { };
     codeium-ls = callPackage ./coding/codeiumls.nix { };
     vscode-js-debug = callPackage ./coding/vscodejsdebug.nix { };
     tanzu = callPackage ./tanzu { };
