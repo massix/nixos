@@ -23,7 +23,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.PAT_TOKEN }}
-          commit-message: ${{ inputs.commitMessage }}
+          commit-message: "${{ inputs.commitMessage || 'chore: system update' }}"
           branch: chore/system-update
           base: trunk
           delete-branch: true
