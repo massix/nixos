@@ -107,15 +107,6 @@ in
       enable = true;
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
-      gui = {
-        enable = false;
-        font = {
-          inherit (terminalFont) name size;
-          features = [
-            { name = "Recursive Mn Csl St"; features = [ "+liga" "+dlig" "+ss10" "+ss20" ]; }
-          ];
-        };
-      };
     };
 
     git = {

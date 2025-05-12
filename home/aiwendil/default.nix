@@ -58,7 +58,6 @@ in
       enable = true;
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
-      gui.enable = false;
     };
 
     zellij.enable = true;
