@@ -60,7 +60,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = cfg.font.packages;
+    home.packages = cfg.font.packages ++ (with pkgs; [ nerd-fonts.symbols-only ]);
     programs.kitty =
       let
         fontFeatures = ffs: builtins.concatStringsSep "\n" (builtins.map (ff: "font_features ${ff}") ffs);
