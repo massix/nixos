@@ -63,10 +63,6 @@ require("config.keymaps")
 -- vim.cmd.language("en_US.utf8")
 vim.cmd.colorscheme("catppuccin")
 
-if vim.g.neovide then
-  require("config.gui").setup()
-end
-
 -- Autoreload buffer
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" }, {
   pattern = "*",

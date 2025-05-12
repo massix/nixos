@@ -6,16 +6,8 @@
 let
   cfg = config.my-modules.neovim;
   inherit (pkgs) rustPlatform fetchFromGitHub;
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types strings;
+  inherit (lib) mkEnableOption mkPackageOption mkIf strings;
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  mkStringOption = description: default: mkOption {
-    type = types.str;
-    inherit default description;
-  };
-  mkIntOption = description: default: mkOption {
-    type = types.number;
-    inherit default description;
-  };
   nvimLangs = map
     ({ code, hash }: pkgs.stdenvNoCC.mkDerivation rec {
       pname = "neovim-spell-${code}";
@@ -99,27 +91,6 @@ in
       };
       nightly = mkEnableOption "Install from the nightly channel";
     };
-    gui = {
-      enable = mkEnableOption "Install GUI";
-      package = mkPackageOption pkgs "neovide" {
-        default = "neovide";
-      };
-      font = {
-        name = mkStringOption "Font" "FiraCode";
-        size = mkIntOption "Font Size" 10;
-        features = mkOption {
-          type = with types; listOf (submodule {
-            options = {
-              name = mkOption { type = string; };
-              features = mkOption { type = listOf string; };
-            };
-          });
-          default = [ ];
-          description = "Font Features to activate";
-        };
-      };
-      scaleFactor = mkIntOption "Scale Factor" 1.0;
-    };
   };
 
   config = {
@@ -137,8 +108,7 @@ in
     };
 
     # The extra packages are needed for luarocks
-    home.packages = (if cfg.gui.enable then [ cfg.gui.package ] else [ ])
-      ++ (with pkgs; [
+    home.packages = with pkgs; [
       lua5_1
       lua51Packages.luarocks
       readline
@@ -152,7 +122,7 @@ in
 
       # Needed for obsidian.nvim
       (if stdenv.hostPlatform.isDarwin then pngpaste else wl-clipboard)
-    ]);
+    ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
     home.file =
@@ -172,7 +142,6 @@ in
               source = "${retrieveLang l}/spell/${l}.utf-8.spl";
             };
           }) [ "it" "en" "fr" ];
-        mkGuiFont = font: size: "${builtins.replaceStrings [" "] ["_"] font},Symbols_Nerd_Font_Mono:h${builtins.toString size}";
       in
       {
         # Misc files
@@ -210,41 +179,6 @@ in
         "${config}/options.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/options.lua");
         "${config}/keymaps.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/keymaps.lua");
 
-        # The font is configurable via the configuration, so this is raw here
-        "${config}/gui.lua".text = ''
-          M = {}
-
-          M.default_scale = ${toString cfg.gui.scaleFactor};
-
-          M.change_scale_factor = function(delta)
-            vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
-          end
-
-          M.setup = function()
-            vim.o.guifont = "${mkGuiFont cfg.gui.font.name cfg.gui.font.size}"
-            vim.g.neovide_floating_shadow = true
-            vim.g.neovide_hide_mouse_when_typing = false
-            vim.g.neovide_theme = "dark"
-            vim.g.neovide_unlink_border_highlights = true
-            vim.g.neovide_confirm_quit = false
-            vim.g.neovide_cursor_antialiasing = true
-            vim.g.neovide_scale_factor = M.default_scale
-
-            -- Register keybinding to modify the scale
-            require("which-key").add({
-              { "<leader>+", group = "scale" },
-              { "<leader>++", function() require("config.gui").change_scale_factor(1.25) end, desc = "Increase scale" },
-              { "<leader>+-", function() require("config.gui").change_scale_factor(1/1.25) end, desc = "Decrease scale" },
-            })
-
-            -- Also create some more immediate bindings
-            vim.keymap.set("n", "<C-=>", function() require("config.gui").change_scale_factor(1.25) end, { desc = "Increase scale" })
-            vim.keymap.set("n", "<C-->", function() require("config.gui").change_scale_factor(1/1.25) end, { desc = "Decrease scale" })
-          end
-
-          return M
-        '';
-
         # Plugins configurations
         "${plugins}".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/plugins");
       } // (lib.listToAttrs langFiles);
@@ -252,22 +186,5 @@ in
     home.sessionVariables = mkIf cfg.defaultEditor {
       EDITOR = "nvim";
     };
-
-    xdg.configFile =
-      let
-        mkFontFeature = { name, features }: ''
-          "${name}" = [${builtins.concatStringsSep ", " (builtins.map (f: "\"${f}\"") features)}]
-        '';
-      in
-      mkIf cfg.gui.enable {
-        "neovide/config.toml".text = ''
-          [font]
-          normal = "${cfg.gui.font.name}"
-          size = ${builtins.toString cfg.gui.font.size}
-        '' + (if (builtins.length cfg.gui.font.features) > 0 then ''
-          [font.features]
-          ${builtins.concatStringsSep "\n" (builtins.map mkFontFeature cfg.gui.font.features)}
-        '' else "");
-      };
   };
 }

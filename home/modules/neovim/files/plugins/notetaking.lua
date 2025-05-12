@@ -120,9 +120,6 @@ return {
   {
     "3rd/image.nvim",
     ft = { "markdown" },
-    cond = function()
-      return not vim.g.neovide
-    end,
     opts = {
       backend = "kitty",
       integrations = {
