@@ -34,6 +34,7 @@ let
     rust-analyzer
     purescript-language-server
     yaml-language-server
+    gitlab-ci-ls
   ];
 
   formatters = with pkgs; [

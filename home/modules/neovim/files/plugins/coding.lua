@@ -284,6 +284,14 @@ return {
       require("neoconf").setup()
       local lspconfig = require("lspconfig")
 
+      -- Add new filetype for Gitlab CI
+      vim.filetype.add({
+        filename = {
+          [".gitlab-ci.yml"] = "yaml.gitlab",
+          [".gitlab-ci.yaml"] = "yaml.gitlab",
+        },
+      })
+
       local yaml_configuration = require("yaml-companion").setup({
         schemas = {
           {
@@ -293,7 +301,7 @@ return {
         },
         lspconfig = {
           flags = { debounce_text_changes = 150 },
-          filetypes = { "yaml", "yaml.ghaction", "yaml.ansible" },
+          filetypes = { "yaml", "yaml.ghaction", "yaml.ansible", "yaml.gitlab" },
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
@@ -505,6 +513,7 @@ return {
       vim.lsp.enable("ansiblels")
       vim.lsp.enable("nginx_language_server")
       vim.lsp.enable("fish_lsp")
+      vim.lsp.enable("gitlab_ci_ls")
 
       -- Make sure that inlay hints are always enabled
       vim.api.nvim_create_augroup("LspInlayHints", {})
