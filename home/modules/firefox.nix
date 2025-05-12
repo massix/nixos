@@ -15,6 +15,7 @@ let
     clearurls
     sponsorblock
     ghostery
+    floccus
   ];
 in
 {
@@ -111,8 +112,7 @@ in
             "general.smoothScroll" = true;
             "signon.autofillForms" = false;
             "widget.non-native-theme.scrollbar.style" = 3;
-            # use a more dense UI
-            "browser.uidensity" = 1;
+            "browser.uidensity" = 0;
             "browser.compactmode.show" = true;
             "breakpad.reportURL" = "";
             "browser.urlbar.trimHttps" = true;
@@ -129,7 +129,18 @@ in
             "extensions.postDownloadThirdPartyPrompt" = false;
             "browser.preferences.moreFromMozilla" = false;
             "browser.tabs.tabmanager.enabled" = false;
-            "browser.toolbars.bookmarks.visibility" = "never";
+            # enable tab groups
+            "browser.tabs.groups.enable" = true;
+            "browser.tabs.groups.smart.enabled" = true;
+            "extensions.pocket.enable" = false;
+
+            # sidebar with vertical tabs
+            "sidebar.visibility" = "expand-on-hover";
+            "sidebar.main.tools" = "aichat,history,bookmarks";
+            "sidebar.expandOnHover" = true;
+            "sidebar.verticalTabs" = true;
+            "browser.toolbars.bookmarks.visibility" = "always";
+
             # do not open menu with Alt
             "ui.key.menuAccessKeyFocuses" = false;
             # do not show "Top Sites" in new tab page
