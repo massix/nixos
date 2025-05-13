@@ -203,6 +203,7 @@ return {
         gitcommit = { "commitlint" },
         c = { "clangtidy" },
         cpp = { "clangtidy" },
+        python = { "pylint" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -514,6 +515,7 @@ return {
       vim.lsp.enable("nginx_language_server")
       vim.lsp.enable("fish_lsp")
       vim.lsp.enable("gitlab_ci_ls")
+      vim.lsp.enable("pyright")
 
       -- Make sure that inlay hints are always enabled
       vim.api.nvim_create_augroup("LspInlayHints", {})
@@ -888,6 +890,7 @@ return {
         yaml = { "yamlfmt" },
         typescript = { "prettier" },
         javascript = { "prettier" },
+        python = { "ruff_format" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then

@@ -35,6 +35,7 @@ let
     purescript-language-server
     yaml-language-server
     gitlab-ci-ls
+    pyright
   ];
 
   formatters = with pkgs; [
@@ -47,6 +48,7 @@ let
     yamlfmt
     typstfmt
     rustfmt
+    ruff
   ];
 
   linters = with pkgs; [
@@ -61,6 +63,7 @@ let
     actionlint
     dotenv-linter
     editorconfig-checker
+    pylint
   ];
 
   misc = with pkgs; [
@@ -84,6 +87,9 @@ let
     # Purescript base tooling
     spago-unstable
     purescript
+
+    # Python base tooling
+    python3
   ];
 in
 {
