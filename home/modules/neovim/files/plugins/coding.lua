@@ -420,6 +420,7 @@ return {
       vim.lsp.enable("terraformls")
       vim.lsp.config("terraformls", {
         on_attach = attach_trouble,
+        filetypes = { "terraform", "tf", "tfvars", "terraform-vars" },
         init_options = {
           terraform = {
             timeout = "30s",
@@ -428,7 +429,7 @@ return {
             enableEnhancedValidation = true,
           },
           experimentalFeatures = {
-            prefillRequiredFields = false,
+            prefillRequiredFields = true,
           },
         },
       })
