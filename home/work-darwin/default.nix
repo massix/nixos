@@ -91,22 +91,13 @@ in
     kitty = {
       enable = true;
       font = {
-        name = "IBM Plex Mono";
+        name = "0xProto";
         italic = "auto";
         bold = "auto";
         size = 12;
         packages = with pkgs; [
-          comic-mono
           _0xproto
           noto-fonts-emoji
-          recursive
-          (google-fonts.override {
-            fonts = [
-              "SyneMono"
-              "JetBrainsMono"
-              "NovaMono"
-            ];
-          })
         ];
       };
       extraSettings = {
