@@ -55,7 +55,7 @@ in
   config =
     let
       allExtensions = cfg.extraExtensions ++ extensions;
-      allEngines = {
+      engines = {
         Google = mkEngine "https://www.google.com/search?q={searchTerms}" "@g";
         "Duck Duck Go" = mkEngine "https://duckduckgo.com/?q={searchTerms}" "@ddg";
         YouTube = mkEngine "https://www.youtube.com/results?search_query={searchTerms}" "@yt";
@@ -67,6 +67,8 @@ in
         "Hoogle" = mkEngine "https://hoogle.haskell.org/?hoogle={searchTerms}&scope=set%3Astackage" "@hoogle";
         "Amazon" = mkEngine "https://www.amazon.fr/s?k={searchTerms}" "@az";
         "Gleam Packages" = mkEngine "https://packages.gleam.run/?search={searchTerms}" "@gleam";
+        "Artifact Hub" = mkEngine "https://artifacthub.io/packages/search?ts_query={searchTerms}" "@artifact";
+        "Docker Hub" = mkEngine "https://hub.docker.com/search?q={searchTerms}" "@docker";
       } // cfg.extraEngines;
     in
     mkIf cfg.enable {
@@ -100,8 +102,8 @@ in
           extensions.force = true;
           isDefault = true;
           search = {
+            inherit engines;
             force = true;
-            engines = allEngines;
             default = "google";
           };
           settings = {
