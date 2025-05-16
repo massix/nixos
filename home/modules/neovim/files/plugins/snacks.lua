@@ -36,7 +36,7 @@ return {
       })
 
       Snacks.input.enable()
-      Snacks.dim.enable()
+      Snacks.dim.disable()
 
       -- Override the default vim.ui.input
       vim.ui.input = Snacks.input.input
@@ -103,7 +103,7 @@ return {
         enabled = true,
       },
       dim = {
-        enabled = true,
+        enabled = false,
         filter = filter_filetypes,
       },
     },
