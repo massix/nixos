@@ -2,17 +2,17 @@
 let
   inherit (pkgs) lib stdenvNoCC;
   pname = "codeium-ls";
-  version = "1.20.8";
+  version = "1.20.9";
   fetchCodeium = version: hash: path: builtins.fetchurl {
     url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/${path}";
     sha256 = hash;
   };
-  commonMeta = with lib; {
+  meta = with lib; {
     description = "Codeium Language Server";
     homepage = "https://github.com/Exafunction/codeium";
     license = licenses.unfree;
     maintainers = with maintainers; [ massimogengarelli ];
-    mainProgram = "codeium-ls_server_linux_x64";
+    mainProgram = "codeium-ls";
   };
   mkInstallPhase = binPath: ''
     runHook preInstall
@@ -22,35 +22,28 @@ let
     runHook postInstall
   '';
   linuxPkg = stdenvNoCC.mkDerivation {
-    inherit pname version;
+    inherit pname version meta;
 
     nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
-    src = fetchCodeium version "sha256:084pmlwddr8cy5f5zdgpl1ia85vjxbsp807v2fgq1pd7d5447xlh" "language_server_linux_x64.gz";
+    src = fetchCodeium version "sha256:0wwqmnbbabl8xj8l9jh6cbaw323b6b0fqbz4zn11lfid8knlmqr1" "language_server_linux_x64.gz";
 
     dontBuild = true;
     dontUnpack = true;
     dontConfigure = true;
 
-    installPhase = mkInstallPhase "codeium-ls_server_linux_x64";
+    installPhase = mkInstallPhase "codeium-ls";
 
-    meta = commonMeta // {
-      mainProgram = "codeium-ls_server_linux_x64";
-    };
   };
   macPkg = stdenvNoCC.mkDerivation {
-    inherit pname version;
-    src = fetchCodeium version "sha256:02vqfvkl604jp0zl61p8b2c4mlbjhyjh9xisrdhfnd215hnrf5mg" "language_server_macos_arm.gz";
+    inherit pname version meta;
+    src = fetchCodeium version "sha256:13v3k1i169cy6f1zmc6ma12pxdfq72l1gkqb1shhd63w9b8lfcyn" "language_server_macos_arm.gz";
 
     dontBuild = true;
     dontUnpack = true;
     dontConfigure = true;
 
-    installPhase = mkInstallPhase "codeium-ls_server_macos_arm";
-
-    meta = commonMeta // {
-      mainProgram = "codeium-ls_server_macos_arm";
-    };
+    installPhase = mkInstallPhase "codeium-ls";
   };
 in
 if stdenvNoCC.hostPlatform.isLinux then linuxPkg else macPkg
