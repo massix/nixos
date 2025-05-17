@@ -49,6 +49,7 @@ in
   my-modules = {
     firefox = {
       enable = true;
+      enableGnomeExtensions = true;
       extraExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
         proton-pass
       ];

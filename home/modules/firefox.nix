@@ -4,6 +4,7 @@
 , ...
 }:
 let
+  inherit (pkgs) stdenv;
   inherit (lib) mkEnableOption mkOption mkIf literalExample;
   cfg = config.my-modules.firefox;
   mkEngine = template: alias: {
@@ -21,6 +22,7 @@ in
 {
   options.my-modules.firefox = with lib.types; {
     enable = mkEnableOption "Custom Firefox setup";
+    enableGnomeExtensions = mkEnableOption "enable GNOME extension";
     extraExtensions = mkOption {
       type = listOf package;
       default = [ ];
@@ -74,7 +76,19 @@ in
     mkIf cfg.enable {
       programs.firefox = {
         inherit (cfg) enable;
-        package = pkgs.firefox;
+        package =
+          let
+            linux-pkg =
+              if cfg.enableGnomeExtensions then
+                pkgs.firefox.override
+                  {
+                    nativeMessagingHosts = with pkgs; [ gnome-browser-connector ];
+                  }
+              else
+                pkgs.firefox;
+            mac-pkg = pkgs.firefox;
+          in
+          if stdenv.isLinux then linux-pkg else mac-pkg;
         policies = {
           PasswordManagerEnabled = false;
           OfferToSaveLogins = false;
