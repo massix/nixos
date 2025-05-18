@@ -151,11 +151,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733735381,
-        "narHash": "sha256-Tw64UUbajAPgM0wSblbsTOCPKaxlSpNhYd4sQTpqQkE=",
+        "lastModified": 1747562019,
+        "narHash": "sha256-Kb+O9a9pnnZtnCkeoVaKT48p2qzToP5JY0Iwdn01P1E=",
         "owner": "massix",
         "repo": "gleeter",
-        "rev": "e368c7ea7e3c57edbc336aac5aee615ab6ea631a",
+        "rev": "973b3874ff95b3c7dd52bec3ec5f9297bd5490a8",
         "type": "github"
       },
       "original": {
