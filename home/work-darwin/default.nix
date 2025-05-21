@@ -65,6 +65,26 @@ let
         runHook postInstall
       '';
     };
+  ghostty = assert stdenv.isDarwin;
+    stdenvNoCC.mkDerivation rec {
+      pname = "ghostty";
+      version = "1.1.3";
+      nativeBuildInputs = [ pkgs._7zz ];
+
+      src = builtins.fetchurl {
+        url = "https://release.files.ghostty.org/${version}/Ghostty.dmg";
+        sha256 = "sha256:0ir69yhqia8yj2i750g2aklk7wr9vzwbdp6ncvqri5aliwc19rb4";
+      };
+
+      sourceRoot = ".";
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/Applications/
+        cp -a *.app $out/Applications/
+        runHook postInstall
+      '';
+    };
 in
 {
   my-modules = {
@@ -87,6 +107,21 @@ in
       enable = true;
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
+    };
+    ghostty = {
+      enable = true;
+      package = ghostty;
+      extraSettings = {
+        font-family = "0xProto";
+        font-size = "12";
+        font-feature = "+ss01";
+        window-height = "65";
+        window-width = "190";
+      };
+      extraPackages = with pkgs; [
+        _0xproto
+        noto-fonts-emoji
+      ];
     };
     kitty = {
       enable = true;

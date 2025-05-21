@@ -36,6 +36,9 @@
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+
+    ghostty.url = "github:ghostty-org/ghostty/v1.1.3";
+    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
   };
 
   outputs =
@@ -53,6 +56,7 @@
     , gleeter
     , zen-browser
     , self
+    , ghostty
     , ...
     }:
     let
@@ -70,6 +74,7 @@
           (_: _: self.packages."${system}")
           nix-direnv.overlays.default
           purescript-overlay.overlays.default
+          ghostty.overlays.default
           (_: _: { gleeter = gleeter.packages.${system}.default; })
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
