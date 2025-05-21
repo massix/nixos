@@ -145,6 +145,7 @@ return {
         pattern = {
           [".*playbook.*%.ya?ml"] = "yaml.ansible",
           [".*roles/.*/defaults/.*%.ya?ml"] = "yaml.ansible",
+          [".*roles/.*/handlers/.*%.ya?ml"] = "yaml.ansible",
         },
       })
 
