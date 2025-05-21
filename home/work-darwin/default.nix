@@ -105,6 +105,8 @@ in
         macos_quit_when_last_window_closed = true;
         macos_traditional_fullscreen = false;
         background_blur = 64;
+        initial_window_width = "190c";
+        initial_window_height = "65c";
       };
     };
     fish = {
