@@ -517,6 +517,22 @@ return {
       })
 
       vim.lsp.enable("ansiblels")
+      vim.lsp.config("ansiblels", {
+        settings = {
+          ansible = {
+            ansible = {
+              useFullyQualifiedCollectionNames = true,
+            },
+            -- We are already using nvim-lint for the linting
+            ansibleLint = {
+              enabled = false,
+            },
+            executionEnvironment = {
+              enabled = false,
+            },
+          },
+        },
+      })
       vim.lsp.enable("nginx_language_server")
       vim.lsp.enable("fish_lsp")
       vim.lsp.enable("gitlab_ci_ls")
