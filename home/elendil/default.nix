@@ -149,6 +149,22 @@ in
       };
     };
 
+    ghostty = {
+      enable = true;
+      package = pkgs.ghostty;
+      extraSettings = {
+        font-family = "0xProto";
+        font-size = "12";
+        font-feature = "+ss01";
+        window-height = "65";
+        window-width = "190";
+      };
+      extraPackages = with pkgs; [
+        _0xproto
+        noto-fonts-emoji
+      ];
+    };
+
     kitty = {
       enable = true;
       font = {
