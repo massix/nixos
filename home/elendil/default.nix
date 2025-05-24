@@ -1,4 +1,5 @@
 { pkgs
+, config
 , ...
 }:
 let
@@ -154,9 +155,9 @@ in
       package = pkgs.ghostty;
       extraSettings = {
         font-family = "0xProto";
-        font-size = "12";
+        font-size = "9";
         font-feature = "+ss01";
-        window-height = "65";
+        window-height = "60";
         window-width = "190";
       };
       extraPackages = with pkgs; [
@@ -189,11 +190,11 @@ in
         global.disable_stdin = true;
         global.strict_env = true;
 
-        whitelist.prefix = let home = "/home/massi"; in [
-          "${home}/dev"
-          "${home}/Development"
-          "${home}/.config/nvim"
-          "${home}/.config/nixos"
+        whitelist.prefix = [
+          "${config.home.homeDirectory}/dev"
+          "${config.home.homeDirectory}/Development"
+          "${config.home.homeDirectory}/.config/nvim"
+          "${config.home.homeDirectory}/.config/nixos"
         ];
       };
     };
@@ -214,10 +215,16 @@ in
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      show-battery-percentage = false;
       clock-show-date = true;
       clock-show-weekday = true;
+      color-scheme = "prefer-dark";
+      cursor-theme = "Adwaita";
+      enable-animations = true;
+      enable-hot-corners = true;
+      font-name = "Adwaita Sans 11";
+      icon-theme = "Adwaita";
       monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
+      show-battery-percentage = false;
     };
 
     "org/gnome/desktop/background" = rec {
