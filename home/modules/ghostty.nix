@@ -34,7 +34,7 @@ let
     window-inherit-font-size = "false";
     window-inherit-working-directory = "true";
     window-new-tab-position = "current";
-    window-subtitle = "working-directory";
+    window-subtitle = "false";
   };
   keybindings = {
     "global:cmd+\\" = "toggle_quick_terminal";
