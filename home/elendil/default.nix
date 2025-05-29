@@ -159,6 +159,7 @@ in
         font-feature = "+ss01";
         window-height = "60";
         window-width = "190";
+        background-opacity = "0.9";
       };
       extraPackages = with pkgs; [
         _0xproto
@@ -215,6 +216,7 @@ in
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
+      accent-color = "slate";
       clock-show-date = true;
       clock-show-weekday = true;
       color-scheme = "prefer-dark";
