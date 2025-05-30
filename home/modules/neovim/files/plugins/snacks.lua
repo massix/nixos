@@ -76,7 +76,28 @@ return {
         matcher = {
           frecency = true,
         },
+        actions = {
+          jump_or_open = function(picker)
+            picker.input:update()
+          end,
+        },
         ui_select = true,
+        sources = {
+          explorer = {
+            layout = {
+              layout = { position = "right" },
+            },
+            win = {
+              list = {
+                keys = {
+                  ["<ESC>"] = { "close", mode = { "n", "i" } },
+                  ["<CR>"] = { { "pick_win", "jump" }, mode = { "n", "i" } },
+                  ["<S-CR>"] = { "confirm", mode = { "n", "i" } },
+                },
+              },
+            },
+          },
+        },
       },
       explorer = {
         enabled = true,
