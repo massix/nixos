@@ -138,6 +138,8 @@ with pkgs;
     ];
   };
 
+  ansible-development = pkgs.callPackage ./ansible-dev.nix { };
+
   # WARN: this shell is kind of redundant with my-modules.devops.
   devops-base = mkShell {
     packages = [

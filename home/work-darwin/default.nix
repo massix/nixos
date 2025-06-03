@@ -223,7 +223,6 @@ in
     docker
     lima
     colima
-    spotify
     macpass
     tana
   ];
