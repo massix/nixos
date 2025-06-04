@@ -324,4 +324,6 @@ in
       ];
     };
   };
+
+  xdg.configFile."fish/functions/kcon.fish".source = ./files/kcon.fish;
 }
