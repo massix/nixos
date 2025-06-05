@@ -1,11 +1,19 @@
 # INFO: This shell is used to test the community.general Ansible Collection, but may be used
 # as a generic shell for other collections too.
-{ pkgs }:
+{ pkgs
+, lib
+}:
 with pkgs;
 mkShell {
+
+  env = {
+    OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
+  };
+
   packages =
     let
       inherit (pkgs.python3Packages) buildPythonPackage;
+      inherit (pkgs) writeScriptBin;
       dependency_groups = buildPythonPackage rec {
         pname = "dependency_groups";
         version = "1.3.1";
@@ -95,11 +103,33 @@ mkShell {
 
         doCheck = false;
       };
+      ansible-helper = writeScriptBin "ansible-helper" ''
+        #!${lib.getExe pkgs.bashInteractive}
+        set -e
+
+        case "$1" in
+          "integration")
+            shift
+            ansible-test integration --venv --requirements $*
+            ;;
+          "units")
+            shift
+            ansible-test units --venv --requirements $*
+            ;;
+          "units-docker")
+            shift
+            ansible-test units --docker $*
+            ;;
+        esac
+
+        exit 0
+      '';
       # INFO: these packages will be overridden during unit tests by nox, but they
       # are still useful for LSP and quick testing so I am keeping them here.
-      pythonPackages = with pkgs.python312Packages; [
+      pythonPackages = with pkgs.python3Packages; [
         ansible
         ansible-core
+        antsibull-nox
         python-gitlab
         requests
         pytest
@@ -110,6 +140,7 @@ mkShell {
         linode
         linode-api
         PyGithub
+        jinja2
         lxml
         semantic-version
         datadog
@@ -121,7 +152,11 @@ mkShell {
         python-nomad
         python-jenkins
         jsonpatch
+        pip
       ];
     in
-    [ python312 antsibull-nox ] ++ pythonPackages;
+    [
+      ansible-helper
+      ansible
+    ] ++ pythonPackages;
 }
