@@ -69,8 +69,10 @@ in
         "Hoogle" = mkEngine "https://hoogle.haskell.org/?hoogle={searchTerms}&scope=set%3Astackage" "@hoogle";
         "Amazon" = mkEngine "https://www.amazon.fr/s?k={searchTerms}" "@az";
         "Gleam Packages" = mkEngine "https://packages.gleam.run/?search={searchTerms}" "@gleam";
-        "Artifact Hub" = mkEngine "https://artifacthub.io/packages/search?ts_query={searchTerms}" "@artifact";
+        "Artifact Hub" = mkEngine "https://artifacthub.io/packages/search?ts_query_web={searchTerms}&sort=relevance" "@artifact";
         "Docker Hub" = mkEngine "https://hub.docker.com/search?q={searchTerms}" "@docker";
+        "Terraform Providers" = mkEngine "https://registry.terraform.io/search/providers?q={searchTerm}" "@tf";
+        "Terraform Modules" = mkEngine "https://registry.terraform.io/search/modules?q={searchTerm}" "@tfm";
       } // cfg.extraEngines;
     in
     mkIf cfg.enable {
