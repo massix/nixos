@@ -23,30 +23,14 @@ let
     };
   };
 
-  catppuccin-backgrounds = pkgs.stdenvNoCC.mkDerivation {
-    pname = "catppuccin-backgrounds";
-    version = "2024-11-07";
-    nativeBuildInputs = [ pkgs.unzip ];
-
-    src = pkgs.fetchurl {
-      url = "https://github.com/VipinVIP/wallpapers/archive/refs/heads/main.zip";
-      hash = "sha256-9v5VZc0nZf7N12HUKaY78DQKbjadyM6NcD3EWYFpqY4=";
-    };
-
-    phases = [ "installPhase" ];
-
-    installPhase = ''
-      mkdir -p $out
-      unzip -d $out $src
-    '';
-  };
-
   terminalFont = {
     name = "IBM Plex Mono";
     size = 10;
   };
 in
 {
+  imports = [ ./gnome.nix ];
+
   my-modules = {
     firefox = {
       enable = true;
@@ -214,105 +198,6 @@ in
     };
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      accent-color = "slate";
-      clock-show-date = true;
-      clock-show-weekday = true;
-      color-scheme = "prefer-dark";
-      cursor-theme = "Adwaita";
-      enable-animations = true;
-      enable-hot-corners = true;
-      font-name = "Adwaita Sans 11";
-      icon-theme = "Adwaita";
-      monospace-font-name = "${terminalFont.name} ${builtins.toString terminalFont.size}";
-      show-battery-percentage = false;
-    };
-
-    "org/gnome/desktop/background" = rec {
-      picture-uri = "${catppuccin-backgrounds}/wallpapers-main/misc/feet-on-the-dashboard.png";
-      picture-uri-dark = picture-uri;
-      picture-options = "zoom";
-    };
-
-    "org/gnome/desktop/peripherals/touchpad" = {
-      disable-while-typing = true;
-      tap-to-click = true;
-      tap-and-drag = false;
-      two-finger-scrolling-enabled = true;
-      accel-profile = "default";
-      click-method = "fingers";
-      speed = 0.45;
-    };
-
-    "org/gnome/shell" = {
-      allow-extension-installation = true;
-      enabled-extensions = [
-        "appindicatorsupport@rgcjonas.gmail.com"
-        "blur-my-shell@aunetx"
-        "colosseum@sereneblue"
-        "dash-to-dock@micxgx.gmail.com"
-        "emoji-copy@felipeftn"
-        "fullscreen-avoider@noobsai.github.com"
-        "grand-theft-focus@zalckos.github.com"
-        "mprisLabel@moon-0xff.github.com"
-        "nothing-to-say@extensions.gnome.wouter.bolsterl.ee"
-        "peek-top-bar-on-fullscreen@marcinjahn.com"
-        "unblank@sun.wxg@gmail.com"
-        "upower-battery@codilia.com"
-        "quick-settings-avatar@d-go"
-        "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
-        "gsconnect@andyholmes.github.io"
-        "drive-menu@gnome-shell-extensions.gcampax.github.com"
-        "screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com"
-        "system-monitor@gnome-shell-extensions.gcampax.github.com"
-        "user-theme@gnome-shell-extensions.gcampax.github.com"
-        "windowsNavigator@gnome-shell-extensions.gcampax.github.com"
-      ];
-    };
-
-    "org/gnome/shell/extensions/auto-move-windows".application-list = [
-      "org.telegram.desktop.desktop:2"
-      "webcord.desktop:2"
-      "com.rtosta.zapzap.desktop:2"
-    ];
-
-    "org/gnome/shell/extensions/colosseum" = {
-      compact-mode = true;
-      fifawc-enabled = true;
-      seriea-enabled = true;
-      seriea-int = true;
-      seriea-roma = true;
-      seriea-bol = true;
-      uefachampions-enabled = true;
-      uefaeuro-enabled = true;
-    };
-
-    "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" ];
-      dynamic-workspaces = true;
-      attach-modal-dialogs = true;
-    };
-
-    "org/gnome/desktop/wm/preferences" = {
-      button-layout = "appmenu:close";
-      audible-bell = false;
-      auto-raise = false;
-      resize-with-right-button = true;
-    };
-
-    "org/gnome/desktop/wm/keybindings" = {
-      close = [ "<Super>q" ];
-      maximize = [ ];
-      minimize = [ ];
-      switch-to-workspace-left = [ "<Super><Alt>Left" ];
-      switch-to-workspace-right = [ "<Super><Alt>Right" ];
-      move-to-workspace-left = [ "<Shift><Super>Left" ];
-      move-to-workspace-right = [ "<Shift><Super>Right" ];
-      toggle-fullscreen = [ "<Super><Alt>f" ];
-    };
-  };
-
   services = {
     flameshot = {
       enable = true;
@@ -357,28 +242,7 @@ in
     proton-pass
     unzip
     stremio
-  ] ++ (with pkgs.gnomeExtensions; [
-    appindicator
-    blur-my-shell
-    colosseum
-    dash-to-dock
-    emoji-copy
-    fullscreen-avoider
-    grand-theft-focus
-    media-controls
-    nothing-to-say
-    peek-top-bar-on-fullscreen
-    unblank
-    upower-battery
-    user-avatar-in-quick-settings
-    auto-move-windows
-    gsconnect
-    removable-drive-menu
-    screenshot-window-sizer
-    system-monitor
-    user-themes
-    windownavigator
-  ]);
+  ];
 
   systemd.user.startServices = "sd-switch";
 
@@ -393,54 +257,5 @@ in
   xdg = {
     enable = true;
     mime.enable = true;
-
-    # Patch to allow Kitty to use Monaspace font
-    configFile."fontconfig/conf.d/99-monaspace-monospace.conf".text = ''
-      <?xml version="1.0"?>
-      <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-      <!-- https://sw.kovidgoyal.net/kitty/faq/#kitty-is-not-able-to-use-my-favorite-font -->
-      <fontconfig>
-        <match target="scan">
-          <test name="family"><string>Monaspace Argon Var</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Argon</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Krypton Var</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Krypton</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Neon Var</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Neon</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Radon Var</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Radon</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Xenon Var</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-        <match target="scan">
-          <test name="family"><string>Monaspace Xenon</string></test>
-          <edit name="spacing"><int>100</int></edit>
-        </match>
-      </fontconfig>
-    '';
   };
 }

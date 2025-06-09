@@ -84,7 +84,7 @@
 
   services.thermald = {
     enable = true;
-    configFile = ./files/thermal-conf.xml;
+    configFile = null;
   };
 
   powerManagement = {
