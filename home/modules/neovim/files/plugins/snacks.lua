@@ -77,8 +77,15 @@ return {
           frecency = true,
         },
         actions = {
-          jump_or_open = function(picker)
-            picker.input:update()
+          list_dir_or_confirm = function(picker, item, action)
+            local explorer_actions = require("snacks.explorer.actions")
+            local picker_actions = require("snacks.picker.actions")
+            if item.dir then
+              return explorer_actions.actions.confirm(picker, item, action)
+            else
+              picker_actions.pick_win(picker, item, action)
+              explorer_actions.actions.confirm(picker, item, action)
+            end
           end,
         },
         ui_select = true,
@@ -91,8 +98,11 @@ return {
               list = {
                 keys = {
                   ["<ESC>"] = { "close", mode = { "n", "i" } },
-                  ["<CR>"] = { { "pick_win", "jump" }, mode = { "n", "i" } },
+                  ["<CR>"] = { "list_dir_or_confirm", mode = { "n", "i" } },
                   ["<S-CR>"] = { "confirm", mode = { "n", "i" } },
+                  ["o"] = { "list_dir_or_confirm" },
+                  ["l"] = { "list_dir_or_confirm" },
+                  ["L"] = { "list_dir_or_confirm" },
                 },
               },
             },
