@@ -111,8 +111,7 @@ return {
       },
       explorer = {
         enabled = true,
-        -- For now I still want to keep Oil.nvim
-        replace_netrw = false,
+        replace_netrw = true,
       },
       statuscolumn = {
         enabled = true,
@@ -189,6 +188,7 @@ return {
 
       -- Explorer keys
       { "<leader>e", function() Snacks.explorer.open() end, desc = "Open explorer" },
+      { "<leader>fm", function() Snacks.explorer.open() end, desc = "Open explorer" },
 
       -- Other keys
       { "<leader>uH", function() Snacks.notifier.show_history() end, desc = "Snacks History" },
