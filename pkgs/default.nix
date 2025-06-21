@@ -8,7 +8,6 @@ let
   };
   commonPkgs = {
     codeium-ls = callPackage ./coding/codeiumls.nix { };
-    vscode-js-debug = callPackage ./coding/vscodejsdebug.nix { };
     tanzu = callPackage ./tanzu { };
     tridentctl = callPackage ./tridentctl { };
   };
