@@ -92,11 +92,6 @@
             };
           };
         }
-
-        # This also applies to all systems
-        {
-          programs.ssh.startAgent = true;
-        }
       ] ++ extraModules;
     };
 }
