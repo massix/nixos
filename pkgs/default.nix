@@ -4,7 +4,6 @@ let
   onlyLinuxPkgs = {
     onedriver = callPackage ./onedriver { };
     custom-kernel = callPackage ./kernel { };
-    tana = callPackage ./tana { };
   };
   commonPkgs = {
     codeium-ls = callPackage ./coding/codeiumls.nix { };
