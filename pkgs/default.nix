@@ -6,7 +6,7 @@ let
     custom-kernel = callPackage ./kernel { };
   };
   commonPkgs = {
-    codeium-ls = callPackage ./coding/codeiumls.nix { };
+    codeium-ls = callPackage ./codeium-ls { };
     tanzu = callPackage ./tanzu { };
     tridentctl = callPackage ./tridentctl { };
   };
