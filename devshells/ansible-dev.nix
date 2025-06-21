@@ -126,7 +126,7 @@ mkShell {
       '';
       # INFO: these packages will be overridden during unit tests by nox, but they
       # are still useful for LSP and quick testing so I am keeping them here.
-      pythonPackages = with pkgs.python3Packages; [
+      pythonPackages = with pkgs.python312Packages; [
         ansible
         ansible-core
         antsibull-nox
