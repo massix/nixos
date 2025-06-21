@@ -155,16 +155,4 @@ in
   };
 
   systemd.user.startServices = "sd-switch";
-
-  systemd.user.services.unisond = {
-    Unit.Description = "Automatically synchronize org folder";
-
-    Service = {
-      ExecStart = "${pkgs.unison}/bin/unison -repeat watch -batch \${HOME}/org \${HOME}/org_onedrive";
-      Restart = "on-abnormal";
-      RestartSec = "3";
-    };
-
-    Install.WantedBy = [ "default.target" ];
-  };
 }
