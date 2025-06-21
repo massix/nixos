@@ -5,6 +5,7 @@
 
   environment.systemPackages = with pkgs; [ git fish ];
   programs.fish.enable = true;
+  programs.ssh.startAgent = true;
 
   users.mutableUsers = false;
   users.users.massi = {

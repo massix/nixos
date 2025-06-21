@@ -4,11 +4,9 @@ let
   onlyLinuxPkgs = {
     onedriver = callPackage ./onedriver { };
     custom-kernel = callPackage ./kernel { };
-    tana = callPackage ./tana { };
   };
   commonPkgs = {
-    codeium-ls = callPackage ./coding/codeiumls.nix { };
-    vscode-js-debug = callPackage ./coding/vscodejsdebug.nix { };
+    codeium-ls = callPackage ./codeium-ls { };
     tanzu = callPackage ./tanzu { };
     tridentctl = callPackage ./tridentctl { };
   };
