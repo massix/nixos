@@ -58,6 +58,13 @@ jobs:
           nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
           cachix push surface-zen result
         if: ${{ matrix.os_version == 'azure' }}
+      - name: Clean disk space before building Darwin
+        run: |
+          sudo nix-collect-garbage -d
+          sudo rm -rf /usr/local/share/dotnet /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
+          df -h
+        if: ${{ matrix.os_version == 'macos-15' }}
       - name: Build Darwin Home Manager
         run: |
           nix build ".#homeConfigurations.mgengarelli.activationPackage"
