@@ -108,21 +108,37 @@ in
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
     };
-    ghostty = {
-      enable = true;
-      package = ghostty;
-      extraSettings = {
-        font-family = "0xProto";
-        font-size = "12";
-        font-feature = "+ss01";
-        window-height = "65";
-        window-width = "190";
+    ghostty =
+      let
+        add-plus = l: builtins.map (x: "+${x}") l;
+        to-font-feature = l: builtins.concatStringsSep "," (add-plus l);
+      in
+      {
+        enable = true;
+        package = ghostty;
+        extraSettings = {
+          font-family = "Maple Mono";
+          font-size = "12";
+          font-feature = to-font-feature [
+            "calt" # ligatures
+            "cv03" # alternative i
+            "cv05" # alternative g
+            "cv64" # alternative &
+            "ss03" # [INFO] and other arbitrary tags
+            "ss08" # >>= ligature
+            "ss09" # alternative ~=
+            "ss10" # alternative =~
+            "ss11" # alternative |=
+          ];
+          window-height = "65";
+          window-width = "190";
+        };
+        extraPackages = with pkgs; [
+          _0xproto
+          noto-fonts-emoji
+          maple-mono.truetype
+        ];
       };
-      extraPackages = with pkgs; [
-        _0xproto
-        noto-fonts-emoji
-      ];
-    };
     kitty = {
       enable = true;
       font = {
