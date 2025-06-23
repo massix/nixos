@@ -231,17 +231,25 @@ in
     };
   };
 
-  home.packages = with pkgs; [
-    # This does not come installed by default on MacOS
-    gcc
-    load-ssh-key
-    gleeter
-    docker
-    lima
-    colima
-    macpass
-    tana
-  ];
+  home.packages =
+    let
+      limaWithGuests = pkgs.lima.override {
+        withAdditionalGuestAgents = true;
+      };
+    in
+    with pkgs; [
+      # This does not come installed by default on MacOS
+      gcc
+      load-ssh-key
+      gleeter
+      docker
+      limaWithGuests
+      (colima.override {
+        lima = limaWithGuests;
+      })
+      macpass
+      tana
+    ];
 
   home.sessionVariables = {
     K9S_CONFIG_DIR = "${homeDirectory}/.config/k9s";
