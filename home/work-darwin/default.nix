@@ -310,10 +310,10 @@ in
     in
     {
       "colima-aarch64" = mkColimaAgent {
-        enable = false;
+        enable = true;
         arch = "aarch64";
-        memory = 4;
-        numCpus = 2;
+        memory = 14;
+        numCpus = 8;
         profileName = "aarch64";
       };
       "colima-x86_64" = mkColimaAgent {
