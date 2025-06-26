@@ -1,6 +1,6 @@
 -- This file is loaded automatically by nvim on startup (before plugins)
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = ","
 
 local opt = vim.opt
 local api = vim.api
