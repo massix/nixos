@@ -22,11 +22,6 @@ return {
     end,
     config = function(_, opts)
       require("codeium").setup(opts)
-
-      -- Refresh lualine
-      require("codeium.virtual_text").set_statusbar_refresh(function()
-        require("lualine").refresh()
-      end)
     end,
   },
   -- Goose setup
