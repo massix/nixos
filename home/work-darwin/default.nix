@@ -249,6 +249,7 @@ in
       })
       macpass
       tana
+      shottr
     ];
 
   home.sessionVariables = {
