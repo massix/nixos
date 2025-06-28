@@ -39,6 +39,9 @@
 
     ghostty.url = "github:ghostty-org/ghostty/v1.1.3";
     ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+
+    ferrishot.url = "github:nik-rev/ferrishot/main";
+    ferrishot.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -57,6 +60,7 @@
     , zen-browser
     , self
     , ghostty
+    , ferrishot
     , ...
     }:
     let
@@ -79,6 +83,7 @@
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default
+          (_: _: { ferrishot = ferrishot.packages.${system}.default; })
         ];
         pkgs = import nixpkgs {
           inherit system config overlays;

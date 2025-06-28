@@ -247,6 +247,7 @@ in
     proton-pass
     unzip
     stremio
+    ferrishot
   ];
 
   systemd.user.startServices = "sd-switch";
