@@ -194,8 +194,6 @@ return {
       { "<leader>uH", function() Snacks.notifier.show_history() end, desc = "Snacks History" },
       { "g[", function() Snacks.words.jump(-1, false) end, desc = "LSP Prev Word" },
       { "g]", function() Snacks.words.jump(1, false) end, desc = "LSP Next Word" },
-      { "<leader>bd", function() Snacks.bufdelete.delete() end, desc = "Delete buffer" },
-      { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
       { "<leader>d",
         function()
           if Snacks.dim.enabled then
