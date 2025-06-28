@@ -215,17 +215,6 @@ in
   };
 
   services = {
-    flameshot = {
-      enable = true;
-      package = pkgs.flameshot;
-      settings = {
-        General = {
-          showDesktopNotification = true;
-          savePathFixed = false;
-        };
-      };
-    };
-
     protrans = {
       enable = true;
       configuration.nat.portLifeTime = 60;
@@ -258,6 +247,7 @@ in
     proton-pass
     unzip
     stremio
+    ferrishot
   ];
 
   systemd.user.startServices = "sd-switch";
