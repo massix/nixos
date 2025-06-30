@@ -9,6 +9,12 @@ return {
     opts = {
       style = "fg",
       bold = true,
+      disabled_filetypes = {
+        "alpha",
+        "snacks_picker_list",
+        "snacks_picker_input",
+        "OverseerList",
+      },
       configs = {
         mode = {
           verbose = false,
