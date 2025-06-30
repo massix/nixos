@@ -52,11 +52,28 @@ return {
           "mode",
           "git",
           "diagnostics",
+          -- Writes the name of the current devShell, if active
+          function()
+            local slimline = require("slimline")
+            local shell_name = vim.env.IN_NIX_SHELL
+            if shell_name ~= nil and shell_name ~= "" then
+              return slimline.highlights.hl_component(
+                { primary = shell_name, secondary = require("mini.icons").get("os", "nixos") },
+                { primary = { text = "Comment" }, secondary = { text = "Function" } },
+                slimline.get_sep("path"),
+                "left",
+                true
+              )
+            else
+              return ""
+            end
+          end,
         },
         center = {
           "path",
         },
         right = {
+          -- Codeium suggestions
           function()
             local slimline = require("slimline")
             local codeium_status = require("codeium.virtual_text").status_string()
