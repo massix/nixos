@@ -179,7 +179,6 @@ in
     taskwarrior = {
       enable = true;
       withFish = true;
-      dataLocation = "~/OneDrive/TaskWarrior";
     };
   };
 
