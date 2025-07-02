@@ -826,6 +826,7 @@ return {
         typescript = { "prettier" },
         javascript = { "prettier" },
         python = { "ruff_format" },
+        hcl = { "packer_fmt" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then
