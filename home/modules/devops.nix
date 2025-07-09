@@ -93,6 +93,7 @@ in
         kubernetesPackages = orEmpty cfg.kubernetes.enable [
           kubectl
           kubernetes-helm
+          fluxcd
           kustomize
           kubectx
           kubectl-node-shell
