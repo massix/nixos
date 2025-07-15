@@ -125,3 +125,7 @@ map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 map("n", "<C-[>", "<cmd>tabprevious<cr>", { desc = "Previous Tab", silent = true })
 map("n", "<C-]>", "<cmd>tabnext<cr>", { desc = "Next Tab", silent = true })
+
+-- Soft scroll
+map("n", "<c-j>", "6j", { desc = "Scroll down", silent = true })
+map("n", "<c-k>", "6k", { desc = "Scroll up", silent = true })
