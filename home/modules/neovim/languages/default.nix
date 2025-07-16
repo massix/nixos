@@ -115,7 +115,9 @@ in
       retain_line_breaks = true;
       scan_folded_as_literal = true;
       drop_merge_tag = true;
+      disallow_anchors = false;
       eof_newline = true;
+      trim_trailing_whitespace = true;
     };
   };
 }
