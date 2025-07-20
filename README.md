@@ -1,52 +1,46 @@
-![Lua Linting and Packages](https://github.com/massix/nixos/actions/workflows/ci.yml/badge.svg)
-![Last System Update](https://github.com/massix/nixos/actions/workflows/update-system.yml/badge.svg)
+# NixOS Configuration
 
-# Massi's NixOS Configuration
+This repository contains my NixOS configuration, managed using flakes and Home Manager.
 
-Personal NixOS configuration and packages for my different systems.
+## Highlights
 
-## Systems
+*   **Systems Built:** This configuration builds NixOS for 2 Linux systems (Elendil and Aiwëndil) and one Darwin system (my work's laptop).
+*   **Custom Packages:** The `pkgs` directory defines several custom packages:
+    *   `codeium-ls`: the language server from Codeium (now Windsurf), used in NeoVim;
+    *   `tanzu`: the Tanzu CLI I use at work;
+    *   `tridentctl`: the Trident CLI I use at work;
+    *   `onedriver` (Linux only)
+    *   `custom-kernel` (Linux only)
+*   **User Configurations:** Home Manager is used to manage user environments for `massi@elendil`, `massi@aiwendil`, and `mgengarelli`, ensuring consistency across different systems.
+*   **Existing Modules:** The `home/modules` directory contains a variety of Home Manager modules for configuring different aspects of the user environment:
+    *   `gleeter`: contains default configuration for [Gleeter](https://github.com/massix/gleeter), a tool I use to browse [XKCD](https://xkcd.com) comics from the terminal;
+    *   `fish`: contains defaults for the `fish` shell;
+    *   `fonts`: installation of default fonts across all systems;
+    *   `devops`: installation of tools dedicated to my main job (I am a Platform Engineer);
+    *   `git`
+    *   `zellij`
+    *   `firefox`
+    *   `kitty`
+    *   `zed`
+    *   `im`
+    *   `neovim` (with extensive sub-modules)
+    *   `ghostty`
+    *   `taskwarrior`
+    *   `gaming`
+
+## System Details
 
 ### Elendil
-* [Main System's configuration here](./system/elendil/configuration.nix);
-* [Hardware Configuration's here](./system/elendil/hardware-configuration.nix).
 
-A Surface Laptop 3 computer, using NixOS as my daily driver.  For this system I am using
-a [custom kernel](./pkgs/kernel/default.nix) based off of the [zen kernel](https://github.com/zen-kernel/zen-kernel) and the [linux-surface](https://github.com/linux-surface/linux-surface) patches.  This allows
-me to have a good configuration for this system, which I mostly use for gaming and
-developing.
+*   Runs the GNOME Desktop Environment.
+*   Uses `fish` shell.
+*   Includes Docker and VirtualBox for virtualization.
 
-## Users
+### Aiwendil
 
-### massi@elendil
-* [Home Manager's configuration](./home/elendil/default.nix);
+*   Runs in WSL (Windows Subsystem for Linux).
 
-Main (and only) user of Elendil.
+### mgengarelli
 
-## Packages
-All the packages are defined [here](./pkgs/default.nix).
-
-### Onedriver
-Custom compilation of the [onedriver](https://github.com/jstaf/onedriver) software, for which I am also the official maintainer
-for [nixpkgs](https://github.com/nixos/nixpkgs).  The only difference between this package and the one in nixpkgs is that here
-I am using the latest version from the master branch.
-
-### Codeium Language Server
-Download and patching of the [Codeium's language server](https://github.com/Exafunction/codeium), which I use extensively in Neovim.
-The version here is **not always the latest** available, but the one needed for their vim plugin.
-
-### VSCode JS Debug
-Download, compilation and patching of VSCode's JS Debug extension, to be used with the DAP
-adapter for Neovim.
-
-### Spotube
-Audio player for my music collection.
-
-### Tana
-Note-taking tool, this is a mirror of the package which is available on `nixpkgs`, for which I
-am also the maintainer.
-
-### Warp Terminal
-Terminal with AI, I use this instead of the one available in `nixpkgs` because I do not want
-to always use the latest version, due to some incompatibilities with GTK from time to time.
+*   Runs on Darwin (macOS).
 
