@@ -30,7 +30,6 @@ return {
     branch = "main",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "MeanderingProgrammer/render-markdown.nvim",
     },
     opts = {
       default_global_keymaps = false,

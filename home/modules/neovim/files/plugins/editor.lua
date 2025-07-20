@@ -306,7 +306,28 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown" },
     opts = {
-      anti_conceal = { enabled = false },
+      render_modes = { "n", "c", "t" },
+      anti_conceal = {
+        enabled = true,
+      },
+      completions = {
+        blink = { enabled = true },
+      },
+      heading = {
+        border = true,
+        border_virtual = true,
+      },
+      code = {
+        conceal_delimiters = false,
+        border = "thin",
+        inline_pad = 2,
+      },
+      pipe_table = {
+        preset = "round",
+      },
+      indent = {
+        enabled = true,
+      },
     },
     config = function(_, opts)
       require("render-markdown").setup(opts)
