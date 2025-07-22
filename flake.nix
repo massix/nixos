@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    boost-fix.url = "github:massix/nixpkgs/fix/boost-darwin";
 
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +18,7 @@
     homeage.inputs.nixpkgs.follows = "nixpkgs";
 
     nixd.url = "github:nix-community/nixd";
-    nixd.inputs.nixpkgs.follows = "nixpkgs";
+    nixd.inputs.nixpkgs.follows = "boost-fix";
 
     nix-direnv.url = "github:nix-community/nix-direnv";
     nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
@@ -46,6 +47,7 @@
 
   outputs =
     inputs@{ nixpkgs
+    , boost-fix
     , nur
     , flake-utils
     , home-manager
@@ -74,6 +76,19 @@
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
         overlays = [
+          (_: _: {
+            inherit (boost-fix.legacyPackages.${system})
+              boost177
+              boost178
+              boost179
+              boost180
+              boost181
+              boost182
+              boost183
+              boost186
+              boost187
+              boost188;
+          })
           (_: _: { nixd-nightly = nixd.packages.${system}.nixd; })
           (_: _: self.packages."${system}")
           nix-direnv.overlays.default
@@ -146,9 +161,7 @@
             permittedInsecurePackages = [ "electron-25.9.0" ];
           };
           overlays = [
-            (_: _: {
-              nixd-nightly = nixd.packages.${system}.nixd;
-            })
+            (_: _: { nixd-nightly = nixd.packages.${system}.nixd; })
             purescript-overlay.overlays.default
           ];
           pkgs = import nixpkgs {
