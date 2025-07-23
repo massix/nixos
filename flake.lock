@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "boost-fix": {
-      "locked": {
-        "lastModified": 1753191938,
-        "narHash": "sha256-UvqoBnVx4RgDkFez5y+cNoUDiGP9H/76II43zWWio+c=",
-        "owner": "massix",
-        "repo": "nixpkgs",
-        "rev": "dcc87ceacc629e888cac29c3f34359efa40ad9cb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "massix",
-        "ref": "fix/boost-darwin",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "ferrishot": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -368,7 +352,7 @@
         "flake-parts": "flake-parts_2",
         "flake-root": "flake-root",
         "nixpkgs": [
-          "boost-fix"
+          "nixpkgs"
         ],
         "treefmt-nix": "treefmt-nix_2"
       },
@@ -532,7 +516,6 @@
     },
     "root": {
       "inputs": {
-        "boost-fix": "boost-fix",
         "ferrishot": "ferrishot",
         "flake-utils": "flake-utils_2",
         "ghostty": "ghostty",
