@@ -89,7 +89,7 @@ with pkgs;
       deadnix
       nixpkgs-fmt
       statix
-      nixd-nightly
+      nixd
     ];
   };
 
