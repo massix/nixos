@@ -16,9 +16,6 @@
     homeage.url = "github:aarongpower/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixd.url = "github:nix-community/nixd";
-    nixd.inputs.nixpkgs.follows = "nixpkgs";
-
     nix-direnv.url = "github:nix-community/nix-direnv";
     nix-direnv.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -51,7 +48,6 @@
     , home-manager
     , nixos-hardware
     , homeage
-    , nixd
     , nix-direnv
     , purescript-overlay
     , protrans
@@ -74,7 +70,6 @@
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
         overlays = [
-          (_: _: { nixd-nightly = nixd.packages.${system}.nixd; })
           (_: _: self.packages."${system}")
           nix-direnv.overlays.default
           purescript-overlay.overlays.default
@@ -146,9 +141,6 @@
             permittedInsecurePackages = [ "electron-25.9.0" ];
           };
           overlays = [
-            (_: _: {
-              nixd-nightly = nixd.packages.${system}.nixd;
-            })
             purescript-overlay.overlays.default
           ];
           pkgs = import nixpkgs {
@@ -173,7 +165,7 @@
                 actionlint
 
                 # Language servers
-                nixd-nightly
+                nixd
                 lua-language-server
                 bash-language-server
                 yaml-language-server

@@ -21,7 +21,7 @@ let
     haskellPackages.ghcide
     bash-language-server
     fish-lsp
-    nixd-nightly
+    nixd
     terraform-ls
     typescript-language-server
     lua-language-server
