@@ -167,7 +167,7 @@ in
             rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
             rustWrapper = "${lib.getExe lldb-wrapper}",
             sniprun = "${lib.getExe' sniprun "sniprun"}",
-            flakePath = "${builtins.toString ./../../../.}",
+            flakePath = vim.fn.expand("~/.config/nixos"),
           }
         '';
 
