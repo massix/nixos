@@ -34,8 +34,8 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
-    ghostty.url = "github:ghostty-org/ghostty/v1.1.3";
-    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    ghostty.url = "github:ghostty-org/ghostty";
+    ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
     ferrishot.url = "github:nik-rev/ferrishot/main";
     ferrishot.inputs.nixpkgs.follows = "nixpkgs";
