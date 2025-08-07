@@ -123,6 +123,9 @@ in
             kgn = "kubectl get nodes";
             kx = "kubectx";
             kn = "kubens";
+            kkl = "kubectl klock";
+            kns = "kubectl node-shell";
+            kkt = "kubectl ktop";
           };
         terraformAbbrs =
           orEmpty cfg.terraform.enable {
@@ -140,7 +143,8 @@ in
           };
         k9sAbbrs =
           orEmpty cfg.k9s.enable {
-            kk = "k9s";
+            kk = "k9s --readonly";
+            kkw = "k9s";
             kkc = "k9s --context";
           };
       in
