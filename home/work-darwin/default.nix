@@ -66,22 +66,31 @@ let
       '';
     };
   ghostty = assert stdenv.isDarwin;
+    let
+      fetch = version: sha: builtins.fetchurl {
+        url = "https://release.files.ghostty.org/${version}/Ghostty.dmg";
+        sha256 = sha;
+      };
+    in
     stdenvNoCC.mkDerivation rec {
       pname = "ghostty";
       version = "1.1.3";
       nativeBuildInputs = [ pkgs._7zz ];
 
-      src = builtins.fetchurl {
-        url = "https://release.files.ghostty.org/${version}/Ghostty.dmg";
-        sha256 = "sha256:0ir69yhqia8yj2i750g2aklk7wr9vzwbdp6ncvqri5aliwc19rb4";
-      };
+      src = fetch "1.1.3" "sha256:0ir69yhqia8yj2i750g2aklk7wr9vzwbdp6ncvqri5aliwc19rb4";
+
+      unpackPhase = ''
+        7zz x -snld $src
+      '';
 
       sourceRoot = ".";
 
       installPhase = ''
         runHook preInstall
+        mkdir -p $out/bin
         mkdir -p $out/Applications/
         cp -a *.app $out/Applications/
+        ln -s $out/Applications/Ghostty.app/Contents/MacOS/ghostty $out/bin
         runHook postInstall
       '';
     };
