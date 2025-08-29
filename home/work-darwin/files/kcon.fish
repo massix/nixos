@@ -3,9 +3,19 @@
 set -x KUBECONFIG_FOLDER $HOME/kconfigs
 
 # Small helper function to switch to a given kubeconfig file, residing in the folder ~/kconfigs
-function kcon --description "Switch to a given kubeconfig file in $KUBECONFIG_FOLDER" --argument-names cluster
-    echo -e "Switching to $KUBECONFIG_FOLDER/$(set_color --bold green)$cluster$(set_color normal)"
-    set -gx KUBECONFIG $KUBECONFIG_FOLDER/$cluster
+function kcon --description "Switch to a given kubeconfig file in $KUBECONFIG_FOLDER"
+    if test (count $argv) -eq 0
+        set -e KUBECONFIG
+        echo -e "☸️ Removing $(set_color --bold red)\$KUBECONFIG$(set_color normal)"
+    end
+
+    set kpath ""
+    for cluster in $argv
+        set kpath "$KUBECONFIG_FOLDER/$cluster:$kpath"
+        echo -e "☸️ Cluster Active: $(set_color --bold green)$cluster$(set_color normal)"
+    end
+
+    set -gx KUBECONFIG $kpath
 end
 
 # And of course the complete function has more lines than the function itself.
