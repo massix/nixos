@@ -535,6 +535,7 @@ return {
       })
       vim.lsp.enable("nginx_language_server")
       vim.lsp.enable("fish_lsp")
+      vim.lsp.enable("nushell")
       vim.lsp.enable("gitlab_ci_ls")
       vim.lsp.enable("pyright")
 
@@ -827,6 +828,8 @@ return {
         javascript = { "prettier" },
         python = { "ruff_format" },
         hcl = { "packer_fmt" },
+        -- FIXME: This does not seem to work
+        -- nu = { "nufmt" },
       },
       format_on_save = function(_)
         if vim.g.conform_autoformat then

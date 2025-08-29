@@ -63,6 +63,7 @@ let
     yaml-language-server
     gitlab-ci-ls
     pyright
+    nushell
   ];
 
   formatters = with pkgs; [
@@ -76,6 +77,7 @@ let
     typstfmt
     rustfmt
     ruff
+    nufmt
   ];
 
   linters = with pkgs; [
