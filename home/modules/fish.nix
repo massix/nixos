@@ -2,7 +2,6 @@
 let
   cfg = config.my-modules.fish;
   inherit (lib) mkEnableOption mkOption mkIf types concatMapStrings;
-  inherit (pkgs) fetchFromGitHub;
 in
 {
   options.my-modules.fish = {
@@ -70,54 +69,14 @@ in
         hms = "home-manager switch";
       } // cfg.configuration.extraShellAbbrs;
 
-      plugins = [
-        { name = "grc"; src = pkgs.fishPlugins.grc; }
-        {
-          name = "puffer-fish";
-          src = fetchFromGitHub {
-            repo = "puffer-fish";
-            owner = "nickeb96";
-            rev = "5d3cb25e0d63356c3342fb3101810799bb651b64";
-            hash = "sha256-aPxEHSXfiJJXosIm7b3Pd+yFnyz43W3GXyUB5BFAF54=";
+      plugins =
+        let
+          fromRepo = plugin: {
+            inherit (pkgs.fishPlugins."${plugin}") src;
+            name = plugin;
           };
-        }
-        {
-          name = "z";
-          src = fetchFromGitHub {
-            repo = "z";
-            owner = "jethrokuan";
-            rev = "85f863f20f24faf675827fb00f3a4e15c7838d76";
-            hash = "sha256-+FUBM7CodtZrYKqU542fQD+ZDGrd2438trKM0tIESs0=";
-          };
-        }
-        {
-          name = "tide";
-          src = fetchFromGitHub {
-            repo = "tide";
-            owner = "ilancosman";
-            rev = "v6.1.1";
-            hash = "sha256-ZyEk/WoxdX5Fr2kXRERQS1U1QHH3oVSyBQvlwYnEYyc=";
-          };
-        }
-        {
-          name = "foreign-env";
-          src = fetchFromGitHub {
-            repo = "plugin-foreign-env";
-            owner = "oh-my-fish";
-            rev = "7f0cf099ae1e1e4ab38f46350ed6757d54471de7";
-            hash = "sha256-4+k5rSoxkTtYFh/lEjhRkVYa2S4KEzJ/IJbyJl+rJjQ=";
-          };
-        }
-        {
-          name = "fzf";
-          src = fetchFromGitHub {
-            repo = "fzf.fish";
-            owner = "PatrickF1";
-            rev = "8920367cf85eee5218cc25a11e209d46e2591e7a";
-            hash = "sha256-T8KYLA/r/gOKvAivKRoeqIwE2pINlxFQtZJHpOy9GMM=";
-          };
-        }
-      ];
+        in
+        builtins.map fromRepo [ "grc" "z" "tide" "foreign-env" "fzf" "colored-man-pages" ];
 
       shellAliases = {
         cat = "bat -pp --paging=never";
@@ -165,6 +124,7 @@ in
       fzf # Fuzzy finder
       glow # Terminal Markdown renderer
       gping # Modern Unix `ping`
+      grc # Needed for colored man pages
       hexyl # Modern Unix `hexedit`
       httpie # Terminal HTTP client
       hyperfine # Terminal benchmarking
