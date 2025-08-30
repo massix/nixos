@@ -245,7 +245,6 @@ in
 
     proton-pass
     unzip
-    stremio
     ferrishot
   ];
 
