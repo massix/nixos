@@ -289,6 +289,7 @@ in
         , memory ? 8
         , vmType ? "vz"
         , maxCpu ? false
+        , diskSize ? 100
         , arch
         , profileName
         }: {
@@ -303,6 +304,7 @@ in
               "--arch=${arch}"
               "--vm-type=${vmType}"
               "--profile=${profileName}"
+              "--disk=${builtins.toString diskSize}"
             ]
             ++ optional (vmType == "vz") "--vz-rosetta"
             ++ optional maxCpu "--cpu-type=max";
@@ -333,6 +335,7 @@ in
         numCpus = 8;
         maxCpu = true;
         profileName = "x86_64";
+        diskSize = 250;
       };
     };
 
