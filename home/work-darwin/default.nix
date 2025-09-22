@@ -74,10 +74,10 @@ let
     in
     stdenvNoCC.mkDerivation rec {
       pname = "ghostty";
-      version = "1.1.3";
+      version = "1.2.0";
       nativeBuildInputs = [ pkgs._7zz ];
 
-      src = fetch "1.1.3" "sha256:0ir69yhqia8yj2i750g2aklk7wr9vzwbdp6ncvqri5aliwc19rb4";
+      src = fetch "${version}" "sha256:13h2qrrrl4n0z1s47rzz0nbd447m4887s3vcx291air29m1wl8a3";
 
       unpackPhase = ''
         7zz x -snld $src
@@ -125,6 +125,7 @@ in
       {
         enable = true;
         package = ghostty;
+        theme = "Catppuccin Macchiato";
         extraSettings = {
           font-family = "Maple Mono";
           font-size = "12";
