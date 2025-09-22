@@ -126,14 +126,6 @@ in
       };
     };
 
-    zed = {
-      enable = false;
-      settings = {
-        buffer_font_size = 12;
-        buffer_font_family = terminalFont.name;
-      };
-    };
-
     ghostty =
       let
         add-plus = l: builtins.map (x: "+${x}") l;
