@@ -21,7 +21,6 @@ This repository contains my NixOS configuration, managed using flakes and Home M
     *   `zellij`
     *   `firefox`
     *   `kitty`
-    *   `zed`
     *   `im`
     *   `neovim` (with extensive sub-modules)
     *   `ghostty`
