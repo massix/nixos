@@ -239,6 +239,14 @@ in
       source = ./secrets/avp.age;
       symlinks = [ "${homeDirectory}/.ansible-vault-password" ];
     };
+    zerotrust-root = {
+      source = ./secrets/zerotrust/zerotrust-root.crt.age;
+      copies = [ "${homeDirectory}/.certs/zerotrust-root.crt" ];
+    };
+    zerotrust-intermediate = {
+      source = ./secrets/zerotrust/zerotrust-intermediate.crt.age;
+      copies = [ "${homeDirectory}/.certs/zerotrust-intermediate.crt" ];
+    };
   };
 
   home.packages =
@@ -291,6 +299,7 @@ in
         , vmType ? "vz"
         , maxCpu ? false
         , diskSize ? 100
+        , mount ? true
         , arch
         , profileName
         }: {
@@ -307,6 +316,7 @@ in
               "--profile=${profileName}"
               "--disk=${builtins.toString diskSize}"
             ]
+            ++ optional mount "--mount=${homeDirectory}/.certs:/etc/ssl/certs:rw"
             ++ optional (vmType == "vz") "--vz-rosetta"
             ++ optional maxCpu "--cpu-type=max";
 
