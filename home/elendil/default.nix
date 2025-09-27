@@ -134,6 +134,7 @@ in
       {
         enable = true;
         package = pkgs.ghostty;
+        theme = "Catppuccin Macchiato";
         extraSettings = {
           font-family = "Maple Mono";
           font-size = "9";
