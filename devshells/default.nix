@@ -147,7 +147,7 @@ with pkgs;
       bash-language-server
       cocogitto
       commitlint
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
       dotenv-linter
       editorconfig-checker
       fish-lsp

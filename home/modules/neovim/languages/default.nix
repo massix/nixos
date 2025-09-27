@@ -53,7 +53,7 @@ let
     typescript-language-server
     lua-language-server
     vscode-langservers-extracted
-    dockerfile-language-server-nodejs
+    dockerfile-language-server
     helm-ls
     codeium-ls
     nginx-language-server
