@@ -26,11 +26,11 @@ local spec = {
         diffview = true,
       },
       git_services = {
-        ["github.com"] = "https://github.com/${owner}/${repository}/compare/${branch_name}?expand=1",
-        ["bitbucket.org"] = "https://bitbucket.org/${owner}/${repository}/pull-requests/new?source=${branch_name}&t=1",
-        ["gitlab.com"] = "https://gitlab.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
-        ["azure.com"] = "https://dev.azure.com/${owner}/_git/${repository}/pullrequestcreate?sourceRef=${branch_name}&targetRef=${target_branch}",
-        ["git.questel.com"] = "https://git.questel.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
+        ["git.questel.com"] = {
+          pull_request = "https://git.questel.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
+          commit = "https://git.questel.com/${owner}/${repository}/-/commit/${oid}",
+          tree = "https://git.questel.com/${owner}/${repository}/-/tree/${branch_name}?ref_type=heads",
+        },
       },
     },
     --stylua: ignore
