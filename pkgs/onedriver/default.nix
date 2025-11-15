@@ -28,7 +28,7 @@ buildGoModule {
     pkg-config
     git
     installShellFiles
-    wrapGAppsHook
+    wrapGAppsHook3
   ];
 
   buildInputs = with pkgs; [ webkitgtk_4_1 glib fuse gtk3 glib-networking ];

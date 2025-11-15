@@ -139,7 +139,7 @@ mkShell {
         python-memcached
         linode
         linode-api
-        PyGithub
+        pygithub
         jinja2
         lxml
         semantic-version
