@@ -74,7 +74,7 @@ let
     nodePackages.prettier
     (stylua.override { features = [ "lua54" "luau" ]; })
     yamlfmt
-    typstfmt
+    typstyle
     rustfmt
     ruff
     nufmt

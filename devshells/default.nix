@@ -171,7 +171,7 @@ with pkgs;
   typst = mkShell {
     packages = [
       tinymist
-      typstfmt
+      typstyle
     ];
   };
 }
