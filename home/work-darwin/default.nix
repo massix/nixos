@@ -145,7 +145,7 @@ in
         };
         extraPackages = with pkgs; [
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
           maple-mono.truetype
         ];
       };
@@ -158,7 +158,7 @@ in
         size = 12;
         packages = with pkgs; [
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
         ];
       };
       extraSettings = {

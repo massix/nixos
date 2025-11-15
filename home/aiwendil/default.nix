@@ -36,7 +36,7 @@ in
         packages = with pkgs; [
           comic-mono
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
         ];
       };
     };

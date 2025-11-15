@@ -117,7 +117,7 @@ in
       dogdns # Modern Unix `dig`
       dua # Modern Unix `du`
       duf # Modern Unix `df`
-      du-dust # Modern Unix `du`
+      dust # Modern Unix `du`
       entr # Modern Unix `watch`
       eza # Modern Unix `ls`
       fd # Modern Unix `find`
