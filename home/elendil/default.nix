@@ -53,7 +53,7 @@ in
       };
     };
 
-    gleeter.enable = true;
+    gleeter.enable = false;
 
     fish = {
       enable = true;

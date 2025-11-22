@@ -25,7 +25,7 @@ in
       typefonts = false;
     };
 
-    gleeter.enable = true;
+    gleeter.enable = false;
 
     kitty = {
       enable = true;
