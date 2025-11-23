@@ -25,7 +25,7 @@ in
       typefonts = false;
     };
 
-    gleeter.enable = true;
+    gleeter.enable = false;
 
     kitty = {
       enable = true;
@@ -36,7 +36,7 @@ in
         packages = with pkgs; [
           comic-mono
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
         ];
       };
     };

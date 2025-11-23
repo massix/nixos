@@ -117,8 +117,10 @@
   };
 
   services.logind = {
-    powerKey = "suspend-then-hibernate";
-    lidSwitch = "suspend-then-hibernate";
+    settings.Login = {
+      HandlePowerKey = "suspend-then-hibernate";
+      HandleLidSwitch = "suspend-then-hibernate";
+    };
   };
 
   systemd.sleep.extraConfig = ''

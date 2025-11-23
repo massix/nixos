@@ -145,7 +145,7 @@ in
         };
         extraPackages = with pkgs; [
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
           maple-mono.truetype
         ];
       };
@@ -158,7 +158,7 @@ in
         size = 12;
         packages = with pkgs; [
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
         ];
       };
       extraSettings = {
@@ -200,7 +200,7 @@ in
         colored = true;
       };
     };
-    gleeter.enable = true;
+    gleeter.enable = false;
     taskwarrior = {
       enable = true;
       withJira = true;
@@ -259,7 +259,6 @@ in
       # This does not come installed by default on MacOS
       gcc
       load-ssh-key
-      gleeter
       docker
       limaWithGuests
       (colima.override {

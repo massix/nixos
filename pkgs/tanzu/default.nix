@@ -4,6 +4,7 @@ let
     x86-64_linux = "linux-amd64";
     aarch64-darwin = "darwin-arm64";
   };
+  inherit (pkgs) stdenv;
   fetchPkg = version: system: hash:
     let
       s = systemsMap.${system};
@@ -16,7 +17,7 @@ let
   pname = "tanzu";
   version = "1.5.3";
   src =
-    if pkgs.hostPlatform.isLinux then
+    if stdenv.hostPlatform.isLinux then
       (fetchPkg version "x86-64_linux" "sha256:1rgqvx589p7xb1b5i51f0z1w7p9psxllnd82scnqngn9r7qmx1jv")
     else
       (fetchPkg version "aarch64-darwin" "sha256:13p2dbknhzhqg4981h41px1ijp8ybc13hiyxqsp78bh9a38nnfqw");
@@ -24,7 +25,7 @@ in
 pkgs.stdenv.mkDerivation {
   inherit pname version src;
 
-  nativeBuildInputs = with pkgs; if pkgs.hostPlatform.isLinux then [
+  nativeBuildInputs = with pkgs; if stdenv.hostPlatform.isLinux then [
     stdenv.cc.cc.lib
     installShellFiles
     autoPatchelfHook

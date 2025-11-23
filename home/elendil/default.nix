@@ -53,7 +53,7 @@ in
       };
     };
 
-    gleeter.enable = true;
+    gleeter.enable = false;
 
     fish = {
       enable = true;
@@ -155,7 +155,7 @@ in
         };
         extraPackages = with pkgs; [
           _0xproto
-          noto-fonts-emoji
+          noto-fonts-color-emoji
           maple-mono.truetype
         ];
       };
