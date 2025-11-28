@@ -177,7 +177,7 @@ return {
       local dap = require("dap")
 
       require("dap.ext.vscode").json_decode = require("overseer.json").decode
-      require("overseer").patch_dap(true)
+      -- require("overseer").patch_dap(true)
 
       for name, sign in pairs(require("util.defaults").icons.dap) do
         sign = type(sign) == "table" and sign or { sign }

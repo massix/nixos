@@ -278,63 +278,16 @@ return {
       { "folke/neoconf.nvim" },
       { "b0o/schemastore.nvim" },
       { "Hoffs/omnisharp-extended-lsp.nvim" },
-      { "chlihismail/yaml-companion.nvim", branch = "fix/deprecation" },
     },
     config = function()
       -- Make sure we load neoconf before configuring the lsp
       require("neoconf").setup()
-      local lspconfig = require("lspconfig")
 
       -- Add new filetype for Gitlab CI
       vim.filetype.add({
         filename = {
           [".gitlab-ci.yml"] = "yaml.gitlab",
           [".gitlab-ci.yaml"] = "yaml.gitlab",
-        },
-      })
-
-      local yaml_configuration = require("yaml-companion").setup({
-        schemas = {
-          {
-            name = "Kubernetes 1.30.2",
-            uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.30.2-standalone-strict/all.json",
-          },
-          {
-            name = "Flux all schemas",
-            uri = "https://github.com/fluxcd-community/flux2-schemas/raw/refs/heads/main/all.json",
-          },
-        },
-        lspconfig = {
-          flags = { debounce_text_changes = 150 },
-          filetypes = { "yaml", "yaml.ghaction", "yaml.ansible", "yaml.gitlab" },
-          settings = {
-            redhat = { telemetry = { enabled = false } },
-            yaml = {
-              validate = true,
-              format = { enable = false },
-              schemaStore = {
-                enable = true,
-                url = "https://www.schemastore.org/api/json/catalog.json",
-              },
-              schemaDownload = { enable = true },
-              schemas = {
-                kubernetes = "",
-              },
-            },
-          },
-          on_attach = function()
-            vim.keymap.set("n", "<leader>ys", function()
-              require("yaml-companion").open_ui_select()
-            end, { desc = "Select YAML Schema", buffer = true })
-            vim.keymap.set("n", "<leader>yy", function()
-              local schema = require("yaml-companion").get_buf_schema(0)
-              if schema.result[1].name == "none" then
-                vim.notify("No schema found", vim.log.levels.WARN)
-              else
-                vim.notify(schema.result[1].name, vim.log.levels.INFO)
-              end
-            end, { desc = "Print YAML Schema", buffer = true })
-          end,
         },
       })
 
@@ -395,8 +348,58 @@ return {
         },
       })
 
-      -- FIXME: find a better way to make this work
-      lspconfig.yamlls.setup(yaml_configuration)
+      local all_schemas = require("schemastore").yaml.schemas({
+        extra = {
+          {
+            description = "Flux Schema",
+            fileMatch = {
+              "*-sync.yaml",
+              "helm-release.yaml",
+              "helm-release.yml",
+              "helmrelease.yaml",
+              "helmrelease.yml",
+              "helm-repository.yaml",
+              "helm-repository.yml",
+              "helmrepository.yaml",
+              "helmrepository.yml",
+              "git-repository.yaml",
+              "git-repository.yml",
+              "gitrepository.yaml",
+              "gitrepository.yml",
+            },
+            name = "Flux",
+            url = "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/all.json",
+          },
+        },
+      })
+
+      all_schemas = vim.tbl_extend("force", all_schemas, {
+        ["kubernetes"] = {
+          "manifests/**/*.yaml",
+          "manifests/**/*.yml",
+          "manifest/**/*.yaml",
+          "manifest/**/*.yml",
+          "overlays/**/*.yaml",
+          "overlays/**/*.yml",
+          "overlay/**/*.yaml",
+          "overlay/**/*.yml",
+          "**/manifests/*.yaml",
+          "kubectl-edit*",
+        },
+      })
+
+      vim.lsp.enable("yamlls")
+      vim.lsp.config("yamlls", {
+        settings = {
+          yaml = {
+            schemas = all_schemas,
+            schemaStore = {
+              enable = false,
+              url = "",
+            },
+          },
+        },
+      })
 
       vim.lsp.enable("clangd")
       vim.lsp.config("clangd", {
