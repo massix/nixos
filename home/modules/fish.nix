@@ -86,7 +86,7 @@ in
         htop = "btop";
         dig = "dog";
         find = "fd";
-        less = "moar";
+        less = "moor";
         traceroute = "mtr";
         ps = "procs";
         ls = "eza --icons";
@@ -133,7 +133,7 @@ in
       jiq # Modern Unix `jq`
       lazygit # Terminal Git client
       mdp # Terminal Markdown presenter
-      moar # Modern Unix `less`
+      moor # Modern Unix `less`
       mtr # Modern Unix `traceroute`
       ncdu # Modern Unix `du`
       netdiscover # Modern Unix `arp`

@@ -24,32 +24,29 @@ in
   };
 
   config = mkIf cfg.enable {
+    programs.delta = {
+      enable = true;
+      package = pkgs.delta;
+      enableGitIntegration = true;
+
+      options = {
+        features = "decorations";
+        navigate = true;
+        side-by-side = true;
+      };
+    };
     programs.git = {
-      inherit (cfg) enable userName userEmail;
+      inherit (cfg) enable;
       package = pkgs.git;
-
-      delta = {
-        enable = true;
-        package = pkgs.delta;
-
-        options = {
-          features = "decorations";
-          navigate = true;
-          side-by-side = true;
+      settings = {
+        user = {
+          email = cfg.userEmail;
+          name = cfg.userName;
         };
-      };
-
-      aliases = {
-        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-        lgnc = "log --oneline --graph --all";
-      };
-
-      includes = mkIf cfg.workRepository.enabled [{
-        condition = "gitdir:${cfg.workRepository.workRoot}";
-        contents.user.email = cfg.workRepository.workEmail;
-      }];
-
-      extraConfig = {
+        aliases = {
+          lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+          lgnc = "log --oneline --graph --all";
+        };
         push = {
           default = "matching";
         };
@@ -60,6 +57,11 @@ in
           defaultBranch = "main";
         };
       };
+
+      includes = mkIf cfg.workRepository.enabled [{
+        condition = "gitdir:${cfg.workRepository.workRoot}";
+        contents.user.email = cfg.workRepository.workEmail;
+      }];
 
       ignores = [
         "*.log"
