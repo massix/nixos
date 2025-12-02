@@ -94,6 +94,28 @@ let
         runHook postInstall
       '';
     };
+  clusterctl = assert stdenv.isDarwin;
+    stdenvNoCC.mkDerivation rec {
+      pname = "clusterctl";
+      version = "1.10.8";
+
+      src = builtins.fetchurl {
+        url = "https://github.com/kubernetes-sigs/cluster-api/releases/download/v${version}/clusterctl-darwin-arm64";
+        sha256 = "sha256:0wzmkh1fwqxg6q6wa2wg8zhzki4r2ha1brmlllg4i694hz56q1pw";
+      };
+
+      sourceRoot = ".";
+
+      dontUnpack = true;
+      dontConfigure = true;
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/bin
+        install -m 0755 $src $out/bin/clusterctl
+        runHook postInstall
+      '';
+    };
 in
 {
   my-modules = {
@@ -267,6 +289,7 @@ in
       macpass
       tana
       shottr
+      clusterctl
     ];
 
   home.sessionVariables = {
