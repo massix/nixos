@@ -74,10 +74,10 @@ let
     in
     stdenvNoCC.mkDerivation rec {
       pname = "ghostty";
-      version = "1.2.0";
+      version = "1.2.3";
       nativeBuildInputs = [ pkgs._7zz ];
 
-      src = fetch "${version}" "sha256:13h2qrrrl4n0z1s47rzz0nbd447m4887s3vcx291air29m1wl8a3";
+      src = fetch "${version}" "sha256:0sr0hg28aafd5lx8izq7ni25nmy7k18g9ppqp5x04a3f24gyjppk";
 
       unpackPhase = ''
         7zz x -snld $src
