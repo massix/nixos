@@ -238,7 +238,6 @@ in
 
     proton-pass
     unzip
-    ferrishot
   ];
 
   systemd.user.startServices = "sd-switch";
