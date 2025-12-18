@@ -4,7 +4,6 @@ local spec = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "sindrets/diffview.nvim", lazy = false },
-      "ibhagwan/fzf-lua",
     },
     opts = {
       disable_hint = false,
@@ -22,8 +21,10 @@ local spec = {
         section = { " ", " " },
       },
       integrations = {
-        fzf_lua = true,
+        telescope = false,
+        fzf_lua = false,
         diffview = true,
+        snacks = true,
       },
       git_services = {
         ["git.questel.com"] = {
