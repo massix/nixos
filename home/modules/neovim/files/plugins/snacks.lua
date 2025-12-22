@@ -20,7 +20,6 @@ local filter_filetypes = function(buf)
 end
 
 return {
-
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -129,6 +128,11 @@ return {
 
       dashboard = { enabled = false },
       bufdelete = { enabled = true },
+      terminal = {
+        win = {
+          style = "terminal",
+        },
+      },
       toggle = {
         enabled = true,
       },
@@ -204,6 +208,7 @@ return {
         end,
         desc = "Toggle Snacks Dim",
       },
+      { [[<C-\>\]], function() Snacks.terminal.toggle() end, desc = "Toggle terminal" },
     },
   },
 }

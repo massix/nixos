@@ -14,7 +14,6 @@ return {
         hoogle = { mode = "auto" },
         hover = { enable = true },
         definition = { hoogle_signature_fallback = true },
-        repl = { handler = "toggleterm" },
       },
       dap = {
         cmd = { "haskell-debug-adapter --hackage-version=0.0.33.0" },
