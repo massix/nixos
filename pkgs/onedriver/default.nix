@@ -33,8 +33,6 @@ buildGoModule {
 
   buildInputs = with pkgs; [ webkitgtk_4_1 glib fuse gtk3 glib-networking ];
 
-  GOFLAGS = [ "-tags=gtk_3_24" ];
-
   ldflags = [ "-X github.com/jstaf/onedriver/cmd/common.commit=${version}" ];
 
   subPackages = [
