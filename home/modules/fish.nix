@@ -114,7 +114,7 @@ in
       curlie # Terminal HTTP client
       dconf2nix # Nix code from Dconf files
       difftastic # Modern Unix `diff`
-      dogdns # Modern Unix `dig`
+      doggo # Modern Unix `dig`
       dua # Modern Unix `du`
       duf # Modern Unix `df`
       dust # Modern Unix `du`
