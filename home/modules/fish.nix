@@ -76,7 +76,16 @@ in
             name = plugin;
           };
         in
-        builtins.map fromRepo [ "grc" "z" "tide" "foreign-env" "fzf" "colored-man-pages" ];
+        map fromRepo [
+          "grc"
+          "z"
+          "tide"
+          "foreign-env"
+          "fzf"
+          "colored-man-pages"
+          "puffer"
+          "humantime-fish"
+        ];
 
       shellAliases = {
         cat = "bat -pp --paging=never";
