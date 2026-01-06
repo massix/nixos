@@ -360,6 +360,7 @@ in
         memory = 14;
         numCpus = 8;
         profileName = "aarch64";
+        diskSize = 250;
       };
       "colima-x86_64" = mkColimaAgent {
         enable = true;
