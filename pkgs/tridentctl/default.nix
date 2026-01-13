@@ -1,7 +1,7 @@
 { pkgs }:
 let
-  inherit (pkgs) stdenv fetchurl lib;
-  version = "24.06.1";
+  inherit (pkgs) stdenv lib;
+  version = "25.10.0";
 in
 stdenv.mkDerivation {
   inherit version;
@@ -15,9 +15,9 @@ stdenv.mkDerivation {
   dontBuild = true;
   dontConfigure = true;
 
-  src = fetchurl {
+  src = builtins.fetchurl {
     url = "https://github.com/NetApp/trident/releases/download/v${version}/trident-installer-${version}.tar.gz";
-    hash = "sha256-Y4yc1zfX/SGyAkJ3zm+k2W3Jd+Dxq7Y5kJSUbM1wmc4=";
+    sha256 = "sha256:0sksk7sygnm1rh714y66rw1zhskz500asgc546s9y6x8bh48ms0g";
   };
 
   installPhase = ''
