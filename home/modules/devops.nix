@@ -94,11 +94,22 @@ in
           kubectl
           kubernetes-helm
           fluxcd
+          velero
           kustomize
           kubectx
           kubectl-node-shell
           kubectl-klock
           kubectl-ktop
+          kubectl-cnpg
+          kubectl-tree
+          kubectl-neat
+          kubectl-graph
+          kubectl-df-pv
+          kubectl-explore
+          kubectl-validate
+          kubectl-evict-pod
+          kubectl-view-secret
+          kubectl-view-allocations
         ] ++ (orEmpty cfg.kubernetes.colored [ kubecolor ]);
         vaultPackages = orEmpty cfg.vault.enable [ vault ];
       in
