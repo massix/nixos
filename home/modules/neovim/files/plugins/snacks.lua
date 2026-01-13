@@ -1,4 +1,3 @@
---- @return LazyPluginSpec[]
 local ignored_filetypes = {
   "help",
   "alpha",
@@ -19,11 +18,13 @@ local filter_filetypes = function(buf)
     and not is_ignored
 end
 
+--- @return LazyPluginSpec[]
 return {
   {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    version = "*",
     config = function(_, opts)
       require("snacks").setup(opts)
 
@@ -44,33 +45,27 @@ return {
     ---@type snacks.Config
     opts = {
       animate = { enabled = true },
-      scope = {
-        enabled = true,
-        siblings = true,
+      bufdelete = { enabled = true },
+      dashboard = { enabled = false },
+      dim = {
+        enabled = false,
+        filter = filter_filetypes,
       },
+      explorer = {
+        enabled = true,
+        replace_netrw = true,
+      },
+      git = { enabled = false },
+      image = { enabled = true },
       indent = {
         enabled = true,
         only_scope = true,
         only_current = true,
-        chunk = {
-          enabled = true,
-          only_current = true,
-        },
+        chunk = { enabled = true, only_current = true },
         filter = filter_filetypes,
       },
-      git = { enabled = false },
-      win = { enabled = true },
       input = { enabled = true },
-      notifier = {
-        enabled = true,
-        style = "compact",
-      },
-      rename = { enabled = true },
-      scroll = { enabled = false },
-      words = {
-        enabled = true,
-        notify_jump = true,
-      },
+      notifier = { enabled = true, style = "compact" },
       picker = {
         matcher = {
           frecency = true,
@@ -108,10 +103,9 @@ return {
           },
         },
       },
-      explorer = {
-        enabled = true,
-        replace_netrw = true,
-      },
+      rename = { enabled = true },
+      scope = { enabled = true, siblings = true },
+      scroll = { enabled = false },
       statuscolumn = {
         enabled = true,
         left = { "fold", "mark" },
@@ -125,9 +119,6 @@ return {
         },
         refresh = 50,
       },
-
-      dashboard = { enabled = false },
-      bufdelete = { enabled = true },
       terminal = {
         win = {
           style = "terminal",
@@ -136,10 +127,8 @@ return {
       toggle = {
         enabled = true,
       },
-      dim = {
-        enabled = false,
-        filter = filter_filetypes,
-      },
+      win = { enabled = true },
+      words = { enabled = true, notify_jump = true },
     },
 
     init = function()

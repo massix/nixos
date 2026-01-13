@@ -1,9 +1,5 @@
 ---@type LazyPluginSpec[]
 return {
-
-  -- ui components
-  { "MunifTanjim/nui.nvim", lazy = true },
-
   -- Reactive HLGroups
   {
     "rasulomaroff/reactive.nvim",

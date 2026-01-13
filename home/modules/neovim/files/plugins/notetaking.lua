@@ -3,6 +3,18 @@ local util = require("util.nix")
 --- @type LazyPluginSpec[]
 return {
   {
+    "echaya/neowiki.nvim",
+    opts = {
+      discover_nested_roots = true,
+    },
+    -- stylua: ignore
+    keys = {
+      { "<leader>ww", function() require("neowiki").open_wiki() end, desc = "Open Wiki", },
+      { "<leader>wW", function() require("neowiki").open_wiki_floating() end, desc = "Open Wiki in floating window", },
+      { "<leader>wT", function() require("neowiki").open_wiki_new_tab() end, desc = "Open Wiki in new tab", },
+    },
+  },
+  {
     "michaelb/sniprun",
     ft = { "org", "markdown" },
     version = "v1.3.15",
@@ -46,26 +58,6 @@ return {
     },
     keys = {
       { "<leader>Ip", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
-    },
-  },
-
-  -- Show images
-  {
-    "3rd/image.nvim",
-    ft = { "markdown" },
-    opts = {
-      backend = "kitty",
-      integrations = {
-        markdown = {
-          enabled = true,
-        },
-        html = {
-          enabled = true,
-        },
-        css = {
-          enabled = true,
-        },
-      },
     },
   },
 }

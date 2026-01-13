@@ -306,12 +306,13 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown" },
     opts = {
-      render_modes = { "n", "c", "t" },
+      render_modes = true,
       anti_conceal = {
         enabled = true,
       },
       completions = {
         blink = { enabled = true },
+        lsp = { enabled = true },
       },
       heading = {
         border = true,
@@ -327,6 +328,7 @@ return {
       },
       indent = {
         enabled = true,
+        render_modes = { "n", "i", "c" },
       },
     },
     config = function(_, opts)

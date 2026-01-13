@@ -50,7 +50,7 @@ return {
         { "<leader>u", group = "misc" },
         { "<leader>x", group = "list" },
         { "<leader>q", group = "quit" },
-        { "<leader>w", group = "window" },
+        { "<leader>w", group = "neowiki" },
         { "<leader><tab>", group = "tab" },
         { "<leader>n", group = "nix" },
       })

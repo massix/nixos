@@ -54,6 +54,8 @@ opt.undofile = true
 opt.undolevels = 10000
 opt.updatetime = 200 -- Save swap file and trigger CursorHold
 opt.wildmode = "longest:full,full" -- Command-line completion mode
+opt.winblend = 25
+opt.winborder = "rounded" -- Rounded borders
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 
