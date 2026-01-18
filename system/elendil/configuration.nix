@@ -59,11 +59,15 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  services.gnome.gnome-browser-connector.enable = true;
+  # Enable the KDE Desktop Environment
+  services.desktopManager.plasma6 = {
+    enable = true;
+    enableQt5Integration = true;
+  };
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
 
   services.flatpak.enable = true;
 
@@ -196,6 +200,29 @@
       cntr
       fish
       cachix
+
+      # KDE Specific Packages
+      kdePackages.kcalc
+      kdePackages.discover
+      kdePackages.sddm-kcm
+      kdePackages.isoimagewriter
+      kdePackages.kcharselect
+      kdePackages.kaccounts-integration
+      kdePackages.kaccounts-providers
+
+      # Dolphin Integrations
+      kdePackages.kio
+      kdePackages.kio-gdrive
+      kdePackages.kio-admin
+      kdePackages.kio-fuse
+
+      # Online Accounts
+      libsForQt5.qoauth
+      libsForQt5.signond
+
+      # Other stuff
+      wayland-utils
+      wl-clipboard
     ];
 
     sessionVariables = {
@@ -231,6 +258,18 @@
       viAlias = true;
       vimAlias = true;
       defaultEditor = true;
+    };
+
+    kdeconnect = {
+      enable = true;
+      package = lib.mkForce pkgs.kdePackages.kdeconnect-kde;
+    };
+
+    kde-pim = {
+      enable = true;
+      kontact = true;
+      kmail = false;
+      merkuro = true;
     };
 
     appimage = {

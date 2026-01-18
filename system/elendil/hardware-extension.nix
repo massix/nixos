@@ -71,6 +71,7 @@
     };
 
     bluetooth = with pkgs; {
+      enable = true;
       settings = {
         General = {
           Experimental = true;

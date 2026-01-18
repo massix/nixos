@@ -29,7 +29,7 @@ let
   };
 in
 {
-  imports = [ ./gnome.nix ];
+  imports = [ ];
 
   my-modules = {
     firefox = {
@@ -128,7 +128,7 @@ in
 
     ghostty =
       let
-        add-plus = l: builtins.map (x: "+${x}") l;
+        add-plus = l: map (x: "+${x}") l;
         to-font-feature = l: builtins.concatStringsSep "," (add-plus l);
       in
       {
@@ -216,26 +216,19 @@ in
   home.sessionVariables = { };
 
   home.packages = with pkgs; [
-    # Only for Teams PWA
     just
     powertop
     pbpctrl
     dconf-editor
     gnome-tweaks
-
     spotify
-
     onedriver
     tana
-
     protonvpn-gui
-
     hypnotix
-
     inkscape-with-extensions
     (transmission_4.override { enableGTK3 = true; })
     libnatpmp
-
     proton-pass
     unzip
   ];
