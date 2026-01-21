@@ -4,6 +4,7 @@ return {
   {
     "Exafunction/codeium.nvim",
     event = { "BufEnter", "BufWinEnter" },
+    enabled = false,
     opts = function()
       return {
         tools = {

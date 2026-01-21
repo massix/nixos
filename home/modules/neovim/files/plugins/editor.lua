@@ -128,13 +128,13 @@ return {
     },
   },
 
-  -- Better MatchParen
+  -- Better matchparen
   {
-    "utilyre/sentiment.nvim",
+    "monkoose/matchparen.nvim",
     lazy = false,
-    config = true,
-    init = function()
+    config = function()
       vim.g.loaded_matchparen = 1
+      require("matchparen").setup()
     end,
   },
 

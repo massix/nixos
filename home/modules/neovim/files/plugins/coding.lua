@@ -612,10 +612,10 @@ return {
     "saghen/blink.cmp",
     dependencies = {
       { "rafamadriz/friendly-snippets" },
-      { "onsails/lspkind.nvim" },
       { "saghen/blink.compat", version = "*" },
       { "hrsh7th/cmp-emoji" },
       { "hrsh7th/cmp-calc" },
+      { "nvim-tree/nvim-web-devicons" },
     },
     version = "1.*",
     build = "nix run .#build-plugin",
@@ -638,10 +638,6 @@ return {
                     if dev_icon then
                       icon = dev_icon
                     end
-                  else
-                    icon = require("lspkind").symbolic(ctx.kind, {
-                      mode = "symbol",
-                    })
                   end
                   return icon .. ctx.icon_gap
                 end,
