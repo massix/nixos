@@ -80,8 +80,8 @@ in
       let
         allSettings = settings // cfg.extraSettings // { inherit (cfg) theme; };
         allKeybindings = keybindings // cfg.extraKeybindings;
-        allSettingsStr = builtins.map (pair: "${pair.name} = ${pair.value}") (lib.attrsToList allSettings);
-        allKeybindingsStr = builtins.map (pair: "keybind = ${pair.name}=${pair.value}") (lib.attrsToList allKeybindings);
+        allSettingsStr = map (pair: "${pair.name} = ${pair.value}") (lib.attrsToList allSettings);
+        allKeybindingsStr = map (pair: "keybind = ${pair.name}=${pair.value}") (lib.attrsToList allKeybindings);
         text = builtins.concatStringsSep "\n" (allSettingsStr ++ allKeybindingsStr);
       in
       {
