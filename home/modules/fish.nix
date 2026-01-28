@@ -106,6 +106,10 @@ in
         set fish_greeting
         ${builtins.concatStringsSep "\n" cfg.configuration.extraInit}
       '';
+
+      shellInit = ''
+        set -g fish_key_bindings fish_default_key_bindings
+      '';
     };
 
     home.sessionVariables = {
