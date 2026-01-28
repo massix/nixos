@@ -41,7 +41,6 @@ let
   language-servers = with pkgs; [
     ansible-language-server-wrapper
     llvmPackages.clang-unwrapped
-    omnisharp-roslyn
     gleam
     gopls
     haskell-language-server
@@ -98,7 +97,6 @@ let
   misc = with pkgs; [
     gcc
     nodejs
-    netcoredbg
     delve # Debugger for Golang
     haskellPackages.haskell-debug-adapter
     haskellPackages.haskell-dap

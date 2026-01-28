@@ -105,6 +105,8 @@ in
       withRuby = true;
 
       extraLuaPackages = ps: [ ps.magick ];
+
+      initLua = builtins.readFile ./files/init.lua;
     };
 
     # The extra packages are needed for luarocks
@@ -172,10 +174,6 @@ in
         '';
 
         "${util}/defaults.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/util/defaults.lua");
-
-        # Init and start-up options
-        "${nvimHome}/init.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/init.lua");
-
         "${config}/options.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/options.lua");
         "${config}/keymaps.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/keymaps.lua");
 
