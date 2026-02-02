@@ -128,7 +128,7 @@
   };
 
   systemd.sleep.extraConfig = ''
-    HibernateDelaySec=${builtins.toString (3600 * 4)}
+    HibernateDelaySec=${toString (3600 * 4)}
     HibernateLocation=/var/lib/swapfile
   '';
 
@@ -228,6 +228,8 @@
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
+      GTK_IM_MODULE = "simple";
+      QT_IM_MODULE = "simple";
     };
 
     shells = with pkgs; [
