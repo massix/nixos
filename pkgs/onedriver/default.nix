@@ -3,7 +3,7 @@
 }:
 let
   inherit (pkgs) buildGoModule fetchFromGitHub;
-  version = "f07678f9e6ef3120e8af032ee48326b23c802cac";
+  version = "v0.15.0";
   pname = "onedriver";
 in
 buildGoModule {
@@ -14,10 +14,10 @@ buildGoModule {
     owner = "jstaf";
     repo = pname;
     rev = "${version}";
-    hash = "sha256-P1JsiPsDHW7VRbxY+vNFuPyK3UWJuPqu4dWME38505U=";
+    hash = "sha256-DCxF52CtA9KAP+yz5Rgzc/nUAXtZwfYAVU7oHREJlRY=";
   };
 
-  vendorHash = "sha256-JoinXXq9XuoXAa/ZgF3MIsKVooOUgKRS3KwWVWzjUJI=";
+  vendorHash = "sha256-Ifcmf9AtZnrjgTPQnof/ap0TY19zHVftm5N4JgvbAgs=";
 
   preBuild = ''
     substituteInPlace cmd/common/common.go \
