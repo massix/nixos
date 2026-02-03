@@ -119,64 +119,64 @@ M.snacks_collection = function()
   vim.ui.input = Snacks.input.input
 
   -- stylua: ignore
-	require("which-key").add({
-		{ "<leader>p", group = "picker" },
-		{ "<leader>pl", group = "lsp" },
-		{ "<leader>pg", group = "git" },
+  require("which-key").add({
+    { "<leader>p", group = "picker" },
+    { "<leader>pl", group = "lsp" },
+    { "<leader>pg", group = "git" },
     { "<leader>b", group = "buffer" },
 
-		-- Picker keys (quick access)
-		{ "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
-		{ "<leader>.", function() Snacks.picker.files() end, desc = "Pick files", },
-		{ "<leader>;", function() Snacks.picker.git_files() end, desc = "Pick files [Git]", },
-		{ "<leader>,", function() Snacks.picker.buffers() end, desc = "Pick buffer", },
-		{ "<leader>L", function() Snacks.picker.lsp_symbols() end, desc = "Pick LSP Symbols", },
-		{ "<leader>m", function() Snacks.picker.marks() end, desc = "Pick Marks", },
-		{ "<leader>r", function() Snacks.picker.resume() end, desc = "Resume picker", },
+    -- Picker keys (quick access)
+    { "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
+    { "<leader>.", function() Snacks.picker.files() end, desc = "Pick files", },
+    { "<leader>;", function() Snacks.picker.git_files() end, desc = "Pick files [Git]", },
+    { "<leader>,", function() Snacks.picker.buffers() end, desc = "Pick buffer", },
+    { "<leader>L", function() Snacks.picker.lsp_symbols() end, desc = "Pick LSP Symbols", },
+    { "<leader>m", function() Snacks.picker.marks() end, desc = "Pick Marks", },
+    { "<leader>r", function() Snacks.picker.resume() end, desc = "Resume picker", },
 
-		-- Picker submenu
-		{ "<leader>pb", function() Snacks.picker.buffers() end, desc = "Pick buffer", },
-		{ "<leader>p/", function() Snacks.picker.grep() end, desc = "Live Grep", },
-		{ "<leader>pf", function() Snacks.picker.files() end, desc = "Pick files", },
-		{ "<leader>pG", function() Snacks.picker.git_files() end, desc = "Pick files [Git]", },
-		{ "<leader>pm", function() Snacks.picker.marks() end, desc = "Pick marks", },
-		{ "<leader>pM", function() Snacks.picker.man() end, desc = "Pick man pages", },
-		{ "<leader>ph", function() Snacks.picker.help() end, desc = "Pick Help", },
-		{ "<leader>pc", function() Snacks.picker.commands() end, desc = "Pick commands", },
-		{ "<leader>pH", function() Snacks.picker.command_history() end, desc = "Pick commands", },
-		{ "<leader>pH", function() Snacks.picker.registers() end, desc = "Pick registers", },
-		{ "<leader>pd", function() Snacks.picker.diagnostics() end, desc = "Pick diagnostics", },
-		{ "<leader>pj", function() Snacks.picker.jumps() end, desc = "Pick jumps", },
+    -- Picker submenu
+    { "<leader>pb", function() Snacks.picker.buffers() end, desc = "Pick buffer", },
+    { "<leader>p/", function() Snacks.picker.grep() end, desc = "Live Grep", },
+    { "<leader>pf", function() Snacks.picker.files() end, desc = "Pick files", },
+    { "<leader>pG", function() Snacks.picker.git_files() end, desc = "Pick files [Git]", },
+    { "<leader>pm", function() Snacks.picker.marks() end, desc = "Pick marks", },
+    { "<leader>pM", function() Snacks.picker.man() end, desc = "Pick man pages", },
+    { "<leader>ph", function() Snacks.picker.help() end, desc = "Pick Help", },
+    { "<leader>pc", function() Snacks.picker.commands() end, desc = "Pick commands", },
+    { "<leader>pH", function() Snacks.picker.command_history() end, desc = "Pick commands", },
+    { "<leader>pH", function() Snacks.picker.registers() end, desc = "Pick registers", },
+    { "<leader>pd", function() Snacks.picker.diagnostics() end, desc = "Pick diagnostics", },
+    { "<leader>pj", function() Snacks.picker.jumps() end, desc = "Pick jumps", },
 
-		-- Picker git submenu
-		{ "<leader>pgb", function() Snacks.picker.git_branches() end, desc = "Pick git branches", },
-		{ "<leader>pgd", function() Snacks.picker.git_diff() end, desc = "Pick git diff", },
-		{ "<leader>pgf", function() Snacks.picker.git_files() end, desc = "Pick git files", },
-		{ "<leader>pgl", function() Snacks.picker.git_log() end, desc = "Pick git log", },
+    -- Picker git submenu
+    { "<leader>pgb", function() Snacks.picker.git_branches() end, desc = "Pick git branches", },
+    { "<leader>pgd", function() Snacks.picker.git_diff() end, desc = "Pick git diff", },
+    { "<leader>pgf", function() Snacks.picker.git_files() end, desc = "Pick git files", },
+    { "<leader>pgl", function() Snacks.picker.git_log() end, desc = "Pick git log", },
 
-		-- Picker LSP submenu
-		{ "<leader>pls", function() Snacks.picker.lsp_symbols() end, desc = "Pick LSP Symbols", },
-		{ "<leader>plD", function() Snacks.picker.lsp_declarations() end, desc = "Pick LSP Declarations", },
-		{ "<leader>pld", function() Snacks.picker.lsp_definitions() end, desc = "Pick LSP Definitions", },
-		{ "<leader>plt", function() Snacks.picker.lsp_type_definitions() end, desc = "Pick LSP Type Definitions", },
-		{ "<leader>plr", function() Snacks.picker.lsp_references() end, desc = "Pick LSP References", },
-		{ "<leader>pli", function() Snacks.picker.lsp_implementations() end, desc = "Pick LSP Implementations", },
+    -- Picker LSP submenu
+    { "<leader>pls", function() Snacks.picker.lsp_symbols() end, desc = "Pick LSP Symbols", },
+    { "<leader>plD", function() Snacks.picker.lsp_declarations() end, desc = "Pick LSP Declarations", },
+    { "<leader>pld", function() Snacks.picker.lsp_definitions() end, desc = "Pick LSP Definitions", },
+    { "<leader>plt", function() Snacks.picker.lsp_type_definitions() end, desc = "Pick LSP Type Definitions", },
+    { "<leader>plr", function() Snacks.picker.lsp_references() end, desc = "Pick LSP References", },
+    { "<leader>pli", function() Snacks.picker.lsp_implementations() end, desc = "Pick LSP Implementations", },
 
-		-- Explorer keys
-		{ "<leader>fe", function() Snacks.explorer.open() end, desc = "Open explorer", },
+    -- Explorer keys
+    { "<leader>fe", function() Snacks.explorer.open() end, desc = "Open explorer", },
 
     -- Git keys
     { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git blame", mode = { "n", "v" } },
 
-		-- Other keys
-		{ "<leader>uH", function() Snacks.notifier.show_history() end, desc = "Snacks History", },
-		{ "g[", function() Snacks.words.jump(-1, false) end, desc = "LSP Prev Word", },
-		{ "g]", function() Snacks.words.jump(1, false) end, desc = "LSP Next Word", },
-		{ "<leader>d", function() if Snacks.dim.enabled then Snacks.dim.disable() else Snacks.dim.enable() end end, desc = "Toggle Snacks Dim", },
-		{ [[<C-\>\]], function() Snacks.terminal.toggle() end, desc = "Toggle terminal", },
+    -- Other keys
+    { "<leader>uH", function() Snacks.notifier.show_history() end, desc = "Snacks History", },
+    { "g[", function() Snacks.words.jump(-1, false) end, desc = "LSP Prev Word", },
+    { "g]", function() Snacks.words.jump(1, false) end, desc = "LSP Next Word", },
+    { "<leader>d", function() if Snacks.dim.enabled then Snacks.dim.disable() else Snacks.dim.enable() end end, desc = "Toggle Snacks Dim", },
+    { [[<C-\>\]], function() Snacks.terminal.toggle() end, desc = "Toggle terminal", },
     { "<leader>bd", function() Snacks.bufdelete.delete() end, desc = "Delete current buffer" },
     { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
-	})
+  })
 end
 
 return M

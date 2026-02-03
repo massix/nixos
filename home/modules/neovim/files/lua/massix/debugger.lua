@@ -108,30 +108,30 @@ M.debugger = function()
   require("dap.ext.vscode").load_launchjs(nil, json_transforms)
 
   -- stylua: ignore
-	require("which-key").add({
-		{ "<C-c>d", group = "debug" },
-		{ "<C-c>du", function() require("dapui").toggle({}) end, desc = "Toggle UI" },
-		{ "<C-c>de", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
-      { "<C-c>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-      { "<C-c>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-      { "<C-c>dc", function() require("dap").continue() end, desc = "Continue" },
-      { "<C-c>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-      { "<C-c>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
-      { "<C-c>di", function() require("dap").step_into() end, desc = "Step Into" },
-      { "<C-c>dj", function() require("dap").down() end, desc = "Down" },
-      { "<C-c>dk", function() require("dap").up() end, desc = "Up" },
-      { "<C-c>dl", function() require("dap").run_last() end, desc = "Run Last" },
-      { "<C-c>dO", function() require("dap").step_out() end, desc = "Step Out" },
-      { "<C-c>do", function() require("dap").step_over() end, desc = "Step Over" },
-      { "<C-c>dp", function() require("dap").pause() end, desc = "Pause" },
-      { "<C-c>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
-      { "<C-c>ds", function() require("dap").session() end, desc = "Session" },
-      { "<C-c>dt", function() require("dap").terminate() end, desc = "Terminate" },
-      { "<C-c>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
-      { "<C-c>dJ", function() require("dap.ext.vscode").load_launchjs(nil, json_transforms) end, desc = "Load Launch JSON" },
+  require("which-key").add({
+    { "<C-c>d", group = "debug" },
+    { "<C-c>du", function() require("dapui").toggle({}) end, desc = "Toggle UI" },
+    { "<C-c>de", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
+    { "<C-c>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+    { "<C-c>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+    { "<C-c>dc", function() require("dap").continue() end, desc = "Continue" },
+    { "<C-c>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+    { "<C-c>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
+    { "<C-c>di", function() require("dap").step_into() end, desc = "Step Into" },
+    { "<C-c>dj", function() require("dap").down() end, desc = "Down" },
+    { "<C-c>dk", function() require("dap").up() end, desc = "Up" },
+    { "<C-c>dl", function() require("dap").run_last() end, desc = "Run Last" },
+    { "<C-c>dO", function() require("dap").step_out() end, desc = "Step Out" },
+    { "<C-c>do", function() require("dap").step_over() end, desc = "Step Over" },
+    { "<C-c>dp", function() require("dap").pause() end, desc = "Pause" },
+    { "<C-c>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+    { "<C-c>ds", function() require("dap").session() end, desc = "Session" },
+    { "<C-c>dt", function() require("dap").terminate() end, desc = "Terminate" },
+    { "<C-c>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+    { "<C-c>dJ", function() require("dap.ext.vscode").load_launchjs(nil, json_transforms) end, desc = "Load Launch JSON" },
 
-		{ "<C-c>da", group = "adapters" },
-	})
+    { "<C-c>da", group = "adapters" },
+  })
 end
 
 return M

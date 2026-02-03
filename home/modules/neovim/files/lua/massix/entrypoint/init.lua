@@ -15,12 +15,12 @@ M.configure = function()
 
     require("mini.notify").setup()
 
-  -- stylua: ignore
-	require("which-key").add({
-		{ "<leader>n", group = "notifications" },
-		{ "<leader>nh", function() MiniNotify.show_history() end, desc = "History", },
-		{ "<leader>nc", function() MiniNotify.clear() end, desc = "Clear", },
-	})
+    -- stylua: ignore
+    require("which-key").add({
+      { "<leader>n", group = "notifications" },
+      { "<leader>nh", function() MiniNotify.show_history() end, desc = "History", },
+      { "<leader>nc", function() MiniNotify.clear() end, desc = "Clear", },
+    })
 
     require("mini.icons").setup()
     require("mini.cmdline").setup({

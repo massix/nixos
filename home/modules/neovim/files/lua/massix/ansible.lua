@@ -16,12 +16,12 @@ M.ansible = function()
     group = vim.api.nvim_create_augroup("AnsibleAutoCmds", { clear = true }),
     callback = function(evt)
       -- stylua: ignore
-			require("which-key").add({
-				buffer = evt.buf,
-				mode = { "i", "n", "v" },
-				{ "<C-c>a", group = "ansible" },
-				{ "<C-c>ar", function() require("ansible").run() end, desc = "Run playbook", silent = true },
-			})
+      require("which-key").add({
+        buffer = evt.buf,
+        mode = { "i", "n", "v" },
+        { "<C-c>a", group = "ansible" },
+        { "<C-c>ar", function() require("ansible").run() end, desc = "Run playbook", silent = true },
+      })
     end,
   })
 end
