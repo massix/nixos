@@ -125,7 +125,6 @@ in
       chafa # Terminal image viewer
       cheat # Modern Unix `man`
       curlie # Terminal HTTP client
-      dconf2nix # Nix code from Dconf files
       difftastic # Modern Unix `diff`
       doggo # Modern Unix `dig`
       dua # Modern Unix `du`
@@ -157,10 +156,7 @@ in
       optipng # Terminal PNG optimizer
       procs # Modern Unix `ps`
       quilt # Terminal patch manager
-      ranger # Terminal file manager
       ripgrep # Modern Unix `grep`
-      shellcheck # Code lint Shell
-      shfmt # Code format Shell
       tldr # Modern Unix `man`
       tokei # Modern Unix `wc` for code
       yq-go # Terminal `jq` for YAML

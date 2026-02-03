@@ -5,8 +5,8 @@
 }:
 let
   cfg = config.my-modules.neovim;
-  inherit (pkgs) rustPlatform fetchFromGitHub;
   inherit (lib) mkEnableOption mkPackageOption mkIf strings;
+  inherit (lib.generators) toJSON;
   inherit (config.lib.file) mkOutOfStoreSymlink;
   nvimLangs = map
     ({ code, hash }: pkgs.stdenvNoCC.mkDerivation rec {
@@ -30,54 +30,32 @@ let
     }) [{ code = "it"; hash = "sha256-2AczkD6DbVN5DAq4wcLyn2Y8oqd67ns4Guprh2KudBM="; }
     { code = "fr"; hash = "sha256-q/uXArmNiHwXWs5Y8as5cz3AjQO2dNkU9WNE74bmO2E="; }
     { code = "en"; hash = "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA="; }];
-  sniprun = rustPlatform.buildRustPackage rec {
-    pname = "sniprun";
-    version = "1.3.17";
-
-    src = fetchFromGitHub {
-      owner = "michaelb";
-      repo = "sniprun";
-      sha256 = "sha256-o8U3GXg61dfEzQxrs9zCgRDWonhr628aSPd/l+HxS70=";
-      rev = "v${version}";
-    };
-
-    cargoHash = "sha256-HLPTt0JCmCM4SRmP8o435ilM1yxoxpAnf8hg3+8C54I=";
-    doCheck = false;
-  };
-  vscode-extension = pname: { version, hash }: pkgs.stdenvNoCC.mkDerivation {
-    inherit version pname;
-
-    nativeBuildInputs = with pkgs; [ unzip ];
-
-    src = builtins.fetchurl {
-      url = "https://openvsxorg.blob.core.windows.net/resources/vscjava/${pname}/${version}/vscjava.${pname}-${version}.vsix";
-      sha256 = hash;
-    };
-
-    dontConfigure = true;
-    dontBuild = true;
-
-    unpackPhase = ''
-      mkdir tmp
-      unzip -x $src -d tmp
-    '';
-
-    installPhase = ''
-      mkdir -p $out/lib
-      ls -l tmp/
-      cp tmp/extension/server/*.jar $out/lib/
-    '';
-  };
-  vscode-java-test = vscode-extension "vscode-java-test" { version = "0.41.1"; hash = "sha256:1hk4x08w8kv485kjwrygay04b9z7629gcv613dnv7m579i71wwl9"; };
-  vscode-java-debug = vscode-extension "vscode-java-debug" { version = "0.58.0"; hash = "sha256:0wa40rhfhkxhql16whylar8ciagvlb8xg97fixb5wxwvggzc8x23"; };
   configPath = "${config.xdg.configHome}/nixos";
   modulePath = "home/modules/neovim";
-  lldb-wrapper = pkgs.writeScriptBin "lldb-wrapper" ''
-    #!${lib.getExe pkgs.bash}
-    exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
-
-  '';
   mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
+  generateLuarc =
+    let
+      plugins = [
+        "which-key.nvim"
+        "nvim-lspconfig"
+        "mini.icons"
+        "slimline.nvim"
+        "blink.cmp"
+        "snacks.nvim"
+      ];
+      plugins-paths =
+        (map (x: "~/.local/share/nvim/site/pack/deps/opt/${x}/lua") plugins) ++
+        [ "~/.local/share/nvim/site/pack/deps/start/mini.nvim/lua" ];
+    in
+    neovim-package: toJSON { } {
+      "$schema" = "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json";
+      "codeLens.enable" = true;
+      "workspace.library" = [
+        "${neovim-package}/share/nvim/runtime/lua"
+        (toString ./files/lua)
+      ] ++ plugins-paths;
+      "diagnostics.global" = [ "vim" ];
+    };
 in
 {
   imports = [ ./languages ];
@@ -104,13 +82,34 @@ in
       withPython3 = true;
       withRuby = true;
 
-      extraLuaPackages = ps: [ ps.magick ];
+      extraLuaPackages = luaPackages: [ luaPackages.magick ];
 
-      initLua = builtins.readFile ./files/init.lua;
+      initLua =
+        # lua
+        ''
+          -- Clone mini.nvim and use it
+          local path_package = vim.fn.stdpath("data") .. "/site/"
+          local mini_path = path_package .. "pack/deps/start/mini.nvim"
+
+          ---@diagnostic disable-next-line: undefined-field
+          if not vim.loop.fs_stat(mini_path) then
+            vim.notify("Installing `mini.nvim`", vim.log.levels.INFO)
+            local clone_cmd = { "git", "clone", "--filter=blob:none", "https://github.com/nvim-mini/mini.nvim", mini_path }
+            vim.fn.system(clone_cmd)
+            vim.cmd([[packadd mini.nvim | helptags ALL]])
+            vim.notify("Installed `mini.nvim`", vim.log.levels.INFO)
+          end
+
+          require("mini.deps").setup({ path = { package = path_package } })
+
+          -- This is the main entrypoint for the whole configuration (old init.lua)
+          require("massix.entrypoint").configure()
+        '';
     };
 
     # The extra packages are needed for luarocks
     home.packages = with pkgs; [
+      git
       lua5_1
       lua51Packages.luarocks
       readline
@@ -130,12 +129,8 @@ in
     home.file =
       let
         nvimHome = ".config/nvim";
-        plugins = "${nvimHome}/lua/plugins";
-        config = "${nvimHome}/lua/config";
-        util = "${nvimHome}/lua/util";
         spell = "${nvimHome}/spell";
 
-        # NOTE: "wonderful" hack to install the languages, still not sure if this is the best idea
         retrieveLang = lang: lib.head (lib.filter (drv: drv.spellFile == "${lang}.utf-8.spl") nvimLangs);
         langFiles = map
           (l: {
@@ -146,39 +141,8 @@ in
           }) [ "it" "en" "fr" ];
       in
       {
-        # Misc files
-        "${util}/nix.lua".text = ''
-          -- Some variables that are injected automatically by nix
-          local bundles = {}
-          local debug_bundles = vim.split(vim.fn.glob("${vscode-java-debug}/lib/*.jar"), "\n")
-          local test_bundles = vim.split(vim.fn.glob("${vscode-java-test}/lib/*.jar"), "\n")
-
-          vim.list_extend(bundles, debug_bundles)
-          vim.list_extend(bundles, test_bundles)
-
-          return {
-            nvimHome = "${nvimHome}",
-            dapConfigured = true,
-            jdtls = {
-              bundles = bundles,
-              lombok = "${pkgs.lombok}/share/java/lombok.jar",
-            },
-            codeium = "${lib.getExe pkgs.codeium-ls}",
-            vsCodeJsDebug = "${pkgs.vscode-js-debug}/vscode-js-debug",
-            nodePath = "${lib.getExe pkgs.nodejs}",
-            rustDebugger = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}",
-            rustWrapper = "${lib.getExe lldb-wrapper}",
-            sniprun = "${lib.getExe' sniprun "sniprun"}",
-            flakePath = vim.fn.expand("~/.config/nixos"),
-          }
-        '';
-
-        "${util}/defaults.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/util/defaults.lua");
-        "${config}/options.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/options.lua");
-        "${config}/keymaps.lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/config/keymaps.lua");
-
-        # Plugins configurations
-        "${plugins}".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/plugins");
+        "${nvimHome}/lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/lua");
+        "${nvimHome}/.luarc.json".text = generateLuarc cfg.configuration.package;
       } // (lib.listToAttrs langFiles);
 
     home.sessionVariables = mkIf cfg.defaultEditor {
