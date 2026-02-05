@@ -339,7 +339,7 @@ in
         };
     in
     {
-      "colima-aarch64" = mkColimaAgent {
+      colima-aarch64 = mkColimaAgent {
         enable = true;
         arch = "aarch64";
         memory = 14;
@@ -347,7 +347,16 @@ in
         profileName = "aarch64";
         diskSize = 250;
       };
-      "colima-x86_64" = mkColimaAgent {
+      colima-aarch64-nocerts = mkColimaAgent {
+        enable = true;
+        arch = "aarch64";
+        memory = 14;
+        numCpus = 8;
+        profileName = "aarch64-nocerts";
+        diskSize = 250;
+        mount = false;
+      };
+      colima-x86_64 = mkColimaAgent {
         enable = true;
         arch = "x86_64";
         memory = 14;
@@ -355,6 +364,16 @@ in
         maxCpu = true;
         profileName = "x86_64";
         diskSize = 250;
+      };
+      colima-x86_64-nocerts = mkColimaAgent {
+        enable = true;
+        arch = "x86_64";
+        memory = 14;
+        numCpus = 8;
+        maxCpu = true;
+        profileName = "x86_64-nocerts";
+        diskSize = 250;
+        mount = false;
       };
     };
 
