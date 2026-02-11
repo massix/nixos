@@ -74,6 +74,52 @@
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default
+          (final: prev: {
+            kdePackages = prev.kdePackages.overrideScope (
+              _: kdePrev: {
+                plasma-workspace =
+                  let
+                    basePkg = kdePrev.plasma-workspace;
+                    xdgdataPkg = final.stdenv.mkDerivation {
+                      name = "${basePkg.name}-xdgdata";
+                      buildInputs = [ basePkg ];
+                      dontUnpack = true;
+                      dontFixup = true;
+                      dontWrapQtApps = true;
+                      installPhase = ''
+                        mkdir -p $out/share
+                        ( IFS=:
+                          for DIR in $XDG_DATA_DIRS; do
+                            if [[ -d "$DIR" ]]; then
+                              cp -r $DIR/. $out/share/
+                              chmod -R u+w $out/share
+                            fi
+                          done
+                        )
+                      '';
+                    };
+                    # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
+                    # script and instead inject the path of the above helper package
+                    derivedPkg = basePkg.overrideAttrs {
+                      preFixup = ''
+                        for index in "''${!qtWrapperArgs[@]}"; do
+                          if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
+                            unset -v "qtWrapperArgs[$((index+0))]"
+                            unset -v "qtWrapperArgs[$((index+1))]"
+                            unset -v "qtWrapperArgs[$((index+2))]"
+                            unset -v "qtWrapperArgs[$((index+3))]"
+                          fi
+                        done
+                        qtWrapperArgs=("''${qtWrapperArgs[@]}")
+                        qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
+                        qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
+                      '';
+                    };
+                  in
+                  derivedPkg;
+              }
+            );
+          })
         ];
         pkgs = import nixpkgs {
           inherit system config overlays;
