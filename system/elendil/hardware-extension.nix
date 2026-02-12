@@ -17,7 +17,6 @@
     };
 
     kernelModules = [ "kvm-intel" "i915" ];
-    blacklistedKernelModules = [ "int3403_thermal" ];
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.custom-kernel);
     consoleLogLevel = 0;
     supportedFilesystems = [ "ntfs" ];
@@ -29,6 +28,9 @@
       "rd.systemd.show_status=false"
       "rd.udev.log_level=3"
       "udev.log_priority=3"
+      "intel_pstate=active"
+      "msr=0x1b0:0x0"
+      "processor.max_cstate=1"
     ];
 
     loader.timeout = 0;
