@@ -310,14 +310,6 @@
         ];
       };
     };
-
-    virtualbox.host = {
-      enable = true;
-      enableKvm = false;
-      enableExtensionPack = true;
-      enableHardening = false;
-      addNetworkInterface = false;
-    };
   };
 
   system = { inherit stateVersion; };
