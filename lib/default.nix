@@ -24,6 +24,19 @@
                 keep-derivations = true;
                 warn-dirty = true;
               };
+              registry = {
+                nixpkgs = {
+                  from = {
+                    id = "nixpkgs";
+                    type = "indirect";
+                  };
+                  to = {
+                    owner = "nixos";
+                    repo = "nixpkgs";
+                    type = "github";
+                  };
+                };
+              };
 
               package = pkgs.nix;
             };
