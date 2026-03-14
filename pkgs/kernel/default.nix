@@ -1,27 +1,22 @@
 { pkgs, ... }:
 let
   version = "${kernelVersion}-zen1";
-  kernelBaseVersion = "6.17";
-  kernelVersion = "6.17.1";
+  kernelBaseVersion = "6.18";
+  kernelVersion = "6.18.8";
   inherit (pkgs) lib fetchFromGitHub;
 
   linuxSurface = fetchFromGitHub {
     repo = "linux-surface";
     owner = "linux-surface";
     rev = "arch-${kernelVersion}-1";
-    hash = "sha256-VEoZH3dFsLn9GnUyjnbOoJeTRM3KEQ9fhlMk03NXoXs=";
+    hash = "sha256-v2Il2X13zwUk0giiV+a5TBJ3hiCHTY6GfXMGnYluTEs=";
   };
 
   linuxZen = fetchFromGitHub {
     repo = "zen-kernel";
     owner = "zen-kernel";
     rev = "v${kernelVersion}-zen1";
-    hash = "sha256-UleBywwqt7giClgqw5z7UF0d3FZFCHu4BYft+it7IBg=";
-  };
-
-  getPatch = name: {
-    inherit name;
-    patch = "${linuxSurface}/patches/${kernelBaseVersion}/${name}.patch";
+    hash = "sha256-h4vlyuO0g+aLVBp1p7SVDx4fSVG4G4cCvqKx+6ISy3c=";
   };
 in
 pkgs.buildLinux {
@@ -164,23 +159,41 @@ pkgs.buildLinux {
     SURFACE_PRO3_BUTTON = module;
     SURFACE_GPE = module;
     SURFACE_BOOK1_DGPU_SWITCH = module;
+
+    ## Do not build the AMD drivers
+    DRM_AMDGPU = lib.mkForce no;
+    DRM_AMDGPU_CIK = lib.mkForce no;
+    DRM_AMDGPU_SI = lib.mkForce no;
+    DRM_AMDGPU_USERPTR = lib.mkForce no;
+    DRM_AMD_DC_FP = lib.mkForce no;
+    DRM_AMD_DC_SI = lib.mkForce no;
+    HSA_AMD = lib.mkForce no;
   };
 
-  kernelPatches = builtins.map getPatch [
-    "0001-secureboot"
-    "0002-surface3"
-    "0003-mwifiex"
-    "0004-ath10k"
-    "0005-ipts"
-    "0006-ithc"
-    "0007-surface-sam"
-    "0008-surface-sam-over-hid"
-    "0009-surface-button"
-    "0010-surface-typecover"
-    "0011-surface-shutdown"
-    "0012-surface-gpe"
-    "0013-cameras"
-    "0014-amd-gpio"
-    "0015-rtc"
-  ];
+  kernelPatches =
+    let
+      getPatch = name: {
+        inherit name;
+        patch = "${linuxSurface}/patches/${kernelBaseVersion}/${name}.patch";
+      };
+    in
+    map getPatch [
+      "0001-secureboot"
+      "0002-surface3"
+      "0003-mwifiex"
+      "0004-ath10k"
+      "0005-ipts"
+      "0006-ithc"
+      "0007-surface-sam"
+      "0008-surface-sam-over-hid"
+      "0009-surface-button"
+      "0010-surface-typecover"
+      "0011-surface-shutdown"
+      "0012-surface-gpe"
+      "0013-cameras"
+      "0014-amd-gpio"
+      "0015-rtc"
+      "0016-hid-surface"
+      "0017-powercap"
+    ];
 }
