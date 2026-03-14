@@ -10,6 +10,7 @@ M.configure_options = function()
   opt.confirm = true -- Confirm to save changes before exiting modified buffer
   opt.cursorline = true -- Enable highlighting of the current line
   opt.expandtab = true -- Use spaces instead of tabs
+  opt.exrc = true -- Enable exrc files
   opt.foldenable = true
   opt.foldlevel = 99
   opt.foldlevelstart = 99
