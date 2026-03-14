@@ -268,9 +268,7 @@ in
       load-ssh-key
       docker
       limaWithGuests
-      (colima.override {
-        lima = limaWithGuests;
-      })
+      colima
       macpass
       tana
       shottr
