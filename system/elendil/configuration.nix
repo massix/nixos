@@ -124,13 +124,25 @@
     settings.Login = {
       HandlePowerKey = "suspend-then-hibernate";
       HandleLidSwitch = "suspend-then-hibernate";
+      HandleSuspendKey = "suspend-then-hibernate";
+      HandleHibernateKey = "suspend-then-hibernate";
+      HandleLidSwitchExternalPower = "suspend-then-hibernate";
+      HandleLidSwitchDocked = "ignore";
     };
   };
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=${toString (3600 * 4)}
-    HibernateLocation=/var/lib/swapfile
-  '';
+  systemd.sleep.settings.Sleep =
+    let
+      bool-value = b: if b then "yes" else "no";
+    in
+    {
+      AllowSuspend = bool-value true;
+      AllowHibernation = bool-value true;
+      AllowSuspendThenHibernate = bool-value true;
+      HibernateDelaySec = "30min";
+      HibernateLocation = "/var/lib/swapfile";
+      SuspendMode = "s2idle";
+    };
 
   # Configure console keymap
   console.keyMap = "us-acentos";
