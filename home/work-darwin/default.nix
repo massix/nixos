@@ -74,10 +74,10 @@ let
     in
     stdenvNoCC.mkDerivation rec {
       pname = "ghostty";
-      version = "1.2.3";
+      version = "1.3.1";
       nativeBuildInputs = [ pkgs._7zz ];
 
-      src = fetch "${version}" "sha256:0sr0hg28aafd5lx8izq7ni25nmy7k18g9ppqp5x04a3f24gyjppk";
+      src = fetch "${version}" "sha256:0saziwxpkjqy5issl57jp902l9cah170dly7v7m0xsfflsqg5kqq";
 
       unpackPhase = ''
         7zz x -snld $src
@@ -139,23 +139,32 @@ in
       configuration.package = pkgs.neovim-unwrapped;
       defaultEditor = true;
     };
-    ghostty = {
-      enable = true;
-      package = ghostty;
-      theme = "TokyoNight";
-      extraSettings = {
-        font-family = "IBM Plex Mono";
-        font-size = "12";
-        window-height = "65";
-        window-width = "190";
+    ghostty =
+      let
+        add-plus = l: map (x: "+${x}") l;
+        to-font-feature = l: builtins.concatStringsSep "," (add-plus l);
+      in
+      {
+        enable = true;
+        package = ghostty;
+        theme = "TokyoNight";
+        extraSettings = {
+          font-family = "0xProto";
+          font-size = "11";
+          window-height = "65";
+          window-width = "190";
+          font-feature = to-font-feature [
+            "calt"
+            "ss01"
+          ];
+        };
+        extraPackages = with pkgs; [
+          _0xproto
+          noto-fonts-color-emoji
+          maple-mono.truetype
+          ibm-plex
+        ];
       };
-      extraPackages = with pkgs; [
-        _0xproto
-        noto-fonts-color-emoji
-        maple-mono.truetype
-        ibm-plex
-      ];
-    };
     kitty = {
       enable = true;
       font = {
@@ -180,7 +189,6 @@ in
     fish = {
       enable = true;
       configuration.extraShellAbbrs = {
-        tp = "task rc.data.location=~/OneDrive/TaskWarrior";
         j = "just";
       };
     };
@@ -209,7 +217,7 @@ in
     };
     gleeter.enable = false;
     taskwarrior = {
-      enable = true;
+      enable = false;
       withJira = true;
       withFish = true;
       dataLocation = "~/OneDrive - QUESTEL/TaskWarrior";
