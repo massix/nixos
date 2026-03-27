@@ -4,6 +4,7 @@ M.configure_options = function()
   local opt = vim.opt
 
   opt.autowrite = true -- Enable auto write
+  opt.autoread = true -- Enable auto read
   opt.completeopt = "menu,menuone,noselect"
   opt.conceallevel = 3 -- Hide * markup for bold and italic
   opt.concealcursor = "vn" -- Hide stuff when not editing

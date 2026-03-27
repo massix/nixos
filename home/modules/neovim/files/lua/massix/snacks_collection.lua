@@ -51,6 +51,16 @@ M.snacks_collection = function()
             explorer_actions.actions.confirm(picker, item, action)
           end
         end,
+        opencode_send = function(...)
+          return require("opencode").snacks_picker_send(...)
+        end,
+      },
+      win = {
+        input = {
+          keys = {
+            ["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
+          },
+        },
       },
       ui_select = true,
       sources = {
@@ -173,7 +183,7 @@ M.snacks_collection = function()
     { "g[", function() Snacks.words.jump(-1, false) end, desc = "LSP Prev Word", },
     { "g]", function() Snacks.words.jump(1, false) end, desc = "LSP Next Word", },
     { "<leader>d", function() if Snacks.dim.enabled then Snacks.dim.disable() else Snacks.dim.enable() end end, desc = "Toggle Snacks Dim", },
-    { [[<C-\>\]], function() Snacks.terminal.toggle() end, desc = "Toggle terminal", },
+    { [[<C-\>]], function() Snacks.terminal.toggle() end, desc = "Toggle terminal", },
     { "<leader>bd", function() Snacks.bufdelete.delete() end, desc = "Delete current buffer" },
     { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
   })

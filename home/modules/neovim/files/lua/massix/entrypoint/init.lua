@@ -60,12 +60,12 @@ M.configure = function()
     massix.surround()
     massix.taskrunner()
     massix.notetaking()
-    massix.llm()
     massix.debugger()
     massix.repl()
     massix.ansible()
     massix.todo_comments()
     massix.quicker()
+    massix.opencode()
   end)
 end
 

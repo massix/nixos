@@ -21,6 +21,7 @@ M.debugger = require("massix.debugger").debugger
 M.repl = require("massix.repl").repl
 M.ansible = require("massix.ansible").ansible
 M.quicker = require("massix.quicker").quicker
+M.opencode = require("massix.opencode").opencode
 
 M.direnv = function()
   MiniDeps.add({ source = "direnv/direnv.vim" })
@@ -210,57 +211,6 @@ M.grugfar = function()
       nextInput = { n = "<tab>" },
       prevInput = { n = "<s-tab>" },
     },
-  })
-end
-
-M.llm = function()
-  if vim.fn.executable("goose") == 0 then
-    return
-  end
-
-  MiniDeps.add({
-    source = "azorng/goose.nvim",
-    depends = { "nvim-lua/plenary.nvim" },
-  })
-
-  require("goose").setup({
-    default_global_keymaps = false,
-    keymap = {
-      global = {
-        toggle = "<leader>Gg",
-        open_input = "<leader>Gi",
-        open_input_new_session = "<leader>GI",
-        open_output = "<leader>Go",
-        toggle_focus = "<leader>Gt",
-        close = "<leader>Gq",
-        toggle_fullscreen = "<leader>Gf",
-        select_session = "<leader>Gs",
-        goose_mode_chat = "<leader>Gmc",
-        goose_mode_auto = "<leader>Gma",
-        configure_provider = "<leader>Gp",
-        diff_open = "<leader>Gd",
-        diff_next = "<leader>G]",
-        diff_prev = "<leader>G[",
-        diff_close = "<leader>Gc",
-        diff_revert_all = "<leader>Gra",
-        diff_revert_this = "<leader>Grt",
-      },
-    },
-  })
-
-  -- Set 'wrap' option for Goose buffers
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "Goose*", -- Matches filetypes like 'Goose' or 'GooseOutput'
-    callback = function()
-      vim.wo.wrap = true
-    end,
-  })
-
-  require("which-key").add({
-    { "<leader>G", group = "goose" },
-    { "<leader>Gg", "<cmd>GooseTogglePane<cr>", desc = "Toggle UI" },
-    { "<leader>Gt", "<cmd>GooseToggleFocus<cr>", desc = "Toggle focus" },
-    { "<leader>Gs", "<cmd>GooseSelectSession<cr>", desc = "Select session" },
   })
 end
 

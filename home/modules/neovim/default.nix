@@ -42,6 +42,7 @@ let
         "slimline.nvim"
         "blink.cmp"
         "snacks.nvim"
+        "opencode.nvim"
       ];
       plugins-paths =
         (map (x: "~/.local/share/nvim/site/pack/deps/opt/${x}/lua") plugins) ++
@@ -119,10 +120,12 @@ in
       fzf
       ripgrep
       skim
-      goose-cli
 
       # Needed for obsidian.nvim
       (if stdenv.hostPlatform.isDarwin then pngpaste else wl-clipboard)
+
+      # opencode.nvim
+      opencode
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
