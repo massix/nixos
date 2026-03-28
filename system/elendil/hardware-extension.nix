@@ -60,7 +60,6 @@ in
       "rd.udev.log_level=3"
       "udev.log_priority=3"
       "intel_pstate=active"
-      "processor.max_cstate=1"
     ];
 
     loader.timeout = 0;
@@ -128,7 +127,7 @@ in
   };
 
   services.thermald = {
-    enable = false;
+    enable = true;
     configFile = ./files/thermal-conf.xml;
   };
 

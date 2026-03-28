@@ -1,37 +1,47 @@
 <?xml version="1.0"?>
-  <!--
-    vi: ts=2 sw=2
-  -->
- <!-- BEGIN -->
- <ThermalConfiguration>
- <Platform>
-  <Name>Intel 10th Generation</Name>
-  <ProductName>*</ProductName>
-  <Preference>QUIET</Preference>
-  <PPCC>
-    <PowerLimitIndex>0</PowerLimitIndex>
-    <PowerLimitMinimum>8000</PowerLimitMinimum>
-    <PowerLimitMaximum>44000</PowerLimitMaximum>
-    <TimeWindowMinimum>20</TimeWindowMinimum>
-    <TimeWindowMaximum>30</TimeWindowMaximum>
-    <StepSize>500</StepSize>
-  </PPCC>
-  <ThermalZones>
-    <ThermalZone>
-      <Type>cpu</Type>
-      <TripPoints>
-        <TripPoint>
-          <SensorType>x86_pkg_temp</SensorType>
-          <Temperature>90000</Temperature>
-          <type>passive</type>
-          <SamplingPeriod>1</SamplingPeriod>
-          <CoolingDevice>
-            <type>rapl_controller</type>
-          </CoolingDevice>
-        </TripPoint>
-      </TripPoints>
-    </ThermalZone>
-  </ThermalZones>
-</Platform>
+<ThermalConfiguration>
+  <Platform>
+    <Name>Surface Laptop 2 i7-1065G7</Name>
+    <ProductName>*</ProductName>
+    <Preference>BALANCE</Preference>
+    <PPCC>
+      <PowerLimitIndex>0</PowerLimitIndex>
+      <PowerLimitMinimum>12000</PowerLimitMinimum>
+      <PowerLimitMaximum>20000</PowerLimitMaximum>
+      <TimeWindowMinimum>28</TimeWindowMinimum>
+      <TimeWindowMaximum>30</TimeWindowMaximum>
+      <StepSize>1000</StepSize>
+    </PPCC>
+    <ThermalZones>
+      <ThermalZone>
+        <Type>cpu</Type>
+        <TripPoints>
+          <TripPoint>
+            <SensorType>x86_pkg_temp</SensorType>
+            <Temperature>80000</Temperature>
+            <type>passive</type>
+            <SamplingPeriod>1</SamplingPeriod>
+            <CoolingDevice><type>rapl_controller</type></CoolingDevice>
+            <CoolingDevice><type>cpufreq</type></CoolingDevice>
+          </TripPoint>
+          <TripPoint>
+            <SensorType>x86_pkg_temp</SensorType>
+            <Temperature>85000</Temperature>
+            <type>passive</type>
+            <SamplingPeriod>1</SamplingPeriod>
+            <CoolingDevice><type>rapl_controller</type></CoolingDevice>
+            <CoolingDevice><type>cpufreq</type></CoolingDevice>
+          </TripPoint>
+          <TripPoint>
+            <SensorType>x86_pkg_temp</SensorType>
+            <Temperature>90000</Temperature>
+            <type>critical</type>
+            <SamplingPeriod>1</SamplingPeriod>
+            <CoolingDevice><type>rapl_controller</type></CoolingDevice>
+            <CoolingDevice><type>cpufreq</type></CoolingDevice>
+          </TripPoint>
+        </TripPoints>
+      </ThermalZone>
+    </ThermalZones>
+  </Platform>
 </ThermalConfiguration>
-<!-- END -->
