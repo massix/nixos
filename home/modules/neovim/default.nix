@@ -126,6 +126,7 @@ in
 
       # opencode.nvim
       opencode
+      lsof
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
