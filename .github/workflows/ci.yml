@@ -5,6 +5,7 @@ on:
   pull_request:
 jobs:
   check-flake:
+    needs: [lint-and-format]
     strategy:
       matrix:
         os_version: [azure, macos-15]
@@ -26,6 +27,7 @@ jobs:
       - name: Check format
         run: just check-format
   build-configurations:
+    needs: [lint-and-format, check-flake]
     runs-on: ${{ matrix.os_version }}
     strategy:
       matrix:
