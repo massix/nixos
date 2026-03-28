@@ -188,7 +188,6 @@
             inherit system config overlays;
           };
 
-          otherDevShells = import ./devshells { inherit pkgs; };
         in
         {
           # This is the DevShell used by this project
@@ -215,14 +214,12 @@
                 just
               ];
             };
-          } // otherDevShells;
+          };
 
           packages = import ./pkgs { inherit pkgs; };
         });
-      templates = import ./templates { };
     in
     commonStuff //
     linuxSet //
-    templates //
     { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
 }
