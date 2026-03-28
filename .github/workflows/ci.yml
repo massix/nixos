@@ -8,18 +8,22 @@ jobs:
     needs: [lint-and-format]
     strategy:
       matrix:
-        os_version: [azure, macos-15]
+        os_version: [ubuntu-latest, macos-15]
     runs-on: ${{ matrix.os_version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: cachix/install-nix-action@v30
       - uses: nicknovitski/nix-develop@v1
       - run: nix flake check
       - run: nix flake show
   lint-and-format:
-    runs-on: azure
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: cachix/install-nix-action@v30
       - uses: nicknovitski/nix-develop@v1
       - name: Lint
@@ -31,38 +35,49 @@ jobs:
     runs-on: ${{ matrix.os_version }}
     strategy:
       matrix:
-        os_version: [azure, macos-15]
+        os_version: [ubuntu-latest, macos-15]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: cachix/install-nix-action@v30
       - uses: cachix/cachix-action@v15
         with:
           name: surface-zen
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
+      - name: Clean disk space before building Ubuntu
+        run: |
+          sudo apt clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache \
+                     /usr/local/.ghcup /home/runner/.cargo /home/runner/.rustup \
+                     /usr/share/vim /usr/share/icons /usr/share/themes
+          sudo rm -rf /var/log/*.gz /var/log/*.old 2>/dev/null || true
+          df -h
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Build Elendil NixOS Configuration
         run: |
           nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'azure' }}
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Build Elendil Home Manager Configuration
         run: |
           nix build ".#homeConfigurations.massi@elendil.activationPackage"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'azure' }}
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Build WSL NixOS Configuration
         run: |
           nix build ".#nixosConfigurations.aiwendil.config.system.build.toplevel"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'azure' }}
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Build WSL Home Manager Configuration
         run: |
           nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'azure' }}
+        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Clean disk space before building Darwin
         run: |
-          sudo nix-collect-garbage -d
           sudo rm -rf /usr/local/share/dotnet /usr/share/dotnet /usr/local/lib/android /opt/ghc \
             /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
           df -h
