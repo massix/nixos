@@ -1,22 +1,22 @@
 { pkgs, ... }:
 let
   version = "${kernelVersion}-zen1";
-  kernelBaseVersion = "6.18";
-  kernelVersion = "6.18.8";
+  kernelBaseVersion = "6.19";
+  kernelVersion = "6.19.8";
   inherit (pkgs) lib fetchFromGitHub;
 
   linuxSurface = fetchFromGitHub {
     repo = "linux-surface";
     owner = "linux-surface";
     rev = "arch-${kernelVersion}-1";
-    hash = "sha256-v2Il2X13zwUk0giiV+a5TBJ3hiCHTY6GfXMGnYluTEs=";
+    hash = "sha256-7kP0Ct5JJkLeSWW5HjeeDgg9BEOnJTbGs/oifKCbRwE=";
   };
 
   linuxZen = fetchFromGitHub {
     repo = "zen-kernel";
     owner = "zen-kernel";
     rev = "v${kernelVersion}-zen1";
-    hash = "sha256-h4vlyuO0g+aLVBp1p7SVDx4fSVG4G4cCvqKx+6ISy3c=";
+    hash = "sha256-3ZKjGIzx7V4MbDbl5UsqzMieEUnJ+j348WrdItGVVWM=";
   };
 in
 pkgs.buildLinux {
@@ -194,6 +194,5 @@ pkgs.buildLinux {
       "0014-amd-gpio"
       "0015-rtc"
       "0016-hid-surface"
-      "0017-powercap"
     ];
 }
