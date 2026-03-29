@@ -7,37 +7,6 @@ M.opencode = function()
     events = {
       reload = true,
     },
-    server = {
-      start = function()
-        require("snacks.terminal").open("opencode --port", {
-          win = {
-            position = "right",
-            enter = true,
-            insert = true,
-            width = math.floor(vim.o.columns * 0.35),
-            on_win = function(win)
-              require("opencode.terminal").setup(win.win)
-            end,
-          },
-        })
-      end,
-      stop = function()
-        require("snacks.terminal").get("opencode --port"):close()
-      end,
-      toggle = function()
-        require("snacks.terminal").toggle("opencode --port", {
-          win = {
-            position = "right",
-            enter = true,
-            insert = true,
-            width = math.floor(vim.o.columns * 0.35),
-            on_win = function(win)
-              require("opencode.terminal").setup(win.win)
-            end,
-          },
-        })
-      end,
-    },
   }
 
   require("which-key").add({
