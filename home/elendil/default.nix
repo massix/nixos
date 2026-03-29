@@ -155,7 +155,7 @@ in
     };
 
     taskwarrior = {
-      enable = true;
+      enable = false;
       withFish = true;
     };
 
