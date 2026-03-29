@@ -14,13 +14,13 @@ jobs:
     name: Update System
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: cachix/install-nix-action@v27
+      - uses: cachix/install-nix-action@v31
       - run: nix flake update
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "${{ inputs.commitMessage || 'chore: system update' }}"
