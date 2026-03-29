@@ -158,6 +158,11 @@ in
       enable = true;
       withFish = true;
     };
+
+    opencode = {
+      enable = true;
+      mcps = [ "github" "context7" "gh-grep" ];
+    };
   };
 
   programs = {

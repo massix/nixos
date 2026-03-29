@@ -69,6 +69,7 @@
           ../home/modules/gleeter.nix
           ../home/modules/firefox.nix
           ../home/modules/ghostty.nix
+          ../home/modules/opencode.nix
         ] ++ extraModules;
     };
 

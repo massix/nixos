@@ -105,6 +105,10 @@ in
       interactiveShellInit = ''
         set fish_greeting
         ${builtins.concatStringsSep "\n" cfg.configuration.extraInit}
+
+        if test -f ~/.gh-mcp-token
+          set -gx GH_MCP_TOKEN (cat ~/.gh-mcp-token)
+        end
       '';
 
       shellInit = ''
