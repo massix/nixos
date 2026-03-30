@@ -222,6 +222,11 @@ in
       withFish = true;
       dataLocation = "~/OneDrive - QUESTEL/TaskWarrior";
     };
+    opencode = {
+      enable = true;
+      mcps = [ "github" "context7" "gh-grep" ];
+      agents = [ "nixos" "devops" ];
+    };
   };
   programs = {
     home-manager.enable = true;
