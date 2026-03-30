@@ -3,16 +3,18 @@ let
   cfg = config.my-modules.opencode;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
-  availableAgents = [ "nixos" ];
+  availableAgents = [ "nixos" "devops" ];
 
-  availableSkills = [ "nix-eval" "nix-debug" "nixfmt" ];
+  availableSkills = [ "nix-eval" "nix-debug" "nixfmt" "kubectl" "flux" ];
 
-  nixosSkills = [ "nix-eval" "nix-debug" "nixfmt" ];
+  agentSkills = {
+    nixos = [ "nix-eval" "nix-debug" "nixfmt" ];
+    devops = [ "kubectl" "flux" ];
+  };
 
   effectiveSkills =
-    if builtins.elem "nixos" cfg.agents
-    then cfg.skills ++ nixosSkills
-    else cfg.skills;
+    builtins.foldl' (acc: agent: acc ++ (agentSkills.${agent} or [ ])) [ ] cfg.agents
+    ++ cfg.skills;
 in
 {
   options.my-modules.opencode = {
@@ -101,6 +103,10 @@ in
 
         "opencode/agents/nixos.md" = mkIf (builtins.elem "nixos" cfg.agents) {
           source = ./agents/nixos.md;
+        };
+
+        "opencode/agents/devops.md" = mkIf (builtins.elem "devops" cfg.agents) {
+          source = ./agents/devops.md;
         };
       } // skillConfigs;
 
