@@ -38,6 +38,7 @@ in
     programs.git = {
       inherit (cfg) enable;
       package = pkgs.git;
+      signing.format = null;
       settings = {
         user = {
           email = cfg.userEmail;
