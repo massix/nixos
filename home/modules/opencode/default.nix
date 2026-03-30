@@ -25,7 +25,7 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" ]);
       default = [ ];
       description = "MCP servers to enable";
       example = [ "github" "context7" ];
@@ -87,6 +87,15 @@ in
             inherit (cfg) theme;
             default_agent = cfg.defaultAgent;
             mcp = {
+              gitlab = {
+                type = "local";
+                command = [ "npx" "-y" "@structured-world/gitlab-mcp" ];
+                environment = {
+                  GITLAB_TOKEN = "{env:GITLAB_MCP_TOKEN}";
+                  GITLAB_API_URL = "https://git.questel.com";
+                };
+                enabled = builtins.elem "gitlab" cfg.mcps;
+              };
               github = {
                 type = "remote";
                 url = "https://api.githubcopilot.com/mcp/";
@@ -113,8 +122,12 @@ in
 
       homeage.file = {
         "gh-mcp-token" = {
-          source = ../../modules/secrets/secrets/gh-mcp-token.age;
+          source = ./secrets/gh-mcp-token.age;
           symlinks = [ "${config.home.homeDirectory}/.gh-mcp-token" ];
+        };
+        "gitlab-mcp-token" = {
+          source = ./secrets/gitlab-mcp-token.age;
+          symlinks = [ "${config.home.homeDirectory}/.gitlab-mcp-token" ];
         };
       };
     }

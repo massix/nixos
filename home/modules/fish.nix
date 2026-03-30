@@ -109,6 +109,10 @@ in
         if test -f ~/.gh-mcp-token
           set -gx GH_MCP_TOKEN (cat ~/.gh-mcp-token)
         end
+
+        if test -f ~/.gitlab-mcp-token
+          set -gx GITLAB_MCP_TOKEN (cat ~/.gitlab-mcp-token)
+        end
       '';
 
       shellInit = ''

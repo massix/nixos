@@ -224,8 +224,17 @@ in
     };
     opencode = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" ];
-      agents = [ "nixos" "devops" "gitlab-pipeline" ];
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+        "gitlab"
+      ];
+      agents = [
+        "nixos"
+        "devops"
+        "gitlab-pipeline"
+      ];
     };
   };
   programs = {
