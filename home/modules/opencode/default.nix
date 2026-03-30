@@ -3,7 +3,7 @@ let
   cfg = config.my-modules.opencode;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
-  availableAgents = [ "nixos" "devops" ];
+  availableAgents = [ "nixos" "devops" "gitlab-pipeline" ];
 
   availableSkills = [ "nix-eval" "nix-debug" "nixfmt" "kubectl" "flux" ];
 
@@ -68,6 +68,15 @@ in
           })
           (builtins.filter (s: builtins.elem s effectiveSkills) availableSkills)
       );
+
+      agentConfigs = builtins.listToAttrs (
+        map
+          (agent: {
+            name = "opencode/agents/${agent}.md";
+            value = { source = ./agents/${agent}.md; };
+          })
+          (builtins.filter (a: builtins.elem a cfg.agents) availableAgents)
+      );
     in
     {
       home.packages = [ cfg.package ];
@@ -100,15 +109,7 @@ in
             };
           };
         };
-
-        "opencode/agents/nixos.md" = mkIf (builtins.elem "nixos" cfg.agents) {
-          source = ./agents/nixos.md;
-        };
-
-        "opencode/agents/devops.md" = mkIf (builtins.elem "devops" cfg.agents) {
-          source = ./agents/devops.md;
-        };
-      } // skillConfigs;
+      } // skillConfigs // agentConfigs;
 
       homeage.file = {
         "gh-mcp-token" = {
