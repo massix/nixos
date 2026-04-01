@@ -90,7 +90,6 @@ in
       xdg.configFile = {
         "opencode/opencode.json" = {
           text = builtins.toJSON {
-            inherit (cfg) theme;
             default_agent = cfg.defaultAgent;
             mcp = {
               gitlab = {
@@ -131,6 +130,11 @@ in
                 enabled = builtins.elem "jira" cfg.mcps;
               };
             };
+          };
+        };
+        "opencode/tui.json" = {
+          text = builtins.toJSON {
+            inherit (cfg) theme;
           };
         };
         "opencode/AGENTS.md" = {

@@ -224,6 +224,7 @@ in
     };
     opencode = {
       enable = true;
+      theme = "tokyonight";
       mcps = [
         "github"
         "context7"
