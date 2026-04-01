@@ -113,6 +113,10 @@ in
         if test -f ~/.gitlab-mcp-token
           set -gx GITLAB_MCP_TOKEN (cat ~/.gitlab-mcp-token)
         end
+
+        if test -f ~/.jira-mcp-token
+          set -gx JIRA_MCP_TOKEN (cat ~/.jira-mcp-token)
+        end
       '';
 
       shellInit = ''

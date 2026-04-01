@@ -228,6 +228,7 @@ in
         "github"
         "context7"
         "gh-grep"
+        "jira"
         "gitlab"
       ];
       agents = [

@@ -25,10 +25,10 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" ]);
       default = [ ];
       description = "MCP servers to enable";
-      example = [ "github" "context7" ];
+      example = [ "github" "context7" "jira" ];
     };
 
     theme = mkOption {
@@ -79,7 +79,11 @@ in
       );
     in
     {
-      home.packages = [ cfg.package ];
+      home.packages = [
+        cfg.package
+        pkgs.nodejs_24
+        pkgs.uv
+      ];
 
       xdg.configFile = {
         "opencode/opencode.json" = {
@@ -115,6 +119,15 @@ in
                 url = "https://mcp.context7.com/mcp";
                 enabled = builtins.elem "context7" cfg.mcps;
               };
+              jira = {
+                type = "local";
+                command = [ "uvx" "mcp-atlassian" ];
+                environment = {
+                  JIRA_URL = "https://jira.questel.com";
+                  JIRA_PERSONAL_TOKEN = "{env:JIRA_MCP_TOKEN}";
+                };
+                enabled = builtins.elem "jira" cfg.mcps;
+              };
             };
           };
         };
@@ -128,6 +141,10 @@ in
         "gitlab-mcp-token" = {
           source = ./secrets/gitlab-mcp-token.age;
           symlinks = [ "${config.home.homeDirectory}/.gitlab-mcp-token" ];
+        };
+        "jira-mcp-token" = {
+          source = ./secrets/jira-mcp-token.age;
+          symlinks = [ "${config.home.homeDirectory}/.jira-mcp-token" ];
         };
       };
     }
