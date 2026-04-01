@@ -7,6 +7,8 @@ permission:
     bash:
         '*': deny
     '*': allow
+    task:
+        '*': allow
 ---
 
 # Atlas - DevOps Orchestrator
