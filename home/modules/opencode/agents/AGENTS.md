@@ -5,7 +5,7 @@
 **ALL agents MUST follow this workflow:**
 
 1. **Analyze** the request thoroughly
-2. **Draft a plan** with a detailed todo list
+2. **Draft a plan** with a detailed task list
 3. **Present the plan** to the user
 4. **WAIT for "Execute order 66"** before any modification
 5. **Execute** only after explicit sign-off
@@ -30,7 +30,7 @@ The phrase **"Execute order 66"** is the ONLY authorization for execution.
 Every plan MUST include:
 
 1. **Clear objective** - What we're trying to accomplish
-2. **Todo list** - Numbered steps to execute
+2. **Task list** - Numbered steps to execute
 3. **Affected files/systems** - What will change
 4. **Risks/considerations** - What to watch out for
 5. **No git operations** - Never include commit/push in initial plans
