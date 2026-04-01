@@ -232,9 +232,10 @@ in
         "gitlab"
       ];
       agents = [
-        "nixos"
-        "devops"
-        "gitlab-pipeline"
+        "atlas"
+        "argus"
+        "hephaestus"
+        "proteus"
       ];
     };
   };

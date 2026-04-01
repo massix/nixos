@@ -3,13 +3,15 @@ let
   cfg = config.my-modules.opencode;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
-  availableAgents = [ "nixos" "devops" "gitlab-pipeline" ];
+  availableAgents = [ "atlas" "argus" "hephaestus" "proteus" ];
 
   availableSkills = [ "nix-eval" "nix-debug" "nixfmt" "kubectl" "flux" ];
 
   agentSkills = {
-    nixos = [ "nix-eval" "nix-debug" "nixfmt" ];
-    devops = [ "kubectl" "flux" ];
+    atlas = [ ];
+    argus = [ "kubectl" "flux" ];
+    hephaestus = [ ];
+    proteus = [ "nix-eval" "nix-debug" "nixfmt" ];
   };
 
   effectiveSkills =
@@ -130,6 +132,9 @@ in
               };
             };
           };
+        };
+        "opencode/AGENTS.md" = {
+          source = ./agents/AGENTS.md;
         };
       } // skillConfigs // agentConfigs;
 
