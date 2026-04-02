@@ -4,19 +4,6 @@ let
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
   availableAgents = [ "atlas" "argus" "hephaestus" "proteus" ];
-
-  availableSkills = [ "nix-eval" "nix-debug" "nixfmt" "kubectl" "flux" ];
-
-  agentSkills = {
-    atlas = [ ];
-    argus = [ "kubectl" "flux" ];
-    hephaestus = [ ];
-    proteus = [ "nix-eval" "nix-debug" "nixfmt" ];
-  };
-
-  effectiveSkills =
-    builtins.foldl' (acc: agent: acc ++ (agentSkills.${agent} or [ ])) [ ] cfg.agents
-    ++ cfg.skills;
 in
 {
   options.my-modules.opencode = {
@@ -51,26 +38,10 @@ in
       description = "Custom agents to enable";
       example = [ "nixos" ];
     };
-
-    skills = mkOption {
-      type = types.listOf (types.enum availableSkills);
-      default = [ ];
-      description = "Skills to enable";
-      example = [ "nix-eval" "nix-debug" ];
-    };
   };
 
   config = mkIf cfg.enable (
     let
-      skillConfigs = builtins.listToAttrs (
-        map
-          (skill: {
-            name = "opencode/skills/${skill}/SKILL.md";
-            value = { source = ./skills/${skill}/SKILL.md; };
-          })
-          (builtins.filter (s: builtins.elem s effectiveSkills) availableSkills)
-      );
-
       agentConfigs = builtins.listToAttrs (
         map
           (agent: {
@@ -140,7 +111,7 @@ in
         "opencode/AGENTS.md" = {
           source = ./agents/AGENTS.md;
         };
-      } // skillConfigs // agentConfigs;
+      } // agentConfigs;
 
       homeage.file = {
         "gh-mcp-token" = {
