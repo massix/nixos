@@ -17,7 +17,7 @@
           # The following is true for all users
           ({ config, ... }: {
             nix = {
-              nixPath = [ "nixpkgs=${inputs.nixpkgs})" ];
+              nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
               settings = {
                 experimental-features = [ "nix-command" "flakes" ];
                 keep-outputs = true;
