@@ -215,7 +215,6 @@ in
         colored = true;
       };
     };
-    gleeter.enable = false;
     opencode = {
       enable = true;
       theme = "tokyonight";

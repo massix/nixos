@@ -64,7 +64,6 @@
           ../home/modules/gaming.nix
           ../home/modules/devops.nix
           ../home/modules/kitty.nix
-          ../home/modules/gleeter.nix
           ../home/modules/firefox.nix
           ../home/modules/ghostty.nix
           ../home/modules/opencode

@@ -53,8 +53,6 @@ in
       };
     };
 
-    gleeter.enable = false;
-
     fish = {
       enable = true;
       configuration = {
