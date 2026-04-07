@@ -127,6 +127,9 @@ in
       # opencode.nvim
       opencode
       lsof
+
+      # needed for nvim-treesitter
+      tree-sitter
     ];
 
     # Link needed files, we cannot link the whole directory or lazyVim won't work
