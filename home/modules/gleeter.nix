@@ -8,9 +8,9 @@ let
       [[alias]]
       name = "${name}"
       type = "${type}"
-      id = ${builtins.toString id}
+      id = ${toString id}
     '';
-  allAliases = builtins.concatStringsSep "\n" (builtins.map mkIdAlias [
+  allAliases = builtins.concatStringsSep "\n" (map mkIdAlias [
     { name = "wikipedia"; type = "id"; id = 285; }
     { name = "programmers"; type = "id"; id = 378; }
     { name = "compiling"; type = "id"; id = 303; }
@@ -42,7 +42,7 @@ in
     };
 
     xdg.configFile."gleeter/config.toml".text = builtins.concatStringsSep "\n\n" ([
-      "random_start = ${builtins.toString cfg.random_start}"
+      "random_start = ${toString cfg.random_start}"
     ] ++ [ allAliases ]);
   };
 }
