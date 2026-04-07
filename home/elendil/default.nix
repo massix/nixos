@@ -58,28 +58,6 @@ in
       };
     };
 
-    gaming = {
-      enable = true;
-      dwarfFortress = {
-        enable = false;
-        config = {
-          theme = with pkgs.dwarf-fortress-packages; themes.ironhand;
-          enableDwarfTherapist = false;
-          enableLegendsBrowser = false;
-        };
-      };
-      nethack = {
-        enable = true;
-        options = {
-          permInvent = true;
-          petType = "cat";
-          msgWindow = "reversed";
-          litCorridor = true;
-        };
-      };
-      cataclysm-dda.enable = true;
-    };
-
     neovim = {
       enable = true;
       configuration.package = pkgs.neovim-unwrapped;

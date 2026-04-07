@@ -61,7 +61,6 @@
           ../home/modules/fish.nix
           ../home/modules/fonts.nix
           ../home/modules/git.nix
-          ../home/modules/gaming.nix
           ../home/modules/devops.nix
           ../home/modules/firefox.nix
           ../home/modules/ghostty.nix
