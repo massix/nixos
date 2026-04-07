@@ -3,7 +3,14 @@ let
   cfg = config.my-modules.opencode;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
-  availableAgents = [ "atlas" "argus" "hephaestus" "proteus" ];
+  # Discover agents from agents/ directory by scanning for .md files
+  discoverAgents =
+    let
+      inherit (lib) hasSuffix removeSuffix;
+      agentDir = ./agents;
+      agentFiles = builtins.filter (hasSuffix ".md") (builtins.attrNames (builtins.readDir agentDir));
+    in
+    map (removeSuffix ".md") agentFiles;
 in
 {
   options.my-modules.opencode = {
@@ -33,10 +40,10 @@ in
     };
 
     agents = mkOption {
-      type = types.listOf (types.enum availableAgents);
+      type = types.listOf types.str;
       default = [ ];
-      description = "Custom agents to enable";
-      example = [ "nixos" ];
+      description = "Custom agents to enable (auto-discovered from agents/ directory)";
+      example = [ "atlas" ];
     };
   };
 
@@ -48,7 +55,7 @@ in
             name = "opencode/agents/${agent}.md";
             value = { source = ./agents/${agent}.md; };
           })
-          (builtins.filter (a: builtins.elem a cfg.agents) availableAgents)
+          (builtins.filter (a: builtins.elem a discoverAgents) cfg.agents)
       );
     in
     {

@@ -237,6 +237,7 @@ in
         "argus"
         "hephaestus"
         "proteus"
+        "athena"
       ];
     };
   };
