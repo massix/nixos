@@ -165,27 +165,6 @@ in
           ibm-plex
         ];
       };
-    kitty = {
-      enable = true;
-      font = {
-        name = "0xProto";
-        italic = "auto";
-        bold = "auto";
-        size = 12;
-        packages = with pkgs; [
-          _0xproto
-          noto-fonts-color-emoji
-        ];
-      };
-      extraSettings = {
-        macos_option_as_alt = "left";
-        macos_quit_when_last_window_closed = true;
-        macos_traditional_fullscreen = false;
-        background_blur = 64;
-        initial_window_width = "190c";
-        initial_window_height = "65c";
-      };
-    };
     fish = {
       enable = true;
       configuration.extraShellAbbrs = {
@@ -214,13 +193,6 @@ in
         enable = true;
         colored = true;
       };
-    };
-    gleeter.enable = false;
-    taskwarrior = {
-      enable = false;
-      withJira = true;
-      withFish = true;
-      dataLocation = "~/OneDrive - QUESTEL/TaskWarrior";
     };
     opencode = {
       enable = true;

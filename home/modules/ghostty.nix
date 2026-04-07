@@ -75,7 +75,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ] ++ cfg.extraPackages;
+    home.packages = [ cfg.package pkgs.nerd-fonts.symbols-only ] ++ cfg.extraPackages;
     xdg.configFile."ghostty/config" =
       let
         allSettings = settings // cfg.extraSettings // { inherit (cfg) theme; };

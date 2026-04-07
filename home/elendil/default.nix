@@ -22,11 +22,6 @@ let
       WantedBy = [ "graphical-session.target" ];
     };
   };
-
-  terminalFont = {
-    name = "IBM Plex Mono";
-    size = 10;
-  };
 in
 {
   imports = [ ];
@@ -53,8 +48,6 @@ in
       };
     };
 
-    gleeter.enable = false;
-
     fish = {
       enable = true;
       configuration = {
@@ -64,30 +57,6 @@ in
         };
       };
     };
-
-    gaming = {
-      enable = true;
-      dwarfFortress = {
-        enable = false;
-        config = {
-          theme = with pkgs.dwarf-fortress-packages; themes.ironhand;
-          enableDwarfTherapist = false;
-          enableLegendsBrowser = false;
-        };
-      };
-      nethack = {
-        enable = true;
-        options = {
-          permInvent = true;
-          petType = "cat";
-          msgWindow = "reversed";
-          litCorridor = true;
-        };
-      };
-      cataclysm-dda.enable = true;
-    };
-
-    im.enable = true;
 
     neovim = {
       enable = true;
@@ -143,20 +112,6 @@ in
         maple-mono.truetype
         ibm-plex
       ];
-    };
-
-    kitty = {
-      enable = true;
-      font = {
-        inherit (terminalFont) name size;
-        packages = with pkgs; [ comic-mono _0xproto ];
-        italic = "0xProto Italic";
-      };
-    };
-
-    taskwarrior = {
-      enable = false;
-      withFish = true;
     };
 
     opencode = {
@@ -222,6 +177,8 @@ in
     libnatpmp
     proton-pass
     unzip
+    zapzap
+    telegram-desktop
   ];
 
   systemd.user.startServices = "sd-switch";

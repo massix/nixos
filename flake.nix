@@ -25,9 +25,6 @@
     protrans.url = "github:massix/protrans";
     protrans.inputs.nixpkgs.follows = "nixpkgs";
 
-    gleeter.url = "github:massix/gleeter";
-    gleeter.inputs.nixpkgs.follows = "nixpkgs";
-
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -49,7 +46,6 @@
     , purescript-overlay
     , protrans
     , nixos-wsl
-    , gleeter
     , zen-browser
     , self
     , ghostty
@@ -70,7 +66,6 @@
           nix-direnv.overlays.default
           purescript-overlay.overlays.default
           ghostty.overlays.default
-          (_: _: { gleeter = gleeter.packages.${system}.default; })
           (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default

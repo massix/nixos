@@ -25,22 +25,6 @@ in
       typefonts = false;
     };
 
-    gleeter.enable = false;
-
-    kitty = {
-      enable = true;
-      font = {
-        name = "Comic Mono";
-        size = 15;
-        italic = "0xProto Italic";
-        packages = with pkgs; [
-          comic-mono
-          _0xproto
-          noto-fonts-color-emoji
-        ];
-      };
-    };
-
     fish = {
       enable = true;
       configuration = {
