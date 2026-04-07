@@ -36,7 +36,7 @@ let
     gofumpt
     deadnix
     nixpkgs-fmt
-    nodePackages.prettier
+    prettier
     (stylua.override { features = [ "lua54" "luau" ]; })
     yamlfmt
     typstyle
