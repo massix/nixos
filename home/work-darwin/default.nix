@@ -216,12 +216,6 @@ in
       };
     };
     gleeter.enable = false;
-    taskwarrior = {
-      enable = false;
-      withJira = true;
-      withFish = true;
-      dataLocation = "~/OneDrive - QUESTEL/TaskWarrior";
-    };
     opencode = {
       enable = true;
       theme = "tokyonight";

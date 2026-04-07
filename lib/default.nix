@@ -58,10 +58,8 @@
           ../home/modules/secrets
           ../home/modules/neovim
           ../home/modules/zellij
-          ../home/modules/taskwarrior
           ../home/modules/fish.nix
           ../home/modules/fonts.nix
-          ../home/modules/im.nix
           ../home/modules/git.nix
           ../home/modules/gaming.nix
           ../home/modules/devops.nix

@@ -87,8 +87,6 @@ in
       cataclysm-dda.enable = true;
     };
 
-    im.enable = true;
-
     neovim = {
       enable = true;
       configuration.package = pkgs.neovim-unwrapped;
@@ -154,11 +152,6 @@ in
       };
     };
 
-    taskwarrior = {
-      enable = false;
-      withFish = true;
-    };
-
     opencode = {
       enable = true;
       mcps = [ "github" "context7" "gh-grep" ];
@@ -222,6 +215,8 @@ in
     libnatpmp
     proton-pass
     unzip
+    zapzap
+    telegram-desktop
   ];
 
   systemd.user.startServices = "sd-switch";
