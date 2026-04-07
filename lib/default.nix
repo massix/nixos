@@ -63,7 +63,6 @@
           ../home/modules/git.nix
           ../home/modules/gaming.nix
           ../home/modules/devops.nix
-          ../home/modules/kitty.nix
           ../home/modules/firefox.nix
           ../home/modules/ghostty.nix
           ../home/modules/opencode

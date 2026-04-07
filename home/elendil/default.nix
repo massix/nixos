@@ -22,11 +22,6 @@ let
       WantedBy = [ "graphical-session.target" ];
     };
   };
-
-  terminalFont = {
-    name = "IBM Plex Mono";
-    size = 10;
-  };
 in
 {
   imports = [ ];
@@ -139,15 +134,6 @@ in
         maple-mono.truetype
         ibm-plex
       ];
-    };
-
-    kitty = {
-      enable = true;
-      font = {
-        inherit (terminalFont) name size;
-        packages = with pkgs; [ comic-mono _0xproto ];
-        italic = "0xProto Italic";
-      };
     };
 
     opencode = {
