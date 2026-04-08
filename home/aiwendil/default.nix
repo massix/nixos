@@ -44,8 +44,6 @@ in
       defaultEditor = true;
     };
 
-    zellij.enable = true;
-
     git = {
       enable = true;
       workRepository = {

@@ -69,15 +69,6 @@ in
       workRepository.enabled = false;
     };
 
-    zellij = {
-      enable = false;
-      configuration = {
-        autoAttach = false;
-        autoExit = false;
-        enableFishIntegration = false;
-      };
-    };
-
     devops = {
       enable = false;
       k9s.enable = true;

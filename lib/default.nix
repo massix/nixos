@@ -57,7 +57,6 @@
           homeage.homeManagerModules.homeage
           ../home/modules/secrets
           ../home/modules/neovim
-          ../home/modules/zellij
           ../home/modules/fish.nix
           ../home/modules/fonts.nix
           ../home/modules/git.nix
