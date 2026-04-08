@@ -48,12 +48,12 @@ let
   tana = assert stdenv.isDarwin;
     stdenvNoCC.mkDerivation rec {
       pname = "tana";
-      version = "1.498.21";
+      version = "1.515.0";
       nativeBuildInputs = [ pkgs.undmg ];
 
       src = builtins.fetchurl {
         url = "https://github.com/tanainc/tana-desktop-releases/releases/download/v${version}/Tana-${version}-universal.dmg";
-        sha256 = "sha256:1ik4mzf28qvpbghk7r25zx0b495wc5ifficmk9wyir8mk37ivrkj";
+        sha256 = "sha256:0nqar71fsv3zns6ih5z1baix8hkh26fcp2zm97ivskids122s47w";
       };
 
       sourceRoot = ".";
