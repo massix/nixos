@@ -204,13 +204,7 @@ in
         "jira"
         "gitlab"
       ];
-      agents = [
-        "atlas"
-        "argus"
-        "hephaestus"
-        "proteus"
-        "athena"
-      ];
+      agents = [ ];
     };
   };
   programs = {
