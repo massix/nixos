@@ -204,7 +204,6 @@ in
         "jira"
         "gitlab"
       ];
-      agents = [ ];
     };
   };
   programs = {
