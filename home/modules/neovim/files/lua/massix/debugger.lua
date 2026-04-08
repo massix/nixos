@@ -105,7 +105,6 @@ M.debugger = function()
 
   -- Neotest needs this
   dap.adapters.go = dap.adapters.delve
-  require("dap.ext.vscode").load_launchjs(nil, json_transforms)
 
   -- stylua: ignore
   require("which-key").add({
