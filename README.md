@@ -24,7 +24,7 @@ Three configurations are defined:
 
 - **elendil** — NixOS on a Microsoft Surface Pro (x86_64-linux). KDE Plasma 6, Fish shell, Docker, Steam, PipeWire, and the usual hardware tweaks to make everything work.
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
-- **aiwendil** — NixOS on WSL2 (x86_64-linux). Minimal setup with Docker and SSH for development in a Windows-hosted Linux environment.
+- **aiwendil** — [DEPRECATED] NixOS on WSL2. No longer used.
 - **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
 
 ## Home Manager Modules
@@ -35,7 +35,6 @@ This flake uses Home Manager to manage per-user configurations across systems.
 
 - **fish** — Fish shell with plugins and modern Unix utilities
 - **ghostty** — Ghostty terminal emulator with custom keybindings
-- **kitty** — Kitty terminal with ligatures support
 
 ### Editors & IDEs
 
@@ -47,20 +46,13 @@ This flake uses Home Manager to manage per-user configurations across systems.
 - **devops** — Kubernetes, Terraform, Ansible, Azure CLI (kubectl, helm), K9s, Vault, Tanzu
 - **git** — Git with Delta for diffs and custom aliases
 
-### Task Management
-
-- **taskwarrior** — Task manager with custom reports and Jira UDA integration
-
 ### Productivity & Communication
 
 - **firefox** — Firefox with privacy policies and pre-configured extensions
-- **Messaging** — Instant messaging clients (Telegram, WhatsApp)
-- **gleeter** — XKCD comic viewer for the terminal
 
 ### Customization & Appearance
 
 - **fonts** — Font management with monospace fonts, NerdFonts, and custom families
-- **gaming** — Game configs for Dwarf Fortress, NetHack, Cataclysm DDA
 
 ## Applying the Configuration
 
@@ -101,7 +93,7 @@ This configuration is personal, but feel free to take inspiration. To adapt it f
 The key directories:
 
 - `system/` — NixOS system configurations per host.
-- `home/` — Home Manager modules (neovim, fish, kitty, firefox, taskwarrior, and more).
+- `home/` — Home Manager modules (neovim, fish, firefox, and more).
 - `pkgs/` — Custom package overlays and definitions.
 - `lib/` — Shared utility functions.
 
