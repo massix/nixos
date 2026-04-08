@@ -2,6 +2,8 @@
 
 This repository contains NixOS/Nix-darwin system configurations managed with Flakes and Home Manager.
 
+The "main" or "master" branch of this repository is called `trunk`.
+
 ## Build/Lint/Test Commands
 
 ### Linting
@@ -90,7 +92,11 @@ nix flake check --all-systems
 ```
 This validates all systems and catches errors before build.
 
-### 3. Never Commit or Push Without Authorization
+### 3. Always propose to switch branches
+If the user asks to do some changes while being on the `trunk` branch, always ask if you should
+create and switch to a different branch instead.
+
+### 4. Never Commit or Push Without Authorization
 - Do not run `git commit` or `git push` unless explicitly authorized by user
 - Present your plan first, wait for sign-off before executing
 
