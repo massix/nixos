@@ -4,7 +4,7 @@
 , ...
 }:
 let
-  cfg = config.my-modules.ghostty;
+  cfg = config.massix.ghostty;
   inherit (lib) types mkOption mkIf mkEnableOption;
   # Default values which are valid on both MacOS and GNU/Linux
   # (MacOS options are simply ignored when on GNU/Linux)
@@ -42,7 +42,7 @@ let
   };
 in
 {
-  options.my-modules.ghostty = {
+  options.massix.ghostty = {
     enable = mkEnableOption "enable ghostty";
     package = mkOption {
       type = types.package;

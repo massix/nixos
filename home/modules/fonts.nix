@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = config.my-modules.fonts;
+  cfg = config.massix.fonts;
   inherit (lib) mkEnableOption mkIf mkOption types;
   nerdfonts-symbols = pkgs.stdenvNoCC.mkDerivation {
     pname = "symbolsonly-nerdfont";
@@ -25,7 +25,7 @@ let
   };
 in
 {
-  options.my-modules.fonts = {
+  options.massix.fonts = {
     enable = mkEnableOption "Enable fonts handling";
     typefonts = mkEnableOption "install typeface fonts" // { default = true; };
     monospace = mkEnableOption "install monospace fonts" // { default = true; };

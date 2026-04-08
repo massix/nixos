@@ -19,7 +19,7 @@ let
   '';
 in
 {
-  my-modules = {
+  massix = {
     fonts = {
       enable = true;
       typefonts = false;

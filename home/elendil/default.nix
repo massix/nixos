@@ -26,7 +26,7 @@ in
 {
   imports = [ ];
 
-  my-modules = {
+  massix = {
     firefox = {
       enable = true;
       enableGnomeExtensions = true;

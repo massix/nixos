@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.my-modules.git;
+  cfg = config.massix.git;
   inherit (lib) mkEnableOption mkOption mkIf;
 in
 {
-  options.my-modules.git = {
+  options.massix.git = {
     enable = mkEnableOption "Activate Git module";
     userName = mkOption {
       type = lib.types.str;
@@ -74,7 +74,7 @@ in
       ];
     };
 
-    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
+    massix.fish.configuration.extraShellAbbrs = mkIf config.massix.fish.enable {
       g = "git";
       gco = "git checkout";
       gcl = "git clone";
