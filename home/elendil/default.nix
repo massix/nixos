@@ -117,7 +117,6 @@ in
     opencode = {
       enable = true;
       mcps = [ "github" "context7" "gh-grep" ];
-      agents = [ ];
       theme = "tokyonight";
     };
   };
