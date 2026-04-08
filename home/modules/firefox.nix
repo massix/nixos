@@ -6,7 +6,7 @@
 let
   inherit (pkgs) stdenv;
   inherit (lib) mkEnableOption mkOption mkIf literalExample;
-  cfg = config.my-modules.firefox;
+  cfg = config.massix.firefox;
   mkEngine = template: alias: {
     urls = [{ inherit template; }];
     definedAliases = [ alias ];
@@ -20,7 +20,7 @@ let
   ];
 in
 {
-  options.my-modules.firefox = with lib.types; {
+  options.massix.firefox = with lib.types; {
     enable = mkEnableOption "Custom Firefox setup";
     enableGnomeExtensions = mkEnableOption "enable GNOME extension";
     extraExtensions = mkOption {

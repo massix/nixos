@@ -118,7 +118,7 @@ let
     };
 in
 {
-  my-modules = {
+  massix = {
     firefox = {
       enable = true;
       extraExtensions = with pkgs.nur.repos.rycee.firefox-addons; [

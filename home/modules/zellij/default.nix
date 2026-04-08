@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  cfg = config.my-modules.zellij;
+  cfg = config.massix.zellij;
   inherit (pkgs) stdenvNoCC;
   inherit (lib) mkEnableOption mkOption types mkIf;
   boolToStr = bool: if bool then "true" else "false";
@@ -26,7 +26,7 @@ let
   configDir = ".config/zellij";
 in
 {
-  options.my-modules.zellij = {
+  options.massix.zellij = {
     enable = mkEnableOption "Activate Zellij module";
 
     configuration = {
@@ -54,7 +54,7 @@ in
       ZELLIJ_AUTO_EXIT = boolToStr cfg.configuration.autoExit;
     };
 
-    my-modules.fish.configuration.extraShellAbbrs = mkIf config.my-modules.fish.enable {
+    massix.fish.configuration.extraShellAbbrs = mkIf config.massix.fish.enable {
       zj = "zellij";
       zjl = "zellij ls";
       zja = "zellij attach";

@@ -4,7 +4,7 @@
 , ...
 }:
 let
-  cfg = config.my-modules.neovim;
+  cfg = config.massix.neovim;
   inherit (lib) mkEnableOption mkPackageOption mkIf strings;
   inherit (lib.generators) toJSON;
   inherit (config.lib.file) mkOutOfStoreSymlink;
@@ -61,7 +61,7 @@ in
 {
   imports = [ ./languages ];
 
-  options.my-modules.neovim = {
+  options.massix.neovim = {
     enable = mkEnableOption "Enable neovim handling";
     defaultEditor = mkEnableOption "Use nvim as default editor";
     configuration = {

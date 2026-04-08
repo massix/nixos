@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.my-modules.fish;
+  cfg = config.massix.fish;
   inherit (lib) mkEnableOption mkOption mkIf types concatMapStrings;
 in
 {
-  options.my-modules.fish = {
+  options.massix.fish = {
     enable = mkEnableOption "Enable fish handling";
 
     configuration.extraPaths = mkOption {

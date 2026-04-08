@@ -5,7 +5,7 @@ let
   yamlGenerator = lib.generators.toYAML { };
   iniGenerator = lib.generators.toINI { };
 
-  cfg = config.my-modules.devops;
+  cfg = config.massix.devops;
 
   k9sThemes = stdenvNoCC.mkDerivation {
     pname = "catppuccin-k9s-themes";
@@ -29,7 +29,7 @@ let
   };
 in
 {
-  options.my-modules.devops = {
+  options.massix.devops = {
     enable = mkEnableOption "devops module";
     terraform = {
       enable = mkEnableOption "terraform";
@@ -121,7 +121,7 @@ in
       kubernetesPackages ++
       vaultPackages;
 
-    my-modules.fish.configuration.extraShellAbbrs =
+    massix.fish.configuration.extraShellAbbrs =
       let
         orEmpty = bool: attrs: if bool then attrs else { };
         kubernetesAbbrs =
@@ -161,7 +161,7 @@ in
       in
       kubernetesAbbrs // tanzuAbbrs // k9sAbbrs // terraformAbbrs // ansibleAbbrs;
 
-    my-modules.fish.configuration.extraShellAliases = mkIf cfg.kubernetes.colored {
+    massix.fish.configuration.extraShellAliases = mkIf cfg.kubernetes.colored {
       kubectl = "kubecolor";
     };
 

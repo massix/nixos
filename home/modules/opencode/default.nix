@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.my-modules.opencode;
+  cfg = config.massix.opencode;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types;
 
   # Discover agents from agents/ directory by scanning for .md files
@@ -13,7 +13,7 @@ let
     map (removeSuffix ".md") agentFiles;
 in
 {
-  options.my-modules.opencode = {
+  options.massix.opencode = {
     enable = mkEnableOption "Enable opencode configuration";
 
     package = mkPackageOption pkgs "opencode" {
