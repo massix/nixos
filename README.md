@@ -36,7 +36,6 @@ This flake uses Home Manager to manage per-user configurations across systems.
 - **fish** — Fish shell with plugins and modern Unix utilities
 - **ghostty** — Ghostty terminal emulator with custom keybindings
 - **kitty** — Kitty terminal with ligatures support
-- **zellij** — Zellij terminal multiplexer with custom layouts
 
 ### Editors & IDEs
 
