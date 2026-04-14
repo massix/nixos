@@ -68,7 +68,7 @@ M.lspconfig = function()
       },
       modeline = {
         auto_add = {
-          on_attach = true,
+          on_attach = false,
           on_save = false,
         },
         overwrite_existing = true,
@@ -189,7 +189,7 @@ M.lspconfig = function()
   -- Add a keybinding to switch YAML schema when editing YAML files
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("YAMLEditing", { clear = true }),
-    pattern = "yaml",
+    pattern = { "yaml", "yaml.*" },
     callback = function(evt)
       require("which-key").add({
         { "<leader>cy", group = "yaml" },
@@ -215,6 +215,14 @@ M.lspconfig = function()
             require("yaml-companion").open_cluster_crd_select()
           end,
           desc = "Select YAML Schema from Cluster CRD",
+          buffer = evt.buf,
+        },
+        {
+          "<leader>cym",
+          function()
+            require("yaml-companion").add_crd_modelines(evt.buf, {})
+          end,
+          desc = "Add CRD Modeline",
           buffer = evt.buf,
         },
       })
