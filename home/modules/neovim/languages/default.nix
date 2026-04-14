@@ -3,16 +3,10 @@
 , ...
 }:
 let
-  ansible-language-server-wrapper = pkgs.writeScriptBin "ansible-language-server" ''
-    #!${lib.getExe pkgs.bash}
-
-    exec ${lib.getExe pkgs.nodejs} ${pkgs.vscode-extensions.redhat.ansible}/share/vscode/extensions/redhat.ansible/out/server/src/server.js $*
-  '';
-
   yamlGenerator = lib.generators.toYAML { };
 
   language-servers = with pkgs; [
-    ansible-language-server-wrapper
+    ansible-language-server
     gleam
     gopls
     bash-language-server
