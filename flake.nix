@@ -70,6 +70,10 @@
           (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default
           (final: prev: {
+            # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)
+            nushell = prev.nushell.overrideAttrs (_: {
+              doCheck = false;
+            });
             kdePackages = prev.kdePackages.overrideScope (
               _: kdePrev: {
                 plasma-workspace =
