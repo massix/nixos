@@ -12,13 +12,12 @@ M.markdown = function()
       lsp = { enabled = true },
     },
     heading = {
-      border = true,
-      border_virtual = true,
+      width = "full",
     },
     code = {
-      conceal_delimiters = false,
       border = "thin",
       inline_pad = 2,
+      width = "full",
     },
     pipe_table = {
       preset = "round",
