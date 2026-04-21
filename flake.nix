@@ -28,9 +28,6 @@
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
-
     ghostty.url = "github:ghostty-org/ghostty";
     ghostty.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -46,7 +43,6 @@
     , purescript-overlay
     , protrans
     , nixos-wsl
-    , zen-browser
     , self
     , ghostty
     , ...
@@ -66,8 +62,6 @@
           nix-direnv.overlays.default
           purescript-overlay.overlays.default
           ghostty.overlays.default
-          (_: _: { zen-browser-beta = zen-browser.packages.${system}.beta; })
-          (_: _: { zen-browser-twilight = zen-browser.packages.${system}.twilight; })
           nur.overlays.default
           (final: prev: {
             # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)

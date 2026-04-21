@@ -175,27 +175,6 @@
         "type": "github"
       }
     },
-    "home-manager_3": {
-      "inputs": {
-        "nixpkgs": [
-          "zen-browser",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1776184304,
-        "narHash": "sha256-No6QGBmIv5ChiwKCcbkxjdEQ/RO2ZS1gD7SFy6EZ7rc=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "3c7524c68348ef79ce48308e0978611a050089b2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
     "homeage": {
       "inputs": {
         "nixpkgs": [
@@ -365,8 +344,7 @@
         "nixpkgs": "nixpkgs",
         "nur": "nur",
         "protrans": "protrans",
-        "purescript-overlay": "purescript-overlay",
-        "zen-browser": "zen-browser"
+        "purescript-overlay": "purescript-overlay"
       }
     },
     "systems": {
@@ -418,27 +396,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "zen-browser": {
-      "inputs": {
-        "home-manager": "home-manager_3",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1776483758,
-        "narHash": "sha256-MjoG8oTm3KsPhXemYqnNjpGmE2PbmUdLFOGXRhNQ7sU=",
-        "owner": "0xc000022070",
-        "repo": "zen-browser-flake",
-        "rev": "44f9a58e8c1fa0a0887f51dd361aa86faa8f759c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "0xc000022070",
-        "repo": "zen-browser-flake",
         "type": "github"
       }
     },
