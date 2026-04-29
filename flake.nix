@@ -68,6 +68,10 @@
             nushell = prev.nushell.overrideAttrs (_: {
               doCheck = false;
             });
+            # Workaround for direnv build failing on MacOS due to unlinked dependency with fish shell
+            direnv = prev.direnv.overrideAttrs (_: {
+              doCheck = false;
+            });
             kdePackages = prev.kdePackages.overrideScope (
               _: kdePrev: {
                 plasma-workspace =
