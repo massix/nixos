@@ -177,9 +177,6 @@
       AllowUsers = [ "massi" ];
       MaxAuthTries = 3;
     };
-    banner = ''
-      You are now on the NixOS box. Be careful!
-    '';
     allowSFTP = false;
   };
 
@@ -298,6 +295,7 @@
     zsh.enable = false;
     fish.enable = true;
     command-not-found.enable = false;
+    gamemode.enable = true;
     steam = {
       enable = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
