@@ -149,20 +149,18 @@ in
         package = ghostty;
         theme = "TokyoNight";
         extraSettings = {
-          font-family = "0xProto";
-          font-size = "11";
+          font-family = "Kode Mono";
+          font-size = "12";
           window-height = "65";
           window-width = "190";
           font-feature = to-font-feature [
             "calt"
             "ss01"
+            "lig"
           ];
         };
         extraPackages = with pkgs; [
-          _0xproto
           noto-fonts-color-emoji
-          maple-mono.truetype
-          ibm-plex
         ];
       };
     fish = {
