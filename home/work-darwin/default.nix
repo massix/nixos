@@ -116,6 +116,33 @@ let
         runHook postInstall
       '';
     };
+  stickyshot = assert stdenv.isDarwin;
+    stdenvNoCC.mkDerivation rec {
+      pname = "StickyShot";
+      version = "1.2.0";
+      nativeBuildInputs = [ pkgs._7zz pkgs.darwin.xattr ];
+
+      unpackPhase = ''
+        7zz x -snld $src
+      '';
+
+      src = builtins.fetchurl {
+        url = "https://github.com/rgcr/stickyshot/releases/download/v${version}/StickyShot-${version}-macos.dmg";
+        sha256 = "sha256:03vayihsbq3hg0r1jpv1mv1cnj9d64dmx93f4j7yxibvmsfabkhj";
+      };
+
+      dontConfigure = true;
+
+      sourceRoot = ".";
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p $out/Applications/
+        cp -a *.app $out/Applications/
+        xattr -cr $out/Applications/*.app
+        runHook postInstall
+      '';
+    };
 in
 {
   massix = {
@@ -260,8 +287,8 @@ in
       colima
       macpass
       tana
-      shottr
       clusterctl
+      stickyshot
     ];
 
   home.sessionVariables = {
