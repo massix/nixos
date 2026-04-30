@@ -98,7 +98,7 @@ in
           DisableFirefoxAccounts = true;
           DisableFirefoxStudies = true;
           DisableTelemetry = true;
-          DisablePocker = true;
+          DisablePocket = true;
           PromptForDownloadLocation = true;
           StartDownloadsInTempDirectory = true;
           ExtensionSettings = builtins.listToAttrs (
