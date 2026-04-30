@@ -183,6 +183,8 @@ in
             "gfx.webrenderer.compositor.force-enabled" = true;
             # disable "caret"
             "accessibility.browsewithcaret_shortcut.enabled" = false;
+            # disable auto PiP when switching tabs
+            "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = false;
           };
         };
       };
