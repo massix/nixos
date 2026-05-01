@@ -78,6 +78,7 @@ in
     mkIf cfg.enable {
       programs.firefox = {
         inherit (cfg) enable;
+        configPath = ".mozilla/firefox";
         package =
           let
             linux-pkg =
@@ -102,7 +103,7 @@ in
           PromptForDownloadLocation = true;
           StartDownloadsInTempDirectory = true;
           ExtensionSettings = builtins.listToAttrs (
-            builtins.map
+            map
               (e: lib.nameValuePair e.addonId {
                 installation_mode = "force_installed";
                 install_url = "file://${e.src}";

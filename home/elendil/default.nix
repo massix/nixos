@@ -161,7 +161,7 @@ in
     spotify
     onedriver
     tana
-    protonvpn-gui
+    proton-vpn
     hypnotix
     inkscape-with-extensions
     (transmission_4.override { enableGTK3 = true; })
