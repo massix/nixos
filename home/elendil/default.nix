@@ -2,9 +2,6 @@
 , config
 , ...
 }:
-let
-  wrapperDir = "/run/wrappers/";
-in
 {
   imports = [ ];
 
