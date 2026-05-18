@@ -195,6 +195,9 @@ in
       configuration.extraShellAbbrs = {
         j = "just";
       };
+      configuration.extraInit = [
+        "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"
+      ];
     };
     git = {
       enable = true;
@@ -270,6 +273,10 @@ in
       source = ./secrets/zerotrust/zerotrust-intermediate.crt.age;
       copies = [ "${homeDirectory}/.certs/zerotrust-intermediate.crt" ];
     };
+    gitlab-token = {
+      source = ../modules/opencode/secrets/gitlab-token.age;
+      symlinks = [ "${homeDirectory}/.gitlab-token" ];
+    };
   };
 
   home.packages =
@@ -295,6 +302,7 @@ in
     K9S_CONFIG_DIR = "${homeDirectory}/.config/k9s";
     ANSIBLE_CONFIG = "${homeDirectory}/.ansible.cfg";
     ANSIBLE_VAULT_PASSWORD_FILE = "${homeDirectory}/.ansible-vault-password";
+    GITLAB_INSTANCE_URL = "https://git.questel.com";
   };
 
   home.file.".ansible.cfg" = {
