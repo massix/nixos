@@ -32,11 +32,9 @@ nix flake show
 
 # Build specific system
 nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
-nix build ".#nixosConfigurations.aiwendil.config.system.build.toplevel"
 
 # Build specific home configuration
 nix build ".#homeConfigurations.massi@elendil.activationPackage"
-nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
 nix build ".#homeConfigurations.mgengarelli.activationPackage"
 
 # Apply configuration (NixOS)
@@ -131,8 +129,7 @@ All agents must protect sensitive files:
 ├── home/               # Home Manager modules
 │   └── modules/        # Individual modules (neovim, fish, etc.)
 ├── system/             # NixOS system configurations
-│   ├── elendil/        # Surface Pro configuration
-│   └── aiwendil/       # WSL2 configuration
+│   └── elendil/        # Surface Pro configuration
 └── .github/workflows/  # CI/CD pipelines
 ```
 

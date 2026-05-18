@@ -8,7 +8,7 @@ A personal NixOS configuration repository managed with **Flakes** and **Home Man
 - [Systems](#systems)
 - [Home Manager Modules](#home-manager-modules)
 - [Applying the Configuration](#applying-the-configuration)
-  - [NixOS (elendil / aiwendil)](#nixos-elendil--aiwendil)
+  - [NixOS (elendil)](#nixos-elendil)
   - [macOS (mgengarelli)](#macos-mgengarelli)
 - [Customization](#customization)
 - [License](#license)
@@ -20,11 +20,10 @@ The goal is to go from bare metal to a fully configured system with a single com
 
 ## Systems
 
-Three configurations are defined:
+Two configurations are defined:
 
 - **elendil** — NixOS on a Microsoft Surface Pro (x86_64-linux). KDE Plasma 6, Fish shell, Docker, Steam, PipeWire, and the usual hardware tweaks to make everything work.
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
-- **aiwendil** — [DEPRECATED] NixOS on WSL2. No longer used.
 - **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
 
 ## Home Manager Modules
@@ -56,7 +55,7 @@ This flake uses Home Manager to manage per-user configurations across systems.
 
 ## Applying the Configuration
 
-### NixOS (elendil / aiwendil)
+### NixOS (elendil)
 
 Steps for a fresh NixOS installation:
 
@@ -66,16 +65,13 @@ Steps for a fresh NixOS installation:
    ```bash
    nixos-generate-config --root /mnt
    ```
-4. Copy the generated `hardware-configuration.nix` into the appropriate system directory (e.g., `system/elendil/` or `system/aiwendil/`).
+4. Copy the generated `hardware-configuration.nix` into the appropriate system directory (e.g., `system/elendil/`).
 5. Clone this repository to `/mnt/etc/nixos` or your preferred location.
 6. Review and adjust the configuration for your hardware and preferences.
 7. Build and switch:
    ```bash
    nixos-rebuild switch --flake .#elendil
    ```
-   Replace `elendil` with `aiwendil` for the WSL configuration.
-
-For WSL specifically, install NixOS-WSL first (see [github.com/nix-community/nixos-wsl](https://github.com/nix-community/nixos-wsl)) and then apply the `aiwendil` configuration following a similar process.
 
 ### macOS (mgengarelli)
 

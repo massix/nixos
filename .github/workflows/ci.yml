@@ -67,16 +67,6 @@ jobs:
           nix build ".#homeConfigurations.massi@elendil.activationPackage"
           cachix push surface-zen result
         if: ${{ matrix.os_version == 'ubuntu-latest' }}
-      - name: Build WSL NixOS Configuration
-        run: |
-          nix build ".#nixosConfigurations.aiwendil.config.system.build.toplevel"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
-      - name: Build WSL Home Manager Configuration
-        run: |
-          nix build ".#homeConfigurations.massi@aiwendil.activationPackage"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
       - name: Clean disk space before building Darwin
         run: |
           sudo rm -rf /usr/local/share/dotnet /usr/share/dotnet /usr/local/lib/android /opt/ghc \

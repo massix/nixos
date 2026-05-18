@@ -25,9 +25,6 @@
     protrans.url = "github:massix/protrans";
     protrans.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-wsl.url = "github:nix-community/nixos-wsl/main";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-
     ghostty.url = "github:ghostty-org/ghostty";
     ghostty.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -42,7 +39,6 @@
     , nix-direnv
     , purescript-overlay
     , protrans
-    , nixos-wsl
     , self
     , ghostty
     , ...
@@ -145,13 +141,6 @@
               nixos-hardware.nixosModules.microsoft-surface-pro-intel
             ];
           };
-          "aiwendil" = helpers.mkSystem {
-            inherit stateVersion system pkgs;
-            extraModules = [
-              ./system/aiwendil/configuration.nix
-              nixos-wsl.nixosModules.default
-            ];
-          };
         };
         homeConfigurations = {
           "massi@elendil" = helpers.mkHome {
@@ -160,13 +149,6 @@
             extraModules = [
               protrans.homeManagerModules.default
               ./home/elendil
-            ];
-          };
-          "massi@aiwendil" = helpers.mkHome {
-            inherit inputs stateVersion system pkgs;
-            username = "massi";
-            extraModules = [
-              ./home/aiwendil
             ];
           };
         };
