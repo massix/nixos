@@ -130,7 +130,6 @@ in
           (mkWinProp "" "Calculator" true)
           (mkWinProp "" "Extension" true)
           (mkWinProp "gnome-tweaks" "" true)
-          (mkWinProp "" "onedriver" true)
           (mkWinProp "org.gnome.Extensions" "" true)
           (mkWinProp "" "Picture in picture" true)
           (mkWinProp ".protonvpn-app-wrapped" "" true)

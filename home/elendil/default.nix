@@ -2,27 +2,6 @@
 , config
 , ...
 }:
-let
-  wrapperDir = "/run/wrappers/";
-
-  mkOnedriverService = { pkgs, mountpoint }: {
-    Unit = {
-      Description = "onedriver";
-    };
-
-    Service = {
-      ExecStart = "${pkgs.onedriver}/bin/onedriver ${mountpoint}";
-      ExecStopPost = "${wrapperDir}/bin/fusermount3 -uz ${mountpoint}";
-      Restart = "on-abnormal";
-      RestartSec = "3";
-      RestartForceExitStatus = "2";
-    };
-
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
-in
 {
   imports = [ ];
 
@@ -159,7 +138,6 @@ in
     dconf-editor
     gnome-tweaks
     spotify
-    onedriver
     tana
     proton-vpn
     hypnotix
@@ -173,14 +151,6 @@ in
   ];
 
   systemd.user.startServices = "sd-switch";
-
-  # Automount Onedriver
-  systemd.user.services = {
-    "onedriver@home-massi-OneDrive" = mkOnedriverService {
-      inherit pkgs;
-      mountpoint = "\${HOME}/OneDrive";
-    };
-  };
 
   xdg = {
     enable = true;

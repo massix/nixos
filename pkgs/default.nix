@@ -2,7 +2,6 @@
 let
   inherit (pkgs) callPackage stdenv;
   onlyLinuxPkgs = {
-    onedriver = callPackage ./onedriver { };
     custom-kernel = callPackage ./kernel { };
   };
   commonPkgs = {
