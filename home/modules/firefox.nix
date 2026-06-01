@@ -78,7 +78,7 @@ in
     mkIf cfg.enable {
       programs.firefox = {
         inherit (cfg) enable;
-        configPath = ".mozilla/firefox";
+        configPath = mkIf stdenv.isLinux ".mozilla/firefox";
         package =
           let
             linux-pkg =
