@@ -29,6 +29,12 @@ in
       default = "plan";
       description = "Default agent to use";
     };
+
+    autoupdate = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Disable opencode's automatic update popup";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -41,6 +47,7 @@ in
     xdg.configFile = {
       "opencode/opencode.json" = {
         text = builtins.toJSON {
+          inherit (cfg) autoupdate;
           default_agent = cfg.defaultAgent;
           mcp = {
             gitlab = {
