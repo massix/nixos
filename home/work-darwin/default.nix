@@ -233,6 +233,16 @@ in
         "gitlab"
       ];
     };
+    claude-code = {
+      enable = true;
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+        "jira"
+        "gitlab"
+      ];
+    };
   };
   programs = {
     home-manager.enable = true;

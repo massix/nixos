@@ -89,6 +89,10 @@
       mcps = [ "github" "context7" "gh-grep" ];
       theme = "tokyonight";
     };
+    claude-code = {
+      enable = true;
+      mcps = [ "github" "context7" "gh-grep" ];
+    };
   };
 
   programs = {

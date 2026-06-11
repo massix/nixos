@@ -64,6 +64,7 @@
           ../home/modules/firefox.nix
           ../home/modules/ghostty.nix
           ../home/modules/opencode
+          ../home/modules/claude-code
         ] ++ extraModules;
     };
 
