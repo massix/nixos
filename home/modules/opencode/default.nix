@@ -12,7 +12,7 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" ]);
       default = [ ];
       description = "MCP servers to enable";
       example = [ "github" "context7" "jira" ];
@@ -118,6 +118,12 @@ in
                   JIRA_PERSONAL_TOKEN = "{env:JIRA_MCP_TOKEN}";
                 };
                 enabled = builtins.elem "jira" cfg.mcps;
+              };
+              coros = {
+                type = "remote";
+                url = "https://mcpeu.coros.com/mcp";
+                oauth = { };
+                enabled = builtins.elem "coros" cfg.mcps;
               };
             };
           }

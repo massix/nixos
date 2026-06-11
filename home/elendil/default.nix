@@ -86,12 +86,12 @@
 
     opencode = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" ];
+      mcps = [ "github" "context7" "gh-grep" "coros" ];
       theme = "tokyonight";
     };
     claude-code = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" ];
+      mcps = [ "github" "context7" "gh-grep" "coros" ];
     };
   };
 

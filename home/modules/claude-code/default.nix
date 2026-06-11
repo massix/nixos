@@ -41,6 +41,10 @@ let
         JIRA_PERSONAL_TOKEN = "\${JIRA_MCP_TOKEN}";
       };
     };
+    coros = {
+      type = "http";
+      url = "https://mcpeu.coros.com/mcp";
+    };
   };
 
   enabledServers = filterAttrs (name: _: builtins.elem name cfg.mcps) allServers;
@@ -54,7 +58,7 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" ]);
       default = [ ];
       description = "MCP servers to enable";
       example = [ "github" "context7" "jira" ];

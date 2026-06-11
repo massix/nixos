@@ -231,6 +231,7 @@ in
         "gh-grep"
         "jira"
         "gitlab"
+        "coros"
       ];
     };
     claude-code = {
@@ -241,6 +242,7 @@ in
         "gh-grep"
         "jira"
         "gitlab"
+        "coros"
       ];
     };
   };
