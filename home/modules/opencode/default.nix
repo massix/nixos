@@ -12,7 +12,7 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" "strava" ]);
       default = [ ];
       description = "MCP servers to enable";
       example = [ "github" "context7" "jira" ];
@@ -124,6 +124,19 @@ in
                 url = "https://mcpeu.coros.com/mcp";
                 oauth = { };
                 enabled = builtins.elem "coros" cfg.mcps;
+              };
+              # INFO: Strava's MCP does not work with opencode at the moment.
+              # opencode relies on OAuth Dynamic Client Registration (RFC 7591),
+              # which Strava's authorization server does not support (it only
+              # pre-registers known clients like Claude). `opencode mcp auth strava`
+              # fails with "Unable to create client" / "Unable to register client".
+              # Kept here (disabled via cfg.mcps) so it can be re-enabled once
+              # Strava supports additional AI clients. Works fine in claude-code.
+              strava = {
+                type = "remote";
+                url = "https://mcp.strava.com/mcp";
+                oauth = { };
+                enabled = builtins.elem "strava" cfg.mcps;
               };
             };
           }

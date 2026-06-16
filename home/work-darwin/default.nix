@@ -243,6 +243,7 @@ in
         "jira"
         "gitlab"
         "coros"
+        "strava"
       ];
     };
   };

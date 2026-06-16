@@ -91,7 +91,7 @@
     };
     claude-code = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" "coros" ];
+      mcps = [ "github" "context7" "gh-grep" "coros" "strava" ];
     };
   };
 

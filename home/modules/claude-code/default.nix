@@ -45,6 +45,10 @@ let
       type = "http";
       url = "https://mcpeu.coros.com/mcp";
     };
+    strava = {
+      type = "http";
+      url = "https://mcp.strava.com/mcp";
+    };
   };
 
   enabledServers = filterAttrs (name: _: builtins.elem name cfg.mcps) allServers;
@@ -58,7 +62,7 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" ]);
+      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" "strava" ]);
       default = [ ];
       description = "MCP servers to enable";
       example = [ "github" "context7" "jira" ];
