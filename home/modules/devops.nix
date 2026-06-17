@@ -92,7 +92,9 @@ in
         ansiblePackages = orEmpty cfg.ansible.enable [ ansible ];
         kubernetesPackages = orEmpty cfg.kubernetes.enable [
           kubectl
-          kubernetes-helm
+          # doCheck disabled: helm 4.2.0 moved test files to pkg/cmd/ but the
+          # darwin preCheck still patches the old cmd/helm/ paths (nixpkgs#532255).
+          (kubernetes-helm.overrideAttrs (_: { doCheck = false; }))
           fluxcd
           velero
           kustomize

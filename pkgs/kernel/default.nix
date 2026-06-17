@@ -35,9 +35,14 @@ pkgs.buildLinux {
     NET_SCH_DEFAULT = yes;
     DEFAULT_FQ_CODEL = yes;
 
-    # Preempt (low-latency)
+    # Preempt (low-latency). The Preemption Model is a Kconfig "choice", so
+    # exactly one member may be set to yes or generate-config.pl aborts with
+    # "conflicting answers!". nixpkgs common-config enables PREEMPT_LAZY for
+    # kernels >= 6.18, so we must disable it here to leave PREEMPT as the sole
+    # selected member.
     PREEMPT = lib.mkOverride 60 yes;
     PREEMPT_VOLUNTARY = lib.mkOverride 60 no;
+    PREEMPT_LAZY = lib.mkOverride 60 no;
 
     # Preemptible tree-based hierarchical RCU
     TREE_RCU = yes;
