@@ -231,6 +231,19 @@ in
         "gh-grep"
         "jira"
         "gitlab"
+        "coros"
+      ];
+    };
+    claude-code = {
+      enable = true;
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+        "jira"
+        "gitlab"
+        "coros"
+        "strava"
       ];
     };
   };

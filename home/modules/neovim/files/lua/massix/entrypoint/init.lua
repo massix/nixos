@@ -65,7 +65,6 @@ M.configure = function()
     massix.ansible()
     massix.todo_comments()
     massix.quicker()
-    massix.opencode()
   end)
 end
 
