@@ -8,8 +8,8 @@ let
   linuxSurface = fetchFromGitHub {
     repo = "linux-surface";
     owner = "linux-surface";
-    rev = "arch-${kernelVersion}-1";
-    hash = "sha256-7kP0Ct5JJkLeSWW5HjeeDgg9BEOnJTbGs/oifKCbRwE=";
+    rev = "arch-${kernelVersion}-3";
+    hash = "sha256-AV+J1iKpA4PEsX9oVUTGlzGerTWTermia3aJSZxuu/w=";
   };
 
   linuxZen = fetchFromGitHub {
@@ -199,5 +199,13 @@ pkgs.buildLinux {
       "0014-amd-gpio"
       "0015-rtc"
       "0016-hid-surface"
+      "0017-dirtyfrag-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags"
+      "0018-dirtyfrag-rxrpc-Fix-potential-UAF-after-skb_unshare-failure"
+      "0019-dirtyfrag-rxrpc-Fix-rxrpc_input_call_event-to-only-unshare-DAT"
+      "0020-dirtyfrag-rxrpc-Fix-use-of-wrong-skb-when-comparing-queued-RES"
+      "0021-dirtyfrag-rxrpc-only-handle-RESPONSE-during-service-challenge"
+      "0022-dirtyfrag-rxrpc-Fix-conn-level-packet-handling-to-unshare-RESP"
+      "0023-dirtyfrag-rxrpc-Fix-re-decryption-of-RESPONSE-packets"
+      "0024-dirtyfrag-rxrpc-Also-unshare-DATA-RESPONSE-packets-when-paged-"
     ];
 }
