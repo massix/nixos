@@ -85,6 +85,7 @@ M.git = function()
   })
 
   require("mini.diff").setup()
+  require("mini.git").setup()
 
   require("which-key").add({
     {
