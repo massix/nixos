@@ -42,7 +42,7 @@ in
       type = types.listOf types.package;
       default = [ ];
       description = "Fonts to exclude from the installed set (per-host opt-outs)";
-      example = [ "pkgs.cantarell-fonts" ];
+      example = [ "pkgs.noto-fonts-color-emoji" ];
     };
   };
 
@@ -65,9 +65,7 @@ in
           noto-fonts-cjk-sans
           noto-fonts-color-emoji
         ]);
-      default-fonts = with pkgs; [
-        cantarell-fonts
-      ];
+      default-fonts = [ ];
       nerd-fonts = orEmpty cfg.nerdfonts (with pkgs; [ nerdfonts ]);
     in
     mkIf cfg.enable {

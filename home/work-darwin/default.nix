@@ -25,10 +25,8 @@ in
     };
     fonts = {
       enable = true;
-      # afdko is broken on aarch64-darwin; drop the only two fonts that pull it in.
-      # macOS provides its own UI font and Apple Color Emoji.
+      # afdko is broken on aarch64-darwin; macOS provides its own UI font and Apple Color Emoji.
       families.exclude = with pkgs; [
-        cantarell-fonts
         noto-fonts-color-emoji
       ];
     };
