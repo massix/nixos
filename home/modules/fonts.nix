@@ -37,6 +37,13 @@ in
       description = "Extra fonts to be installed";
       example = [ "pkgs.proggyfonts" ];
     };
+
+    families.exclude = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "Fonts to exclude from the installed set (per-host opt-outs)";
+      example = [ "pkgs.noto-fonts-color-emoji" ];
+    };
   };
 
   config =
@@ -58,13 +65,12 @@ in
           noto-fonts-cjk-sans
           noto-fonts-color-emoji
         ]);
-      default-fonts = with pkgs; [
-        cantarell-fonts
-      ];
+      default-fonts = [ ];
       nerd-fonts = orEmpty cfg.nerdfonts (with pkgs; [ nerdfonts ]);
     in
     mkIf cfg.enable {
       fonts.fontconfig.enable = true;
-      home.packages = default-fonts ++ nerd-fonts ++ monospace-fonts ++ typeface-fonts ++ cfg.families.extra;
+      home.packages = lib.subtractLists cfg.families.exclude
+        (default-fonts ++ nerd-fonts ++ monospace-fonts ++ typeface-fonts ++ cfg.families.extra);
     };
 }

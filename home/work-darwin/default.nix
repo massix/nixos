@@ -25,6 +25,10 @@ in
     };
     fonts = {
       enable = true;
+      # afdko is broken on aarch64-darwin; macOS provides its own UI font and Apple Color Emoji.
+      families.exclude = with pkgs; [
+        noto-fonts-color-emoji
+      ];
     };
     neovim = {
       enable = true;
@@ -50,9 +54,6 @@ in
             "lig"
           ];
         };
-        extraPackages = with pkgs; [
-          noto-fonts-color-emoji
-        ];
       };
     fish = {
       enable = true;
