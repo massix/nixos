@@ -146,7 +146,7 @@
     proton-vpn
     hypnotix
     inkscape-with-extensions
-    (transmission_4.override { enableGTK4 = true; })
+    (transmission_4.override { enableGTK = true; })
     libnatpmp
     proton-pass
     unzip
