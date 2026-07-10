@@ -145,11 +145,11 @@ in
     };
     zerotrust-root = {
       source = ./secrets/zerotrust/zerotrust-root.crt.age;
-      copies = [ "${homeDirectory}/.certs/zerotrust-root.crt" ];
+      copies = [ "${homeDirectory}/.certs/dockerregistry.prd.questel.fr/zerotrust-root.crt" ];
     };
     zerotrust-intermediate = {
       source = ./secrets/zerotrust/zerotrust-intermediate.crt.age;
-      copies = [ "${homeDirectory}/.certs/zerotrust-intermediate.crt" ];
+      copies = [ "${homeDirectory}/.certs/dockerregistry.prd.questel.fr/zerotrust-intermediate.crt" ];
     };
     gitlab-token = {
       source = ../modules/opencode/secrets/gitlab-token.age;
@@ -219,7 +219,7 @@ in
               "--profile=${profileName}"
               "--disk=${toString diskSize}"
             ]
-            ++ optional mount "--mount=${homeDirectory}/.certs:/etc/ssl/certs:rw"
+            ++ optional mount "--mount=${homeDirectory}/.certs/dockerregistry.prd.questel.fr:/etc/docker/certs.d/dockerregistry.prd.questel.fr:ro"
             ++ optional (vmType == "vz") "--vz-rosetta"
             ++ optional maxCpu "--cpu-type=max";
 
@@ -243,15 +243,6 @@ in
         profileName = "aarch64";
         diskSize = 250;
       };
-      colima-aarch64-nocerts = mkColimaAgent {
-        enable = true;
-        arch = "aarch64";
-        memory = 14;
-        numCpus = 8;
-        profileName = "aarch64-nocerts";
-        diskSize = 250;
-        mount = false;
-      };
       colima-x86_64 = mkColimaAgent {
         enable = true;
         arch = "x86_64";
@@ -260,16 +251,6 @@ in
         maxCpu = true;
         profileName = "x86_64";
         diskSize = 250;
-      };
-      colima-x86_64-nocerts = mkColimaAgent {
-        enable = true;
-        arch = "x86_64";
-        memory = 14;
-        numCpus = 8;
-        maxCpu = true;
-        profileName = "x86_64-nocerts";
-        diskSize = 250;
-        mount = false;
       };
     };
 
