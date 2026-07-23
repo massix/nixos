@@ -112,7 +112,7 @@ in
               };
               jira = {
                 type = "local";
-                command = [ "uvx" "mcp-atlassian" ];
+                command = [ "${pkgs.coreutils}/bin/env" "PYTHONPATH=" "${pkgs.mcp-atlassian}/bin/mcp-atlassian" ];
                 environment = {
                   JIRA_URL = "https://jira.questel.com";
                   JIRA_PERSONAL_TOKEN = "{env:JIRA_MCP_TOKEN}";
