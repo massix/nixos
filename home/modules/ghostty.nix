@@ -13,7 +13,7 @@ let
     # we are using nix to update
     auto-update = "off";
     background-blur = "true";
-    background-opacity = "0.8";
+    background-opacity = "0.95";
     cursor-click-to-move = "true";
     cursor-style = "block";
     cursor-style-blink = "true";
