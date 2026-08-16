@@ -218,6 +218,7 @@
       kdePackages.kcharselect
       kdePackages.kaccounts-integration
       kdePackages.kaccounts-providers
+      kdePackages.dragon
 
       # Dolphin Integrations
       kdePackages.kio

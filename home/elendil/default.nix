@@ -152,6 +152,7 @@
     unzip
     zapzap
     telegram-desktop
+    haruna
   ];
 
   systemd.user.startServices = "sd-switch";
