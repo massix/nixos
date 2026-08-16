@@ -1,5 +1,6 @@
 { pkgs
 , config
+, lib
 , ...
 }:
 {
@@ -156,6 +157,56 @@
   ];
 
   systemd.user.startServices = "sd-switch";
+  systemd.user.services =
+    let
+      mkRclone =
+        { source
+        , dest
+        , cacheMode
+        , cacheSize
+        , cacheAge
+        , extraOpts ? [ ]
+        }: {
+          Unit.Description = "Mount ${source} to ${dest} using rclone";
+          Service =
+            let
+              opts = lib.join " " extraOpts;
+            in
+            {
+              ExecStart = "${lib.getExe pkgs.rclone} mount ${source}: ${dest} --vfs-cache-mode ${cacheMode} --vfs-cache-max-size ${cacheSize} --vfs-cache-max-age ${cacheAge} ${opts}";
+              ExecStop = "${pkgs.fuse3}/bin/fusermount3 -u ${dest}";
+              Type = "notify";
+              Restart = "on-failure";
+            };
+          Install.WantedBy = [ "default.target" ];
+        };
+    in
+    {
+      rclone-onedrive = mkRclone {
+        source = "OneDrivePersonal";
+        dest = "${config.home.homeDirectory}/OneDrive";
+        cacheMode = "full";
+        cacheSize = "4G";
+        cacheAge = "3d";
+      };
+
+      rclone-proton = mkRclone {
+        source = "proton";
+        dest = "${config.home.homeDirectory}/ProtonDrive";
+        cacheMode = "writes";
+        cacheSize = "2G";
+        cacheAge = "1h";
+        extraOpts = [ "--protondrive-replace-existing-draft=true" ];
+      };
+
+      rclone-gdrive = mkRclone {
+        source = "gdrive";
+        dest = "${config.home.homeDirectory}/GoogleDrive";
+        cacheMode = "off";
+        cacheSize = "100M";
+        cacheAge = "1h";
+      };
+    };
 
   xdg = {
     enable = true;

@@ -24,6 +24,7 @@ Two configurations are defined:
 
 - **elendil** — NixOS on a Microsoft Surface Pro (x86_64-linux). KDE Plasma 6, Fish shell, Docker, Steam, PipeWire, and the usual hardware tweaks to make everything work.
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
+  **Cloud drives**: OneDrive, ProtonDrive and Google Drive mounted at login via rclone systemd user services (`home/elendil/default.nix`).
 - **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
 
 ## Home Manager Modules
@@ -68,6 +69,7 @@ Steps for a fresh NixOS installation:
 4. Copy the generated `hardware-configuration.nix` into the appropriate system directory (e.g., `system/elendil/`).
 5. Clone this repository to `/mnt/etc/nixos` or your preferred location.
 6. Review and adjust the configuration for your hardware and preferences.
+   **Note**: before the first switch, configure the rclone remotes with `rclone config` — the mount services use `OneDrivePersonal`, `proton`, and `gdrive`. The `rclone-*` systemd user services will fail to mount until those remotes exist.
 7. Build and switch:
    ```bash
    nixos-rebuild switch --flake .#elendil
