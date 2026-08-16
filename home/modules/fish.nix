@@ -98,7 +98,7 @@ in
         less = "moor";
         traceroute = "mtr";
         ps = "procs";
-        ls = "eza --icons";
+        ls = "eza --icons always";
         iftop = "bmon";
       } // cfg.configuration.extraShellAliases;
 
