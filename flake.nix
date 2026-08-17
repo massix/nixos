@@ -3,6 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # x86_64-darwin support was removed from nixpkgs after the nixos-26.05
+    # release.  The Hackintosh (Surface Laptop 3, OpenCore) still needs it, so
+    # we pin to the last branch that includes the platform.  This input will
+    # stop receiving security updates once nixos-26.05 goes EOL.
+    pinned.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     nur.url = "github:nix-community/NUR";
@@ -31,6 +36,7 @@
 
   outputs =
     inputs@{ nixpkgs
+    , pinned
     , nur
     , flake-utils
     , home-manager
@@ -44,84 +50,86 @@
     , ...
     }:
     let
-      allSystems = [ "x86_64-linux" "aarch64-darwin" ];
+      allSystems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
       stateVersion = "24.05";
-      pkgSet = system: rec {
+      pkgSet = base: system: withOverlays: rec {
         inherit system;
         config = {
           allowUnfree = true;
           allowUnfreePredicate = _: true;
           permittedInsecurePackages = [ "electron-25.9.0" ];
+          allowDeprecatedx86_64Darwin = system == "x86_64-darwin";
         };
-        overlays = [
-          (_: _: self.packages."${system}")
-          nix-direnv.overlays.default
-          purescript-overlay.overlays.default
-          ghostty.overlays.default
-          nur.overlays.default
-          (final: prev: {
-            # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)
-            nushell = prev.nushell.overrideAttrs (_: {
-              doCheck = false;
-            });
-            # Workaround for direnv build failing on MacOS due to unlinked dependency with fish shell
-            direnv = prev.direnv.overrideAttrs (_: {
-              doCheck = false;
-            });
-            kdePackages = prev.kdePackages.overrideScope (
-              _: kdePrev: {
-                plasma-workspace =
-                  let
-                    basePkg = kdePrev.plasma-workspace;
-                    xdgdataPkg = final.stdenv.mkDerivation {
-                      name = "${basePkg.name}-xdgdata";
-                      buildInputs = [ basePkg ];
-                      dontUnpack = true;
-                      dontFixup = true;
-                      dontWrapQtApps = true;
-                      installPhase = ''
-                        mkdir -p $out/share
-                        ( IFS=:
-                          for DIR in $XDG_DATA_DIRS; do
-                            if [[ -d "$DIR" ]]; then
-                              cp -r $DIR/. $out/share/
-                              chmod -R u+w $out/share
+        overlays =
+          if withOverlays then [
+            (_: _: self.packages."${system}")
+            nix-direnv.overlays.default
+            purescript-overlay.overlays.default
+            ghostty.overlays.default
+            nur.overlays.default
+            (final: prev: {
+              # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)
+              nushell = prev.nushell.overrideAttrs (_: {
+                doCheck = false;
+              });
+              # Workaround for direnv build failing on MacOS due to unlinked dependency with fish shell
+              direnv = prev.direnv.overrideAttrs (_: {
+                doCheck = false;
+              });
+              kdePackages = prev.kdePackages.overrideScope (
+                _: kdePrev: {
+                  plasma-workspace =
+                    let
+                      basePkg = kdePrev.plasma-workspace;
+                      xdgdataPkg = final.stdenv.mkDerivation {
+                        name = "${basePkg.name}-xdgdata";
+                        buildInputs = [ basePkg ];
+                        dontUnpack = true;
+                        dontFixup = true;
+                        dontWrapQtApps = true;
+                        installPhase = ''
+                          mkdir -p $out/share
+                          ( IFS=:
+                            for DIR in $XDG_DATA_DIRS; do
+                              if [[ -d "$DIR" ]]; then
+                                cp -r $DIR/. $out/share/
+                                chmod -R u+w $out/share
+                              fi
+                            done
+                          )
+                        '';
+                      };
+                      # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
+                      # script and instead inject the path of the above helper package
+                      derivedPkg = basePkg.overrideAttrs {
+                        preFixup = ''
+                          for index in "''${!qtWrapperArgs[@]}"; do
+                            if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
+                              unset -v "qtWrapperArgs[$((index+0))]"
+                              unset -v "qtWrapperArgs[$((index+1))]"
+                              unset -v "qtWrapperArgs[$((index+2))]"
+                              unset -v "qtWrapperArgs[$((index+3))]"
                             fi
                           done
-                        )
-                      '';
-                    };
-                    # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
-                    # script and instead inject the path of the above helper package
-                    derivedPkg = basePkg.overrideAttrs {
-                      preFixup = ''
-                        for index in "''${!qtWrapperArgs[@]}"; do
-                          if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
-                            unset -v "qtWrapperArgs[$((index+0))]"
-                            unset -v "qtWrapperArgs[$((index+1))]"
-                            unset -v "qtWrapperArgs[$((index+2))]"
-                            unset -v "qtWrapperArgs[$((index+3))]"
-                          fi
-                        done
-                        qtWrapperArgs=("''${qtWrapperArgs[@]}")
-                        qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
-                        qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
-                      '';
-                    };
-                  in
-                  derivedPkg;
-              }
-            );
-          })
-        ];
-        pkgs = import nixpkgs {
+                          qtWrapperArgs=("''${qtWrapperArgs[@]}")
+                          qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
+                          qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
+                        '';
+                      };
+                    in
+                    derivedPkg;
+                }
+              );
+            })
+          ] else [ ];
+        pkgs = import base {
           inherit system config overlays;
         };
         helpers = import ./lib {
           inherit home-manager homeage nixpkgs;
         };
       };
-      darwinSet = with pkgSet "aarch64-darwin"; {
+      darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true); {
         homeConfigurations."mgengarelli" = helpers.mkHome {
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
@@ -130,7 +138,20 @@
           ];
         };
       };
-      linuxSet = with (pkgSet "x86_64-linux"); {
+      # Hackintosh: uses the pinned nixpkgs (x86_64-darwin) with overlays
+      # disabled.  Overlays (NUR, ghostty, nix-direnv, purescript) reference
+      # packages built against nixos-unstable and are incompatible with the
+      # older pinned set.  The Hackintosh config works around missing overlays
+      # with local derivations (e.g. Ghostty .dmg fetch in packages.nix) and
+      # option overrides (e.g. mcp-atlassian stub).
+      hackintoshSet = with (pkgSet pinned "x86_64-darwin" false); {
+        homeConfigurations."mgengarelli@hackintosh" = helpers.mkHome {
+          inherit inputs stateVersion system pkgs;
+          username = "mgengarelli";
+          extraModules = [ ./home/hackintosh ];
+        };
+      };
+      linuxSet = with (pkgSet nixpkgs "x86_64-linux" true); {
         nixosConfigurations = {
           "elendil" = helpers.mkSystem {
             inherit stateVersion system pkgs;
@@ -163,9 +184,14 @@
           overlays = [
             purescript-overlay.overlays.default
           ];
-          pkgs = import nixpkgs {
-            inherit system config overlays;
-          };
+          pkgs =
+            # The devShell for x86_64-darwin also needs the pinned nixpkgs so
+            # linters and language servers resolve against a package set that
+            # actually contains x86_64-darwin builds.
+            if system == "x86_64-darwin" then
+              import pinned { inherit system config overlays; }
+            else
+              import nixpkgs { inherit system config overlays; };
 
         in
         {
@@ -200,5 +226,10 @@
     in
     commonStuff //
     linuxSet //
-    { homeConfigurations = linuxSet.homeConfigurations // darwinSet.homeConfigurations; };
+    {
+      homeConfigurations =
+        linuxSet.homeConfigurations //
+        darwinSet.homeConfigurations //
+        hackintoshSet.homeConfigurations;
+    };
 }

@@ -12,8 +12,12 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
   from `pkgs/kernel/`.
 - **mgengarelli** — macOS (`aarch64-darwin`): **Home Manager only**, no
   nix-darwin system module — macOS is configured purely through home-manager.
+- **mgengarelli@hackintosh** — macOS (`x86_64-darwin`) on a Surface Laptop 3
+  running OpenCore. **Home Manager only**. Uses a pinned nixpkgs (`nixos-26.05`)
+  because nixpkgs dropped `x86_64-darwin` support after that release. Overlays
+  are disabled (`pkgSet pinned "x86_64-darwin" false`) — see `flake.nix`.
 
-State version: `24.05`. Systems: `x86_64-linux`, `aarch64-darwin`.
+State version: `24.05`. Systems: `x86_64-linux`, `aarch64-darwin`, `x86_64-darwin`.
 
 ## Commands
 
@@ -66,6 +70,7 @@ A per-system bundle is built by `pkgSet system` (`config` + the **overlay
 list** + the resulting `pkgs` + `helpers` imported from `lib/`). Outputs are then
 assembled:
 - `darwinSet` → `homeConfigurations."mgengarelli"` (extraModule `./home/work-darwin`)
+- `hackintoshSet` → `homeConfigurations."mgengarelli@hackintosh"` (extraModule `./home/hackintosh`)
 - `linuxSet` → `nixosConfigurations."elendil"` + `homeConfigurations."massi@elendil"` (extraModule `./home/elendil`)
 - `commonStuff` (via `flake-utils`) → `devShells.default` and `packages` (from `pkgs/`).
 
@@ -103,6 +108,10 @@ MCP server definitions, filtered to the enabled ones and serialized to a
 read-only JSON config. Secrets are emitted as `${ENV_VAR}` placeholders the tool
 expands at launch — never inlined. The catalogue is duplicated per tool because
 each tool's config schema differs.
+
+Platform-specific packages that may not build everywhere (e.g. `mcp-atlassian`
+on `x86_64-darwin`) are exposed as `mkPackageOption` so host configs can override
+them with stubs. See `massix.opencode.mcp-atlassian-package` for an example.
 
 `claude-code` is special in *how* it loads config: Claude Code mutates
 `~/.claude.json` and `~/.claude/settings.json`, so neither can be a read-only
@@ -156,6 +165,7 @@ pkgs/                # custom derivations (kernel, tanzu, tridentctl)
 home/
   modules/           # massix.* home modules (neovim, fish, opencode, claude-code, ...)
   work-darwin/       # macOS (mgengarelli) host config
+  hackintosh/        # macOS (mgengarelli@hackintosh) host config
   elendil/           # linux (massi@elendil) host config
 system/elendil/      # NixOS system config for the Surface Pro
 .github/workflows/   # CI

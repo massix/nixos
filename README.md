@@ -10,6 +10,7 @@ A personal NixOS configuration repository managed with **Flakes** and **Home Man
 - [Applying the Configuration](#applying-the-configuration)
   - [NixOS (elendil)](#nixos-elendil)
   - [macOS (mgengarelli)](#macos-mgengarelli)
+  - [macOS — Hackintosh (mgengarelli@hackintosh)](#macos--hackintosh-mgengarellihackintosh)
 - [Customization](#customization)
 - [License](#license)
 
@@ -26,6 +27,7 @@ Two configurations are defined:
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
   **Cloud drives**: OneDrive, ProtonDrive and Google Drive mounted at login via rclone systemd user services (`home/elendil/default.nix`).
 - **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
+- **mgengarelli@hackintosh** — macOS home configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. Missing functionality (Ghostty, mcp-atlassian) is provided through local derivations or stubs — see `flake.nix` and `home/hackintosh/packages.nix` for details.
 
 ## Home Manager Modules
 
@@ -79,6 +81,37 @@ Steps for a fresh NixOS installation:
 
 The macOS configuration uses nix-darwin and home-manager. See the `home/work-darwin/` directory for details.
 
+### macOS — Hackintosh (mgengarelli@hackintosh)
+
+Home-manager only. Requires an existing OpenCore boot setup on x86_64 hardware (Surface Laptop 3).
+
+#### Prerequisites
+
+This configuration assumes **VoltageShift** is already installed and configured.
+VoltageShift is a macOS kernel extension (kext) that allows CPU undervolting and
+power limit tuning. It is **not** managed by Nix and must be set up manually:
+
+1. **Install the kext and binary** — follow the instructions at
+   [VoltageShift](https://github.com/sicreative/VoltageShift). The binary must be
+   at `/usr/local/bin/voltageshift`.
+2. **Add the kext to OpenCore** — mount the EFI partition, add `VoltageShift.kext`
+   to `EFI/OC/Kexts/`, and add a corresponding entry to your `config.plist` under
+   `Kernel → Add`. See the VoltageShift README for the exact plist entry.
+
+Once installed, home-manager handles the rest: a `sleepwatcher` agent runs on
+login and applies CPU power limits (`voltageshift power 17 25`) every time the
+machine wakes from sleep.
+
+#### Applying
+
+```bash
+home-manager switch --flake .#mgengarelli@hackintosh
+```
+
+**Note:** This configuration uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs
+dropped x86_64-darwin support after that release. Overlays are disabled, so some
+packages (Ghostty, mcp-atlassian) are provided through local derivations or stubs.
+
 ## Customization
 
 This configuration is personal, but feel free to take inspiration. To adapt it for your own use:
@@ -92,7 +125,7 @@ The key directories:
 
 - `system/` — NixOS system configurations per host.
 - `home/` — Home Manager modules (neovim, fish, firefox, and more).
-- `pkgs/` — Custom package overlays and definitions.
+- `pkgs/` — Custom package overlays and definitions. Some packages are platform-conditional (e.g. `mcp-atlassian` is excluded on `x86_64-darwin` where its dependency tree is broken).
 - `lib/` — Shared utility functions.
 
 ## License

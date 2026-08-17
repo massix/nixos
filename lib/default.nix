@@ -12,12 +12,15 @@
         let
           inherit (pkgs.stdenv) isDarwin;
           homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
+          # x86_64-darwin was removed from nixpkgs-unstable; use the pinned
+          # nixos-26.05 input so nixPath resolves to a working package set.
+          pkgset = if system == "x86_64-darwin" then inputs.pinned else inputs.nixpkgs;
         in
         [
           # The following is true for all users
           ({ config, ... }: {
             nix = {
-              nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+              nixPath = [ "nixpkgs=${pkgset}" ];
               settings = {
                 experimental-features = [ "nix-command" "flakes" ];
                 keep-outputs = true;

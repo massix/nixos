@@ -11,6 +11,11 @@ in
       default = "opencode";
     };
 
+    # The mcp-atlassian package may not build on every platform (e.g. x86_64-darwin
+    # with pinned nixpkgs). Host configs can override this with a stub or disable
+    # the "jira" MCP entirely.
+    mcp-atlassian-package = mkPackageOption pkgs "mcp-atlassian" { };
+
     mcps = mkOption {
       type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" "strava" ]);
       default = [ ];
@@ -112,7 +117,7 @@ in
               };
               jira = {
                 type = "local";
-                command = [ "${pkgs.coreutils}/bin/env" "PYTHONPATH=" "${pkgs.mcp-atlassian}/bin/mcp-atlassian" ];
+                command = [ "${pkgs.coreutils}/bin/env" "PYTHONPATH=" "${cfg.mcp-atlassian-package}/bin/mcp-atlassian" ];
                 environment = {
                   JIRA_URL = "https://jira.questel.com";
                   JIRA_PERSONAL_TOKEN = "{env:JIRA_MCP_TOKEN}";
