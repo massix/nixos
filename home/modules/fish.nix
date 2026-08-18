@@ -54,6 +54,7 @@ in
       package = pkgs.fzf;
       enableBashIntegration = false;
       enableZshIntegration = false;
+      enableNushellIntegration = false;
       enableFishIntegration = true;
     };
 
