@@ -8,8 +8,6 @@ let
   inherit (pkgs) lib;
 in
 {
-  imports = [ ./packages.nix ];
-
   massix = {
     firefox = {
       enable = false;
@@ -34,6 +32,7 @@ in
       in
       {
         enable = true;
+        package = null;
         theme = "TokyoNight";
         extraSettings = {
           background-blur = "false";
@@ -114,7 +113,7 @@ in
     };
   };
 
-  # Packages from nixpkgs — custom darwin derivations live in ./packages.nix.
+  # Packages from nixpkgs — GUI apps are managed by Homebrew via nix-darwin.
   home.packages =
     with pkgs; [
       # This does not come installed by default on MacOS
@@ -173,6 +172,19 @@ in
         "https://surface-zen.cachix.org"
         "https://cache.nixos.org"
       ];
+    };
+    registry = {
+      nix-darwin = {
+        from = {
+          id = "nix-darwin";
+          type = "indirect";
+        };
+        to = {
+          owner = "nix-darwin";
+          repo = "nix-darwin";
+          type = "github";
+        };
+      };
     };
   };
 }

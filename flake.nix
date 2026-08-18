@@ -3,11 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     # x86_64-darwin support was removed from nixpkgs after the nixos-26.05
     # release.  The Hackintosh (Surface Laptop 3, OpenCore) still needs it, so
     # we pin to the last branch that includes the platform.  This input will
     # stop receiving security updates once nixos-26.05 goes EOL.
     pinned.url = "github:NixOS/nixpkgs/nixos-26.05";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     nur.url = "github:nix-community/NUR";
@@ -32,6 +34,9 @@
 
     ghostty.url = "github:ghostty-org/ghostty";
     ghostty.inputs.nixpkgs.follows = "nixpkgs";
+
+    hackintosh-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+    hackintosh-darwin.inputs.nixpkgs.follows = "pinned";
   };
 
   outputs =
@@ -47,6 +52,7 @@
     , protrans
     , self
     , ghostty
+    , hackintosh-darwin
     , ...
     }:
     let
@@ -140,15 +146,25 @@
       };
       # Hackintosh: uses the pinned nixpkgs (x86_64-darwin) with overlays
       # disabled.  Overlays (NUR, ghostty, nix-direnv, purescript) reference
-      # packages built against nixos-unstable and are incompatible with the
-      # older pinned set.  The Hackintosh config works around missing overlays
-      # with local derivations (e.g. Ghostty .dmg fetch in packages.nix) and
-      # option overrides (e.g. mcp-atlassian stub).
+      # packages built against nixos-unstable and are ABI-incompatible with the
+      # older pinned set.  GUI apps (Ghostty, Proton suite, etc.) are managed
+      # by Homebrew via hackintoshDarwinSet; CLI tools stay in nixpkgs.
       hackintoshSet = with (pkgSet pinned "x86_64-darwin" false); {
         homeConfigurations."mgengarelli@hackintosh" = helpers.mkHome {
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
           extraModules = [ ./home/hackintosh ];
+        };
+      };
+      hackintoshDarwinSet = {
+        darwinConfigurations.hackintosh = hackintosh-darwin.lib.darwinSystem rec {
+          system = "x86_64-darwin";
+          pkgs = import inputs.pinned {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowDeprecatedx86_64Darwin = true;
+          };
+          modules = [ ./system/hackintosh ];
         };
       };
       linuxSet = with (pkgSet nixpkgs "x86_64-linux" true); {
@@ -226,6 +242,7 @@
     in
     commonStuff //
     linuxSet //
+    hackintoshDarwinSet //
     {
       homeConfigurations =
         linuxSet.homeConfigurations //
