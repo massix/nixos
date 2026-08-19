@@ -10,8 +10,10 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
 - **elendil** — NixOS on a Microsoft Surface Pro (`x86_64-linux`): a NixOS
   *system* config plus a home config. Uses a custom Zen + linux-surface kernel
   from `pkgs/kernel/`.
-- **mgengarelli** — macOS (`aarch64-darwin`): **Home Manager only**, no
-  nix-darwin system module — macOS is configured purely through home-manager.
+- **mgengarelli** — macOS (`aarch64-darwin`): **Home Manager + nix-darwin**
+  (`darwinConfigurations.work-darwin`, `system/work-darwin/`). Homebrew (via
+  nix-darwin) manages GUI apps; agenix decrypts a system-level secret (Cloudflare
+  CA cert) at activation, separate from the home-manager-level `homeage` pipeline.
 - **mgengarelli@hackintosh** — macOS (`x86_64-darwin`) on a Surface Laptop 3
   running OpenCore. **Home Manager + nix-darwin** (Homebrew for GUI apps).
   Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped
@@ -37,6 +39,7 @@ nix flake show                 # list every configuration/output
 nix build ".#homeConfigurations.mgengarelli.activationPackage"          # macOS home
 nix build ".#homeConfigurations.\"massi@elendil\".activationPackage"    # linux home
 nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"  # NixOS system
+nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"  # macOS system
 
 # Apply (only with explicit authorization — see rules below)
 home-manager switch                         # home configs
@@ -71,8 +74,9 @@ A per-system bundle is built by `pkgSet system` (`config` + the **overlay
 list** + the resulting `pkgs` + `helpers` imported from `lib/`). Outputs are then
 assembled:
 - `darwinSet` → `homeConfigurations."mgengarelli"` (extraModule `./home/work-darwin`)
+  and `darwinConfigurations.work-darwin` (agenix + `./system/work-darwin`)
 - `hackintoshSet` → `homeConfigurations."mgengarelli@hackintosh"` (extraModule `./home/hackintosh`)
-- `hackintoshDarwinSet` → `darwinConfigurations.hackintosh` (nix-darwin + Homebrew)
+  and `darwinConfigurations.hackintosh` (nix-darwin + Homebrew)
 - `linuxSet` → `nixosConfigurations."elendil"` + `homeConfigurations."massi@elendil"` (extraModule `./home/elendil`)
 - `commonStuff` (via `flake-utils`) → `devShells.default` and `packages` (from `pkgs/`).
 
@@ -169,6 +173,7 @@ home/
   work-darwin/       # macOS (mgengarelli) host config
   hackintosh/        # macOS (mgengarelli@hackintosh) host config
   elendil/           # linux (massi@elendil) host config
+system/work-darwin/  # nix-darwin system config for mgengarelli (Homebrew + agenix)
 system/elendil/      # NixOS system config for the Surface Pro
 .github/workflows/   # CI
 ```

@@ -69,6 +69,7 @@ in
       enable = true;
       configuration.extraShellAbbrs = {
         j = "just";
+        drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
       };
       configuration.extraInit = [
         "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"
@@ -284,6 +285,19 @@ in
         "https://surface-zen.cachix.org"
         "https://cache.nixos.org"
       ];
+    };
+    registry = {
+      nix-darwin = {
+        from = {
+          id = "nix-darwin";
+          type = "indirect";
+        };
+        to = {
+          owner = "nix-darwin";
+          repo = "nix-darwin";
+          type = "github";
+        };
+      };
     };
   };
 

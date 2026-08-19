@@ -21,12 +21,12 @@ The goal is to go from bare metal to a fully configured system with a single com
 
 ## Systems
 
-Two configurations are defined:
+Three configurations are defined:
 
 - **elendil** — NixOS on a Microsoft Surface Pro (x86_64-linux). KDE Plasma 6, Fish shell, Docker, Steam, PipeWire, and the usual hardware tweaks to make everything work.
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
   **Cloud drives**: OneDrive, ProtonDrive and Google Drive mounted at login via rclone systemd user services (`home/elendil/default.nix`).
-- **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
+- **mgengarelli / work-darwin** — macOS home + nix-darwin configuration (aarch64-darwin). GUI apps (Ghostty, Proton suite, etc., plus Mac App Store apps via `mas`) are managed declaratively through Homebrew via nix-darwin (`system/work-darwin/`); CLI tools and dotfiles stay in Home Manager (`home/work-darwin/`).
 - **mgengarelli@hackintosh** — macOS home + nix-darwin configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. GUI apps (Ghostty, Proton suite, etc.) are managed declaratively via Homebrew through nix-darwin; CLI tools stay in nixpkgs via Home Manager.
 
 ## Home Manager Modules
@@ -79,7 +79,17 @@ Steps for a fresh NixOS installation:
 
 ### macOS (mgengarelli)
 
-Home-manager only. See the `home/work-darwin/` directory for details.
+Home-manager + nix-darwin. GUI apps are managed by Homebrew through nix-darwin;
+CLI tools and dotfiles are managed by Home Manager.
+
+```bash
+darwin-rebuild switch --flake .#work-darwin  # nix-darwin + Homebrew
+home-manager switch --flake .#mgengarelli    # dotfiles
+```
+
+**Note**: the system config decrypts a Cloudflare CA cert secret via
+[agenix](https://github.com/ryantm/agenix); it expects an age identity at
+`/Users/mgengarelli/.age/key.txt`.
 
 ### macOS — Hackintosh (mgengarelli@hackintosh)
 

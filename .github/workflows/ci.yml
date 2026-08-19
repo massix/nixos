@@ -73,6 +73,11 @@ jobs:
             /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
           df -h
         if: ${{ matrix.os_version == 'macos-15' }}
+      - name: Build Darwin System Configuration
+        run: |
+          nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'macos-15' }}
       - name: Build Darwin Home Manager
         run: |
           nix build ".#homeConfigurations.mgengarelli.activationPackage"
