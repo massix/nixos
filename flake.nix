@@ -37,6 +37,13 @@
 
     hackintosh-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     hackintosh-darwin.inputs.nixpkgs.follows = "pinned";
+
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.darwin.follows = "nixpkgs";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -53,6 +60,8 @@
     , self
     , ghostty
     , hackintosh-darwin
+    , agenix
+    , nix-darwin
     , ...
     }:
     let
@@ -136,6 +145,13 @@
         };
       };
       darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true); {
+        darwinConfigurations.work-darwin = nix-darwin.lib.darwinSystem {
+          inherit system pkgs;
+          modules = [
+            agenix.darwinModules.age
+            ./system/work-darwin
+          ];
+        };
         homeConfigurations."mgengarelli" = helpers.mkHome {
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
@@ -155,15 +171,8 @@
           username = "mgengarelli";
           extraModules = [ ./home/hackintosh ];
         };
-      };
-      hackintoshDarwinSet = {
-        darwinConfigurations.hackintosh = hackintosh-darwin.lib.darwinSystem rec {
-          system = "x86_64-darwin";
-          pkgs = import inputs.pinned {
-            inherit system;
-            config.allowUnfree = true;
-            config.allowDeprecatedx86_64Darwin = true;
-          };
+        darwinConfigurations.hackintosh = hackintosh-darwin.lib.darwinSystem {
+          inherit system pkgs;
           modules = [ ./system/hackintosh ];
         };
       };
@@ -242,7 +251,12 @@
     in
     commonStuff //
     linuxSet //
-    hackintoshDarwinSet //
+    {
+      darwinConfigurations =
+        darwinSet.darwinConfigurations //
+        hackintoshSet.darwinConfigurations;
+    }
+    //
     {
       homeConfigurations =
         linuxSet.homeConfigurations //
