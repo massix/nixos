@@ -52,6 +52,14 @@ let
   };
 
   enabledServers = filterAttrs (name: _: builtins.elem name cfg.mcps) allServers;
+
+  # Statusline shown at the bottom of the Claude Code TUI. Wrapped with its
+  # runtime deps so it works standalone regardless of what's on PATH.
+  claudeStatusline = pkgs.writeShellApplication {
+    name = "claude-statusline";
+    runtimeInputs = [ pkgs.bash pkgs.jq pkgs.git ];
+    text = builtins.readFile ./files/statusline.sh;
+  };
 in
 {
   options.massix.claude-code = {
@@ -133,6 +141,10 @@ in
     home.file.".claude/nix-settings.json".text = builtins.toJSON (
       {
         inherit (cfg) theme;
+        statusLine = {
+          type = "command";
+          command = "${claudeStatusline}/bin/claude-statusline";
+        };
       }
       // optionalAttrs (!cfg.coAuthor) {
         attribution = {
