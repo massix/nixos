@@ -13,9 +13,10 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
 - **mgengarelli** — macOS (`aarch64-darwin`): **Home Manager only**, no
   nix-darwin system module — macOS is configured purely through home-manager.
 - **mgengarelli@hackintosh** — macOS (`x86_64-darwin`) on a Surface Laptop 3
-  running OpenCore. **Home Manager only**. Uses a pinned nixpkgs (`nixos-26.05`)
-  because nixpkgs dropped `x86_64-darwin` support after that release. Overlays
-  are disabled (`pkgSet pinned "x86_64-darwin" false`) — see `flake.nix`.
+  running OpenCore. **Home Manager + nix-darwin** (Homebrew for GUI apps).
+  Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped
+  `x86_64-darwin` support after that release. Overlays are disabled
+  (`pkgSet pinned "x86_64-darwin" false`) — see `flake.nix`.
 
 State version: `24.05`. Systems: `x86_64-linux`, `aarch64-darwin`, `x86_64-darwin`.
 
@@ -71,6 +72,7 @@ list** + the resulting `pkgs` + `helpers` imported from `lib/`). Outputs are the
 assembled:
 - `darwinSet` → `homeConfigurations."mgengarelli"` (extraModule `./home/work-darwin`)
 - `hackintoshSet` → `homeConfigurations."mgengarelli@hackintosh"` (extraModule `./home/hackintosh`)
+- `hackintoshDarwinSet` → `darwinConfigurations.hackintosh` (nix-darwin + Homebrew)
 - `linuxSet` → `nixosConfigurations."elendil"` + `homeConfigurations."massi@elendil"` (extraModule `./home/elendil`)
 - `commonStuff` (via `flake-utils`) → `devShells.default` and `packages` (from `pkgs/`).
 

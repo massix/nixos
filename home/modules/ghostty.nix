@@ -45,7 +45,7 @@ in
   options.massix.ghostty = {
     enable = mkEnableOption "enable ghostty";
     package = mkOption {
-      type = types.package;
+      type = types.nullOr types.package;
       default = pkgs.ghostty;
       description = "Ghostty package to use";
     };
@@ -75,7 +75,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package pkgs.nerd-fonts.symbols-only ] ++ cfg.extraPackages;
+    home.packages = lib.optionals (cfg.package != null) [ cfg.package ]
+      ++ [ pkgs.nerd-fonts.symbols-only ]
+      ++ cfg.extraPackages;
     xdg.configFile."ghostty/config" =
       let
         allSettings = settings // cfg.extraSettings // { inherit (cfg) theme; };

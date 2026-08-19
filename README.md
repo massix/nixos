@@ -27,7 +27,7 @@ Two configurations are defined:
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
   **Cloud drives**: OneDrive, ProtonDrive and Google Drive mounted at login via rclone systemd user services (`home/elendil/default.nix`).
 - **mgengarelli** — macOS home configuration (aarch64-darwin). Uses home-manager to keep a consistent environment on a Mac.
-- **mgengarelli@hackintosh** — macOS home configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. Missing functionality (Ghostty, mcp-atlassian) is provided through local derivations or stubs — see `flake.nix` and `home/hackintosh/packages.nix` for details.
+- **mgengarelli@hackintosh** — macOS home + nix-darwin configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. GUI apps (Ghostty, Proton suite, etc.) are managed declaratively via Homebrew through nix-darwin; CLI tools stay in nixpkgs via Home Manager.
 
 ## Home Manager Modules
 
@@ -79,11 +79,13 @@ Steps for a fresh NixOS installation:
 
 ### macOS (mgengarelli)
 
-The macOS configuration uses nix-darwin and home-manager. See the `home/work-darwin/` directory for details.
+Home-manager only. See the `home/work-darwin/` directory for details.
 
 ### macOS — Hackintosh (mgengarelli@hackintosh)
 
-Home-manager only. Requires an existing OpenCore boot setup on x86_64 hardware (Surface Laptop 3).
+Home-manager + nix-darwin. GUI apps are managed by Homebrew through nix-darwin;
+CLI tools and dotfiles are managed by Home Manager. Requires an existing OpenCore
+boot setup on x86_64 hardware (Surface Laptop 3).
 
 #### Prerequisites
 
@@ -105,12 +107,17 @@ machine wakes from sleep.
 #### Applying
 
 ```bash
-home-manager switch --flake .#mgengarelli@hackintosh
+darwin-rebuild switch --flake .#hackintosh    # nix-darwin + Homebrew
+home-manager switch --flake .#mgengarelli@hackintosh  # dotfiles
 ```
 
-**Note:** This configuration uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs
-dropped x86_64-darwin support after that release. Overlays are disabled, so some
-packages (Ghostty, mcp-atlassian) are provided through local derivations or stubs.
+**Note:** Before the first `darwin-rebuild switch`, manually uninstall any
+Proton apps (VPN, Drive, Pass) already in `/Applications` — Homebrew will
+refuse to install a cask over an existing manual installation.
+
+This configuration uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs
+dropped x86_64-darwin support after that release. Overlays are disabled, so
+some packages (mcp-atlassian) use stubs.
 
 ## Customization
 

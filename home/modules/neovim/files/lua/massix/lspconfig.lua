@@ -35,6 +35,9 @@ M.lspconfig = function()
           ["home-manager"] = {
             expr = '(builtins.getFlake "' .. flake_path .. '").homeConfigurations."massi@elendil".options',
           },
+          ["nix-darwin"] = {
+            expr = '(builtins.getFlake "' .. flake_path .. '").darwinConfigurations.hackintosh.options',
+          },
         },
       },
     },
