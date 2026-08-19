@@ -37,21 +37,31 @@ in
     };
     ghostty =
       let
-        add-plus = l: map (x: "+${x}") l;
-        to-font-feature = l: builtins.concatStringsSep "," (add-plus l);
+        to-font-feature = l: builtins.concatStringsSep "," (map (x: "+${x}") l);
       in
       {
         enable = true;
         theme = "TokyoNight";
+        extraPackages = with pkgs; [
+          monaspace
+        ];
         extraSettings = {
-          font-family = "Kode Mono";
-          font-size = "12";
+          font-family = "Monaspace Krypton";
+          font-size = "13";
           window-height = "65";
           window-width = "190";
           font-feature = to-font-feature [
             "calt"
-            "ss01"
-            "lig"
+            "liga"
+            "ss01" # !=, ===
+            "ss02" # <=, >=
+            "ss03" # ->, ~>
+            "ss04" # </, />
+            "ss05" # |>
+            "ss06" # &&, ##, ++, __, ==
+            "ss07" # ::
+            "ss09" # <=>, >>, <<, =<<
+            "ss10" # #[ #(
           ];
         };
       };
