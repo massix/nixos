@@ -12,6 +12,7 @@
       "mas"
     ];
     casks = [
+      "antinote"
       "cloudflare-warp"
       "ghostty"
       "google-drive"
@@ -24,6 +25,10 @@
       "steam"
       "whatsapp"
     ];
+    masApps = {
+      "Proton Pass for Safari" = 6502835663;
+      "uBlock Origin Lite" = 6745342698;
+    };
     global = {
       autoUpdate = true;
     };
