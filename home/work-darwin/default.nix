@@ -69,6 +69,7 @@ in
       enable = true;
       configuration.extraShellAbbrs = {
         j = "just";
+        drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
       };
       configuration.extraInit = [
         "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"

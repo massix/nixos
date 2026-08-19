@@ -2,23 +2,13 @@
 , pkgs
 , ...
 }:
-let
-  combinedCaBundle = pkgs.runCommand "combined-ca-bundle.crt" { } ''
-    cat ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt ${config.age.secrets.cloudflare-ca.path} > $out
-  '';
-in
 {
   age = {
     identityPaths = [ "/Users/mgengarelli/.age/key.txt" ];
-    # FIXME: this is kind of a horrible hack and counter-intuitive, but to enable copying this, you
-    # must first remove the ${combinedCaBundle} reference from the nix configuration, then re-enable this
-    # then you can safely re-enable the nix configuration. This might be a bug in nix-darwin but it's not
-    # worth investigating yet.
     secrets = {
       cloudflare-ca = {
         file = ./secrets/cloudflare-cr.crt.age;
         mode = "0644";
-        path = "/etc/ssl/cloudflare-cr.crt";
       };
 
     };
@@ -33,6 +23,7 @@ in
     casks = [
       "antinote"
       "bitwarden"
+      "front"
       "ghostty"
       "macpass"
       "netnewswire"
@@ -55,13 +46,30 @@ in
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       trusted-users = [ "mgengarelli" ];
-      ssl-cert-file = "${combinedCaBundle}";
+      ssl-cert-file = "/etc/ssl/certs/combined-ca-bundle.crt";
     };
   };
   system = {
     stateVersion = 7;
     primaryUser = "mgengarelli";
     tools.darwin-rebuild.enable = true;
+    activationScripts.postActivation = {
+      text = ''
+        echo "Merging cacert + WARP root CA..." >&2
+        for i in $(seq 1 5); do
+          echo "Waiting $i"
+          if [ -s "${config.age.secrets.cloudflare-ca.path}" ]; then
+            break
+          fi
+          sleep 1
+        done
+        if [ ! -s "${config.age.secrets.cloudflare-ca.path}" ]; then
+          echo "WARNING: agenix secret not present after 30s, bundle will be incomplete" >&2
+        fi
+        cat ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt "${config.age.secrets.cloudflare-ca.path}" > /etc/ssl/certs/combined-ca-bundle.crt
+        chmod 644 /etc/ssl/certs/combined-ca-bundle.crt
+      '';
+    };
     defaults = {
       finder = {
         ShowStatusBar = true;

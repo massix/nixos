@@ -75,7 +75,6 @@ jobs:
         if: ${{ matrix.os_version == 'macos-15' }}
       - name: Build Darwin System Configuration
         run: |
-          echo "fake" | sudo tee "/etc/ssl/cloudflare-cr.crt"
           nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"
           cachix push surface-zen result
         if: ${{ matrix.os_version == 'macos-15' }}
