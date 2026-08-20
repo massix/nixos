@@ -14,7 +14,10 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
   (`darwinConfigurations.work-darwin`, `system/work-darwin/`). Homebrew (via
   nix-darwin) manages GUI apps; agenix decrypts a system-level secret (Cloudflare
   CA cert) at activation, separate from the home-manager-level `homeage` pipeline.
-- **mgengarelli@hackintosh** — macOS (`x86_64-darwin`) on a Surface Laptop 3
+- **massi@mithrandir** — macOS (`aarch64-darwin`): **Home Manager + nix-darwin**
+  (`darwinConfigurations.mithrandir`, `system/mithrandir/`). Homebrew (via
+  nix-darwin) manages GUI apps. CLI tools and dotfiles via Home Manager.
+- **mgengarelli@curunir** — macOS (`x86_64-darwin`) on a Surface Laptop 3
   running OpenCore. **Home Manager + nix-darwin** (Homebrew for GUI apps).
   Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped
   `x86_64-darwin` support after that release. Overlays are disabled
@@ -39,7 +42,8 @@ nix flake show                 # list every configuration/output
 nix build ".#homeConfigurations.mgengarelli.activationPackage"          # macOS home
 nix build ".#homeConfigurations.\"massi@elendil\".activationPackage"    # linux home
 nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"  # NixOS system
-nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"  # macOS system
+nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"  # macOS system (work)
+nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"  # macOS system (mithrandir)
 
 # Apply (only with explicit authorization — see rules below)
 home-manager switch                         # home configs
@@ -75,8 +79,8 @@ list** + the resulting `pkgs` + `helpers` imported from `lib/`). Outputs are the
 assembled:
 - `darwinSet` → `homeConfigurations."mgengarelli"` (extraModule `./home/work-darwin`)
   and `darwinConfigurations.work-darwin` (agenix + `./system/work-darwin`)
-- `hackintoshSet` → `homeConfigurations."mgengarelli@hackintosh"` (extraModule `./home/hackintosh`)
-  and `darwinConfigurations.hackintosh` (nix-darwin + Homebrew)
+- `hackintoshSet` → `homeConfigurations."mgengarelli@curunir"` (extraModule `./home/curunir`)
+  and `darwinConfigurations.curunir` (nix-darwin + Homebrew)
 - `linuxSet` → `nixosConfigurations."elendil"` + `homeConfigurations."massi@elendil"` (extraModule `./home/elendil`)
 - `commonStuff` (via `flake-utils`) → `devShells.default` and `packages` (from `pkgs/`).
 
@@ -93,9 +97,10 @@ Every configuration goes through one of these two factory functions.
 Each module in `home/modules/` defines options under `options.massix.<name>`
 (an `enable = mkEnableOption` plus settings) and gates everything behind
 `config = mkIf cfg.enable {...}`. The base list in `lib/` *imports* modules;
-the host entrypoints — `home/work-darwin/default.nix` (macOS) and
-`home/elendil/default.nix` (Linux) — *enable & configure* them via the
-`massix.<name>` namespace.
+the host entrypoints — `home/work-darwin/default.nix` (macOS work),
+`home/mithrandir/default.nix` (macOS mithrandir), `home/curunir/default.nix`
+(macOS curunir), and `home/elendil/default.nix` (Linux) — *enable & configure*
+them via the `massix.<name>` namespace.
 
 ### Secrets pipeline (`homeage` + fish)
 Secrets are age-encrypted `.age` files decrypted at activation by **homeage**
@@ -171,9 +176,11 @@ pkgs/                # custom derivations (kernel, tanzu, tridentctl)
 home/
   modules/           # massix.* home modules (neovim, fish, opencode, claude-code, ...)
   work-darwin/       # macOS (mgengarelli) host config
-  hackintosh/        # macOS (mgengarelli@hackintosh) host config
+  mithrandir/        # macOS (massi@mithrandir) host config
+  curunir/           # macOS (mgengarelli@curunir) host config
   elendil/           # linux (massi@elendil) host config
 system/work-darwin/  # nix-darwin system config for mgengarelli (Homebrew + agenix)
+system/mithrandir/   # nix-darwin system config for mithrandir (Homebrew)
 system/elendil/      # NixOS system config for the Surface Pro
 .github/workflows/   # CI
 ```

@@ -145,11 +145,24 @@
         };
       };
       darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true); {
+        darwinConfigurations.mithrandir = nix-darwin.lib.darwinSystem {
+          inherit system pkgs;
+          modules = [
+            ./system/mithrandir
+          ];
+        };
         darwinConfigurations.work-darwin = nix-darwin.lib.darwinSystem {
           inherit system pkgs;
           modules = [
             agenix.darwinModules.age
             ./system/work-darwin
+          ];
+        };
+        homeConfigurations."massi@mithrandir" = helpers.mkHome {
+          inherit inputs stateVersion system pkgs;
+          username = "massi";
+          extraModules = [
+            ./home/mithrandir
           ];
         };
         homeConfigurations."mgengarelli" = helpers.mkHome {

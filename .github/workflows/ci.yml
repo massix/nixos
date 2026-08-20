@@ -73,13 +73,23 @@ jobs:
             /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
           df -h
         if: ${{ matrix.os_version == 'macos-15' }}
-      - name: Build Darwin System Configuration
+      - name: Build Work Darwin System Configuration
         run: |
           nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"
           cachix push surface-zen result
         if: ${{ matrix.os_version == 'macos-15' }}
-      - name: Build Darwin Home Manager
+      - name: Build Work Darwin Home Manager
         run: |
           nix build ".#homeConfigurations.mgengarelli.activationPackage"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'macos-15' }}
+      - name: Build Mithrandir System Configuration
+        run: |
+          nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"
+          cachix push surface-zen result
+        if: ${{ matrix.os_version == 'macos-15' }}
+      - name: Build Mithrandir Home Manager
+        run: |
+          nix build ".#homeConfigurations.massi@mithrandir.activationPackage"
           cachix push surface-zen result
         if: ${{ matrix.os_version == 'macos-15' }}

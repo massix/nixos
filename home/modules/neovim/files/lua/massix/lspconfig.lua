@@ -36,7 +36,7 @@ M.lspconfig = function()
             expr = '(builtins.getFlake "' .. flake_path .. '").homeConfigurations."massi@elendil".options',
           },
           ["nix-darwin"] = {
-            expr = '(builtins.getFlake "' .. flake_path .. '").darwinConfigurations.curunir.options',
+            expr = '(builtins.getFlake "' .. flake_path .. '").darwinConfigurations.mithrandir.options',
           },
         },
       },
