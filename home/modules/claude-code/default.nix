@@ -8,14 +8,13 @@ let
   # environment variables (expanded by Claude Code at startup) and are provided
   # elsewhere (see home/modules/fish.nix).
   allServers = {
+    # GitLab's native MCP server is OAuth-only (Dynamic Client Registration);
+    # it has no personal-access-token/header auth yet (see
+    # gitlab-org/gitlab#586184). Claude Code handles the browser OAuth flow
+    # and caches the resulting token itself.
     gitlab = {
-      type = "stdio";
-      command = "npx";
-      args = [ "-y" "@structured-world/gitlab-mcp" ];
-      env = {
-        GITLAB_TOKEN = "\${GITLAB_MCP_TOKEN}";
-        GITLAB_API_URL = "https://git.questel.com";
-      };
+      type = "http";
+      url = "https://git.questel.com/api/v4/mcp";
     };
     github = {
       type = "http";
