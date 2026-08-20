@@ -302,4 +302,5 @@ in
   };
 
   xdg.configFile."fish/functions/kcon.fish".source = ./files/kcon.fish;
+  xdg.configFile."fish/conf.d/rapid-log.fish".source = ./files/rapid-log.fish;
 }
