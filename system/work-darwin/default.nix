@@ -19,6 +19,7 @@
     onActivation.cleanup = "zap";
     brews = [
       "mas"
+      "mlx-lm"
     ];
     casks = [
       "antinote"
@@ -71,15 +72,30 @@
       '';
     };
     defaults = {
+      hitoolbox.AppleFnUsageType = "Change Input Source";
+      iCal = {
+        "first day of week" = "Monday";
+        CalendarSidebarShown = true;
+      };
+      magicmouse.MouseButtonMode = "TwoButton";
+      controlcenter = {
+        BatteryShowPercentage = false;
+        Sound = true;
+        FocusModes = true;
+        NowPlaying = true;
+      };
       finder = {
-        ShowStatusBar = true;
-        ShowPathbar = true;
         AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "clmv";
+        FXRemoveOldTrashItems = true;
+        NewWindowTarget = "Home";
         ShowHardDrivesOnDesktop = true;
         ShowMountedServersOnDesktop = true;
+        ShowPathbar = true;
         ShowRemovableMediaOnDesktop = true;
+        ShowStatusBar = true;
+        _FXEnableColumnAutoSizing = true;
         _FXSortFoldersFirst = true;
-        NewWindowTarget = "Home";
       };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
@@ -95,6 +111,10 @@
         tilesize = 58;
         largesize = 96;
       };
+    };
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToControl = true;
     };
   };
 }
