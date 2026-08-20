@@ -60,6 +60,7 @@
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSWindowShouldDragOnGesture = true;
       };
       dock = {
         mouse-over-hilite-stack = true;
