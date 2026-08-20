@@ -87,13 +87,13 @@ in
             inherit (cfg) autoupdate;
             default_agent = cfg.defaultAgent;
             mcp = {
+              # GitLab's native MCP server is OAuth-only (Dynamic Client
+              # Registration); it has no personal-access-token/header auth yet
+              # (see gitlab-org/gitlab#586184).
               gitlab = {
-                type = "local";
-                command = [ "npx" "-y" "@structured-world/gitlab-mcp" ];
-                environment = {
-                  GITLAB_TOKEN = "{env:GITLAB_MCP_TOKEN}";
-                  GITLAB_API_URL = "https://git.questel.com";
-                };
+                type = "remote";
+                url = "https://git.questel.com/api/v4/mcp";
+                oauth = { };
                 enabled = builtins.elem "gitlab" cfg.mcps;
               };
               github = {
@@ -164,10 +164,6 @@ in
       "gh-mcp-token" = {
         source = ./secrets/gh-mcp-token.age;
         symlinks = [ "${config.home.homeDirectory}/.gh-mcp-token" ];
-      };
-      "gitlab-mcp-token" = {
-        source = ./secrets/gitlab-mcp-token.age;
-        symlinks = [ "${config.home.homeDirectory}/.gitlab-mcp-token" ];
       };
       "jira-mcp-token" = {
         source = ./secrets/jira-mcp-token.age;
