@@ -80,8 +80,8 @@
       magicmouse.MouseButtonMode = "TwoButton";
       controlcenter = {
         BatteryShowPercentage = false;
-        Sound = true;
-        FocusModes = true;
+        Sound = false;
+        FocusModes = false;
         NowPlaying = true;
       };
       finder = {
@@ -98,8 +98,10 @@
         _FXSortFoldersFirst = true;
       };
       NSGlobalDomain = {
+        AppleIconAppearanceTheme = "ClearAutomatic";
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
+        AppleShowScrollBars = "WhenScrolling";
         NSAutomaticSpellingCorrectionEnabled = false;
         NSWindowShouldDragOnGesture = true;
       };

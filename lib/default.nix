@@ -46,7 +46,7 @@
             home = {
               inherit username homeDirectory stateVersion;
               activation.report-changes = config.lib.dag.entryAnywhere ''
-                ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+                [[ -d "$oldGenPath" ]] && ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
               '';
             };
 

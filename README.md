@@ -10,7 +10,8 @@ A personal NixOS configuration repository managed with **Flakes** and **Home Man
 - [Applying the Configuration](#applying-the-configuration)
   - [NixOS (elendil)](#nixos-elendil)
   - [macOS (mgengarelli)](#macos-mgengarelli)
-  - [macOS — Hackintosh (mgengarelli@hackintosh)](#macos--hackintosh-mgengarellihackintosh)
+  - [macOS — Curunir (mgengarelli@curunir)](#macos--curunir-mgengarrelicurunir)
+  - [macOS — Mithrandir (massi@mithrandir)](#macos--mithrandir-massimithrandir)
 - [Customization](#customization)
 - [License](#license)
 
@@ -21,13 +22,14 @@ The goal is to go from bare metal to a fully configured system with a single com
 
 ## Systems
 
-Three configurations are defined:
+Four configurations are defined:
 
 - **elendil** — NixOS on a Microsoft Surface Pro (x86_64-linux). KDE Plasma 6, Fish shell, Docker, Steam, PipeWire, and the usual hardware tweaks to make everything work.
   **Custom kernel**: Zen-based kernel with Linux Surface patches, tuned for low latency and Surface hardware support (drivers for touchscreen, cameras, sensors, etc.). Defined in `pkgs/kernel/`.
   **Cloud drives**: OneDrive, ProtonDrive and Google Drive mounted at login via rclone systemd user services (`home/elendil/default.nix`).
 - **mgengarelli / work-darwin** — macOS home + nix-darwin configuration (aarch64-darwin). GUI apps (Ghostty, Proton suite, etc., plus Mac App Store apps via `mas`) are managed declaratively through Homebrew via nix-darwin (`system/work-darwin/`); CLI tools and dotfiles stay in Home Manager (`home/work-darwin/`).
-- **mgengarelli@hackintosh** — macOS home + nix-darwin configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. GUI apps (Ghostty, Proton suite, etc.) are managed declaratively via Homebrew through nix-darwin; CLI tools stay in nixpkgs via Home Manager.
+- **massi@mithrandir** — macOS home + nix-darwin configuration (aarch64-darwin) for a new MacBook Pro. GUI apps (Ghostty, Proton suite, Google Drive, Steam, WhatsApp, etc.) are managed declaratively through Homebrew via nix-darwin (`system/mithrandir/`); CLI tools and dotfiles stay in Home Manager (`home/mithrandir/`).
+- **mgengarelli@curunir** — macOS home + nix-darwin configuration (x86_64-darwin) on a Surface Laptop 3 running OpenCore. Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped x86_64-darwin support after that release. Overlays are disabled entirely because they reference packages built against nixpkgs-unstable and are ABI-incompatible with the older pinned set. GUI apps (Ghostty, Proton suite, etc.) are managed declaratively via Homebrew through nix-darwin; CLI tools stay in nixpkgs via Home Manager.
 
 ## Home Manager Modules
 
@@ -91,7 +93,21 @@ home-manager switch --flake .#mgengarelli    # dotfiles
 [agenix](https://github.com/ryantm/agenix); it expects an age identity at
 `/Users/mgengarelli/.age/key.txt`.
 
-### macOS — Hackintosh (mgengarelli@hackintosh)
+### macOS — Mithrandir (massi@mithrandir)
+
+Home-manager + nix-darwin. GUI apps are managed by Homebrew through nix-darwin;
+CLI tools and dotfiles are managed by Home Manager.
+
+```bash
+darwin-rebuild switch --flake .#mithrandir       # nix-darwin + Homebrew
+home-manager switch --flake .#"massi@mithrandir" # dotfiles
+```
+
+**Note:** Before the first `darwin-rebuild switch`, manually uninstall any
+Proton apps (VPN, Drive, Pass) already in `/Applications` — Homebrew will
+refuse to install a cask over an existing manual installation.
+
+### macOS — Curunir (mgengarelli@curunir)
 
 Home-manager + nix-darwin. GUI apps are managed by Homebrew through nix-darwin;
 CLI tools and dotfiles are managed by Home Manager. Requires an existing OpenCore
@@ -117,8 +133,8 @@ machine wakes from sleep.
 #### Applying
 
 ```bash
-darwin-rebuild switch --flake .#hackintosh    # nix-darwin + Homebrew
-home-manager switch --flake .#mgengarelli@hackintosh  # dotfiles
+darwin-rebuild switch --flake .#curunir               # nix-darwin + Homebrew
+home-manager switch --flake .#"mgengarelli@curunir"   # dotfiles
 ```
 
 **Note:** Before the first `darwin-rebuild switch`, manually uninstall any

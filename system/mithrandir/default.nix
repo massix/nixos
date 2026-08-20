@@ -1,22 +1,29 @@
-{ ... }:
+{ pkgs
+, ...
+}:
+let
+  hostname = "mithrandir";
+in
 {
   networking = {
-    hostName = "hackintosh";
-    localHostName = "hackintosh";
+    hostName = hostname;
+    localHostName = hostname;
   };
+  environment.shells = [ pkgs.fish ];
   homebrew = {
     enable = true;
     enableFishIntegration = true;
     onActivation.cleanup = "zap";
     brews = [
       "mas"
+      "mlx-lm"
     ];
     casks = [
-      "antinote"
       "cloudflare-warp"
       "ghostty"
       "google-drive"
       "iina"
+      "iptvnator"
       "netnewswire"
       "onedrive"
       "proton-drive"
@@ -36,39 +43,61 @@
   programs.fish.enable = true;
   nix = {
     enable = true;
+    package = pkgs.lix;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "mgengarelli" "root" ];
+      trusted-users = [ "massi" ];
     };
   };
   system = {
     stateVersion = 7;
-    primaryUser = "mgengarelli";
+    primaryUser = "massi";
     tools.darwin-rebuild.enable = true;
     defaults = {
+      hitoolbox.AppleFnUsageType = "Change Input Source";
+      iCal = {
+        "first day of week" = "Monday";
+        CalendarSidebarShown = true;
+      };
+      magicmouse.MouseButtonMode = "TwoButton";
+      controlcenter = {
+        BatteryShowPercentage = false;
+        Sound = false;
+        FocusModes = false;
+        NowPlaying = true;
+      };
       finder = {
-        ShowStatusBar = true;
-        ShowPathbar = true;
         AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "clmv";
+        FXRemoveOldTrashItems = true;
+        NewWindowTarget = "Home";
         ShowHardDrivesOnDesktop = true;
         ShowMountedServersOnDesktop = true;
+        ShowPathbar = true;
         ShowRemovableMediaOnDesktop = true;
+        ShowStatusBar = true;
+        _FXEnableColumnAutoSizing = true;
         _FXSortFoldersFirst = true;
-        NewWindowTarget = "Home";
       };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
+        AppleIconAppearanceTheme = "RegularAutomatic";
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSWindowShouldDragOnGesture = true;
       };
       dock = {
         mouse-over-hilite-stack = true;
         orientation = "left";
         show-recents = false;
         magnification = true;
-        tilesize = 48;
-        largesize = 64;
+        tilesize = 58;
+        largesize = 96;
       };
+    };
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToControl = true;
     };
   };
 }
