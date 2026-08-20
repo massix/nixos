@@ -1,6 +1,7 @@
 { ... }:
 {
   networking = {
+    computerName = "Curunir";
     hostName = "curunir";
     localHostName = "curunir";
   };

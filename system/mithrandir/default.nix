@@ -1,11 +1,9 @@
 { pkgs
 , ...
 }:
-let
-  hostname = "mithrandir";
-in
 {
-  networking = {
+  networking = let hostname = "mithrandir"; in {
+    computerName = "Mithrandir";
     hostName = hostname;
     localHostName = hostname;
   };
