@@ -1,8 +1,8 @@
 { ... }:
 {
   networking = {
-    hostName = "hackintosh";
-    localHostName = "hackintosh";
+    hostName = "curunir";
+    localHostName = "curunir";
   };
   homebrew = {
     enable = true;
@@ -38,7 +38,7 @@
     enable = true;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "mgengarelli" "root" ];
+      trusted-users = [ "mgengarelli" ];
     };
   };
   system = {

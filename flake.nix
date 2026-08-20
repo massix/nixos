@@ -166,14 +166,14 @@
       # older pinned set.  GUI apps (Ghostty, Proton suite, etc.) are managed
       # by Homebrew via hackintoshDarwinSet; CLI tools stay in nixpkgs.
       hackintoshSet = with (pkgSet pinned "x86_64-darwin" false); {
-        homeConfigurations."mgengarelli@hackintosh" = helpers.mkHome {
+        homeConfigurations."mgengarelli@curunir" = helpers.mkHome {
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
-          extraModules = [ ./home/hackintosh ];
+          extraModules = [ ./home/curunir ];
         };
-        darwinConfigurations.hackintosh = hackintosh-darwin.lib.darwinSystem {
+        darwinConfigurations.curunir = hackintosh-darwin.lib.darwinSystem {
           inherit system pkgs;
-          modules = [ ./system/hackintosh ];
+          modules = [ ./system/curunir ];
         };
       };
       linuxSet = with (pkgSet nixpkgs "x86_64-linux" true); {

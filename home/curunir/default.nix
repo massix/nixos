@@ -9,9 +9,10 @@ let
 in
 {
   massix = {
-    firefox = {
-      enable = false;
-    };
+    firefox.enable = false;
+    devops.enable = false;
+    claude-code.enable = false;
+
     fonts = {
       enable = true;
       # Exclude emoji fonts — the Hackintosh relies on macOS-provided UI fonts
@@ -59,14 +60,7 @@ in
     };
     git = {
       enable = true;
-      workRepository = {
-        enabled = true;
-        workRoot = "~/Development/Work/";
-        workEmail = "mgengarelli@questel.com";
-      };
-    };
-    devops = {
-      enable = false;
+      workRepository.enabled = false;
     };
     opencode = {
       enable = true;
@@ -82,9 +76,6 @@ in
         exit 1
       '';
       claudeAuth.enable = false;
-    };
-    claude-code = {
-      enable = false;
     };
   };
   programs = {
@@ -147,7 +138,7 @@ in
       ];
       KeepAlive = true;
       RunAtLoad = true;
-      Label = "com.massix.hackintosh.sleepwatcher";
+      Label = "com.massix.curunir.sleepwatcher";
     };
   };
 
