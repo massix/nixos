@@ -21,6 +21,7 @@ M.debugger = require("massix.debugger").debugger
 M.repl = require("massix.repl").repl
 M.ansible = require("massix.ansible").ansible
 M.quicker = require("massix.quicker").quicker
+M.claude = require("massix.claude").claude
 
 M.direnv = function()
   MiniDeps.add({ source = "direnv/direnv.vim" })
