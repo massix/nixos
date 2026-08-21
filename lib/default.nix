@@ -1,6 +1,7 @@
 { home-manager
 , nixpkgs
 , homeage
+, nix-darwin
 , ...
 }: {
   mkHome =
@@ -69,6 +70,24 @@
           ../home/modules/opencode
           ../home/modules/claude-code
         ] ++ extraModules;
+    };
+
+  # Shared nix-darwin factory: every darwin host gets the common module plus
+  # its own extraModules.  The hackintosh (x86_64-darwin) passes a different
+  # darwin flake since it needs the pinned nix-darwin release.  The formal is
+  # named "darwin" (not "nix-darwin") because a self-named default would
+  # shadow the outer binding and recurse infinitely.
+  mkNixDarwin =
+    { darwin ? nix-darwin, pkgs, stateVersion, system, primaryUser, extraModules ? [ ] }:
+    darwin.lib.darwinSystem {
+      inherit pkgs system;
+      modules = [
+        {
+          system.primaryUser = primaryUser;
+          system.stateVersion = stateVersion;
+        }
+        ../system/modules/darwin-common
+      ] ++ extraModules;
     };
 
   mkSystem =
