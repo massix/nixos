@@ -44,36 +44,54 @@ M.blink = function()
         auto_show = true,
         auto_show_delay_ms = 1000,
       },
-    },
-    menu = {
-      draw = {
-        components = {
-          kind_icon = {
-            text = function(ctx)
-              local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-              return kind_icon
-            end,
-            highlight = function(ctx)
-              local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-              return hl
-            end,
+      menu = {
+        draw = {
+          components = {
+            kind_icon = {
+              text = function(ctx)
+                if ctx.item.kind_icon ~= nil and ctx.item.kind_icon ~= "" then
+                  return ctx.item.kind_icon
+                end
+                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                return kind_icon
+              end,
+              highlight = function(ctx)
+                if ctx.item.kind_hl ~= nil then
+                  return ctx.item.kind_hl
+                end
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
+            },
+            kind = {
+              text = function(ctx)
+                if ctx.item.kind_icon ~= nil and ctx.item.kind_icon ~= "" then
+                  return ""
+                end
+                return ctx.kind
+              end,
+              highlight = function(ctx)
+                if ctx.item.kind_hl ~= nil then
+                  return ctx.item.kind_hl
+                end
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
+            },
           },
-          kind = {
-            highlight = function(ctx)
-              local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-              return hl
-            end,
+          columns = {
+            { "label", "label_description", gap = 1 },
+            { "kind_icon", "kind" },
           },
-        },
-        columns = {
-          { "label", "label_description", gap = 1 },
-          { "kind_icon", "kind" },
         },
       },
     },
 
     sources = {
       default = { "lsp", "path", "snippets", "buffer", "emoji", "calc" },
+      per_filetype = {
+        opencode = { "lsp" },
+      },
       providers = {
         lazydev = {
           name = "LazyDev",
