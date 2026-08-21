@@ -35,26 +35,20 @@ let
   mkAbsolutePath = path: "${configPath}/${modulePath}/${strings.removePrefix "./" path}";
   generateLuarc =
     let
-      plugins = [
-        "which-key.nvim"
-        "nvim-lspconfig"
-        "mini.icons"
-        "slimline.nvim"
-        "blink.cmp"
-        "snacks.nvim"
-      ];
-      plugins-paths =
-        (map (x: "~/.local/share/nvim/site/pack/deps/opt/${x}/lua") plugins) ++
-        [ "~/.local/share/nvim/site/pack/deps/start/mini.nvim/lua" ];
+      depsDir = "${config.home.homeDirectory}/.local/share/nvim/site/pack/deps";
     in
     neovim-package: toJSON { } {
       "$schema" = "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json";
+      "runtime.version" = "LuaJIT";
       "codeLens.enable" = true;
+      "workspace.checkThirdParty" = false;
       "workspace.library" = [
         "${neovim-package}/share/nvim/runtime/lua"
-        (toString ./files/lua)
-      ] ++ plugins-paths;
-      "diagnostics.global" = [ "vim" ];
+        "${configPath}/${modulePath}/files/lua"
+        "${depsDir}/opt"
+        "${depsDir}/start"
+      ];
+      "diagnostics.globals" = [ "vim" "MiniDeps" ];
     };
 in
 {
@@ -145,6 +139,7 @@ in
       {
         "${nvimHome}/lua".source = mkOutOfStoreSymlink (mkAbsolutePath "./files/lua");
         "${nvimHome}/.luarc.json".text = generateLuarc cfg.configuration.package;
+        ".config/nixos/.luarc.json".text = generateLuarc cfg.configuration.package;
       } // (lib.listToAttrs langFiles);
 
     home.sessionVariables = mkIf cfg.defaultEditor {
