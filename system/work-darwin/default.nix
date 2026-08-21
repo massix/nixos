@@ -33,6 +33,11 @@
     masApps = {
       "uBlock Origin Lite" = 6745342698;
       "Ghostery AdBlocker for Privacy" = 6504861501;
+
+      # INFO: these are needed because the company's policies keep reinstalling them
+      "Pages" = 361309726;
+      "Keynote" = 361285480;
+      "Numnbers" = 361304891;
     };
   };
   nix.settings.ssl-cert-file = "/etc/ssl/certs/combined-ca-bundle.crt";
