@@ -67,6 +67,9 @@
     let
       allSystems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
       stateVersion = "24.05";
+      # nix-darwin's system.stateVersion is a number, not the "YY.MM" string
+      # used by home-manager/nixos.
+      darwinStateVersion = 7;
       pkgSet = base: system: withOverlays: rec {
         inherit system;
         config = {
@@ -141,19 +144,23 @@
           inherit system config overlays;
         };
         helpers = import ./lib {
-          inherit home-manager homeage nixpkgs;
+          inherit home-manager homeage nixpkgs nix-darwin;
         };
       };
       darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true); {
-        darwinConfigurations.mithrandir = nix-darwin.lib.darwinSystem {
+        darwinConfigurations.mithrandir = helpers.mkNixDarwin {
           inherit system pkgs;
-          modules = [
+          stateVersion = darwinStateVersion;
+          primaryUser = "massi";
+          extraModules = [
             ./system/mithrandir
           ];
         };
-        darwinConfigurations.work-darwin = nix-darwin.lib.darwinSystem {
+        darwinConfigurations.work-darwin = helpers.mkNixDarwin {
           inherit system pkgs;
-          modules = [
+          stateVersion = darwinStateVersion;
+          primaryUser = "mgengarelli";
+          extraModules = [
             agenix.darwinModules.age
             ./system/work-darwin
           ];
@@ -184,9 +191,12 @@
           username = "mgengarelli";
           extraModules = [ ./home/curunir ];
         };
-        darwinConfigurations.curunir = hackintosh-darwin.lib.darwinSystem {
+        darwinConfigurations.curunir = helpers.mkNixDarwin {
+          darwin = hackintosh-darwin;
           inherit system pkgs;
-          modules = [ ./system/curunir ];
+          stateVersion = darwinStateVersion;
+          primaryUser = "mgengarelli";
+          extraModules = [ ./system/curunir ];
         };
       };
       linuxSet = with (pkgSet nixpkgs "x86_64-linux" true); {

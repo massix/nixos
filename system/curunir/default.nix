@@ -1,14 +1,11 @@
 { ... }:
 {
-  networking = {
+  networking = let hostname = "curunir"; in {
     computerName = "Curunir";
-    hostName = "curunir";
-    localHostName = "curunir";
+    hostName = hostname;
+    localHostName = hostname;
   };
   homebrew = {
-    enable = true;
-    enableFishIntegration = true;
-    onActivation.cleanup = "zap";
     brews = [
       "mas"
     ];
@@ -27,50 +24,12 @@
       "whatsapp"
     ];
     masApps = {
-      "Proton Pass for Safari" = 6502835663;
       "uBlock Origin Lite" = 6745342698;
-    };
-    global = {
-      autoUpdate = true;
+      "Proton Pass for Safari" = 6502835663;
     };
   };
-  programs.fish.enable = true;
-  nix = {
-    enable = true;
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "mgengarelli" ];
-    };
-  };
-  system = {
-    stateVersion = 7;
-    primaryUser = "mgengarelli";
-    tools.darwin-rebuild.enable = true;
-    defaults = {
-      finder = {
-        ShowStatusBar = true;
-        ShowPathbar = true;
-        AppleShowAllExtensions = true;
-        ShowHardDrivesOnDesktop = true;
-        ShowMountedServersOnDesktop = true;
-        ShowRemovableMediaOnDesktop = true;
-        _FXSortFoldersFirst = true;
-        NewWindowTarget = "Home";
-      };
-      NSGlobalDomain = {
-        AppleInterfaceStyle = "Dark";
-        AppleShowAllExtensions = true;
-        NSAutomaticSpellingCorrectionEnabled = false;
-        NSWindowShouldDragOnGesture = true;
-      };
-      dock = {
-        mouse-over-hilite-stack = true;
-        orientation = "left";
-        show-recents = false;
-        magnification = true;
-        tilesize = 48;
-        largesize = 64;
-      };
-    };
+  massix.darwin-common.dock = {
+    tileSize = 48;
+    largeSize = 64;
   };
 }
