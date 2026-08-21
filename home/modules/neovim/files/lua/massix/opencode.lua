@@ -17,6 +17,13 @@ M.opencode = function()
   require("opencode").setup({
     preferred_picker = "snacks",
     preferred_completion = "blink",
+    ui = {
+      input = {
+        text = {
+          wrap = true,
+        },
+      },
+    },
   })
 
   require("which-key").add({
