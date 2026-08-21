@@ -14,7 +14,6 @@
       "mlx-lm"
     ];
     casks = [
-      "cloudflare-warp"
       "ghostty"
       "google-drive"
       "iina"
@@ -24,6 +23,7 @@
       "proton-drive"
       "proton-pass"
       "protonvpn"
+      "shottr"
       "steam"
       "whatsapp"
     ];
