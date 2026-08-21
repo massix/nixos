@@ -59,6 +59,18 @@ let
     runtimeInputs = [ pkgs.bash pkgs.jq pkgs.git ];
     text = builtins.readFile ./files/statusline.sh;
   };
+
+  # Wraps the real `claude` binary with our `--mcp-config`/`--settings` flags
+  # baked in, so every caller (fish, a Neovim plugin spawning `claude`
+  # directly, scripts, ...) gets the identical configuration without relying
+  # on a shell alias. This is the only `claude` exposed on PATH.
+  claudeWrapped = pkgs.writeShellApplication {
+    name = "claude";
+    runtimeInputs = [ pkgs.bash ];
+    text = ''
+      exec ${cfg.package}/bin/claude ${optionalString cfg.strict "--strict-mcp-config "}--mcp-config ${config.home.homeDirectory}/.claude/mcp.json --settings ${config.home.homeDirectory}/.claude/nix-settings.json "$@"
+    '';
+  };
 in
 {
   options.massix.claude-code = {
@@ -115,22 +127,22 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [
-      cfg.package
+      claudeWrapped
       pkgs.nodejs_24
       pkgs.uv
     ];
 
     # Read-only MCP configuration. Claude Code never mutates this file (unlike
     # ~/.claude.json), so it is safe to manage as a nix symlink. It is loaded via
-    # the `--mcp-config` flag set on the shell alias below.
+    # the `--mcp-config` flag baked into `claudeWrapped` above.
     home.file.".claude/mcp.json" = {
       text = builtins.toJSON {
         mcpServers = enabledServers;
       };
     };
 
-    # Read-only extended settings file injected via the `--settings` flag on
-    # the alias below. We deliberately avoid managing ~/.claude/settings.json
+    # Read-only extended settings file injected via the `--settings` flag
+    # baked into `claudeWrapped` above. We deliberately avoid managing ~/.claude/settings.json
     # directly: Claude Code reads AND writes that file (advisor model, /config
     # preferences, backups), so a nix symlink would break those writes. This
     # separate file is never touched by Claude Code and merges at command-line
@@ -152,10 +164,6 @@ in
         };
       }
     );
-
-    # `command` prefix avoids the alias recursively invoking itself.
-    programs.fish.shellAliases.claude =
-      "command claude ${optionalString cfg.strict "--strict-mcp-config "}--mcp-config ${config.home.homeDirectory}/.claude/mcp.json --settings ${config.home.homeDirectory}/.claude/nix-settings.json";
 
     home.sessionVariables = mkIf cfg.disableAutoupdate {
       DISABLE_AUTOUPDATER = "1";
