@@ -11,7 +11,6 @@
     ];
     casks = [
       "antinote"
-      "cloudflare-warp"
       "ghostty"
       "google-drive"
       "iina"
