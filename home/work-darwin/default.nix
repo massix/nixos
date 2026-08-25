@@ -205,7 +205,7 @@ in
   launchd.agents =
     let
       binPath = lib.getExe pkgs.colima;
-      inherit (lib) optional;
+      inherit (lib) optional optionals;
       mkColimaAgent =
         { enable ? true
         , numCpus ? 8
@@ -231,6 +231,12 @@ in
               "--disk=${toString diskSize}"
             ]
             ++ optional mount "--mount=${homeDirectory}/.certs/dockerregistry.prd.questel.fr:/etc/docker/certs.d/dockerregistry.prd.questel.fr:ro"
+            # colima >= 0.10: an explicit `--mount` replaces the defaults
+            # (writable $HOME + /tmp/colima), so restate them explicitly.
+            ++ optionals mount [
+              "--mount=${homeDirectory}:w"
+              "--mount=/tmp/colima:w"
+            ]
             ++ optional (vmType == "vz") "--vz-rosetta"
             ++ optional maxCpu "--cpu-type=max";
 
@@ -303,4 +309,21 @@ in
 
   xdg.configFile."fish/functions/kcon.fish".source = ./files/kcon.fish;
   xdg.configFile."fish/conf.d/rapid-log.fish".source = ./files/rapid-log.fish;
+
+  # Global colima override applied to every profile. Trusts the Zerotrust CA
+  # chain inside all VMs: relies on the `--mount` of the certs into
+  # /etc/docker/certs.d (see mkColimaAgent above); runs on every VM boot.
+  home.file.".colima/_lima/_config/override.yaml".text = ''
+    provision:
+      - mode: system
+        script: |
+          #!/bin/bash
+          set -eux -o pipefail
+          mkdir -p /usr/local/share/ca-certificates
+          find /etc/docker/certs.d/dockerregistry.prd.questel.fr \
+            -maxdepth 1 -type f \( -name '*.crt' -o -name '*.pem' \) \
+            -exec cp {} /usr/local/share/ca-certificates/ \;
+          chmod 644 /usr/local/share/ca-certificates/*
+          update-ca-certificates
+  '';
 }
