@@ -91,6 +91,8 @@
           AppleShowAllExtensions = true;
           AppleShowScrollBars = "WhenScrolling";
           NSAutomaticSpellingCorrectionEnabled = false;
+          NSAutomaticCapitalizationEnabled = false;
+          NSAutomaticPeriodSubstitutionEnabled = false;
           NSWindowShouldDragOnGesture = true;
         };
         dock = {
