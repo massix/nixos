@@ -21,6 +21,7 @@
       "netnewswire"
       "onedrive"
       "proton-drive"
+      "proton-mail"
       "proton-pass"
       "protonvpn"
       "shottr"
