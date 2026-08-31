@@ -31,6 +31,11 @@
       default = "Dark";
       description = "Value for NSGlobalDomain.AppleInterfaceStyle (light/dark appearance).";
     };
+    tap-to-click = lib.mkOption {
+      type = lib.types.nullOr lib.types.bool;
+      default = false;
+      description = "Enable the Tap to Click option on the Trackpad";
+    };
   };
 
   config = {
@@ -98,6 +103,7 @@
           NSAutomaticPeriodSubstitutionEnabled = false;
           NSWindowShouldDragOnGesture = true;
         };
+        trackpad.Clicking = config.massix.darwin-common.tap-to-click;
         dock = {
           mouse-over-hilite-stack = true;
           orientation = config.massix.darwin-common.dock.position;

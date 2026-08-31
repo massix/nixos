@@ -13,6 +13,12 @@
 
     };
   };
+
+  massix.darwin-common = {
+    iconStyle = "ClearAutomatic";
+    tap-to-click = true;
+  };
+
   homebrew = {
     brews = [
       "mas"
