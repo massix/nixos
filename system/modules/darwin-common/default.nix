@@ -39,8 +39,11 @@
     homebrew = {
       enable = true;
       enableFishIntegration = true;
-      onActivation.cleanup = "zap";
-      global.autoUpdate = true;
+      onActivation = {
+        autoUpdate = true;
+        cleanup = "zap";
+        upgrade = true;
+      };
     };
 
     programs.fish.enable = true;
