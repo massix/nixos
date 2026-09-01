@@ -26,6 +26,7 @@
     ];
     casks = [
       "antinote"
+      "crmne/tap/fastpotify"
       "bitwarden"
       "front"
       "ghostty"
@@ -33,7 +34,6 @@
       "netnewswire"
       "proton-pass"
       "shottr"
-      "spotify"
       "whatsapp"
     ];
     masApps = {
