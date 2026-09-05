@@ -10,15 +10,17 @@
       "mas"
     ];
     casks = [
-      "antinote"
       "ghostty"
       "google-drive"
       "iina"
+      "iptvnator"
       "netnewswire"
       "onedrive"
       "proton-drive"
+      "proton-mail"
       "proton-pass"
       "protonvpn"
+      "shottr"
       "steam"
       "whatsapp"
     ];
