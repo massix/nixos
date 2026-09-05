@@ -8,7 +8,7 @@ jobs:
     needs: [lint-and-format]
     strategy:
       matrix:
-        os_version: [ubuntu-latest, macos-15]
+        os_version: [ubuntu-latest, macos-26]
     runs-on: ${{ matrix.os_version }}
     steps:
       - uses: actions/checkout@v6
@@ -35,7 +35,7 @@ jobs:
     runs-on: ${{ matrix.os_version }}
     strategy:
       matrix:
-        os_version: [ubuntu-latest, macos-15]
+        os_version: [ubuntu-latest, macos-26]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -72,24 +72,24 @@ jobs:
           sudo rm -rf /usr/local/share/dotnet /usr/share/dotnet /usr/local/lib/android /opt/ghc \
             /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
           df -h
-        if: ${{ matrix.os_version == 'macos-15' }}
+        if: ${{ matrix.os_version == 'macos-26' }}
       - name: Build Work Darwin System Configuration
         run: |
           nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-15' }}
+        if: ${{ matrix.os_version == 'macos-26' }}
       - name: Build Work Darwin Home Manager
         run: |
           nix build ".#homeConfigurations.mgengarelli.activationPackage"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-15' }}
+        if: ${{ matrix.os_version == 'macos-26' }}
       - name: Build Mithrandir System Configuration
         run: |
           nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-15' }}
+        if: ${{ matrix.os_version == 'macos-26' }}
       - name: Build Mithrandir Home Manager
         run: |
           nix build ".#homeConfigurations.massi@mithrandir.activationPackage"
           cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-15' }}
+        if: ${{ matrix.os_version == 'macos-26' }}

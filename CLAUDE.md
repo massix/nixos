@@ -79,7 +79,7 @@ list** + the resulting `pkgs` + `helpers` imported from `lib/`). Outputs are the
 assembled:
 - `darwinSet` → `homeConfigurations."mgengarelli"` (extraModule `./home/work-darwin`)
   and `darwinConfigurations.work-darwin` (agenix + `./system/work-darwin`)
-- `hackintoshSet` → `homeConfigurations."mgengarelli@curunir"` (extraModule `./home/curunir`)
+- `curunirSet` → `homeConfigurations."mgengarelli@curunir"` (extraModule `./home/curunir`)
   and `darwinConfigurations.curunir` (nix-darwin + Homebrew)
 - `linuxSet` → `nixosConfigurations."elendil"` + `homeConfigurations."massi@elendil"` (extraModule `./home/elendil`)
 - `commonStuff` (via `flake-utils`) → `devShells.default` and `packages` (from `pkgs/`).
