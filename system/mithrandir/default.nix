@@ -7,6 +7,12 @@
     hostName = hostname;
     localHostName = hostname;
   };
+
+  massix.darwin-common = {
+    iconStyle = "RegularAutomatic";
+    tap-to-click = true;
+  };
+
   environment.shells = [ pkgs.fish ];
   homebrew = {
     brews = [
@@ -14,6 +20,7 @@
       "mlx-lm"
     ];
     casks = [
+      "crmne/tap/fastpotify"
       "ghostty"
       "google-drive"
       "iina"
@@ -25,6 +32,7 @@
       "proton-pass"
       "protonvpn"
       "shottr"
+      "spotify"
       "steam"
       "whatsapp"
     ];
