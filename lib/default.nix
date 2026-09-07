@@ -69,6 +69,7 @@
           ../home/modules/ghostty.nix
           ../home/modules/opencode
           ../home/modules/claude-code
+          ../home/modules/gleeter.nix
         ] ++ extraModules;
     };
 

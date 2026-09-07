@@ -11,6 +11,7 @@ in
     firefox.enable = false;
     devops.enable = false;
     claude-code.enable = false;
+    gleeter.enable = true;
 
     fonts = {
       enable = true;

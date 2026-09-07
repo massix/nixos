@@ -44,6 +44,9 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.darwin.follows = "nixpkgs";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    gleeter.url = "github:massix/gleeter";
+    gleeter.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -62,6 +65,7 @@
     , hackintosh-darwin
     , agenix
     , nix-darwin
+    , gleeter
     , ...
     }:
     let
@@ -81,6 +85,7 @@
         overlays =
           if withOverlays then [
             (_: _: self.packages."${system}")
+            (_: _: { gleeter = gleeter.packages.${system}.default; })
             nix-direnv.overlays.default
             purescript-overlay.overlays.default
             ghostty.overlays.default
