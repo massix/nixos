@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.massix.opencode;
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs;
+  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs mapAttrs;
 in
 {
   options.massix.opencode = {
@@ -39,6 +39,23 @@ in
       type = types.bool;
       default = false;
       description = "Disable opencode's automatic update popup";
+    };
+
+    localMlxLm = {
+      enable = mkEnableOption "Local mlx_lm OpenAI-compatible provider";
+
+      baseURL = mkOption {
+        type = types.str;
+        default = "http://127.0.0.1:8080/v1";
+        description = "Base URL for the local mlx_lm server";
+      };
+
+      models = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Models to expose, keyed by model ID (must match /v1/models)";
+        example = { "mlx-community/Qwen3-14B-4bit-DWQ-053125" = { name = "Qwen3 14B 4bit"; }; };
+      };
     };
 
     claudeAuth = {
@@ -142,6 +159,18 @@ in
                 url = "https://mcp.strava.com/mcp";
                 oauth = { };
                 enabled = builtins.elem "strava" cfg.mcps;
+              };
+            };
+          }
+          // optionalAttrs cfg.localMlxLm.enable {
+            provider = {
+              "local-mlx-lm" = {
+                npm = "@ai-sdk/openai-compatible";
+                name = "Local mlx_lm";
+                options = {
+                  inherit (cfg.localMlxLm) baseURL;
+                };
+                models = cfg.localMlxLm.models;
               };
             };
           }

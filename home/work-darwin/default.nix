@@ -109,6 +109,14 @@ in
         "gitlab"
         "coros"
       ];
+      localMlxLm = {
+        enable = true;
+        models = {
+          "mlx-community/Qwen2.5-Coder-7B-4bit" = {
+            name = "Qwen2.5 Coder 4bit";
+          };
+        };
+      };
     };
     claude-code = {
       enable = true;
