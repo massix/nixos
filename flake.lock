@@ -165,14 +165,15 @@
         "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1788808556,
-        "narHash": "sha256-t9ny+2ZwN+csz/gwTktyzCdaxkWL7+3B3NhI3JOeuKA=",
+        "lastModified": 1788888132,
+        "narHash": "sha256-hKFxp7CprZThgrWgG0yg5vuaJEB0B0y4tvVKnD5MrzU=",
         "owner": "massix",
         "repo": "gleeter",
-        "rev": "a96909d3623f77914cf340cc2a64762335a7c5df",
+        "rev": "710eede8bfe271dd94e3248c2713c25c6447bf65",
         "type": "github"
       },
       "original": {
@@ -357,6 +358,22 @@
       "original": {
         "type": "tarball",
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1788807765,
+        "narHash": "sha256-J9oC0bKnkXUrMegqRTXVkyDFJ0gn2U/Qpoo9HgGMQmA=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "93108a538f079596c9a16c72cf03e9322782b6dd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs_2": {
