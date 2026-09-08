@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.massix.opencode;
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs mapAttrs;
+  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs;
 in
 {
   options.massix.opencode = {
