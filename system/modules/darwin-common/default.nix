@@ -26,10 +26,10 @@
       default = "RegularAutomatic";
       description = "Value for NSGlobalDomain.AppleIconAppearanceTheme (icon rendering style).";
     };
-    appearance = lib.mkOption {
-      type = lib.types.str;
-      default = "Dark";
-      description = "Value for NSGlobalDomain.AppleInterfaceStyle (light/dark appearance).";
+    dark-mode = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable Dark mode";
     };
     tap-to-click = lib.mkOption {
       type = lib.types.nullOr lib.types.bool;
@@ -95,7 +95,7 @@
         };
         NSGlobalDomain = {
           AppleIconAppearanceTheme = config.massix.darwin-common.iconStyle;
-          AppleInterfaceStyle = config.massix.darwin-common.appearance;
+          AppleInterfaceStyle = if config.massix.darwin-common.dark-mode then "Dark" else null;
           AppleShowAllExtensions = true;
           AppleShowScrollBars = "WhenScrolling";
           NSAutomaticSpellingCorrectionEnabled = false;
