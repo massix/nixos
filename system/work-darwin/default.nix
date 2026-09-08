@@ -15,7 +15,8 @@
   };
 
   massix.darwin-common = {
-    iconStyle = "ClearAutomatic";
+    dark-mode = false;
+    iconStyle = "RegularAutomatic";
     tap-to-click = true;
   };
 
@@ -26,7 +27,6 @@
     ];
     casks = [
       "antinote"
-      "crmne/tap/fastpotify"
       "bitwarden"
       "front"
       "ghostty"
@@ -34,6 +34,7 @@
       "netnewswire"
       "proton-pass"
       "shottr"
+      "spotify"
       "whatsapp"
     ];
     masApps = {
