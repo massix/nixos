@@ -32,6 +32,7 @@
     masApps = {
       "uBlock Origin Lite" = 6745342698;
       "Proton Pass for Safari" = 6502835663;
+      "PiPifier" = 1160374471;
     };
   };
   massix.darwin-common.dock = {
