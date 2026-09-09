@@ -74,7 +74,7 @@
       # nix-darwin's system.stateVersion is a number, not the "YY.MM" string
       # used by home-manager/nixos.
       darwinStateVersion = 7;
-      pkgSet = base: system: withOverlays: rec {
+      pkgSet = base: system: withOverlays: extraOverlays: rec {
         inherit system;
         config = {
           allowUnfree = true;
@@ -83,7 +83,7 @@
           allowDeprecatedx86_64Darwin = system == "x86_64-darwin";
         };
         overlays =
-          if withOverlays then [
+          (if withOverlays then [
             (_: _: self.packages."${system}")
             (_: _: { gleeter = gleeter.packages.${system}.default; })
             nix-direnv.overlays.default
@@ -144,7 +144,7 @@
                 }
               );
             })
-          ] else [ ];
+          ] else [ ]) ++ extraOverlays;
         pkgs = import base {
           inherit system config overlays;
         };
@@ -152,7 +152,7 @@
           inherit home-manager homeage nixpkgs nix-darwin;
         };
       };
-      darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true); {
+      darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true [ ]); {
         darwinConfigurations.mithrandir = helpers.mkNixDarwin {
           inherit system pkgs;
           stateVersion = darwinStateVersion;
@@ -190,7 +190,9 @@
       # packages built against nixos-unstable and are ABI-incompatible with the
       # older pinned set.  GUI apps (Ghostty, Proton suite, etc.) are managed
       # by Homebrew via hackintoshDarwinSet; CLI tools stay in nixpkgs.
-      hackintoshSet = with (pkgSet pinned "x86_64-darwin" false); {
+      hackintoshSet = with (pkgSet pinned "x86_64-darwin" false [
+        (_: _: { gleeter = gleeter.packages."x86_64-darwin".default; })
+      ]); {
         homeConfigurations."mgengarelli@curunir" = helpers.mkHome {
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
@@ -204,7 +206,7 @@
           extraModules = [ ./system/curunir ];
         };
       };
-      linuxSet = with (pkgSet nixpkgs "x86_64-linux" true); {
+      linuxSet = with (pkgSet nixpkgs "x86_64-linux" true [ ]); {
         nixosConfigurations = {
           "elendil" = helpers.mkSystem {
             inherit stateVersion system pkgs;
