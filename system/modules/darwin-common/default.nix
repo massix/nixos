@@ -2,37 +2,40 @@
 , lib
 , ...
 }:
+let
+  inherit (lib) types;
+in
 {
   options.massix.darwin-common = {
     dock = {
       position = lib.mkOption {
-        type = lib.types.enum [ "left" "bottom" "right" ];
+        type = types.enum [ "left" "bottom" "right" ];
         default = "left";
         description = "Dock position on screen.";
       };
       tileSize = lib.mkOption {
-        type = lib.types.int;
+        type = types.int;
         default = 58;
         description = "Size (px) of regular dock icons.";
       };
       largeSize = lib.mkOption {
-        type = lib.types.int;
+        type = types.int;
         default = 96;
         description = "Magnified size (px) of dock icons on hover.";
       };
     };
     iconStyle = lib.mkOption {
-      type = lib.types.str;
+      type = types.str;
       default = "RegularAutomatic";
       description = "Value for NSGlobalDomain.AppleIconAppearanceTheme (icon rendering style).";
     };
     dark-mode = lib.mkOption {
-      type = lib.types.bool;
+      type = types.bool;
       default = false;
       description = "Enable Dark mode";
     };
     tap-to-click = lib.mkOption {
-      type = lib.types.nullOr lib.types.bool;
+      type = types.bool;
       default = false;
       description = "Enable the Tap to Click option on the Trackpad";
     };

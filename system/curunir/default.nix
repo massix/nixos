@@ -6,8 +6,9 @@
     localHostName = hostname;
   };
   massix.darwin-common = {
-    iconStyle = "ClearAutomatic";
-    tap-to-click = true;
+    iconStyle = "RegularAutomatic";
+    tap-to-click = false;
+    dark-mode = false;
   };
   homebrew = {
     brews = [
