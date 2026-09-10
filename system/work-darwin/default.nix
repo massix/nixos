@@ -18,11 +18,11 @@
     dark-mode = false;
     iconStyle = "RegularAutomatic";
     tap-to-click = true;
+    common-safari-extensions = true;
   };
 
   homebrew = {
     brews = [
-      "mas"
       "mlx-lm"
     ];
     casks = [
@@ -38,10 +38,6 @@
       "whatsapp"
     ];
     masApps = {
-      "uBlock Origin Lite" = 6745342698;
-      "Ghostery AdBlocker for Privacy" = 6504861501;
-      "PiPifier" = 1160374471;
-
       # INFO: these are needed because the company's policies keep reinstalling them
       "Pages" = 361309726;
       "Keynote" = 361285480;

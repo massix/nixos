@@ -11,12 +11,12 @@
   massix.darwin-common = {
     iconStyle = "RegularAutomatic";
     tap-to-click = true;
+    common-safari-extensions = true;
   };
 
   environment.shells = [ pkgs.fish ];
   homebrew = {
     brews = [
-      "mas"
       "mlx-lm"
     ];
     casks = [
@@ -37,9 +37,7 @@
       "whatsapp"
     ];
     masApps = {
-      "uBlock Origin Lite" = 6745342698;
       "Proton Pass for Safari" = 6502835663;
-      "PiPifier" = 1160374471;
     };
   };
   nix.package = pkgs.lix;

@@ -4,6 +4,7 @@
 }:
 let
   inherit (lib) types;
+  cfg = config.massix.darwin-common;
 in
 {
   options.massix.darwin-common = {
@@ -39,6 +40,11 @@ in
       default = false;
       description = "Enable the Tap to Click option on the Trackpad";
     };
+    common-safari-extensions = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Install the common extensions for Safari from the Mac App Store";
+    };
   };
 
   config = {
@@ -51,6 +57,16 @@ in
         autoUpdate = true;
         cleanup = "zap";
         upgrade = true;
+      };
+
+      brews = lib.mkIf cfg.common-safari-extensions [
+        "mas"
+      ];
+
+      masApps = lib.mkIf cfg.common-safari-extensions {
+        "uBlock Origin Lite" = 6745342698;
+        "PiPifier" = 1160374471;
+        "Ghostery AdBlocker for Privacy" = 6504861501;
       };
     };
 
@@ -97,8 +113,8 @@ in
           _FXSortFoldersFirst = true;
         };
         NSGlobalDomain = {
-          AppleIconAppearanceTheme = config.massix.darwin-common.iconStyle;
-          AppleInterfaceStyle = if config.massix.darwin-common.dark-mode then "Dark" else null;
+          AppleIconAppearanceTheme = cfg.iconStyle;
+          AppleInterfaceStyle = if cfg.dark-mode then "Dark" else null;
           AppleShowAllExtensions = true;
           AppleShowScrollBars = "WhenScrolling";
           NSAutomaticSpellingCorrectionEnabled = false;
@@ -106,14 +122,14 @@ in
           NSAutomaticPeriodSubstitutionEnabled = false;
           NSWindowShouldDragOnGesture = true;
         };
-        trackpad.Clicking = config.massix.darwin-common.tap-to-click;
+        trackpad.Clicking = cfg.tap-to-click;
         dock = {
           mouse-over-hilite-stack = true;
-          orientation = config.massix.darwin-common.dock.position;
+          orientation = cfg.dock.position;
           show-recents = false;
           magnification = true;
-          tilesize = config.massix.darwin-common.dock.tileSize;
-          largesize = config.massix.darwin-common.dock.largeSize;
+          tilesize = cfg.dock.tileSize;
+          largesize = cfg.dock.largeSize;
         };
       };
     };
