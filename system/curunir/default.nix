@@ -9,8 +9,14 @@
     iconStyle = "RegularAutomatic";
     tap-to-click = false;
     dark-mode = false;
+    common-safari-extensions = true;
+    dock = {
+      position = "bottom";
+      tileSize = 48;
+    };
   };
   homebrew = {
+    brews = [ "speedtest-go" ];
     casks = [
       "ghostty"
       "google-drive"
@@ -29,9 +35,5 @@
     masApps = {
       "Proton Pass for Safari" = 6502835663;
     };
-  };
-  massix.darwin-common.dock = {
-    tileSize = 48;
-    largeSize = 64;
   };
 }
