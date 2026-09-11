@@ -19,6 +19,11 @@
     iconStyle = "RegularAutomatic";
     tap-to-click = true;
     common-safari-extensions = true;
+    dock = {
+      tileSize = 48;
+      position = "bottom";
+      largeSize = 64;
+    };
   };
 
   homebrew = {
