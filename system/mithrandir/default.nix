@@ -12,12 +12,19 @@
     iconStyle = "RegularAutomatic";
     tap-to-click = true;
     common-safari-extensions = true;
+
+    dock = {
+      position = "bottom";
+      largeSize = 96;
+      tileSize = 48;
+    };
   };
 
   environment.shells = [ pkgs.fish ];
   homebrew = {
     brews = [
       "mlx-lm"
+      "speedtest-go"
     ];
     casks = [
       "crmne/tap/fastpotify"
@@ -34,6 +41,7 @@
       "shottr"
       "spotify"
       "steam"
+      "transmission"
       "whatsapp"
     ];
     masApps = {
