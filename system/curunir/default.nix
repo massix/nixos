@@ -15,9 +15,27 @@
       tileSize = 48;
     };
   };
+
+  system.keyboard.swapLeftCommandAndLeftAlt = true;
+
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      # Keep only Public Key Authentication
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      ChallengeResponseAuthentication no
+      PubkeyAuthentication yes
+
+      # Allow using symlinks in authorized_keys
+      StrictModes no
+    '';
+  };
+
   homebrew = {
     brews = [ "speedtest-go" ];
     casks = [
+      "crmne/tap/fastpotify"
       "ghostty"
       "google-drive"
       "iina"
@@ -30,6 +48,7 @@
       "protonvpn"
       "shottr"
       "steam"
+      "transmission"
       "whatsapp"
     ];
     masApps = {
