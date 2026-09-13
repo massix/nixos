@@ -33,7 +33,7 @@
   };
 
   homebrew = {
-    brews = [ "speedtest-go" ];
+    brews = [ ];
     casks = [
       "crmne/tap/fastpotify"
       "ghostty"

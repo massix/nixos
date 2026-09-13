@@ -17,7 +17,7 @@ let
     cursor-click-to-move = "true";
     cursor-style = "block";
     cursor-style-blink = "true";
-    macos-icon = "glass";
+    macos-icon = "official";
     macos-option-as-alt = "true";
     macos-titlebar-style = "native";
     mouse-hide-while-typing = "true";

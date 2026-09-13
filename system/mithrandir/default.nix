@@ -24,7 +24,6 @@
   homebrew = {
     brews = [
       "mlx-lm"
-      "speedtest-go"
     ];
     casks = [
       "crmne/tap/fastpotify"
