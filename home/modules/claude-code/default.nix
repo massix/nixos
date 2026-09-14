@@ -36,7 +36,7 @@ let
       command = "${pkgs.coreutils}/bin/env";
       args = [ "PYTHONPATH=" "${pkgs.mcp-atlassian}/bin/mcp-atlassian" ];
       env = {
-        JIRA_URL = "https://jira.questel.com";
+        JIRA_URL = "https://questel.atlassian.net";
         JIRA_PERSONAL_TOKEN = "\${JIRA_MCP_TOKEN}";
       };
     };
