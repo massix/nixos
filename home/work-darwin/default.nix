@@ -6,23 +6,14 @@
 let
   inherit (pkgs) lib;
   inherit (config.home) homeDirectory;
+  mkColimaAgent = import ./colima.nix { inherit lib pkgs config; };
 in
 {
   imports = [ ./packages.nix ];
 
   massix = {
-    firefox = {
-      enable = true;
-      extraExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        bitwarden
-      ];
-      extraEngines = {
-        Jira = {
-          urls = [{ template = "https://jira.questel.com/browse/{searchTerms}"; }];
-          definedAliases = [ "@jira" ];
-        };
-      };
-    };
+    gleeter.enable = true;
+    firefox.enable = false;
     fonts = {
       enable = true;
       # afdko is broken on aarch64-darwin; macOS provides its own UI font and Apple Color Emoji.
@@ -196,6 +187,7 @@ in
     ANSIBLE_CONFIG = "${homeDirectory}/.ansible.cfg";
     ANSIBLE_VAULT_PASSWORD_FILE = "${homeDirectory}/.ansible-vault-password";
     GITLAB_INSTANCE_URL = "https://git.questel.com";
+    GLEETER_SSL_CERT_FILE = config.homeage.file.zerotrust-intermediate.path;
   };
 
   home.file.".ansible.cfg" = {
@@ -210,74 +202,25 @@ in
   };
 
   launchd.enable = true;
-  launchd.agents =
-    let
-      binPath = lib.getExe pkgs.colima;
-      inherit (lib) optional optionals;
-      mkColimaAgent =
-        { enable ? true
-        , numCpus ? 8
-        , memory ? 8
-        , vmType ? "vz"
-        , maxCpu ? false
-        , diskSize ? 100
-        , mount ? true
-        , arch
-        , profileName
-        }: {
-          inherit enable;
-          config = {
-            ProgramArguments = [
-              "${binPath}"
-              "start"
-              "--foreground"
-              "--cpu=${toString numCpus}"
-              "--memory=${toString memory}"
-              "--arch=${arch}"
-              "--vm-type=${vmType}"
-              "--profile=${profileName}"
-              "--disk=${toString diskSize}"
-            ]
-            ++ optional mount "--mount=${homeDirectory}/.certs/dockerregistry.prd.questel.fr:/etc/docker/certs.d/dockerregistry.prd.questel.fr:ro"
-            # colima >= 0.10: an explicit `--mount` replaces the defaults
-            # (writable $HOME + /tmp/colima), so restate them explicitly.
-            ++ optionals mount [
-              "--mount=${homeDirectory}:w"
-              "--mount=/tmp/colima:w"
-            ]
-            ++ optional (vmType == "vz") "--vz-rosetta"
-            ++ optional maxCpu "--cpu-type=max";
-
-            Label = "massix.colima.${profileName}";
-
-            RunAtLoad = true;
-            KeepAlive = true;
-
-            EnvironmentVariables = {
-              PATH = "${pkgs.colima}/bin:${pkgs.docker}/bin:/usr/bin/:/bin:/usr/sbin:/sbin";
-            };
-          };
-        };
-    in
-    {
-      colima-aarch64 = mkColimaAgent {
-        enable = true;
-        arch = "aarch64";
-        memory = 14;
-        numCpus = 8;
-        profileName = "aarch64";
-        diskSize = 250;
-      };
-      colima-x86_64 = mkColimaAgent {
-        enable = true;
-        arch = "x86_64";
-        memory = 14;
-        numCpus = 8;
-        maxCpu = true;
-        profileName = "x86_64";
-        diskSize = 250;
-      };
+  launchd.agents = {
+    colima-aarch64 = mkColimaAgent {
+      enable = true;
+      arch = "aarch64";
+      memory = 14;
+      numCpus = 8;
+      profileName = "aarch64";
+      diskSize = 250;
     };
+    colima-x86_64 = mkColimaAgent {
+      enable = true;
+      arch = "x86_64";
+      memory = 14;
+      numCpus = 8;
+      maxCpu = true;
+      profileName = "x86_64";
+      diskSize = 250;
+    };
+  };
 
   nix = {
     gc.automatic = true;
