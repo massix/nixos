@@ -85,6 +85,7 @@ in
       keyboard = {
         enableKeyMapping = true;
         remapCapsLockToControl = true;
+        nonUS.remapTilde = true;
       };
       defaults = {
         hitoolbox.AppleFnUsageType = "Change Input Source";
