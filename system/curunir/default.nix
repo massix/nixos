@@ -35,7 +35,7 @@
   homebrew = {
     brews = [ ];
     casks = [
-      "crmne/tap/fastpotify"
+      "crmne/tap/spotifast"
       "ghostty"
       "google-drive"
       "iina"

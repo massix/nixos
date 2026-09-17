@@ -26,7 +26,7 @@
       "mlx-lm"
     ];
     casks = [
-      "crmne/tap/fastpotify"
+      "crmne/tap/spotifast"
       "ghostty"
       "google-drive"
       "iina"
