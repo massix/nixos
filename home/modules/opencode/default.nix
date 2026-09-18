@@ -137,7 +137,8 @@ in
                 command = [ "${pkgs.coreutils}/bin/env" "PYTHONPATH=" "${cfg.mcp-atlassian-package}/bin/mcp-atlassian" ];
                 environment = {
                   JIRA_URL = "https://questel.atlassian.net";
-                  JIRA_PERSONAL_TOKEN = "{env:JIRA_MCP_TOKEN}";
+                  JIRA_USERNAME = "mgengarelli@questel.com";
+                  JIRA_API_TOKEN = "{env:JIRA_MCP_TOKEN}";
                 };
                 enabled = builtins.elem "jira" cfg.mcps;
               };
