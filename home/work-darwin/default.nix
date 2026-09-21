@@ -100,12 +100,17 @@ in
         "gitlab"
         "coros"
       ];
-      localMlxLm = {
-        enable = true;
+      extraProviders."lumo" = {
+        npm = "@ai-sdk/openai-compatible";
+        name = "Lumo (Tamed)";
+        options = {
+          baseURL = "http://127.0.0.1:3003/v1";
+          apiKey = "your-secret-api-key-here";
+        };
         models = {
-          "mlx-community/Qwen2.5-Coder-7B-4bit" = {
-            name = "Qwen2.5 Coder 4bit";
-          };
+          "lumo" = { name = "Lumo (Proton choose)"; };
+          "lumo-max" = { name = "Lumo Max"; };
+          "lumo-lite" = { name = "Lumo Lite"; };
         };
       };
     };
@@ -180,6 +185,7 @@ in
       docker
       limaWithGuests
       colima
+      lumo-tamer
     ];
 
   home.sessionVariables = {
@@ -188,6 +194,7 @@ in
     ANSIBLE_VAULT_PASSWORD_FILE = "${homeDirectory}/.ansible-vault-password";
     GITLAB_INSTANCE_URL = "https://git.questel.com";
     GLEETER_SSL_CERT_FILE = config.homeage.file.zerotrust-intermediate.path;
+    NODE_EXTRA_CA_CERTS = config.homeage.file.zerotrust-intermediate.path;
   };
 
   home.file.".ansible.cfg" = {
