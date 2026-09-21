@@ -1,0 +1,96 @@
+diff --git a/src/app/config-file.ts b/src/app/config-file.ts
+index 625617f..0e58d4a 100644
+--- a/src/app/config-file.ts
++++ b/src/app/config-file.ts
+@@ -10,7 +10,7 @@
+ 
+ import { existsSync, statSync, readFileSync, writeFileSync } from 'fs';
+ import { parseDocument, parse, Document } from 'yaml';
+-import { resolveProjectPath } from './paths.js';
++import { resolveProjectPath, resolveAssetPath } from './paths.js';
+ 
+ /**
+  * Exit with a fatal error message.
+@@ -26,7 +26,7 @@ export function fatalExit(message: string): never {
+  * Exits on fatal errors (missing or corrupted).
+  */
+ export function loadDefaultsYaml(): Record<string, unknown> {
+-  const path = resolveProjectPath('config.defaults.yaml');
++  const path = resolveAssetPath('config.defaults.yaml');
+   try {
+     return parse(readFileSync(path, 'utf8')) as Record<string, unknown>;
+   } catch (e) {
+diff --git a/src/app/paths.ts b/src/app/paths.ts
+index df73e0e..5bf03f2 100644
+--- a/src/app/paths.ts
++++ b/src/app/paths.ts
+@@ -7,6 +7,7 @@
+ 
+ import { fileURLToPath } from 'url';
+ import { dirname, join, isAbsolute } from 'path';
++import { mkdirSync } from 'fs';
+ 
+ // Detect project root based on runtime location:
+ // - tsx runs from src/app/paths.ts (2 levels up)
+@@ -18,13 +19,37 @@ export const PROJECT_ROOT = isCompiledDist
+     ? join(__dirname, '..', '..', '..')
+     : join(__dirname, '..', '..');
+ 
++// Read-only bundled assets (config.defaults.yaml, proton-auth binary) live next
++// to the installed package inside the immutable Nix store.
++export const ASSET_ROOT = PROJECT_ROOT;
++
++// Mutable runtime state (config.yaml, vault, logs, IndexedDB) must live in a
++// writable directory: $LUMO_STATE_DIR if set, otherwise ~/.local/share/lumo-tamer.
++export const STATE_ROOT = process.env.LUMO_STATE_DIR && isAbsolute(process.env.LUMO_STATE_DIR)
++    ? process.env.LUMO_STATE_DIR
++    : join(process.env.HOME || '.', '.local', 'share', 'lumo-tamer');
++
++mkdirSync(STATE_ROOT, { recursive: true });
++
++/**
++ * Resolve a bundled, read-only asset path (unless already absolute)
++ */
++export function resolveAssetPath(path: string): string {
++  if (isAbsolute(path)) return path;
++  if (path.startsWith('~')) {
++    return path.replace('~', process.env.HOME || '');
++  }
++  return join(ASSET_ROOT, path);
++}
++
+ /**
+- * Resolve a path relative to project root (unless already absolute)
++ * Resolve a mutable state path relative to the writable state root
++ * (unless already absolute)
+  */
+ export function resolveProjectPath(path: string): string {
+   if (isAbsolute(path)) return path;
+   if (path.startsWith('~')) {
+     return path.replace('~', process.env.HOME || '');
+   }
+-  return join(PROJECT_ROOT, path);
++  return join(STATE_ROOT, path);
+ }
+diff --git a/src/auth/login/authenticate.ts b/src/auth/login/authenticate.ts
+index c81020a..6c29abc 100644
+--- a/src/auth/login/authenticate.ts
++++ b/src/auth/login/authenticate.ts
+@@ -7,7 +7,7 @@
+ 
+ import { authConfig } from '../../app/config.js';
+ import { logger } from '../../app/logger.js';
+-import { resolveProjectPath } from '../../app/paths.js';
++import { resolveProjectPath, resolveAssetPath } from '../../app/paths.js';
+ import { runProtonAuth } from './proton-auth-cli.js';
+ import { readVault, writeVault, type VaultKeyConfig } from '../vault/index.js';
+ import type { StoredTokens } from '../types.js';
+@@ -19,7 +19,7 @@ import type { StoredTokens } from '../types.js';
+  * Preserves sync data (userKeys, masterKeys) from existing vault if present.
+  */
+ export async function runLoginAuthentication(): Promise<void> {
+-    const binaryPath = resolveProjectPath(authConfig.login.binaryPath);
++    const binaryPath = resolveAssetPath(authConfig.login.binaryPath);
+ 
+     // Run the Go binary (interactive prompts for credentials)
+     const result = await runProtonAuth(binaryPath);

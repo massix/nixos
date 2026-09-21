@@ -6,6 +6,7 @@ let
     custom-kernel = callPackage ./kernel { };
   };
   commonPkgs = {
+    lumo-tamer = callPackage ./lumo-tamer { };
     tanzu = callPackage ./tanzu { };
     tridentctl = callPackage ./tridentctl { };
   };
