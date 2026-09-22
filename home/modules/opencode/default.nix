@@ -41,20 +41,21 @@ in
       description = "Disable opencode's automatic update popup";
     };
 
-    localMlxLm = {
-      enable = mkEnableOption "Local mlx_lm OpenAI-compatible provider";
-
-      baseURL = mkOption {
-        type = types.str;
-        default = "http://127.0.0.1:8080/v1";
-        description = "Base URL for the local mlx_lm server";
-      };
-
-      models = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Models to expose, keyed by model ID (must match /v1/models)";
-        example = { "mlx-community/Qwen3-14B-4bit-DWQ-053125" = { name = "Qwen3 14B 4bit"; }; };
+    extraProviders = mkOption {
+      type = types.attrs;
+      default = { };
+      description = ''
+        Providers to emit under the `provider` map of opencode.json, keyed by
+        provider id. Piped verbatim into the generated config; no validation
+        here — an invalid provider block will make opencode refuse to start.
+      '';
+      example = {
+        "local-mlx-lm" = {
+          npm = "@ai-sdk/openai-compatible";
+          name = "Local mlx_lm";
+          options.baseURL = "http://127.0.0.1:3003/v1";
+          models = { };
+        };
       };
     };
 
@@ -163,17 +164,8 @@ in
               };
             };
           }
-          // optionalAttrs cfg.localMlxLm.enable {
-            provider = {
-              "local-mlx-lm" = {
-                npm = "@ai-sdk/openai-compatible";
-                name = "Local mlx_lm";
-                options = {
-                  inherit (cfg.localMlxLm) baseURL;
-                };
-                models = cfg.localMlxLm.models;
-              };
-            };
+          // optionalAttrs (cfg.extraProviders != { }) {
+            provider = cfg.extraProviders;
           }
           // optionalAttrs cfg.claudeAuth.enable {
             plugin = [ "opencode-claude-auth@latest" ];
