@@ -28,6 +28,7 @@
 
   homebrew = {
     brews = [
+      "anomalyco/tap/opencode"
       "mlx-lm"
     ];
     casks = [

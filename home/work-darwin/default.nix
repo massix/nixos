@@ -91,6 +91,7 @@ in
     };
     opencode = {
       enable = true;
+      package = null;
       theme = "tokyonight";
       mcps = [
         "github"

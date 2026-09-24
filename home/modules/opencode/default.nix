@@ -7,8 +7,10 @@ in
   options.massix.opencode = {
     enable = mkEnableOption "Enable opencode configuration";
 
-    package = mkPackageOption pkgs "opencode" {
-      default = "opencode";
+    package = mkOption {
+      type = types.nullOr types.package;
+      default = pkgs.opencode;
+      description = "Opencode package to use (or null)";
     };
 
     # The mcp-atlassian package may not build on every platform (e.g. x86_64-darwin
@@ -93,10 +95,9 @@ in
     ];
 
     home.packages = [
-      cfg.package
       pkgs.nodejs_24
       pkgs.uv
-    ];
+    ] ++ (lib.optional (cfg.package != null) cfg.package);
 
     xdg.configFile = {
       "opencode/opencode.json" = {
