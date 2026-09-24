@@ -14,6 +14,7 @@ M.formatter = function()
       hcl = { "packer_fmt" },
       java = { "google-java-format" },
       javascript = { "prettier" },
+      just = { "just" },
       lua = { "stylua" },
       nix = { "nixpkgs_fmt" },
       python = { "ruff_format" },
