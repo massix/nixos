@@ -32,7 +32,7 @@ in
       in
       {
         enable = true;
-        theme = "TokyoNight";
+        theme = "Rose Pine";
         extraPackages = with pkgs; [
           monaspace
         ];
@@ -76,7 +76,10 @@ in
     };
     devops = {
       enable = true;
-      k9s.enable = true;
+      k9s = {
+        enable = true;
+        skin = "rose-pine-moon";
+      };
       ansible.enable = true;
       tanzu.enable = true;
       vault.enable = true;
@@ -130,6 +133,10 @@ in
   };
   programs = {
     home-manager.enable = true;
+    sofka = {
+      enable = true;
+      configFile = ./files/sofka.config.toml;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;

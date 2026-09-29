@@ -125,18 +125,8 @@ M.trailspace = function()
 end
 
 M.colorscheme = function()
-  MiniDeps.add({ source = "folke/tokyonight.nvim" })
-  require("tokyonight").setup({
-    style = "moon",
-    transparent = false,
-    terminal_colors = true,
-    styles = {
-      keywords = { italic = false },
-    },
-    dim_inactive = true,
-  })
-
-  vim.cmd([[colo tokyonight]])
+  MiniDeps.add({ source = "rose-pine/neovim" })
+  vim.cmd([[colo rose-pine-moon]])
 end
 
 M.matchparen = function()
