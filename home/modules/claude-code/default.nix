@@ -76,8 +76,10 @@ in
   options.massix.claude-code = {
     enable = mkEnableOption "Enable claude-code configuration";
 
-    package = mkPackageOption pkgs "claude-code" {
-      default = "claude-code";
+    package = mkOption {
+      type = types.nullOr types.package;
+      default = pkgs.claude-code;
+      description = "Package to use (set to null to disable installing it)";
     };
 
     mcps = mkOption {
@@ -127,10 +129,9 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [
-      claudeWrapped
       pkgs.nodejs_24
       pkgs.uv
-    ];
+    ] ++ (lib.optional (cfg.package != null) claudeWrapped);
 
     # Read-only MCP configuration. Claude Code never mutates this file (unlike
     # ~/.claude.json), so it is safe to manage as a nix symlink. It is loaded via
