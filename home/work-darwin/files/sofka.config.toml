@@ -1,0 +1,36 @@
+prefer_context_namespace = true
+compact_mode = true
+mouse = true
+
+favorite_namespaces = [
+  "kube-system",
+  "application",
+  "storage",
+  "monitoring",
+  "misc"
+]
+
+remember_sort = true
+
+[skin]
+name = "rose-pine"
+
+[[guardrails]]
+contexts = ["*-prd*"]
+actions = ["delete", "force-delete", "drain"]
+confirmation = "type-resource-name"
+reason = "Confirm before deleting"
+
+[[guardrails]]
+contexts = ["*tkgmgt*", "*atlas-us*", "*atlas-fr*"]
+actions = ["delete", "force-delete", "drain"]
+confirmation = "type-resource-name"
+reason = "Confirm before deleting"
+
+[experimental]
+native_describe = true
+
+[logs]
+tail = 1000
+buffer = 10000
+fullscreen = true

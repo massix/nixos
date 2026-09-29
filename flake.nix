@@ -47,6 +47,9 @@
 
     gleeter.url = "github:massix/gleeter";
     gleeter.inputs.nixpkgs.follows = "nixpkgs";
+
+    sofka.url = "github:nklmilojevic/sofka";
+    sofka.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -66,6 +69,7 @@
     , agenix
     , nix-darwin
     , gleeter
+    , sofka
     , ...
     }:
     let
@@ -181,6 +185,7 @@
           inherit inputs stateVersion system pkgs;
           username = "mgengarelli";
           extraModules = [
+            sofka.homeManagerModules.sofka
             ./home/work-darwin
           ];
         };
