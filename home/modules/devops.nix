@@ -8,14 +8,14 @@ let
   cfg = config.massix.devops;
 
   k9sThemes = stdenvNoCC.mkDerivation {
-    pname = "catppuccin-k9s-themes";
+    pname = "k9s-skins";
     version = "0.0.1";
 
     src = fetchFromGitHub {
       owner = "catppuccin";
       repo = "k9s";
-      rev = "590a762";
-      hash = "sha256-EBDciL3F6xVFXvND+5duT+OiVDWKkFMWbOOSruQ0lus=";
+      rev = "fdbec82284744a1fc2eb3e2d24cb92ef87ffb8b4";
+      hash = "sha256-9h+jyEO4w0OnzeEKQXJbg9dvvWGZYQAO4MbgDn6QRzM=";
     };
 
     dontBuild = true;
@@ -25,6 +25,7 @@ let
     installPhase = ''
       mkdir -p $out/k9s/skins
       cp dist/*.yaml $out/k9s/skins/
+      cp ${pkgs.k9s}/share/k9s/skins/* $out/k9s/skins/
     '';
   };
 in
@@ -67,6 +68,11 @@ in
           rb = "rolebindings";
           np = "networkpolicies";
         };
+      };
+      skin = mkOption {
+        type = types.str;
+        description = "Skin to use for K9S";
+        default = "catppuccin-macchiato";
       };
     };
     tanzu.enable = mkEnableOption "tanzu";
@@ -199,15 +205,19 @@ in
         text = yamlGenerator {
           k9s = {
             liveViewAutoRefresh = true;
+            skipLatestRevCheck = true;
             ui = {
+              inherit (cfg.k9s) skin;
               enableMouse = true;
-              reactive = true;
-              skin = "catppuccin-macchiato";
+              reactive = false;
+              headless = true;
+              noIcons = false;
             };
             logger = {
               buffer = 5000;
               tail = 2000;
               sinceSeconds = 3600;
+              fullScreen = true;
             };
           };
         };
