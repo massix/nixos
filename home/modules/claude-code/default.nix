@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.massix.claude-code;
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types filterAttrs optionalString optionalAttrs;
+  inherit (lib) mkEnableOption mkIf mkOption types filterAttrs optionalString optionalAttrs;
 
   # Full catalogue of supported MCP servers. Only those listed in `cfg.mcps`
   # are emitted into the generated config. Secrets are referenced through
