@@ -34,7 +34,7 @@ in
       {
         enable = true;
         package = null;
-        theme = "TokyoNight";
+        theme = "Rose Pine";
         extraSettings = {
           background-blur = "false";
           background-opacity = "1.0";
