@@ -26,6 +26,7 @@
       "mlx-lm"
     ];
     casks = [
+      "battle-net"
       "crmne/tap/spotifast"
       "ghostty"
       "google-drive"
