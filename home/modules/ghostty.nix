@@ -19,21 +19,25 @@ let
     cursor-style-blink = "true";
     macos-icon = "official";
     macos-option-as-alt = "true";
-    macos-titlebar-style = "native";
+    macos-shortcuts = "allow";
+    macos-titlebar-style = "transparent";
     mouse-hide-while-typing = "true";
     quick-terminal-animation-duration = "0.6";
     quick-terminal-autohide = "true";
     quick-terminal-position = "bottom";
     quick-terminal-screen = "mouse";
     quick-terminal-space-behavior = "move";
+    progress-style = "true";
     resize-overlay = "always";
     resize-overlay-position = "top-right";
     # equivalent to cursor,sudo,title
     shell-integration-features = "true";
+    split-inherit-working-directory = "true";
+    tab-inherit-working-directory = "true";
     unfocused-split-opacity = "0.7";
     window-inherit-font-size = "false";
-    window-inherit-working-directory = "true";
-    window-new-tab-position = "current";
+    window-inherit-working-directory = "false";
+    window-new-tab-position = "end";
     window-subtitle = "false";
   };
   keybindings = {
