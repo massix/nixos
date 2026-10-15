@@ -67,9 +67,8 @@ in
     opencode = {
       enable = true;
       theme = "tokyonight";
-      mcps = [
-        "coros"
-      ];
+      # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
+      mcps = [ ];
       # mcp-atlassian does not build on x86_64-darwin with the pinned nixpkgs;
       # override with a no-op stub (jira is not in mcps anyway).
       mcp-atlassian-package = pkgs.writeShellScriptBin "mcp-atlassian" ''

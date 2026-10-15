@@ -95,19 +95,20 @@ in
     opencode = {
       enable = true;
       package = null;
-      theme = "tokyonight";
+      configVersion = "v2";
+      # theme is not managed on v2: ~/.config/opencode/cli.json is TUI-owned.
+      # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
       mcps = [
         "github"
         "context7"
         "gh-grep"
         "jira"
         "gitlab"
-        "coros"
       ];
       extraProviders."lumo" = {
-        npm = "@ai-sdk/openai-compatible";
         name = "Lumo (Tamed)";
-        options = {
+        package = "aisdk:@ai-sdk/openai-compatible";
+        settings = {
           baseURL = "http://127.0.0.1:3003/v1";
           apiKey = "your-secret-api-key-here";
         };

@@ -87,7 +87,8 @@
 
     opencode = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" "coros" ];
+      # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
+      mcps = [ "github" "context7" "gh-grep" ];
       theme = "tokyonight";
     };
     claude-code = {

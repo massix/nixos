@@ -63,9 +63,8 @@ in
     opencode = {
       enable = true;
       theme = "tokyonight";
-      mcps = [
-        "coros"
-      ];
+      # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
+      mcps = [ ];
       claudeAuth.enable = false;
     };
   };
