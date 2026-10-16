@@ -23,6 +23,7 @@
   environment.shells = [ pkgs.fish ];
   homebrew = {
     brews = [
+      "anomalyco/tap/opencode-v2"
       "mlx-lm"
     ];
     casks = [

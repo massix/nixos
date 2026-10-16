@@ -62,9 +62,11 @@ in
     };
     opencode = {
       enable = true;
-      theme = "tokyonight";
+      package = null;
+      configVersion = "v2";
+      # theme is not managed on v2: ~/.config/opencode/cli.json is TUI-owned.
       # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
-      mcps = [ ];
+      mcps = [ "github" "context7" "gh-grep" ];
       claudeAuth.enable = false;
     };
   };
