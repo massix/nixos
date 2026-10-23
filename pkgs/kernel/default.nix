@@ -207,5 +207,16 @@ pkgs.buildLinux {
       "0022-dirtyfrag-rxrpc-Fix-conn-level-packet-handling-to-unshare-RESP"
       "0023-dirtyfrag-rxrpc-Fix-re-decryption-of-RESPONSE-packets"
       "0024-dirtyfrag-rxrpc-Also-unshare-DATA-RESPONSE-packets-when-paged-"
+    ]
+    ++ [
+      # Backport of upstream commit 905b06d32a52 ("rust: x86: support
+      # Rust >= 1.98.0 target spec"). nixpkgs' rustc 1.99.0 dropped the
+      # `x86-softfloat` target ABI alias that Linux 6.19 still emits, which
+      # breaks the Rust-for-Linux build. Drop this patch once the kernel is
+      # bumped to a version that contains the upstream fix.
+      {
+        name = "0025-rust-x86-support-rust-1.98.0-target-spec";
+        patch = ./patches/0025-rust-x86-support-rust-1.98.0-target-spec.patch;
+      }
     ];
 }
