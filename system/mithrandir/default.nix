@@ -35,6 +35,7 @@
       "iptvnator"
       "netnewswire"
       "onedrive"
+      "opendisplay"
       "proton-drive"
       "proton-mail"
       "proton-pass"

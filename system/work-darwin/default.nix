@@ -38,6 +38,7 @@
       "ghostty"
       "macpass"
       "netnewswire"
+      "opendisplay"
       "proton-pass"
       "shottr"
       "spotify"
