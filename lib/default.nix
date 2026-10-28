@@ -42,7 +42,7 @@
                 };
               };
 
-              package = pkgs.nix;
+              package = pkgs.lix;
             };
             home = {
               inherit username homeDirectory stateVersion;
