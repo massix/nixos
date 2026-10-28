@@ -52,6 +52,7 @@
     };
   };
   nix.settings.ssl-cert-file = "/etc/ssl/certs/combined-ca-bundle.crt";
+  nix.package = pkgs.lix;
   system.activationScripts.postActivation = {
     text = ''
       echo "Merging cacert + WARP root CA..." >&2
