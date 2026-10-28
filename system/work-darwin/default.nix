@@ -22,7 +22,7 @@
     dock = {
       tileSize = 48;
       position = "bottom";
-      largeSize = 64;
+      largeSize = 96;
     };
   };
 
