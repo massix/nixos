@@ -1,10 +1,13 @@
-{ ... }:
+{ pkgs
+, ...
+}:
 {
   networking = let hostname = "curunir"; in {
     computerName = "Curunir";
     hostName = hostname;
     localHostName = hostname;
   };
+
   massix.darwin-common = {
     iconStyle = "RegularAutomatic";
     tap-to-click = false;
@@ -17,6 +20,7 @@
   };
 
   system.keyboard.swapLeftCommandAndLeftAlt = true;
+  nix.package = pkgs.lix;
 
   services.openssh = {
     enable = true;
