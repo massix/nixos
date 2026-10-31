@@ -75,14 +75,14 @@ let
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
-  version = "0.23.0";
+  version = "0.23.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "sooperset";
     repo = "mcp-atlassian";
     rev = "refs/tags/v${version}";
-    hash = "sha256-aTiPYMhZwWCjS/S9pZgdb4oFbXyNO7Q/aMUt0bKfSjM=";
+    hash = "sha256-zbBsEBEfSvsS7dTbbvx2HG2GQhxGtvwVpYf4JPZVCKw=";
   };
 
   build-system = [ hatchling uv-dynamic-versioning ];
