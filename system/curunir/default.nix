@@ -1,4 +1,5 @@
 { pkgs
+, lib
 , ...
 }:
 {
@@ -22,6 +23,18 @@
   system.keyboard.swapLeftCommandAndLeftAlt = true;
   nix.package = pkgs.lix;
 
+  system.defaults = {
+    WindowManager.AppWindowGroupingBehavior = false;
+    WindowManager.EnableTopTilingByEdgeDrag = false;
+    controlcenter.BatteryShowPercentage = lib.mkForce true;
+    loginwindow.LoginwindowText = "Courtesy of OpenCore";
+    dock = {
+      enable-spring-load-actions-on-all-items = true;
+      wvous-tl-corner = 2;
+      wvous-tr-corner = 3;
+    };
+  };
+
   services.openssh = {
     enable = true;
     extraConfig = ''
@@ -37,7 +50,9 @@
   };
 
   homebrew = {
-    brews = [ ];
+    brews = [
+      "anomalyco/tap/opencode-v2"
+    ];
     casks = [
       "crmne/tap/spotifast"
       "ghostty"
