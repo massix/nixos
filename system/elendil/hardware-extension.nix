@@ -43,8 +43,6 @@ in
     initrd = {
       availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ "i915" "msr" ];
-      systemd.enable = true;
-      verbose = false;
     };
 
     kernelModules = [ "kvm-intel" "i915" ];
