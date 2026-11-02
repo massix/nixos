@@ -2,32 +2,10 @@
 let
   cfg = config.massix.opencode;
   isV2 = cfg.configVersion == "v2";
-  slim = cfg.ohMyOpencodeSlim;
   inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs optional elem;
 
-  # Plugin entries registered in opencode.json. `oh-my-opencode-slim` is pinned
-  # to an exact version on purpose: an unpinned (`@latest`) npm plugin
-  # auto-upgrades on every OpenCode v2 start, and the pin is the true lock.
-  plugins =
-    optional cfg.claudeAuth.enable "opencode-claude-auth-v2@latest"
-    ++ optional slim.enable "oh-my-opencode-slim@${slim.version}";
-
-  # Contents of ~/.opencode/oh-my-opencode-slim.json: the plugin's PROJECT
-  # layer, which Nix owns (symlinked, never rewritten by the plugin). It holds
-  # the preset DEFINITIONS and per-agent model mappings. `$schema` comes first
-  # so `settings` can still override it.
-  #
-  # The plugin's USER layer is ~/.config/opencode/oh-my-opencode-slim.json: it
-  # holds only the active `preset` selection and the plugin rewrites it on
-  # every `/preset` (atomic rename), so it is deliberately NOT Nix-managed.
-  # Project layers merge after (and outrank) the user layer, so this file must
-  # NEVER carry a top-level `preset` key - it would freeze the selection. Use
-  # the module's `defaultPreset` option to seed the user layer instead.
-  slimConfig =
-    {
-      "$schema" = "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json";
-    }
-    // slim.settings;
+  # Plugin entries registered in opencode.json.
+  plugins = optional cfg.claudeAuth.enable "opencode-claude-auth-v2@latest";
 
   # A server carries an `enabled` flag in the v1 dialect and the inverse
   # `disabled` flag in the v2 dialect.
@@ -153,11 +131,7 @@ in
       type = types.nullOr types.str;
       default = null;
       description = ''
-        Top-level default model (`provider/model`). OpenCode's session model
-        overrides an agent's own configured model, so this is what actually
-        drives the primary agent. With oh-my-opencode-slim, set this to the
-        orchestrator's model so the orchestrator runs on it (its own
-        `presets.<name>.orchestrator.model` only governs dispatched children).
+        Top-level default model (`provider/model`).
       '';
       example = "anthropic/claude-opus-4-8";
     };
@@ -199,73 +173,6 @@ in
         '';
       };
     };
-
-    ohMyOpencodeSlim = {
-      enable = mkEnableOption "the oh-my-opencode-slim orchestration plugin";
-
-      version = mkOption {
-        type = types.str;
-        default = "3.0.4";
-        description = ''
-          oh-my-opencode-slim version registered in opencode's plugin list.
-          Pinned deliberately: on OpenCode v2 an unpinned (`@latest`) npm plugin
-          auto-upgrades on every startup, so the pin is the only true lock.
-        '';
-      };
-
-      settings = mkOption {
-        type = types.attrs;
-        default = { };
-        description = ''
-          Contents of ~/.opencode/oh-my-opencode-slim.json: the plugin's
-          Nix-managed project layer, holding the preset DEFINITIONS (per-agent
-          model mappings, `council`, etc.). Piped verbatim into the generated
-          JSON; no validation here, so an invalid value will make the plugin
-          reject its config.
-
-          Do NOT set a top-level `preset` here: project layers take merge
-          precedence over the user layer, so it would override (and freeze) the
-          active selection in ~/.config/opencode/oh-my-opencode-slim.json,
-          which the plugin rewrites on `/preset`. Use `defaultPreset` instead.
-        '';
-        example = {
-          presets.anthropic.orchestrator.model = "anthropic/claude-opus-4-8";
-        };
-      };
-
-      defaultPreset = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = ''
-          Preset name seeded into the plugin's user-layer file
-          (~/.config/opencode/oh-my-opencode-slim.json) the first time it is
-          missing. That file holds ONLY the active preset selection - the
-          plugin rewrites it whenever `/preset` runs, so it cannot be
-          Nix-managed. Set to null to skip seeding entirely.
-        '';
-        example = "anthropic";
-      };
-
-      backgroundSubagents = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true and
-          OPENCODE_ENABLE_EXA=1. Required for the plugin's default background
-          orchestration workflow, and enables OpenCode's built-in websearch
-          without an API key.
-        '';
-      };
-
-      disableDefaultAgents = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Disable opencode's built-in `explore` and `general` subagents. The
-          plugin ships its own specialists and expects to own delegation.
-        '';
-      };
-    };
   };
 
   config = mkIf cfg.enable {
@@ -276,19 +183,6 @@ in
           massix.opencode.claudeAuth.enable requires massix.claude-code.enable = true
           (the opencode-claude-auth plugin reuses Claude Code's OAuth credentials,
           which only exist once Claude Code has been installed and authenticated).
-        '';
-      }
-      {
-        assertion = !slim.enable || (slim.settings.preset or null) == null;
-        message = ''
-          massix.opencode.ohMyOpencodeSlim.settings.preset is set, but the
-          active preset lives in the plugin's user-layer file
-          (~/.config/opencode/oh-my-opencode-slim.json), which `/preset`
-          rewrites. The Nix-managed project layer
-          (~/.opencode/oh-my-opencode-slim.json) takes merge precedence and
-          would override the user's choice. Use
-          massix.opencode.ohMyOpencodeSlim.defaultPreset to seed the
-          user-layer file instead.
         '';
       }
     ];
@@ -316,15 +210,6 @@ in
           // optionalAttrs (plugins != [ ]) {
             ${if isV2 then "plugins" else "plugin"} = plugins;
           }
-          # oh-my-opencode-slim wants OpenCode's LSP integration enabled and the
-          # built-in `explore`/`general` subagents disabled (it ships its own).
-          // optionalAttrs slim.enable { lsp = true; }
-          // optionalAttrs (slim.enable && slim.disableDefaultAgents) {
-            agent = {
-              explore.disable = true;
-              general.disable = true;
-            };
-          }
         );
       };
     }
@@ -336,35 +221,7 @@ in
       };
     };
 
-    # The plugin's project layer (preset definitions). A plain `home.file`
-    # symlink, not an `xdg.configFile`, because the plugin also reads ancestor
-    # `./.opencode` dirs and this is the one at $HOME.
-    home.file = optionalAttrs slim.enable {
-      ".opencode/oh-my-opencode-slim.json" = {
-        text = builtins.toJSON slimConfig;
-      };
-    };
-
-    # The plugin refuses to switch presets while its user-layer file is
-    # missing, so seed it once with the default selection and then leave it to
-    # the plugin (which rewrites it on `/preset`).
-    home.activation = optionalAttrs (slim.enable && slim.defaultPreset != null) {
-      seedSlimPresetSelection = lib.hm.dag.entryAfter [ "installPackages" ] ''
-        # The plugin's user-layer file holds ONLY the active preset; `/preset`
-        # rewrites it in place, so it must not be a Nix-managed symlink.
-        # Seed it on first activation, then leave it to the plugin.
-        target=${config.home.homeDirectory}/.config/opencode/oh-my-opencode-slim.json
-        if [ ! -e "$target" ]; then
-          mkdir -p "$(dirname "$target")"
-          printf '%s\n' '${builtins.toJSON { preset = slim.defaultPreset; }}' > "$target"
-          echo "seeded $target with preset ${slim.defaultPreset}"
-        fi
-      '';
-    };
-
-    # The plugin's default background-orchestration workflow (and its built-in
-    # websearch) needs these exported at OpenCode launch.
-    home.sessionVariables = optionalAttrs (slim.enable && slim.backgroundSubagents) {
+    home.sessionVariables = {
       OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
       OPENCODE_ENABLE_EXA = "1";
     };

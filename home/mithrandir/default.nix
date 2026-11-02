@@ -70,7 +70,6 @@ in
       claudeAuth.enable = false;
       defaultAgent = "plan";
       model = "opencode/deepseek-v4.1-flash-free";
-      ohMyOpencodeSlim.enable = false;
     };
   };
   programs = {
