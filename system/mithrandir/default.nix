@@ -20,6 +20,11 @@
     };
   };
 
+  system.defaults.dock = {
+    wvous-tl-corner = 2;
+    wvous-tr-corner = 3;
+  };
+
   environment.shells = [ pkgs.fish ];
   homebrew = {
     brews = [
@@ -49,6 +54,7 @@
     masApps = {
       "Proton Pass for Safari" = 6502835663;
       "Magic Switch" = 6816653452;
+      "DaVinci Resolve" = 571213070;
     };
   };
   nix.package = pkgs.lix;

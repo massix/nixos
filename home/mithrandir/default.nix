@@ -68,6 +68,9 @@ in
       # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
       mcps = [ "github" "context7" "gh-grep" ];
       claudeAuth.enable = false;
+      defaultAgent = "plan";
+      model = "opencode/deepseek-v4.1-flash-free";
+      ohMyOpencodeSlim.enable = false;
     };
   };
   programs = {
