@@ -17,7 +17,7 @@
   massix.darwin-common = {
     dark-mode = false;
     iconStyle = "RegularAutomatic";
-    tap-to-click = true;
+    tap-to-click = false;
     common-safari-extensions = true;
     dock = {
       tileSize = 48;
