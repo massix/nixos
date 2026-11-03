@@ -96,7 +96,9 @@ in
       enable = true;
       package = null;
       configVersion = "v2";
-      defaultAgent = "plan";
+      defaultAgent = "zeus";
+      agents.enable = true;
+      agents.hideBuiltins = true;
       model = "anthropic/claude-sonnet-5-5";
       # theme is not managed on v2: ~/.config/opencode/cli.json is TUI-owned.
       # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
