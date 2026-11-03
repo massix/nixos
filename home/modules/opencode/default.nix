@@ -79,6 +79,183 @@ let
       oauth = { };
     } // gate (elem "strava" cfg.mcps);
   };
+
+  rule = effect: action: resource: { inherit action resource effect; };
+  allow = rule "allow";
+  deny = rule "deny";
+  ask = rule "ask";
+
+  # Zeus never edits files. His shell is allowed by default, with a deny list
+  # of obvious write commands (denied, not asked, so he delegates instead).
+  # Rule order matters (last match wins, and every subcommand of a compound
+  # command is checked separately):
+  #   1. redirects are denied, then the harmless stderr redirects are re-allowed;
+  #   2. a few more redirect forms (`> file`, `>>`, `&>`, `1>`) are denied again,
+  #      so `cmd > out 2>&1` is still refused;
+  #   3. the command deny list comes LAST, so it always wins (a re-allow such
+  #      as `*2>&1*` can never override a denied `rm foo 2>&1`).
+  # This is best effort: the prompt is the real guard. `python3 -c`, `curl -X`,
+  # `git branch <name>`, `git tag <name>`, `git config <key> <value>`, `cmd>out
+  # 2>&1` and similar can still write, and are forbidden by the prompt only.
+  # Where a blanket deny would also block read-only use (`git stash list`,
+  # `kubectl rollout status`, `systemctl status`, ...), only the mutating
+  # subcommands are listed.
+  zeusShellDeny = [
+    # Files
+    "rm *" "rmdir *" "mv *" "cp *" "mkdir *" "touch *" "chmod *" "chown *" "ln *"
+    "tee *" "dd *" "truncate *" "install *" "rsync *" "unlink *" "shred *"
+    "sed *-i*" "sed *--in-place*" "perl *-i*"
+    "find *-delete*" "find *-exec*" "xargs *" "sudo *"
+
+    # Git: working tree, index and history
+    "git add *" "git commit *" "git switch *" "git checkout *"
+    "git pull *" "git push *" "git merge *" "git rebase *"
+    "git cherry-pick *" "git revert *" "git mv *" "git rm *" "git reset *"
+    "git restore *" "git clean *" "git am *" "git apply *"
+    "git init *" "git clone *" "git update-ref *" "git gc *"
+    # Git: stash (`git stash list` and `git stash show` stay readable)
+    "git stash" "git stash -*" "git stash push *" "git stash pop *"
+    "git stash apply *" "git stash drop *" "git stash clear *"
+    "git stash save *" "git stash branch *"
+    # Git: branch and tag flags (listing stays readable; creating a plain
+    # `git branch name` or `git tag name` cannot be pattern-blocked)
+    "git branch *-d*" "git branch *-D*" "git branch *-M*" "git branch *-C*"
+    "git branch -m*" "git branch * -m*" "git branch -c*" "git branch * -c*"
+    "git branch -f*" "git branch * -f*" "git branch *-u *"
+    "git branch *--delete*" "git branch *--move*" "git branch *--copy*"
+    "git branch *--force*" "git branch *--set-upstream*"
+    "git tag -a*" "git tag * -a*" "git tag -d*" "git tag * -d*"
+    "git tag -f*" "git tag * -f*" "git tag -s*" "git tag * -s*"
+    "git tag -m*" "git tag * -m*"
+    "git tag *--annotate*" "git tag *--delete*" "git tag *--force*" "git tag *--sign*"
+    # Git: worktrees, remotes and config (read-only subcommands stay readable)
+    "git worktree add *" "git worktree remove *" "git worktree move *"
+    "git worktree prune *" "git worktree lock *" "git worktree unlock *"
+    "git worktree repair *"
+    "git remote add *" "git remote remove *" "git remote rm *"
+    "git remote set-url *" "git remote rename *"
+    "git config *--add*" "git config *--unset*" "git config *--replace-all*"
+    "git config *--edit*" "git config -e*" "git config *--remove-section*"
+    "git config *--rename-section*"
+
+    # Cluster
+    "kubectl apply *" "kubectl create *" "kubectl delete *" "kubectl edit *"
+    "kubectl patch *" "kubectl replace *" "kubectl scale *" "kubectl set *"
+    "kubectl label *" "kubectl annotate *" "kubectl cordon *" "kubectl drain *"
+    "kubectl uncordon *" "kubectl taint *" "kubectl exec *" "kubectl cp *"
+    "kubectl rollout restart *" "kubectl rollout undo *"
+    "kubectl rollout pause *" "kubectl rollout resume *"
+    "helm install *" "helm upgrade *" "helm uninstall *" "helm delete *"
+    "helm rollback *" "helm repo add *" "helm repo remove *"
+
+    # System and package managers
+    "darwin-rebuild *" "nixos-rebuild *" "home-manager *" "nix-env *"
+    "nix-collect-garbage *" "nix store gc *" "nix store delete *"
+    "nix flake update *" "nix flake lock *"
+    "nix profile install *" "nix profile remove *" "nix profile upgrade *"
+    "nix profile rollback *" "nix profile wipe-history *"
+    "brew install *" "brew uninstall *" "brew upgrade *" "brew update *"
+    "brew tap *" "brew untap *" "brew link *" "brew unlink *" "brew cleanup *"
+    "npm install *" "npm i *" "npm ci *" "npm uninstall *" "npm publish *"
+    "pnpm install *" "pnpm add *" "yarn add *" "yarn install *"
+    "pip install *" "pip uninstall *" "pip3 install *" "uv pip install *" "uv add *"
+    "cargo install *" "go install *"
+    "launchctl load *" "launchctl unload *" "launchctl bootstrap *"
+    "launchctl bootout *" "launchctl kickstart *" "launchctl kill *"
+    "launchctl enable *" "launchctl disable *" "launchctl submit *"
+    "launchctl remove *" "launchctl start *" "launchctl stop *"
+    "systemctl start *" "systemctl stop *" "systemctl restart *"
+    "systemctl reload *" "systemctl enable *" "systemctl disable *"
+    "systemctl mask *" "systemctl unmask *" "systemctl daemon-reload *"
+    "systemctl edit *" "systemctl kill *"
+    "kill *" "killall *" "pkill *"
+    "opencode service start *" "opencode service stop *" "opencode service restart *"
+  ];
+
+  zeusRules = [
+    (deny "edit" "*")
+    (deny "shell" "*>*")
+    (allow "shell" "*2>&1*")
+    (allow "shell" "*2>/dev/null*")
+    (deny "shell" "* >*")
+    (deny "shell" "*>>*")
+    (deny "shell" "*&>*")
+    (deny "shell" "*1>*")
+  ]
+  ++ map (deny "shell") zeusShellDeny;
+
+  # Git operations that prompt the user. Hades has full rights by default, so
+  # only the destructive and history-rewriting operations are listed (last
+  # match wins; nothing precedes them in his ruleset). The patterns
+  # intentionally over-match (e.g. branch names containing `-f` or `-d`) to
+  # avoid flag-combination bypasses.
+  gitAskRules =
+    map (ask "shell") [
+      "git push *--force*" "git push *-f*" "git push *--delete*" "git push * :*"
+      "git push *+*" "git reset *--hard*" "git clean *" "git branch *-D*"
+      "git branch *-d*" "git branch *--delete*" "git tag *-d*" "git tag *--delete*"
+      "git restore *" "git checkout *-- *" "git stash drop *" "git stash clear *"
+    ]
+    # Guard history rewrites and discarding of uncommitted work.
+    ++ map (ask "shell") [
+      "git commit *--amend*" "git rebase *" "git reset *"
+      "git push *--mirror*" "git push *--prune*"
+      "git checkout *--force*" "git checkout -f*" "git checkout * -f*"
+      "git checkout ." "git checkout * ."
+      "git switch *--discard-changes*" "git switch *--force*"
+      "git switch -f*" "git switch * -f*"
+      "git branch *-f*" "git branch *-M*" "git branch *-C*" "git tag *-f*"
+    ];
+
+  agentModel = cfg.agents;
+
+  agentsConfig = {
+    zeus = {
+      description = "Main orchestrator: understands requests, plans, delegates. Never modifies anything itself.";
+      mode = "primary";
+      model = agentModel.zeus.model;
+      color = "#f5c518";
+      system = builtins.readFile ./agents/zeus.md;
+      permissions = zeusRules ++ [
+        (deny "subagent" "*")
+        (allow "subagent" "athena")
+        (allow "subagent" "poseidon")
+        (allow "subagent" "hades")
+        (allow "subagent" "explore")
+        (allow "subagent" "general")
+      ];
+    };
+    athena = {
+      description = "Executes configuration changes (Nix, Kubernetes manifests, YAML/JSON/TOML, anything that is not code). Only launched by Zeus, with an explicit PHASE header.";
+      mode = "subagent";
+      model = agentModel.athena.model;
+      color = "#4fa3d9";
+      system = builtins.readFile ./agents/athena.md;
+      permissions = [ (deny "subagent" "*") ];
+    };
+    poseidon = {
+      description = "Executes code and development changes (source, tests, non-Nix build systems). Only launched by Zeus, with an explicit PHASE header.";
+      mode = "subagent";
+      model = agentModel.poseidon.model;
+      color = "#1fb5a8";
+      system = builtins.readFile ./agents/poseidon.md;
+      permissions = [ (deny "subagent" "*") ];
+    };
+    hades = {
+      description = "Handles small, quick tasks of any kind (lookups, explanations, small edits) and performs all git operations that change a repository (branches, commits, tags, push). Writes only when ordered with PHASE: EXECUTE. Cheap and fast.";
+      mode = "subagent";
+      model = agentModel.hades.model;
+      color = "#8e44ad";
+      system = builtins.readFile ./agents/hades.md;
+      permissions = gitAskRules ++ [ (deny "subagent" "*") ];
+    };
+  };
+
+  mkAgentModelOption = default: description: mkOption {
+    type = types.str;
+    inherit default description;
+    example = "anthropic/claude-sonnet-5-5#high";
+  };
 in
 {
   options.massix.opencode = {
@@ -163,6 +340,31 @@ in
       };
     };
 
+    agents = {
+      enable = mkEnableOption ''
+        the Olympian agent set (Zeus, Athena, Poseidon, Hades). Requires
+        configVersion = "v2"
+      '';
+      hideBuiltins = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Disable OpenCode's built-in `build` and `plan` primary agents (via
+          `disabled = true`) so only the custom agents are selectable. `explore`
+          and `general` are kept because Zeus delegates to them. Requires
+          agents.enable.
+        '';
+      };
+      zeus.model = mkAgentModelOption "anthropic/claude-opus-5-5"
+        "Model for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
+      athena.model = mkAgentModelOption "anthropic/claude-sonnet-5-5"
+        "Model for Athena, the configuration executor.";
+      poseidon.model = mkAgentModelOption "anthropic/claude-sonnet-5-5"
+        "Model for Poseidon, the code executor.";
+      hades.model = mkAgentModelOption "anthropic/claude-haiku-5-5"
+        "Model for Hades, the quick read-only helper.";
+    };
+
     claudeAuth = {
       enable = mkOption {
         type = types.bool;
@@ -183,6 +385,28 @@ in
           massix.opencode.claudeAuth.enable requires massix.claude-code.enable = true
           (the opencode-claude-auth plugin reuses Claude Code's OAuth credentials,
           which only exist once Claude Code has been installed and authenticated).
+        '';
+      }
+      {
+        assertion = !cfg.agents.enable || isV2;
+        message = ''
+          massix.opencode.agents.enable requires massix.opencode.configVersion = "v2"
+          (the agent permissions are emitted in the v2 dialect only).
+        '';
+      }
+      {
+        assertion = !cfg.agents.hideBuiltins || cfg.agents.enable;
+        message = ''
+          massix.opencode.agents.hideBuiltins requires massix.opencode.agents.enable = true
+          (otherwise the built-in build/plan agents would be disabled and no
+          primary agent would remain).
+        '';
+      }
+      {
+        assertion = !cfg.agents.hideBuiltins || !(builtins.elem cfg.defaultAgent [ "build" "plan" ]);
+        message = ''
+          massix.opencode.defaultAgent must not be "build" or "plan" when
+          massix.opencode.agents.hideBuiltins = true (those agents are disabled).
         '';
       }
     ];
@@ -206,6 +430,13 @@ in
           else { inherit (cfg) autoupdate; })
           // optionalAttrs (cfg.extraProviders != { }) {
             ${if isV2 then "providers" else "provider"} = cfg.extraProviders;
+          }
+          // optionalAttrs cfg.agents.enable {
+            agents = agentsConfig
+              // optionalAttrs cfg.agents.hideBuiltins {
+                build = { disabled = true; };
+                plan = { disabled = true; };
+              };
           }
           // optionalAttrs (plugins != [ ]) {
             ${if isV2 then "plugins" else "plugin"} = plugins;
