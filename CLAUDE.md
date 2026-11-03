@@ -124,6 +124,18 @@ Platform-specific packages that may not build everywhere (e.g. `mcp-atlassian`
 on `x86_64-darwin`) are exposed as `mkPackageOption` so host configs can override
 them with stubs. See `massix.opencode.mcp-atlassian-package` for an example.
 
+**opencode agents** (`massix.opencode.agents.enable`, v2 dialect only): Zeus
+(primary orchestrator, read-only, plans and asks for confirmation), Athena
+(config executor), Poseidon (code executor), Hades (quick helper and git keeper:
+the only agent meant to do git write ops). Prompts live in
+`home/modules/opencode/agents/*.md` (read via `builtins.readFile`, so new files
+must be `git add`ed before flake evaluation); the permission rules and per-agent
+`model` options are in `home/modules/opencode/default.nix`. Zeus and Hades no
+longer share a ruleset: Zeus = `zeusRules` (edit denied, shell allowed except the
+`zeusShellDeny` list of write commands; the prompt forbids modifications); Hades =
+full rights plus `gitAskRules` (destructive git ops prompt via `ask`).
+`agents.hideBuiltins` disables OpenCode's built-in `build` and `plan` agents.
+
 `claude-code` is special in *how* it loads config: Claude Code mutates
 `~/.claude.json` and `~/.claude/settings.json`, so neither can be a read-only
 nix symlink. The module instead writes `~/.claude/mcp.json` +

@@ -43,7 +43,7 @@ This flake uses Home Manager to manage per-user configurations across systems.
 ### Editors & IDEs
 
 - **neovim** — NeoVim with mini.nvim framework and LSP support
-- **opencode** — OpenCode AI assistant with MCP servers
+- **opencode** — OpenCode AI assistant with MCP servers and the Zeus/Athena/Poseidon/Hades agent set
 
 ### Development Tools
 
