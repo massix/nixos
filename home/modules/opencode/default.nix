@@ -209,13 +209,29 @@ let
 
   agentModel = cfg.agents;
 
+  # Markdown section appended to Zeus's prompt, listing every agent's fallback
+  # chain (OpenCode has no native fallback: Zeus re-launches a failed subagent
+  # with the `model` parameter of the `subagent` tool).
+  chainLine = label: models:
+    "- ${label}: ${lib.concatMapStringsSep " → " (m: "`${m}`") models}";
+  fallbackSection = ''
+    # Model fallback chains
+
+    ${lib.concatStringsSep "\n" [
+      (chainLine "**zeus** (you)" agentModel.zeus.models)
+      (chainLine "**athena**" agentModel.athena.models)
+      (chainLine "**poseidon**" agentModel.poseidon.models)
+      (chainLine "**hades**" agentModel.hades.models)
+    ]}
+  '';
+
   agentsConfig = {
     zeus = {
       description = "Main orchestrator: understands requests, plans, delegates. Never modifies anything itself.";
       mode = "primary";
-      model = agentModel.zeus.model;
+      model = builtins.head agentModel.zeus.models;
       color = "#f5c518";
-      system = builtins.readFile ./agents/zeus.md;
+      system = builtins.readFile ./agents/zeus.md + "\n" + fallbackSection;
       permissions = zeusRules ++ [
         (deny "subagent" "*")
         (allow "subagent" "athena")
@@ -228,7 +244,7 @@ let
     athena = {
       description = "Executes configuration changes (Nix, Kubernetes manifests, YAML/JSON/TOML, anything that is not code). Only launched by Zeus, with an explicit PHASE header.";
       mode = "subagent";
-      model = agentModel.athena.model;
+      model = builtins.head agentModel.athena.models;
       color = "#4fa3d9";
       system = builtins.readFile ./agents/athena.md;
       permissions = [ (deny "subagent" "*") ];
@@ -236,7 +252,7 @@ let
     poseidon = {
       description = "Executes code and development changes (source, tests, non-Nix build systems). Only launched by Zeus, with an explicit PHASE header.";
       mode = "subagent";
-      model = agentModel.poseidon.model;
+      model = builtins.head agentModel.poseidon.models;
       color = "#1fb5a8";
       system = builtins.readFile ./agents/poseidon.md;
       permissions = [ (deny "subagent" "*") ];
@@ -244,17 +260,26 @@ let
     hades = {
       description = "Handles small, quick tasks of any kind (lookups, explanations, small edits) and performs all git operations that change a repository (branches, commits, tags, push). Writes only when ordered with PHASE: EXECUTE. Cheap and fast.";
       mode = "subagent";
-      model = agentModel.hades.model;
+      model = builtins.head agentModel.hades.models;
       color = "#8e44ad";
       system = builtins.readFile ./agents/hades.md;
       permissions = gitAskRules ++ [ (deny "subagent" "*") ];
     };
   };
 
-  mkAgentModelOption = default: description: mkOption {
-    type = types.str;
-    inherit default description;
-    example = "anthropic/claude-sonnet-5-5#high";
+  mkAgentModelsOption = default: description: mkOption {
+    type = types.nonEmptyListOf types.str;
+    inherit default;
+    description = ''
+      ${description}
+
+      Ordered fallback chain (`provider/model[#variant]`). The first entry is
+      the agent's configured model; the following ones are used by Zeus to
+      re-launch a subagent when its provider is out of credits or unavailable.
+      For Zeus himself, the following entries are only suggested to the user,
+      who switches with `/models`.
+    '';
+    example = [ "anthropic/claude-sonnet-5-5#high" "gitlab/duo-chat-sonnet-5-5" ];
   };
 in
 {
@@ -355,14 +380,22 @@ in
           agents.enable.
         '';
       };
-      zeus.model = mkAgentModelOption "anthropic/claude-opus-5-5"
-        "Model for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
-      athena.model = mkAgentModelOption "anthropic/claude-sonnet-5-5"
-        "Model for Athena, the configuration executor.";
-      poseidon.model = mkAgentModelOption "anthropic/claude-sonnet-5-5"
-        "Model for Poseidon, the code executor.";
-      hades.model = mkAgentModelOption "anthropic/claude-haiku-5-5"
-        "Model for Hades, the quick read-only helper.";
+      # INFO: the opencode/* free entries were chosen as privacy-safe only (no
+      # training on data): Beam Free, DeepSeek V4.1 Flash Free and GLM-5.3-Flash
+      # Free. Big Pickle, Pulse, Crouton, Flint, MiMo and Nemotron are excluded.
+      # Free models are time-limited, so these IDs may need updating.
+      zeus.models = mkAgentModelsOption
+        [ "anthropic/claude-opus-5-5" "gitlab/duo-chat-opus-5-5" "opencode/beam-free" ]
+        "Models for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
+      athena.models = mkAgentModelsOption
+        [ "anthropic/claude-sonnet-5-5" "gitlab/duo-chat-sonnet-5-5" "opencode/beam-free" "opencode/deepseek-v4.1-flash-free" ]
+        "Models for Athena, the configuration executor.";
+      poseidon.models = mkAgentModelsOption
+        [ "anthropic/claude-sonnet-5-5" "gitlab/duo-chat-sonnet-5-5" "opencode/beam-free" "opencode/deepseek-v4.1-flash-free" ]
+        "Models for Poseidon, the code executor.";
+      hades.models = mkAgentModelsOption
+        [ "anthropic/claude-haiku-5-5" "gitlab/duo-chat-haiku-5-5" "opencode/deepseek-v4.1-flash-free" "opencode/glm-5.3-flash-free" ]
+        "Models for Hades, the quick read-only helper.";
     };
 
     claudeAuth = {

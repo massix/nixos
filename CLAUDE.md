@@ -130,7 +130,15 @@ them with stubs. See `massix.opencode.mcp-atlassian-package` for an example.
 the only agent meant to do git write ops). Prompts live in
 `home/modules/opencode/agents/*.md` (read via `builtins.readFile`, so new files
 must be `git add`ed before flake evaluation); the permission rules and per-agent
-`model` options are in `home/modules/opencode/default.nix`. Zeus and Hades no
+`models` options are in `home/modules/opencode/default.nix`. Each `models`
+option is an ordered, non-empty fallback chain: the first entry is the agent's
+`model`, the rest are used by Zeus to re-launch a subagent (via the `subagent`
+tool's `model` parameter) when its provider is out of credits or unavailable
+(OpenCode has no native fallback). The module generates a "Model fallback
+chains" section from these lists and appends it to Zeus's prompt; for Zeus
+himself the extra entries are only suggested to the user (`/models`). The
+`opencode/*` free entries are privacy-safe picks and time-limited, so their IDs
+may need updating. Zeus and Hades no
 longer share a ruleset: Zeus = `zeusRules` (edit denied, shell allowed except the
 `zeusShellDeny` list of write commands; the prompt forbids modifications); Hades =
 full rights plus `gitAskRules` (destructive git ops prompt via `ask`).

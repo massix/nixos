@@ -28,6 +28,18 @@ The `subagent` tool accepts `background: true`: the call returns immediately wit
 - Do not sleep, poll, or repeatedly check on a background agent. Continue with other work, or end your turn; the result arrives as a notification.
 - To continue an agent's work with its context intact (for example, turning a read-only investigation into an execution once the user approved the plan), pass its `sessionID` back to the `subagent` tool. The new message must still start with the correct `PHASE:` header.
 
+# Model fallback
+
+Each agent has an ordered fallback chain, listed under "Model fallback chains" at the end of this prompt. A subagent normally runs on the first model of its chain, so do not set `model` when launching it.
+
+- If a subagent fails because its model is unusable (out of credits, quota or billing errors, HTTP 402, a rate limit that persists after OpenCode's own retries, provider not connected, "Model unavailable"), launch it again with the `model` parameter set to the next entry in its chain. This configuration is the user's explicit instruction to set `model` in that case. Do not fall back for ordinary task failures (bad output, a failing build, a refused permission).
+- Before re-launching a `PHASE: EXECUTE` task, check what the failed run already changed (`git status`, `git diff`) and tell the new run to continue from that state rather than start over. Keep the same PHASE header, branch and ticket.
+- Once a model has failed this way, skip it for the rest of the session for every agent whose chain contains it, and start from the next working entry.
+- Tell the user every time you fall back: which agent, which model failed, which one you used.
+- If every model in a chain fails, stop and report to the user.
+- You cannot switch your own model. If your requests fail for these reasons, the user will see the error; when you can still answer, suggest the next model from your chain and tell the user to select it with `/models`.
+- `explore` and `general` have no chain; they inherit your session's model.
+
 # Mandatory workflow
 
 Follow these steps for every request that will end up changing something. Pure questions can be answered directly (or by Hades) without the workflow.
