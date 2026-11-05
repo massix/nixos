@@ -21,7 +21,7 @@
     common-safari-extensions = true;
     dock = {
       tileSize = 48;
-      position = "bottom";
+      position = "right";
       largeSize = 96;
     };
   };
