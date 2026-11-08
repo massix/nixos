@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  config,
+  lib,
+  ...
 }:
 {
   imports = [ ];
@@ -88,12 +89,22 @@
     opencode = {
       enable = true;
       # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
-      mcps = [ "github" "context7" "gh-grep" ];
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+      ];
       theme = "tokyonight";
     };
     claude-code = {
       enable = true;
-      mcps = [ "github" "context7" "gh-grep" "coros" "strava" ];
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+        "coros"
+        "strava"
+      ];
     };
   };
 
@@ -161,13 +172,15 @@
   systemd.user.services =
     let
       mkRclone =
-        { source
-        , dest
-        , cacheMode
-        , cacheSize
-        , cacheAge
-        , extraOpts ? [ ]
-        }: {
+        {
+          source,
+          dest,
+          cacheMode,
+          cacheSize,
+          cacheAge,
+          extraOpts ? [ ],
+        }:
+        {
           Unit.Description = "Mount ${source} to ${dest} using rclone";
           Service =
             let

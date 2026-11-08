@@ -1,16 +1,16 @@
-{ lib
-, stdenv
-, buildNpmPackage
-, buildGoModule
-, fetchFromGitHub
-, pkg-config
-, cairo
-, giflib
-, libjpeg
-, librsvg
-, libsecret
-, pango
-,
+{
+  lib,
+  stdenv,
+  buildNpmPackage,
+  buildGoModule,
+  fetchFromGitHub,
+  pkg-config,
+  cairo,
+  giflib,
+  libjpeg,
+  librsvg,
+  libsecret,
+  pango,
 }:
 
 let
@@ -67,7 +67,8 @@ buildNpmPackage {
     libjpeg
     librsvg
     pango
-  ] ++ lib.optionals stdenv.hostPlatform.isLinux [ libsecret ];
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [ libsecret ];
 
   # keytar pins node-addon-api 4.3.0, whose out-of-range enum sentinel is a hard
   # error on clang 16+.  Defer the native rebuild out of the patch phase so the

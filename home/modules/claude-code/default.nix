@@ -1,7 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.massix.claude-code;
-  inherit (lib) mkEnableOption mkIf mkOption types filterAttrs optionalString optionalAttrs;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    filterAttrs
+    optionalString
+    optionalAttrs
+    ;
 
   # Full catalogue of supported MCP servers. Only those listed in `cfg.mcps`
   # are emitted into the generated config. Secrets are referenced through
@@ -34,7 +47,10 @@ let
     jira = {
       type = "stdio";
       command = "${pkgs.coreutils}/bin/env";
-      args = [ "PYTHONPATH=" "${pkgs.mcp-atlassian}/bin/mcp-atlassian" ];
+      args = [
+        "PYTHONPATH="
+        "${pkgs.mcp-atlassian}/bin/mcp-atlassian"
+      ];
       env = {
         JIRA_URL = "https://questel.atlassian.net";
         JIRA_PERSONAL_TOKEN = "\${JIRA_MCP_TOKEN}";
@@ -56,7 +72,11 @@ let
   # runtime deps so it works standalone regardless of what's on PATH.
   claudeStatusline = pkgs.writeShellApplication {
     name = "claude-statusline";
-    runtimeInputs = [ pkgs.bash pkgs.jq pkgs.git ];
+    runtimeInputs = [
+      pkgs.bash
+      pkgs.jq
+      pkgs.git
+    ];
     text = builtins.readFile ./files/statusline.sh;
   };
 
@@ -83,10 +103,24 @@ in
     };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" "strava" ]);
+      type = types.listOf (
+        types.enum [
+          "github"
+          "gh-grep"
+          "context7"
+          "gitlab"
+          "jira"
+          "coros"
+          "strava"
+        ]
+      );
       default = [ ];
       description = "MCP servers to enable";
-      example = [ "github" "context7" "jira" ];
+      example = [
+        "github"
+        "context7"
+        "jira"
+      ];
     };
 
     strict = mkOption {
@@ -131,7 +165,8 @@ in
     home.packages = [
       pkgs.nodejs_24
       pkgs.uv
-    ] ++ (lib.optional (cfg.package != null) claudeWrapped);
+    ]
+    ++ (lib.optional (cfg.package != null) claudeWrapped);
 
     # Read-only MCP configuration. Claude Code never mutates this file (unlike
     # ~/.claude.json), so it is safe to manage as a nix symlink. It is loaded via

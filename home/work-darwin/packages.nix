@@ -1,6 +1,7 @@
-{ pkgs
-, config
-, ...
+{
+  pkgs,
+  config,
+  ...
 }:
 let
   inherit (pkgs) lib stdenv stdenvNoCC;
@@ -19,7 +20,8 @@ let
 
     ssh-add ${homeDirectory}/.ssh/mgengarelli
   '';
-  clusterctl = assert stdenv.isDarwin;
+  clusterctl =
+    assert stdenv.isDarwin;
     stdenvNoCC.mkDerivation rec {
       pname = "clusterctl";
       version = "1.10.8";

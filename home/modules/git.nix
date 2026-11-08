@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.massix.git;
   inherit (lib) mkEnableOption mkOption mkIf;
@@ -18,8 +23,14 @@ in
     };
     workRepository = {
       enabled = mkEnableOption "Work repository";
-      workEmail = mkOption { type = lib.types.str; description = "Work email"; };
-      workRoot = mkOption { type = lib.types.str; description = "Work root"; };
+      workEmail = mkOption {
+        type = lib.types.str;
+        description = "Work email";
+      };
+      workRoot = mkOption {
+        type = lib.types.str;
+        description = "Work root";
+      };
     };
   };
 
@@ -59,10 +70,12 @@ in
         };
       };
 
-      includes = mkIf cfg.workRepository.enabled [{
-        condition = "gitdir:${cfg.workRepository.workRoot}";
-        contents.user.email = cfg.workRepository.workEmail;
-      }];
+      includes = mkIf cfg.workRepository.enabled [
+        {
+          condition = "gitdir:${cfg.workRepository.workRoot}";
+          contents.user.email = cfg.workRepository.workEmail;
+        }
+      ];
 
       ignores = [
         "*.log"

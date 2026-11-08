@@ -1,8 +1,18 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.massix.gleeter;
   inherit (lib) mkEnableOption mkOption mkIf;
-  mkIdAlias = { name, type, id }:
+  mkIdAlias =
+    {
+      name,
+      type,
+      id,
+    }:
     # TOML
     ''
       [[alias]]
@@ -10,17 +20,55 @@ let
       type = "${type}"
       id = ${toString id}
     '';
-  allAliases = builtins.concatStringsSep "\n" (map mkIdAlias [
-    { name = "wikipedia"; type = "id"; id = 285; }
-    { name = "programmers"; type = "id"; id = 378; }
-    { name = "compiling"; type = "id"; id = 303; }
-    { name = "sudo"; type = "id"; id = 149; }
-    { name = "standards"; type = "id"; id = 927; }
-    { name = "techsupport"; type = "id"; id = 627; }
-    { name = "bobbytables"; type = "id"; id = 327; }
-    { name = "tenthousand"; type = "id"; id = 1053; }
-    { name = "correlation"; type = "id"; id = 552; }
-  ]);
+  allAliases = builtins.concatStringsSep "\n" (
+    map mkIdAlias [
+      {
+        name = "wikipedia";
+        type = "id";
+        id = 285;
+      }
+      {
+        name = "programmers";
+        type = "id";
+        id = 378;
+      }
+      {
+        name = "compiling";
+        type = "id";
+        id = 303;
+      }
+      {
+        name = "sudo";
+        type = "id";
+        id = 149;
+      }
+      {
+        name = "standards";
+        type = "id";
+        id = 927;
+      }
+      {
+        name = "techsupport";
+        type = "id";
+        id = 627;
+      }
+      {
+        name = "bobbytables";
+        type = "id";
+        id = 327;
+      }
+      {
+        name = "tenthousand";
+        type = "id";
+        id = 1053;
+      }
+      {
+        name = "correlation";
+        type = "id";
+        id = 552;
+      }
+    ]
+  );
 in
 {
   options.massix.gleeter = {
@@ -41,8 +89,11 @@ in
       gll = "gleeter latest";
     };
 
-    xdg.configFile."gleeter/config.toml".text = builtins.concatStringsSep "\n\n" ([
-      "random_start = ${toString cfg.random_start}"
-    ] ++ [ allAliases ]);
+    xdg.configFile."gleeter/config.toml".text = builtins.concatStringsSep "\n\n" (
+      [
+        "random_start = ${toString cfg.random_start}"
+      ]
+      ++ [ allAliases ]
+    );
   };
 }

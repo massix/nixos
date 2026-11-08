@@ -1,11 +1,21 @@
-{ home-manager
-, nixpkgs
-, homeage
-, nix-darwin
-, ...
-}: {
+{
+  home-manager,
+  nixpkgs,
+  homeage,
+  nix-darwin,
+  ...
+}:
+{
   mkHome =
-    { inputs, pkgs, stateVersion, username, system, extraModules ? [ ] }: home-manager.lib.homeManagerConfiguration {
+    {
+      inputs,
+      pkgs,
+      stateVersion,
+      username,
+      system,
+      extraModules ? [ ],
+    }:
+    home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = { inherit stateVersion username system; };
 
@@ -23,7 +33,10 @@
             nix = {
               nixPath = [ "nixpkgs=${pkgset}" ];
               settings = {
-                experimental-features = [ "nix-command" "flakes" ];
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
                 keep-outputs = true;
                 keep-derivations = true;
                 warn-dirty = true;
@@ -70,7 +83,8 @@
           ../home/modules/opencode
           ../home/modules/claude-code
           ../home/modules/gleeter.nix
-        ] ++ extraModules;
+        ]
+        ++ extraModules;
     };
 
   # Shared nix-darwin factory: every darwin host gets the common module plus
@@ -79,7 +93,14 @@
   # named "darwin" (not "nix-darwin") because a self-named default would
   # shadow the outer binding and recurse infinitely.
   mkNixDarwin =
-    { darwin ? nix-darwin, pkgs, stateVersion, system, primaryUser, extraModules ? [ ] }:
+    {
+      darwin ? nix-darwin,
+      pkgs,
+      stateVersion,
+      system,
+      primaryUser,
+      extraModules ? [ ],
+    }:
     darwin.lib.darwinSystem {
       inherit pkgs system;
       modules = [
@@ -88,11 +109,17 @@
           system.stateVersion = stateVersion;
         }
         ../system/modules/darwin-common
-      ] ++ extraModules;
+      ]
+      ++ extraModules;
     };
 
   mkSystem =
-    { pkgs, stateVersion, system, extraModules ? [ ] }:
+    {
+      pkgs,
+      stateVersion,
+      system,
+      extraModules ? [ ],
+    }:
     nixpkgs.lib.nixosSystem {
       inherit pkgs system;
       specialArgs = { inherit stateVersion; };
@@ -105,11 +132,18 @@
             optimise.automatic = true;
             settings = {
               auto-optimise-store = true;
-              experimental-features = [ "nix-command" "flakes" ];
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
               keep-outputs = true;
               keep-derivations = true;
               warn-dirty = true;
-              trusted-users = [ "root" "massi" "mgengarelli" ];
+              trusted-users = [
+                "root"
+                "massi"
+                "mgengarelli"
+              ];
               trusted-public-keys = [
                 "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
                 "surface-zen.cachix.org-1:8OXCpyGHk4UL+BDkgJYW1bGf/ULbNGKLiBjaTELJwaQ="
@@ -123,6 +157,7 @@
             };
           };
         }
-      ] ++ extraModules;
+      ]
+      ++ extraModules;
     };
 }

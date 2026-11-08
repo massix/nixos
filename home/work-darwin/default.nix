@@ -1,8 +1,9 @@
-{ pkgs
-, config
-, lib
-, username
-, ...
+{
+  pkgs,
+  config,
+  lib,
+  username,
+  ...
 }:
 let
   inherit (config.home) homeDirectory;
@@ -117,9 +118,15 @@ in
           apiKey = "your-secret-api-key-here";
         };
         models = {
-          "lumo" = { name = "Lumo (Proton choose)"; };
-          "lumo-max" = { name = "Lumo Max"; };
-          "lumo-lite" = { name = "Lumo Lite"; };
+          "lumo" = {
+            name = "Lumo (Proton choose)";
+          };
+          "lumo-max" = {
+            name = "Lumo Max";
+          };
+          "lumo-lite" = {
+            name = "Lumo Lite";
+          };
         };
       };
     };
@@ -192,7 +199,8 @@ in
         withAdditionalGuestAgents = true;
       };
     in
-    with pkgs; [
+    with pkgs;
+    [
       # This does not come installed by default on MacOS
       gcc
       docker
@@ -227,7 +235,10 @@ in
       enable = true;
       config = {
         Label = "massix.tamer.server";
-        ProgramArguments = [ "${lib.getExe pkgs.lumo-tamer}" "server" ];
+        ProgramArguments = [
+          "${lib.getExe pkgs.lumo-tamer}"
+          "server"
+        ];
 
         RunAtLoad = true;
         KeepAlive = true;
@@ -277,11 +288,17 @@ in
     gc.options = "--delete-older-than 10d";
     settings = {
       auto-optimise-store = false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-outputs = true;
       keep-derivations = true;
       warn-dirty = true;
-      trusted-users = [ "root" username ];
+      trusted-users = [
+        "root"
+        username
+      ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "surface-zen.cachix.org-1:8OXCpyGHk4UL+BDkgJYW1bGf/ULbNGKLiBjaTELJwaQ="

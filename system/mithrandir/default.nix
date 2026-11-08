@@ -1,12 +1,17 @@
-{ pkgs
-, ...
+{
+  pkgs,
+  ...
 }:
 {
-  networking = let hostname = "mithrandir"; in {
-    computerName = "Mithrandir";
-    hostName = hostname;
-    localHostName = hostname;
-  };
+  networking =
+    let
+      hostname = "mithrandir";
+    in
+    {
+      computerName = "Mithrandir";
+      hostName = hostname;
+      localHostName = hostname;
+    };
 
   massix.darwin-common = {
     iconStyle = "RegularAutomatic";

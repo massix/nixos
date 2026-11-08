@@ -1,6 +1,7 @@
-{ config
-, lib
-, ...
+{
+  config,
+  lib,
+  ...
 }:
 let
   inherit (lib) types;
@@ -10,7 +11,11 @@ in
   options.massix.darwin-common = {
     dock = {
       position = lib.mkOption {
-        type = types.enum [ "left" "bottom" "right" ];
+        type = types.enum [
+          "left"
+          "bottom"
+          "right"
+        ];
         default = "left";
         description = "Dock position on screen.";
       };
@@ -75,7 +80,10 @@ in
     nix = {
       enable = true;
       settings = {
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
         trusted-users = [ config.system.primaryUser ];
       };
     };

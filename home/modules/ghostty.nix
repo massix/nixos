@@ -1,11 +1,17 @@
-{ lib
-, pkgs
-, config
-, ...
+{
+  lib,
+  pkgs,
+  config,
+  ...
 }:
 let
   cfg = config.massix.ghostty;
-  inherit (lib) types mkOption mkIf mkEnableOption;
+  inherit (lib)
+    types
+    mkOption
+    mkIf
+    mkEnableOption
+    ;
   # Default values which are valid on both MacOS and GNU/Linux
   # (MacOS options are simply ignored when on GNU/Linux)
   settings = {
@@ -79,7 +85,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = lib.optionals (cfg.package != null) [ cfg.package ]
+    home.packages =
+      lib.optionals (cfg.package != null) [ cfg.package ]
       ++ [ pkgs.nerd-fonts.symbols-only ]
       ++ cfg.extraPackages;
     xdg.configFile."ghostty/config" =
@@ -87,7 +94,9 @@ in
         allSettings = settings // cfg.extraSettings // { inherit (cfg) theme; };
         allKeybindings = keybindings // cfg.extraKeybindings;
         allSettingsStr = map (pair: "${pair.name} = ${pair.value}") (lib.attrsToList allSettings);
-        allKeybindingsStr = map (pair: "keybind = ${pair.name}=${pair.value}") (lib.attrsToList allKeybindings);
+        allKeybindingsStr = map (pair: "keybind = ${pair.name}=${pair.value}") (
+          lib.attrsToList allKeybindings
+        );
         text = builtins.concatStringsSep "\n" (allSettingsStr ++ allKeybindingsStr);
       in
       {
