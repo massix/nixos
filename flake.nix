@@ -53,27 +53,32 @@
   };
 
   outputs =
-    inputs@{ nixpkgs
-    , pinned
-    , nur
-    , flake-utils
-    , home-manager
-    , nixos-hardware
-    , homeage
-    , nix-direnv
-    , purescript-overlay
-    , protrans
-    , self
-    , ghostty
-    , hackintosh-darwin
-    , agenix
-    , nix-darwin
-    , gleeter
-    , sofka
-    , ...
+    inputs@{
+      nixpkgs,
+      pinned,
+      nur,
+      flake-utils,
+      home-manager,
+      nixos-hardware,
+      homeage,
+      nix-direnv,
+      purescript-overlay,
+      protrans,
+      self,
+      ghostty,
+      hackintosh-darwin,
+      agenix,
+      nix-darwin,
+      gleeter,
+      sofka,
+      ...
     }:
     let
-      allSystems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      allSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
       stateVersion = "24.05";
       # nix-darwin's system.stateVersion is a number, not the "YY.MM" string
       # used by home-manager/nixos.
@@ -87,73 +92,84 @@
           allowDeprecatedx86_64Darwin = system == "x86_64-darwin";
         };
         overlays =
-          (if withOverlays then [
-            (_: _: self.packages."${system}")
-            (_: _: { gleeter = gleeter.packages.${system}.default; })
-            nix-direnv.overlays.default
-            purescript-overlay.overlays.default
-            ghostty.overlays.default
-            nur.overlays.default
-            (final: prev: {
-              # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)
-              nushell = prev.nushell.overrideAttrs (_: {
-                doCheck = false;
-              });
-              # Workaround for direnv build failing on MacOS due to unlinked dependency with fish shell
-              direnv = prev.direnv.overrideAttrs (_: {
-                doCheck = false;
-              });
-              kdePackages = prev.kdePackages.overrideScope (
-                _: kdePrev: {
-                  plasma-workspace =
-                    let
-                      basePkg = kdePrev.plasma-workspace;
-                      xdgdataPkg = final.stdenv.mkDerivation {
-                        name = "${basePkg.name}-xdgdata";
-                        buildInputs = [ basePkg ];
-                        dontUnpack = true;
-                        dontFixup = true;
-                        dontWrapQtApps = true;
-                        installPhase = ''
-                          mkdir -p $out/share
-                          ( IFS=:
-                            for DIR in $XDG_DATA_DIRS; do
-                              if [[ -d "$DIR" ]]; then
-                                cp -r $DIR/. $out/share/
-                                chmod -R u+w $out/share
-                              fi
-                            done
-                          )
-                        '';
-                      };
-                      # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
-                      # script and instead inject the path of the above helper package
-                      derivedPkg = basePkg.overrideAttrs {
-                        preFixup = ''
-                          for index in "''${!qtWrapperArgs[@]}"; do
-                            if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
-                              unset -v "qtWrapperArgs[$((index+0))]"
-                              unset -v "qtWrapperArgs[$((index+1))]"
-                              unset -v "qtWrapperArgs[$((index+2))]"
-                              unset -v "qtWrapperArgs[$((index+3))]"
-                            fi
-                          done
-                          qtWrapperArgs=("''${qtWrapperArgs[@]}")
-                          qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
-                          qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
-                        '';
-                      };
-                    in
-                    derivedPkg;
-                }
-              );
-            })
-          ] else [ ]) ++ extraOverlays;
+          (
+            if withOverlays then
+              [
+                (_: _: self.packages."${system}")
+                (_: _: { gleeter = gleeter.packages.${system}.default; })
+                nix-direnv.overlays.default
+                purescript-overlay.overlays.default
+                ghostty.overlays.default
+                nur.overlays.default
+                (final: prev: {
+                  # Workaround for nushell test failures on macOS (PR #510439 in nixpkgs fixes this but not yet in nixos-unstable)
+                  nushell = prev.nushell.overrideAttrs (_: {
+                    doCheck = false;
+                  });
+                  # Workaround for direnv build failing on MacOS due to unlinked dependency with fish shell
+                  direnv = prev.direnv.overrideAttrs (_: {
+                    doCheck = false;
+                  });
+                  kdePackages = prev.kdePackages.overrideScope (
+                    _: kdePrev: {
+                      plasma-workspace =
+                        let
+                          basePkg = kdePrev.plasma-workspace;
+                          xdgdataPkg = final.stdenv.mkDerivation {
+                            name = "${basePkg.name}-xdgdata";
+                            buildInputs = [ basePkg ];
+                            dontUnpack = true;
+                            dontFixup = true;
+                            dontWrapQtApps = true;
+                            installPhase = ''
+                              mkdir -p $out/share
+                              ( IFS=:
+                                for DIR in $XDG_DATA_DIRS; do
+                                  if [[ -d "$DIR" ]]; then
+                                    cp -r $DIR/. $out/share/
+                                    chmod -R u+w $out/share
+                                  fi
+                                done
+                              )
+                            '';
+                          };
+                          # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
+                          # script and instead inject the path of the above helper package
+                          derivedPkg = basePkg.overrideAttrs {
+                            preFixup = ''
+                              for index in "''${!qtWrapperArgs[@]}"; do
+                                if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
+                                  unset -v "qtWrapperArgs[$((index+0))]"
+                                  unset -v "qtWrapperArgs[$((index+1))]"
+                                  unset -v "qtWrapperArgs[$((index+2))]"
+                                  unset -v "qtWrapperArgs[$((index+3))]"
+                                fi
+                              done
+                              qtWrapperArgs=("''${qtWrapperArgs[@]}")
+                              qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
+                              qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
+                            '';
+                          };
+                        in
+                        derivedPkg;
+                    }
+                  );
+                })
+              ]
+            else
+              [ ]
+          )
+          ++ extraOverlays;
         pkgs = import base {
           inherit system config overlays;
         };
         helpers = import ./lib {
-          inherit home-manager homeage nixpkgs nix-darwin;
+          inherit
+            home-manager
+            homeage
+            nixpkgs
+            nix-darwin
+            ;
         };
       };
       darwinSet = with (pkgSet nixpkgs "aarch64-darwin" true [ ]); {
@@ -175,14 +191,24 @@
           ];
         };
         homeConfigurations."massi@mithrandir" = helpers.mkHome {
-          inherit inputs stateVersion system pkgs;
+          inherit
+            inputs
+            stateVersion
+            system
+            pkgs
+            ;
           username = "massi";
           extraModules = [
             ./home/mithrandir
           ];
         };
         homeConfigurations."mgengarelli" = helpers.mkHome {
-          inherit inputs stateVersion system pkgs;
+          inherit
+            inputs
+            stateVersion
+            system
+            pkgs
+            ;
           username = "mgengarelli";
           extraModules = [
             sofka.homeManagerModules.sofka
@@ -195,22 +221,28 @@
       # packages built against nixos-unstable and are ABI-incompatible with the
       # older pinned set.  GUI apps (Ghostty, Proton suite, etc.) are managed
       # by Homebrew via hackintoshDarwinSet; CLI tools stay in nixpkgs.
-      hackintoshSet = with (pkgSet pinned "x86_64-darwin" false [
-        (_: _: { gleeter = gleeter.packages."x86_64-darwin".default; })
-      ]); {
-        homeConfigurations."mgengarelli@curunir" = helpers.mkHome {
-          inherit inputs stateVersion system pkgs;
-          username = "mgengarelli";
-          extraModules = [ ./home/curunir ];
+      hackintoshSet =
+        with (pkgSet pinned "x86_64-darwin" false [
+          (_: _: { gleeter = gleeter.packages."x86_64-darwin".default; })
+        ]); {
+          homeConfigurations."mgengarelli@curunir" = helpers.mkHome {
+            inherit
+              inputs
+              stateVersion
+              system
+              pkgs
+              ;
+            username = "mgengarelli";
+            extraModules = [ ./home/curunir ];
+          };
+          darwinConfigurations.curunir = helpers.mkNixDarwin {
+            darwin = hackintosh-darwin;
+            inherit system pkgs;
+            stateVersion = darwinStateVersion;
+            primaryUser = "mgengarelli";
+            extraModules = [ ./system/curunir ];
+          };
         };
-        darwinConfigurations.curunir = helpers.mkNixDarwin {
-          darwin = hackintosh-darwin;
-          inherit system pkgs;
-          stateVersion = darwinStateVersion;
-          primaryUser = "mgengarelli";
-          extraModules = [ ./system/curunir ];
-        };
-      };
       linuxSet = with (pkgSet nixpkgs "x86_64-linux" true [ ]); {
         nixosConfigurations = {
           "elendil" = helpers.mkSystem {
@@ -225,7 +257,12 @@
         };
         homeConfigurations = {
           "massi@elendil" = helpers.mkHome {
-            inherit inputs stateVersion system pkgs;
+            inherit
+              inputs
+              stateVersion
+              system
+              pkgs
+              ;
             username = "massi";
             extraModules = [
               protrans.homeManagerModules.default
@@ -234,7 +271,8 @@
           };
         };
       };
-      commonStuff = flake-utils.lib.eachSystem allSystems (system:
+      commonStuff = flake-utils.lib.eachSystem allSystems (
+        system:
         let
           config = {
             allowUnfree = true;
@@ -261,7 +299,7 @@
               packages = with pkgs; [
                 # Linters and formatters
                 deadnix
-                nixpkgs-fmt
+                nixfmt
                 stylua
                 statix
                 luaPackages.luacheck
@@ -277,25 +315,24 @@
 
                 # Task runners
                 just
+                nvd
               ];
             };
           };
 
+          formatter = pkgs.nixfmt;
+
           packages = import ./pkgs { inherit pkgs; };
-        });
+        }
+      );
     in
-    commonStuff //
-    linuxSet //
-    {
-      darwinConfigurations =
-        darwinSet.darwinConfigurations //
-        hackintoshSet.darwinConfigurations;
+    commonStuff
+    // linuxSet
+    // {
+      darwinConfigurations = darwinSet.darwinConfigurations // hackintoshSet.darwinConfigurations;
     }
-    //
-    {
+    // {
       homeConfigurations =
-        linuxSet.homeConfigurations //
-        darwinSet.homeConfigurations //
-        hackintoshSet.homeConfigurations;
+        linuxSet.homeConfigurations // darwinSet.homeConfigurations // hackintoshSet.homeConfigurations;
     };
 }
