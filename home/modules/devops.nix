@@ -134,7 +134,6 @@ in
             kubectl-graph
             kubectl-df-pv
             kubectl-explore
-            kubectl-validate
             kubectl-evict-pod
             kubectl-view-secret
             kubectl-view-allocations
