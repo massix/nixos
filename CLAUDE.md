@@ -22,9 +22,9 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
   Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped
   `x86_64-darwin` support after that release. Overlays are disabled
   (`pkgSet pinned "x86_64-darwin" false`) — see `flake.nix`.
-  **`curunir` (x86_64-darwin) is never built in CI** — GitHub retired
-  Intel macOS runners and nixpkgs dropped `x86_64-darwin` after 26.05, so
-  `just check` / `just build` on that machine is the contract.
+  **`curunir` and `mgengarelli@curunir` (x86_64-darwin) ARE built in CI** —
+  on the `macos-26-intel` runner. nixpkgs dropped `x86_64-darwin` after
+  nixos-26.05, hence the `pinned` input.
 
 State version: `24.05`. Systems: `x86_64-linux`, `aarch64-darwin`, `x86_64-darwin`.
 
@@ -83,7 +83,8 @@ language servers. There is no unit-test suite — `nix flake check` is the test.
 
 `just ci` runs `lint` + `check-format` + `check` (the all-systems evaluation).
 CI runs the same `lint` + `check-format` in its `lint` job, then adds the
-per-target builds on their matching runner OS. Recipe groups: `meta`, `lint`,
+per-target builds on their matching runner OS (`ubuntu-latest`, `macos-26`
+arm64, `macos-26-intel` x86_64). Recipe groups: `meta`, `lint`,
 `format`, `check`, `build`, `host`, `update`, `ci`.
 
 ## Rules

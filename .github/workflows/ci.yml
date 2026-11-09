@@ -30,14 +30,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-26]
+        os: [ubuntu-latest, macos-26, macos-26-intel]
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
       - uses: nix-community/cache-nix-action@v7
         with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}-
+      # `nix develop` resolves bashInteractive from the flake's unstable `nixpkgs`
+      # input, which no longer has x86_64-darwin. It then silently falls back to
+      # whatever `bash` is on PATH — macOS's 3.2 — which cannot parse the rc file
+      # it generates. Expose a modern bash just for that lookup.
+      - name: Provide a bash >= 4 for nix develop
+        if: matrix.os == 'macos-26-intel'
+        run: |
+          export HOMEBREW_NO_AUTO_UPDATE=1
+          brew install bash
+          bashdir="$RUNNER_TEMP/nix-bash"
+          mkdir -p "$bashdir"
+          ln -sf "$(brew --prefix)/bin/bash" "$bashdir/bash"
+          echo "$bashdir" >>"$GITHUB_PATH"
       - uses: nicknovitski/nix-develop@v1
       - run: just check-build
       - run: just show
@@ -50,8 +63,8 @@ jobs:
       matrix:
         # Source of truth for the target -> flake attribute map is the `targets`
         # variable in the justfile. Keep these in sync.
-        # curunir / mgengarelli@curunir are deliberately absent: GitHub has no
-        # Intel-macOS runner any more. Verify locally with `just check`.
+        # curunir / mgengarelli@curunir are x86_64-darwin and therefore need the
+        # Intel macOS runner image (`macos-26-intel`).
         include:
           - os: ubuntu-latest
             target: elendil
@@ -65,18 +78,35 @@ jobs:
             target: mithrandir
           - os: macos-26
             target: massi@mithrandir
+          - os: macos-26-intel
+            target: curunir
+          - os: macos-26-intel
+            target: mgengarelli@curunir
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
       - uses: nix-community/cache-nix-action@v7
         with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}-
       - uses: cachix/cachix-action@v17
         with:
           name: surface-zen
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
+      # `nix develop` resolves bashInteractive from the flake's unstable `nixpkgs`
+      # input, which no longer has x86_64-darwin. It then silently falls back to
+      # whatever `bash` is on PATH — macOS's 3.2 — which cannot parse the rc file
+      # it generates. Expose a modern bash just for that lookup.
+      - name: Provide a bash >= 4 for nix develop
+        if: matrix.os == 'macos-26-intel'
+        run: |
+          export HOMEBREW_NO_AUTO_UPDATE=1
+          brew install bash
+          bashdir="$RUNNER_TEMP/nix-bash"
+          mkdir -p "$bashdir"
+          ln -sf "$(brew --prefix)/bin/bash" "$bashdir/bash"
+          echo "$bashdir" >>"$GITHUB_PATH"
       - uses: nicknovitski/nix-develop@v1
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@v1.3.1
