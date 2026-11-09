@@ -41,6 +41,7 @@ attr target:
     fi
     printf '%s\n' "$attr"
 
+[default]
 [doc("List available recipes")]
 [group("meta")]
 default:
