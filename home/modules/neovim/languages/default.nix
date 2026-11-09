@@ -1,6 +1,7 @@
-{ lib
-, pkgs
-, ...
+{
+  lib,
+  pkgs,
+  ...
 }:
 let
   yamlGenerator = lib.generators.toYAML { };
@@ -29,9 +30,14 @@ let
   formatters = with pkgs; [
     gofumpt
     deadnix
-    nixpkgs-fmt
+    nixfmt
     prettier
-    (stylua.override { features = [ "lua54" "luau" ]; })
+    (stylua.override {
+      features = [
+        "lua54"
+        "luau"
+      ];
+    })
     yamlfmt
     typstyle
     ruff

@@ -1,5 +1,6 @@
 *.log
 result
+result-*
 .direnv
 .luarc.json
 outputs/

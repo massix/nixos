@@ -1,13 +1,18 @@
-{ pkgs
-, lib
-, ...
+{
+  pkgs,
+  lib,
+  ...
 }:
 {
-  networking = let hostname = "curunir"; in {
-    computerName = "Curunir";
-    hostName = hostname;
-    localHostName = hostname;
-  };
+  networking =
+    let
+      hostname = "curunir";
+    in
+    {
+      computerName = "Curunir";
+      hostName = hostname;
+      localHostName = hostname;
+    };
 
   massix.darwin-common = {
     iconStyle = "RegularAutomatic";
@@ -15,7 +20,7 @@
     dark-mode = false;
     common-safari-extensions = true;
     dock = {
-      position = "bottom";
+      position = "right";
       tileSize = 48;
     };
   };

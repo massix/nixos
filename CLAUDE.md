@@ -22,44 +22,74 @@ This is a personal Nix **Flake** managing NixOS + macOS machines with Home Manag
   Uses a pinned nixpkgs (`nixos-26.05`) because nixpkgs dropped
   `x86_64-darwin` support after that release. Overlays are disabled
   (`pkgSet pinned "x86_64-darwin" false`) — see `flake.nix`.
+  **`curunir` (x86_64-darwin) is never built in CI** — GitHub retired
+  Intel macOS runners and nixpkgs dropped `x86_64-darwin` after 26.05, so
+  `just check` / `just build` on that machine is the contract.
 
 State version: `24.05`. Systems: `x86_64-linux`, `aarch64-darwin`, `x86_64-darwin`.
 
 ## Commands
 
 ```bash
-# Lint (statix + deadnix + luacheck over neovim lua)
+# Doctor: verify required tools are installed
+just doctor
+# Lint (statix + deadnix + luacheck + yamllint + actionlint + just)
 just lint
-# Format nix + lua; or check without writing
+# Format nix + lua + yaml + just; or check without writing
 just format
 just check-format
 
 # Validate ALL configs — REQUIRED after any .nix change
-nix flake check --all-systems
-nix flake show                 # list every configuration/output
+just check                       # nix flake check --no-build --all-systems
+just check-build                 # nix flake check (builds)
+just show                        # list every configuration/output
 
 # Build (does not apply)
-nix build ".#homeConfigurations.mgengarelli.activationPackage"          # macOS home
-nix build ".#homeConfigurations.\"massi@elendil\".activationPackage"    # linux home
-nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"  # NixOS system
-nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"  # macOS system (work)
-nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"  # macOS system (mithrandir)
+just build mgengarelli    # macOS home
+just build massi@elendil  # linux home
+just build elendil        # NixOS system
+just build work-darwin    # macOS system (work)
+just build mithrandir     # macOS system (mithrandir)
 
 # Apply (only with explicit authorization — see rules below)
-home-manager switch                         # home configs
-nixos-rebuild switch --flake .#elendil      # NixOS system
+just switch elendil              # NixOS system
+just switch-home mgengarelli     # home config
+
+# Update flake inputs
+just update                      # all inputs
+just upgrade                     # update then check
+
+# CI parity (local)
+just ci
 
 # Debug an evaluated value
 nix eval --raw '.#homeConfigurations.mgengarelli.config.<attr>'
 ```
 
+Raw `nix build` lines still useful:
+
+```bash
+nix build ".#homeConfigurations.mgengarelli.activationPackage"          # macOS home
+nix build ".#homeConfigurations.\"massi@elendil\".activationPackage"    # linux home
+nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"  # NixOS system
+nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"  # macOS system (work)
+nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"  # macOS system (mithrandir)
+```
+
 `direnv` (`.envrc` = `use flake`) loads the devShell with all linters and
 language servers. There is no unit-test suite — `nix flake check` is the test.
 
+### CI parity
+
+`just ci` runs `lint` + `check-format` + `check` (the all-systems evaluation).
+CI runs the same `lint` + `check-format` in its `lint` job, then adds the
+per-target builds on their matching runner OS. Recipe groups: `meta`, `lint`,
+`format`, `check`, `build`, `host`, `update`, `ci`.
+
 ## Rules
 
-- **Run `nix flake check --all-systems` after editing any `.nix` file** — it
-  catches errors before a build.
+- **Run `just check` after editing any `.nix` file** — it catches errors before
+  a build.
 - **Never** run `nixos-rebuild`/`home-manager switch`, `git commit`, or
   `git push` without explicit authorization. Present a plan and wait for sign-off.
 - If asked to make changes while on `trunk`, **propose creating and switching to
@@ -191,6 +221,9 @@ ghostty, purescript, plus `overrideAttrs` workarounds (nushell/direnv
 
 ```
 flake.nix            # entry point: pkgSet, overlays, darwin/linux/common outputs
+justfile             # task runner: every CI command is a recipe here
+.yamllint.yaml       # repo-level yamllint config
+.yamlfmt             # repo-level yamlfmt config
 lib/                 # mkHome / mkSystem factories + shared utilities
 pkgs/                # custom derivations (kernel, tanzu, tridentctl)
 home/
@@ -209,7 +242,7 @@ system/elendil/      # NixOS system config for the Surface Pro
 
 - **Nix**: idiomatic — prefer `lib`/builtins/Nixpkgs functions and the module
   system over custom code; use `lib.mkIf`/`lib.mkMerge` over ad-hoc conditionals;
-  keep functions pure. Format with `nixpkgs-fmt` (80 col). Files: `kebab-case.nix`.
+  keep functions pure. Format with `nixfmt` (RFC style). Files: `kebab-case.nix`.
 - **Lua** (`home/modules/neovim/files/`): 2-space indent, 120 col, `snake_case`
   vars/functions, `PascalCase` modules, always `local` at module scope. Format
   with `stylua`; lint with `luacheck`. Files: `snake_case.lua`.

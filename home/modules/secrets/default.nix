@@ -1,6 +1,7 @@
-{ username
-, pkgs
-, ...
+{
+  username,
+  pkgs,
+  ...
 }:
 let
   inherit (pkgs.stdenv) isDarwin;
@@ -10,8 +11,10 @@ let
   optWork = s: if isDarwin then s else { };
 in
 {
-  home.packages = with pkgs; [ age rage ];
+  home.packages = with pkgs; [
+    age
+    rage
+  ];
   home.file = privateKeys.home.file // (optWork workKeys.home.file);
   homeage.file = privateKeys.homeage.file // (optWork workKeys.homeage.file);
 }
-

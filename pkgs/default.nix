@@ -17,10 +17,9 @@ let
 
   fastmcpCompat =
     if pythonPackages ? fastmcp-slim then
-      pythonPackages.fastmcp.override
-        {
-          fastmcp-slim = pythonPackages.fastmcp-slim.override { mcp = mcpCompat; };
-        }
+      pythonPackages.fastmcp.override {
+        fastmcp-slim = pythonPackages.fastmcp-slim.override { mcp = mcpCompat; };
+      }
     else
       pythonPackages.fastmcp;
 
@@ -40,10 +39,44 @@ let
     mcp-atlassian = callPackage ./mcp-atlassian {
       inherit (pkgs) fetchFromGitHub fetchPypi;
       inherit (pythonPackages) buildPythonApplication;
-      inherit (pythonPackages) anyio atlassian-python-api beautifulsoup4 cachetools click fakeredis httpx keyring markdown markdownify pydantic python-dateutil python-dotenv requests starlette thefuzz trio truststore types-python-dateutil unidecode urllib3 uvicorn hatchling setuptools uv-dynamic-versioning cattrs lxml orjson pymdown-extensions pyyaml;
+      inherit (pythonPackages)
+        anyio
+        atlassian-python-api
+        beautifulsoup4
+        cachetools
+        click
+        fakeredis
+        httpx
+        keyring
+        markdown
+        markdownify
+        pydantic
+        python-dateutil
+        python-dotenv
+        requests
+        starlette
+        thefuzz
+        trio
+        truststore
+        types-python-dateutil
+        unidecode
+        urllib3
+        uvicorn
+        hatchling
+        setuptools
+        uv-dynamic-versioning
+        cattrs
+        lxml
+        orjson
+        pymdown-extensions
+        pyyaml
+        ;
       fastmcp = fastmcpCompat;
       mcp = mcpCompat;
     };
   };
 in
-if stdenv.hostPlatform.isLinux then (onlyLinuxPkgs // commonPkgs // atlassianPkgs) else (commonPkgs // atlassianPkgs)
+if stdenv.hostPlatform.isLinux then
+  (onlyLinuxPkgs // commonPkgs // atlassianPkgs)
+else
+  (commonPkgs // atlassianPkgs)

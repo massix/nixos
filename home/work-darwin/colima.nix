@@ -1,17 +1,20 @@
-{ lib
-, pkgs
-, config
+{
+  lib,
+  pkgs,
+  config,
 }:
-{ enable ? true
-, numCpus ? 8
-, memory ? 8
-, vmType ? "vz"
-, maxCpu ? false
-, diskSize ? 100
-, mount ? true
-, arch
-, profileName
-}: {
+{
+  enable ? true,
+  numCpus ? 8,
+  memory ? 8,
+  vmType ? "vz",
+  maxCpu ? false,
+  diskSize ? 100,
+  mount ? true,
+  arch,
+  profileName,
+}:
+{
   inherit enable;
   config = {
     ProgramArguments = [

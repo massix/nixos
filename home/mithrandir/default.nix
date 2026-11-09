@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, username
-, ...
+{
+  pkgs,
+  config,
+  username,
+  ...
 }:
 let
   inherit (config.home) homeDirectory;
@@ -66,7 +67,11 @@ in
       configVersion = "v2";
       # theme is not managed on v2: ~/.config/opencode/cli.json is TUI-owned.
       # coros disabled: broken on opencode v2, see home/modules/opencode's comment.
-      mcps = [ "github" "context7" "gh-grep" ];
+      mcps = [
+        "github"
+        "context7"
+        "gh-grep"
+      ];
       claudeAuth.enable = false;
       defaultAgent = "plan";
       model = "opencode/deepseek-v4.1-flash-free";
@@ -100,11 +105,10 @@ in
   };
 
   # Packages from nixpkgs — GUI apps are managed by Homebrew via nix-darwin.
-  home.packages =
-    with pkgs; [
-      # This does not come installed by default on MacOS
-      gcc
-    ];
+  home.packages = with pkgs; [
+    # This does not come installed by default on MacOS
+    gcc
+  ];
 
   home.sessionVariables = { };
 
@@ -113,11 +117,17 @@ in
     gc.options = "--delete-older-than 10d";
     settings = {
       auto-optimise-store = false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-outputs = true;
       keep-derivations = true;
       warn-dirty = true;
-      trusted-users = [ "root" username ];
+      trusted-users = [
+        "root"
+        username
+      ];
       cores = 2;
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

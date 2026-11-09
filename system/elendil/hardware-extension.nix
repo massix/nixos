@@ -1,7 +1,8 @@
-{ lib
-, modulesPath
-, pkgs
-, ...
+{
+  lib,
+  modulesPath,
+  pkgs,
+  ...
 }:
 let
   control-prochot = pkgs.writeShellScriptBin "control-prochot" ''
@@ -41,11 +42,22 @@ in
 
   boot = {
     initrd = {
-      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-      kernelModules = [ "i915" "msr" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "nvme"
+        "usb_storage"
+        "sd_mod"
+      ];
+      kernelModules = [
+        "i915"
+        "msr"
+      ];
     };
 
-    kernelModules = [ "kvm-intel" "i915" ];
+    kernelModules = [
+      "kvm-intel"
+      "i915"
+    ];
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.custom-kernel);
     consoleLogLevel = 0;
     supportedFilesystems = [ "ntfs" ];
@@ -73,17 +85,22 @@ in
     };
   };
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 18 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 18 * 1024;
+    }
+  ];
 
   hardware = {
     enableAllFirmware = true;
 
     sane = {
       enable = true;
-      extraBackends = with pkgs; [ hplipWithPlugin sane-airscan ];
+      extraBackends = with pkgs; [
+        hplipWithPlugin
+        sane-airscan
+      ];
     };
 
     # Enable OpenGL
@@ -91,12 +108,14 @@ in
       enable = true;
 
       # Force newer versions of GL packages
-      extraPackages = with pkgs; lib.mkDefault [
-        intel-media-driver
-        vaapiVdpau
-        libvdpau-va-gl
-        intel-vaapi-driver
-      ];
+      extraPackages =
+        with pkgs;
+        lib.mkDefault [
+          intel-media-driver
+          vaapiVdpau
+          libvdpau-va-gl
+          intel-vaapi-driver
+        ];
     };
 
     bluetooth = with pkgs; {

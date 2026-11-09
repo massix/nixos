@@ -1,0 +1,8 @@
+extends: default
+rules:
+  anchors: disable
+  line-length: disable
+  document-start: disable
+  document-end: disable
+  truthy:
+    check-keys: false

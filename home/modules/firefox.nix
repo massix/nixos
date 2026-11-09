@@ -1,14 +1,20 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 let
   inherit (pkgs) stdenv;
-  inherit (lib) mkEnableOption mkOption mkIf literalExample;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    literalExample
+    ;
   cfg = config.massix.firefox;
   mkEngine = template: alias: {
-    urls = [{ inherit template; }];
+    urls = [ { inherit template; } ];
     definedAliases = [ alias ];
   };
   extensions = with pkgs.nur.repos.rycee.firefox-addons; [
@@ -62,18 +68,26 @@ in
         "Duck Duck Go" = mkEngine "https://duckduckgo.com/?q={searchTerms}" "@ddg";
         YouTube = mkEngine "https://www.youtube.com/results?search_query={searchTerms}" "@yt";
         "GitHub Code" = mkEngine "https://github.com/search?q={searchTerms}&type=code" "@gh";
-        "Nix Packages" = mkEngine "https://search.nixos.org/packages?channel=unstable&query={searchTerms}" "@np";
-        "Nix Options" = mkEngine "https://search.nixos.org/options?channel=unstable&query={searchTerms}" "@no";
-        "Home Manager" = mkEngine "https://home-manager-options.extranix.com/?query={searchTerms}&release=master" "@hm";
+        "Nix Packages" =
+          mkEngine "https://search.nixos.org/packages?channel=unstable&query={searchTerms}" "@np";
+        "Nix Options" =
+          mkEngine "https://search.nixos.org/options?channel=unstable&query={searchTerms}" "@no";
+        "Home Manager" =
+          mkEngine "https://home-manager-options.extranix.com/?query={searchTerms}&release=master" "@hm";
         "Noogle" = mkEngine "https://noogle.dev/q?term={searchTerms}" "@noogle";
-        "Hoogle" = mkEngine "https://hoogle.haskell.org/?hoogle={searchTerms}&scope=set%3Astackage" "@hoogle";
+        "Hoogle" =
+          mkEngine "https://hoogle.haskell.org/?hoogle={searchTerms}&scope=set%3Astackage" "@hoogle";
         "Amazon" = mkEngine "https://www.amazon.fr/s?k={searchTerms}" "@az";
         "Gleam Packages" = mkEngine "https://packages.gleam.run/?search={searchTerms}" "@gleam";
-        "Artifact Hub" = mkEngine "https://artifacthub.io/packages/search?ts_query_web={searchTerms}&sort=relevance" "@artifact";
+        "Artifact Hub" =
+          mkEngine "https://artifacthub.io/packages/search?ts_query_web={searchTerms}&sort=relevance" "@artifact";
         "Docker Hub" = mkEngine "https://hub.docker.com/search?q={searchTerms}" "@docker";
-        "Terraform Providers" = mkEngine "https://registry.terraform.io/search/providers?q={searchTerms}" "@tf";
-        "Terraform Modules" = mkEngine "https://registry.terraform.io/search/modules?q={searchTerms}" "@tfm";
-      } // cfg.extraEngines;
+        "Terraform Providers" =
+          mkEngine "https://registry.terraform.io/search/providers?q={searchTerms}" "@tf";
+        "Terraform Modules" =
+          mkEngine "https://registry.terraform.io/search/modules?q={searchTerms}" "@tfm";
+      }
+      // cfg.extraEngines;
     in
     mkIf cfg.enable {
       programs.firefox = {
@@ -83,10 +97,9 @@ in
           let
             linux-pkg =
               if cfg.enableGnomeExtensions then
-                pkgs.firefox.override
-                  {
-                    nativeMessagingHosts = with pkgs; [ gnome-browser-connector ];
-                  }
+                pkgs.firefox.override {
+                  nativeMessagingHosts = with pkgs; [ gnome-browser-connector ];
+                }
               else
                 pkgs.firefox;
             mac-pkg = pkgs.firefox;
@@ -103,15 +116,16 @@ in
           PromptForDownloadLocation = true;
           StartDownloadsInTempDirectory = true;
           ExtensionSettings = builtins.listToAttrs (
-            map
-              (e: lib.nameValuePair e.addonId {
+            map (
+              e:
+              lib.nameValuePair e.addonId {
                 installation_mode = "force_installed";
                 install_url = "file://${e.src}";
                 updates_disabled = true;
                 private_browsing = true;
                 default_area = "navbar";
-              })
-              allExtensions
+              }
+            ) allExtensions
           );
         };
         profiles.massi = {

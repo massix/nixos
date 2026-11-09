@@ -1,41 +1,42 @@
-{ lib
-, buildPythonApplication
-, fetchFromGitHub
-, fetchPypi
-, hatchling
-, setuptools
-, uv-dynamic-versioning
-, # dependencies
-  anyio
-, atlassian-python-api
-, beautifulsoup4
-, cachetools
-, click
-, fakeredis
-, fastmcp
-, httpx
-, keyring
-, markdown
-, markdownify
-, mcp
-, pydantic
-, python-dateutil
-, python-dotenv
-, requests
-, starlette
-, thefuzz
-, trio
-, truststore
-, types-python-dateutil
-, unidecode
-, urllib3
-, uvicorn
-, # markdown-to-confluence dependencies
-  cattrs
-, lxml
-, orjson
-, pymdown-extensions
-, pyyaml
+{
+  lib,
+  buildPythonApplication,
+  fetchFromGitHub,
+  fetchPypi,
+  hatchling,
+  setuptools,
+  uv-dynamic-versioning,
+  # dependencies
+  anyio,
+  atlassian-python-api,
+  beautifulsoup4,
+  cachetools,
+  click,
+  fakeredis,
+  fastmcp,
+  httpx,
+  keyring,
+  markdown,
+  markdownify,
+  mcp,
+  pydantic,
+  python-dateutil,
+  python-dotenv,
+  requests,
+  starlette,
+  thefuzz,
+  trio,
+  truststore,
+  types-python-dateutil,
+  unidecode,
+  urllib3,
+  uvicorn,
+  # markdown-to-confluence dependencies
+  cattrs,
+  lxml,
+  orjson,
+  pymdown-extensions,
+  pyyaml,
 }:
 
 let
@@ -85,7 +86,10 @@ buildPythonApplication rec {
     hash = "sha256-zbBsEBEfSvsS7dTbbvx2HG2GQhxGtvwVpYf4JPZVCKw=";
   };
 
-  build-system = [ hatchling uv-dynamic-versioning ];
+  build-system = [
+    hatchling
+    uv-dynamic-versioning
+  ];
 
   dependencies = [
     anyio

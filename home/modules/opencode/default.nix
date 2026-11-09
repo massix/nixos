@@ -1,8 +1,22 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.massix.opencode;
   isV2 = cfg.configVersion == "v2";
-  inherit (lib) mkEnableOption mkPackageOption mkIf mkOption types optionalAttrs optional elem;
+  inherit (lib)
+    mkEnableOption
+    mkPackageOption
+    mkIf
+    mkOption
+    types
+    optionalAttrs
+    optional
+    elem
+    ;
 
   # Plugin entries registered in opencode.json.
   plugins = optional cfg.claudeAuth.enable "opencode-claude-auth-v2@latest";
@@ -19,7 +33,8 @@ let
       type = "remote";
       url = "https://git.questel.com/api/v4/mcp";
       oauth = { };
-    } // gate (elem "gitlab" cfg.mcps);
+    }
+    // gate (elem "gitlab" cfg.mcps);
     github = {
       type = "remote";
       url = "https://api.githubcopilot.com/mcp/";
@@ -27,24 +42,32 @@ let
       headers = {
         Authorization = "Bearer {env:GH_MCP_TOKEN}";
       };
-    } // gate (elem "github" cfg.mcps);
+    }
+    // gate (elem "github" cfg.mcps);
     gh-grep = {
       type = "remote";
       url = "https://mcp.grep.app";
-    } // gate (elem "gh-grep" cfg.mcps);
+    }
+    // gate (elem "gh-grep" cfg.mcps);
     context7 = {
       type = "remote";
       url = "https://mcp.context7.com/mcp";
-    } // gate (elem "context7" cfg.mcps);
+    }
+    // gate (elem "context7" cfg.mcps);
     jira = {
       type = "local";
-      command = [ "${pkgs.coreutils}/bin/env" "PYTHONPATH=" "${cfg.mcp-atlassian-package}/bin/mcp-atlassian" ];
+      command = [
+        "${pkgs.coreutils}/bin/env"
+        "PYTHONPATH="
+        "${cfg.mcp-atlassian-package}/bin/mcp-atlassian"
+      ];
       environment = {
         JIRA_URL = "https://questel.atlassian.net";
         JIRA_USERNAME = "mgengarelli@questel.com";
         JIRA_API_TOKEN = "{env:JIRA_MCP_TOKEN}";
       };
-    } // gate (elem "jira" cfg.mcps);
+    }
+    // gate (elem "jira" cfg.mcps);
     # INFO: COROS's remote MCP server fails to initialize under opencode v2.
     # Since v2, opencode advertises the MCP "elicitation" client capability
     # (elicitation.form.applyDefaults) during the initialize handshake, per
@@ -65,7 +88,8 @@ let
       type = "remote";
       url = "https://mcpeu.coros.com/mcp";
       oauth = { };
-    } // gate (elem "coros" cfg.mcps);
+    }
+    // gate (elem "coros" cfg.mcps);
     # INFO: Strava's MCP does not work with opencode at the moment.
     # opencode relies on OAuth Dynamic Client Registration (RFC 7591),
     # which Strava's authorization server does not support (it only
@@ -77,7 +101,8 @@ let
       type = "remote";
       url = "https://mcp.strava.com/mcp";
       oauth = { };
-    } // gate (elem "strava" cfg.mcps);
+    }
+    // gate (elem "strava" cfg.mcps);
   };
 
   rule = effect: action: resource: { inherit action resource effect; };
@@ -102,74 +127,213 @@ let
   # subcommands are listed.
   zeusShellDeny = [
     # Files
-    "rm *" "rmdir *" "mv *" "cp *" "mkdir *" "touch *" "chmod *" "chown *" "ln *"
-    "tee *" "dd *" "truncate *" "install *" "rsync *" "unlink *" "shred *"
-    "sed *-i*" "sed *--in-place*" "perl *-i*"
-    "find *-delete*" "find *-exec*" "xargs *" "sudo *"
+    "rm *"
+    "rmdir *"
+    "mv *"
+    "cp *"
+    "mkdir *"
+    "touch *"
+    "chmod *"
+    "chown *"
+    "ln *"
+    "tee *"
+    "dd *"
+    "truncate *"
+    "install *"
+    "rsync *"
+    "unlink *"
+    "shred *"
+    "sed *-i*"
+    "sed *--in-place*"
+    "perl *-i*"
+    "find *-delete*"
+    "find *-exec*"
+    "xargs *"
+    "sudo *"
 
     # Git: working tree, index and history
-    "git add *" "git commit *" "git switch *" "git checkout *"
-    "git pull *" "git push *" "git merge *" "git rebase *"
-    "git cherry-pick *" "git revert *" "git mv *" "git rm *" "git reset *"
-    "git restore *" "git clean *" "git am *" "git apply *"
-    "git init *" "git clone *" "git update-ref *" "git gc *"
+    "git add *"
+    "git commit *"
+    "git switch *"
+    "git checkout *"
+    "git pull *"
+    "git push *"
+    "git merge *"
+    "git rebase *"
+    "git cherry-pick *"
+    "git revert *"
+    "git mv *"
+    "git rm *"
+    "git reset *"
+    "git restore *"
+    "git clean *"
+    "git am *"
+    "git apply *"
+    "git init *"
+    "git clone *"
+    "git update-ref *"
+    "git gc *"
     # Git: stash (`git stash list` and `git stash show` stay readable)
-    "git stash" "git stash -*" "git stash push *" "git stash pop *"
-    "git stash apply *" "git stash drop *" "git stash clear *"
-    "git stash save *" "git stash branch *"
+    "git stash"
+    "git stash -*"
+    "git stash push *"
+    "git stash pop *"
+    "git stash apply *"
+    "git stash drop *"
+    "git stash clear *"
+    "git stash save *"
+    "git stash branch *"
     # Git: branch and tag flags (listing stays readable; creating a plain
     # `git branch name` or `git tag name` cannot be pattern-blocked)
-    "git branch *-d*" "git branch *-D*" "git branch *-M*" "git branch *-C*"
-    "git branch -m*" "git branch * -m*" "git branch -c*" "git branch * -c*"
-    "git branch -f*" "git branch * -f*" "git branch *-u *"
-    "git branch *--delete*" "git branch *--move*" "git branch *--copy*"
-    "git branch *--force*" "git branch *--set-upstream*"
-    "git tag -a*" "git tag * -a*" "git tag -d*" "git tag * -d*"
-    "git tag -f*" "git tag * -f*" "git tag -s*" "git tag * -s*"
-    "git tag -m*" "git tag * -m*"
-    "git tag *--annotate*" "git tag *--delete*" "git tag *--force*" "git tag *--sign*"
+    "git branch *-d*"
+    "git branch *-D*"
+    "git branch *-M*"
+    "git branch *-C*"
+    "git branch -m*"
+    "git branch * -m*"
+    "git branch -c*"
+    "git branch * -c*"
+    "git branch -f*"
+    "git branch * -f*"
+    "git branch *-u *"
+    "git branch *--delete*"
+    "git branch *--move*"
+    "git branch *--copy*"
+    "git branch *--force*"
+    "git branch *--set-upstream*"
+    "git tag -a*"
+    "git tag * -a*"
+    "git tag -d*"
+    "git tag * -d*"
+    "git tag -f*"
+    "git tag * -f*"
+    "git tag -s*"
+    "git tag * -s*"
+    "git tag -m*"
+    "git tag * -m*"
+    "git tag *--annotate*"
+    "git tag *--delete*"
+    "git tag *--force*"
+    "git tag *--sign*"
     # Git: worktrees, remotes and config (read-only subcommands stay readable)
-    "git worktree add *" "git worktree remove *" "git worktree move *"
-    "git worktree prune *" "git worktree lock *" "git worktree unlock *"
+    "git worktree add *"
+    "git worktree remove *"
+    "git worktree move *"
+    "git worktree prune *"
+    "git worktree lock *"
+    "git worktree unlock *"
     "git worktree repair *"
-    "git remote add *" "git remote remove *" "git remote rm *"
-    "git remote set-url *" "git remote rename *"
-    "git config *--add*" "git config *--unset*" "git config *--replace-all*"
-    "git config *--edit*" "git config -e*" "git config *--remove-section*"
+    "git remote add *"
+    "git remote remove *"
+    "git remote rm *"
+    "git remote set-url *"
+    "git remote rename *"
+    "git config *--add*"
+    "git config *--unset*"
+    "git config *--replace-all*"
+    "git config *--edit*"
+    "git config -e*"
+    "git config *--remove-section*"
     "git config *--rename-section*"
 
     # Cluster
-    "kubectl apply *" "kubectl create *" "kubectl delete *" "kubectl edit *"
-    "kubectl patch *" "kubectl replace *" "kubectl scale *" "kubectl set *"
-    "kubectl label *" "kubectl annotate *" "kubectl cordon *" "kubectl drain *"
-    "kubectl uncordon *" "kubectl taint *" "kubectl exec *" "kubectl cp *"
-    "kubectl rollout restart *" "kubectl rollout undo *"
-    "kubectl rollout pause *" "kubectl rollout resume *"
-    "helm install *" "helm upgrade *" "helm uninstall *" "helm delete *"
-    "helm rollback *" "helm repo add *" "helm repo remove *"
+    "kubectl apply *"
+    "kubectl create *"
+    "kubectl delete *"
+    "kubectl edit *"
+    "kubectl patch *"
+    "kubectl replace *"
+    "kubectl scale *"
+    "kubectl set *"
+    "kubectl label *"
+    "kubectl annotate *"
+    "kubectl cordon *"
+    "kubectl drain *"
+    "kubectl uncordon *"
+    "kubectl taint *"
+    "kubectl exec *"
+    "kubectl cp *"
+    "kubectl rollout restart *"
+    "kubectl rollout undo *"
+    "kubectl rollout pause *"
+    "kubectl rollout resume *"
+    "helm install *"
+    "helm upgrade *"
+    "helm uninstall *"
+    "helm delete *"
+    "helm rollback *"
+    "helm repo add *"
+    "helm repo remove *"
 
     # System and package managers
-    "darwin-rebuild *" "nixos-rebuild *" "home-manager *" "nix-env *"
-    "nix-collect-garbage *" "nix store gc *" "nix store delete *"
-    "nix flake update *" "nix flake lock *"
-    "nix profile install *" "nix profile remove *" "nix profile upgrade *"
-    "nix profile rollback *" "nix profile wipe-history *"
-    "brew install *" "brew uninstall *" "brew upgrade *" "brew update *"
-    "brew tap *" "brew untap *" "brew link *" "brew unlink *" "brew cleanup *"
-    "npm install *" "npm i *" "npm ci *" "npm uninstall *" "npm publish *"
-    "pnpm install *" "pnpm add *" "yarn add *" "yarn install *"
-    "pip install *" "pip uninstall *" "pip3 install *" "uv pip install *" "uv add *"
-    "cargo install *" "go install *"
-    "launchctl load *" "launchctl unload *" "launchctl bootstrap *"
-    "launchctl bootout *" "launchctl kickstart *" "launchctl kill *"
-    "launchctl enable *" "launchctl disable *" "launchctl submit *"
-    "launchctl remove *" "launchctl start *" "launchctl stop *"
-    "systemctl start *" "systemctl stop *" "systemctl restart *"
-    "systemctl reload *" "systemctl enable *" "systemctl disable *"
-    "systemctl mask *" "systemctl unmask *" "systemctl daemon-reload *"
-    "systemctl edit *" "systemctl kill *"
-    "kill *" "killall *" "pkill *"
-    "opencode service start *" "opencode service stop *" "opencode service restart *"
+    "darwin-rebuild *"
+    "nixos-rebuild *"
+    "home-manager *"
+    "nix-env *"
+    "nix-collect-garbage *"
+    "nix store gc *"
+    "nix store delete *"
+    "nix flake update *"
+    "nix flake lock *"
+    "nix profile install *"
+    "nix profile remove *"
+    "nix profile upgrade *"
+    "nix profile rollback *"
+    "nix profile wipe-history *"
+    "brew install *"
+    "brew uninstall *"
+    "brew upgrade *"
+    "brew update *"
+    "brew tap *"
+    "brew untap *"
+    "brew link *"
+    "brew unlink *"
+    "brew cleanup *"
+    "npm install *"
+    "npm i *"
+    "npm ci *"
+    "npm uninstall *"
+    "npm publish *"
+    "pnpm install *"
+    "pnpm add *"
+    "yarn add *"
+    "yarn install *"
+    "pip install *"
+    "pip uninstall *"
+    "pip3 install *"
+    "uv pip install *"
+    "uv add *"
+    "cargo install *"
+    "go install *"
+    "launchctl load *"
+    "launchctl unload *"
+    "launchctl bootstrap *"
+    "launchctl bootout *"
+    "launchctl kickstart *"
+    "launchctl kill *"
+    "launchctl enable *"
+    "launchctl disable *"
+    "launchctl submit *"
+    "launchctl remove *"
+    "launchctl start *"
+    "launchctl stop *"
+    "systemctl start *"
+    "systemctl stop *"
+    "systemctl restart *"
+    "systemctl reload *"
+    "systemctl enable *"
+    "systemctl disable *"
+    "systemctl mask *"
+    "systemctl unmask *"
+    "systemctl daemon-reload *"
+    "systemctl edit *"
+    "systemctl kill *"
+    "kill *"
+    "killall *"
+    "pkill *"
+    "opencode service start *"
+    "opencode service stop *"
+    "opencode service restart *"
   ];
 
   zeusRules = [
@@ -191,20 +355,43 @@ let
   # avoid flag-combination bypasses.
   gitAskRules =
     map (ask "shell") [
-      "git push *--force*" "git push *-f*" "git push *--delete*" "git push * :*"
-      "git push *+*" "git reset *--hard*" "git clean *" "git branch *-D*"
-      "git branch *-d*" "git branch *--delete*" "git tag *-d*" "git tag *--delete*"
-      "git restore *" "git checkout *-- *" "git stash drop *" "git stash clear *"
+      "git push *--force*"
+      "git push *-f*"
+      "git push *--delete*"
+      "git push * :*"
+      "git push *+*"
+      "git reset *--hard*"
+      "git clean *"
+      "git branch *-D*"
+      "git branch *-d*"
+      "git branch *--delete*"
+      "git tag *-d*"
+      "git tag *--delete*"
+      "git restore *"
+      "git checkout *-- *"
+      "git stash drop *"
+      "git stash clear *"
     ]
     # Guard history rewrites and discarding of uncommitted work.
     ++ map (ask "shell") [
-      "git commit *--amend*" "git rebase *" "git reset *"
-      "git push *--mirror*" "git push *--prune*"
-      "git checkout *--force*" "git checkout -f*" "git checkout * -f*"
-      "git checkout ." "git checkout * ."
-      "git switch *--discard-changes*" "git switch *--force*"
-      "git switch -f*" "git switch * -f*"
-      "git branch *-f*" "git branch *-M*" "git branch *-C*" "git tag *-f*"
+      "git commit *--amend*"
+      "git rebase *"
+      "git reset *"
+      "git push *--mirror*"
+      "git push *--prune*"
+      "git checkout *--force*"
+      "git checkout -f*"
+      "git checkout * -f*"
+      "git checkout ."
+      "git checkout * ."
+      "git switch *--discard-changes*"
+      "git switch *--force*"
+      "git switch -f*"
+      "git switch * -f*"
+      "git branch *-f*"
+      "git branch *-M*"
+      "git branch *-C*"
+      "git tag *-f*"
     ];
 
   agentModel = cfg.agents;
@@ -212,8 +399,7 @@ let
   # Markdown section appended to Zeus's prompt, listing every agent's fallback
   # chain (OpenCode has no native fallback: Zeus re-launches a failed subagent
   # with the `model` parameter of the `subagent` tool).
-  chainLine = label: models:
-    "- ${label}: ${lib.concatMapStringsSep " → " (m: "`${m}`") models}";
+  chainLine = label: models: "- ${label}: ${lib.concatMapStringsSep " → " (m: "`${m}`") models}";
   fallbackSection = ''
     # Model fallback chains
 
@@ -267,20 +453,25 @@ let
     };
   };
 
-  mkAgentModelsOption = default: description: mkOption {
-    type = types.nonEmptyListOf types.str;
-    inherit default;
-    description = ''
-      ${description}
+  mkAgentModelsOption =
+    default: description:
+    mkOption {
+      type = types.nonEmptyListOf types.str;
+      inherit default;
+      description = ''
+        ${description}
 
-      Ordered fallback chain (`provider/model[#variant]`). The first entry is
-      the agent's configured model; the following ones are used by Zeus to
-      re-launch a subagent when its provider is out of credits or unavailable.
-      For Zeus himself, the following entries are only suggested to the user,
-      who switches with `/models`.
-    '';
-    example = [ "anthropic/claude-sonnet-5-5#high" "gitlab/duo-chat-sonnet-5-5" ];
-  };
+        Ordered fallback chain (`provider/model[#variant]`). The first entry is
+        the agent's configured model; the following ones are used by Zeus to
+        re-launch a subagent when its provider is out of credits or unavailable.
+        For Zeus himself, the following entries are only suggested to the user,
+        who switches with `/models`.
+      '';
+      example = [
+        "anthropic/claude-sonnet-5-5#high"
+        "gitlab/duo-chat-sonnet-5-5"
+      ];
+    };
 in
 {
   options.massix.opencode = {
@@ -293,7 +484,10 @@ in
     };
 
     configVersion = mkOption {
-      type = types.enum [ "v1" "v2" ];
+      type = types.enum [
+        "v1"
+        "v2"
+      ];
       default = "v1";
       description = ''
         OpenCode configuration dialect to emit. `v1` emits the legacy shapes
@@ -311,10 +505,24 @@ in
     mcp-atlassian-package = mkPackageOption pkgs "mcp-atlassian" { };
 
     mcps = mkOption {
-      type = types.listOf (types.enum [ "github" "gh-grep" "context7" "gitlab" "jira" "coros" "strava" ]);
+      type = types.listOf (
+        types.enum [
+          "github"
+          "gh-grep"
+          "context7"
+          "gitlab"
+          "jira"
+          "coros"
+          "strava"
+        ]
+      );
       default = [ ];
       description = "MCP servers to enable";
-      example = [ "github" "context7" "jira" ];
+      example = [
+        "github"
+        "context7"
+        "jira"
+      ];
     };
 
     theme = mkOption {
@@ -384,18 +592,29 @@ in
       # training on data): Beam Free, DeepSeek V4.1 Flash Free and GLM-5.3-Flash
       # Free. Big Pickle, Pulse, Crouton, Flint, MiMo and Nemotron are excluded.
       # Free models are time-limited, so these IDs may need updating.
-      zeus.models = mkAgentModelsOption
-        [ "anthropic/claude-opus-5-5" "gitlab/duo-chat-opus-5-5" "opencode/beam-free" ]
-        "Models for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
-      athena.models = mkAgentModelsOption
-        [ "anthropic/claude-sonnet-5-5" "gitlab/duo-chat-sonnet-5-5" "opencode/beam-free" "opencode/deepseek-v4.1-flash-free" ]
-        "Models for Athena, the configuration executor.";
-      poseidon.models = mkAgentModelsOption
-        [ "anthropic/claude-sonnet-5-5" "gitlab/duo-chat-sonnet-5-5" "opencode/beam-free" "opencode/deepseek-v4.1-flash-free" ]
-        "Models for Poseidon, the code executor.";
-      hades.models = mkAgentModelsOption
-        [ "anthropic/claude-haiku-5-5" "gitlab/duo-chat-haiku-5-5" "opencode/deepseek-v4.1-flash-free" "opencode/glm-5.3-flash-free" ]
-        "Models for Hades, the quick read-only helper.";
+      zeus.models = mkAgentModelsOption [
+        "anthropic/claude-opus-5-5"
+        "gitlab/duo-chat-opus-5-5"
+        "opencode/beam-free"
+      ] "Models for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
+      athena.models = mkAgentModelsOption [
+        "anthropic/claude-sonnet-5-5"
+        "gitlab/duo-chat-sonnet-5-5"
+        "opencode/beam-free"
+        "opencode/deepseek-v4.1-flash-free"
+      ] "Models for Athena, the configuration executor.";
+      poseidon.models = mkAgentModelsOption [
+        "anthropic/claude-sonnet-5-5"
+        "gitlab/duo-chat-sonnet-5-5"
+        "opencode/beam-free"
+        "opencode/deepseek-v4.1-flash-free"
+      ] "Models for Poseidon, the code executor.";
+      hades.models = mkAgentModelsOption [
+        "anthropic/claude-haiku-5-5"
+        "gitlab/duo-chat-haiku-5-5"
+        "opencode/deepseek-v4.1-flash-free"
+        "opencode/glm-5.3-flash-free"
+      ] "Models for Hades, the quick read-only helper.";
     };
 
     claudeAuth = {
@@ -436,7 +655,12 @@ in
         '';
       }
       {
-        assertion = !cfg.agents.hideBuiltins || !(builtins.elem cfg.defaultAgent [ "build" "plan" ]);
+        assertion =
+          !cfg.agents.hideBuiltins
+          || !(builtins.elem cfg.defaultAgent [
+            "build"
+            "plan"
+          ]);
         message = ''
           massix.opencode.defaultAgent must not be "build" or "plan" when
           massix.opencode.agents.hideBuiltins = true (those agents are disabled).
@@ -447,7 +671,8 @@ in
     home.packages = [
       pkgs.nodejs_24
       pkgs.uv
-    ] ++ (lib.optional (cfg.package != null) cfg.package);
+    ]
+    ++ (lib.optional (cfg.package != null) cfg.package);
 
     xdg.configFile = {
       "opencode/opencode.json" = {
@@ -458,17 +683,25 @@ in
           }
           // optionalAttrs (cfg.model != null) { inherit (cfg) model; }
           // (if isV2 then { "$schema" = "https://opencode.ai/config.json"; } else { })
-          // (if isV2
-          then { update = if cfg.autoupdate then "auto" else "disable"; }
-          else { inherit (cfg) autoupdate; })
+          // (
+            if isV2 then
+              { update = if cfg.autoupdate then "auto" else "disable"; }
+            else
+              { inherit (cfg) autoupdate; }
+          )
           // optionalAttrs (cfg.extraProviders != { }) {
             ${if isV2 then "providers" else "provider"} = cfg.extraProviders;
           }
           // optionalAttrs cfg.agents.enable {
-            agents = agentsConfig
+            agents =
+              agentsConfig
               // optionalAttrs cfg.agents.hideBuiltins {
-                build = { disabled = true; };
-                plan = { disabled = true; };
+                build = {
+                  disabled = true;
+                };
+                plan = {
+                  disabled = true;
+                };
               };
           }
           // optionalAttrs (plugins != [ ]) {

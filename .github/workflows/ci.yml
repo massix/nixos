@@ -2,50 +2,82 @@ name: CI
 on:
   push:
     branches: ["trunk"]
+    paths-ignore: ["**.md", "LICENSE"]
   pull_request:
+    paths-ignore: ["**.md", "LICENSE"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  check-flake:
-    needs: [lint-and-format]
-    strategy:
-      matrix:
-        os_version: [ubuntu-latest, macos-26]
-    runs-on: ${{ matrix.os_version }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-      - uses: cachix/install-nix-action@v31
-      - uses: nicknovitski/nix-develop@v1
-      - run: nix flake check
-      - run: nix flake show
-  lint-and-format:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
       - uses: cachix/install-nix-action@v31
       - uses: nicknovitski/nix-develop@v1
-      - name: Lint
-        run: just lint
-      - name: Check format
-        run: just check-format
-  build-configurations:
-    needs: [lint-and-format, check-flake]
-    runs-on: ${{ matrix.os_version }}
+      - run: just lint
+      - run: just check-format
+
+  check-flake:
+    needs: lint
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os_version: [ubuntu-latest, macos-26]
+        os: [ubuntu-latest, macos-26]
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
       - uses: cachix/install-nix-action@v31
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+      - uses: nicknovitski/nix-develop@v1
+      - run: just check-build
+      - run: just show
+
+  build:
+    needs: [lint, check-flake]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Source of truth for the target -> flake attribute map is the `targets`
+        # variable in the justfile. Keep these in sync.
+        # curunir / mgengarelli@curunir are deliberately absent: GitHub has no
+        # Intel-macOS runner any more. Verify locally with `just check`.
+        include:
+          - os: ubuntu-latest
+            target: elendil
+          - os: ubuntu-latest
+            target: massi@elendil
+          - os: macos-26
+            target: work-darwin
+          - os: macos-26
+            target: mgengarelli
+          - os: macos-26
+            target: mithrandir
+          - os: macos-26
+            target: massi@mithrandir
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
       - uses: cachix/cachix-action@v17
         with:
           name: surface-zen
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
+      - uses: nicknovitski/nix-develop@v1
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
@@ -56,40 +88,12 @@ jobs:
           docker-images: true
           swap-storage: true
           tool-cache: true
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
-      - name: Build Elendil NixOS Configuration
-        run: |
-          nix build ".#nixosConfigurations.elendil.config.system.build.toplevel"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
-      - name: Build Elendil Home Manager Configuration
-        run: |
-          nix build ".#homeConfigurations.massi@elendil.activationPackage"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'ubuntu-latest' }}
+        if: runner.os == 'Linux'
       - name: Clean disk space before building Darwin
         run: |
           sudo rm -rf /usr/local/share/dotnet /usr/share/dotnet /usr/local/lib/android /opt/ghc \
             /Library/Java/JavaVirtualMachines /Users/runner/hostedtoolcache
           df -h
-        if: ${{ matrix.os_version == 'macos-26' }}
-      - name: Build Work Darwin System Configuration
-        run: |
-          nix build ".#darwinConfigurations.work-darwin.config.system.build.toplevel"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-26' }}
-      - name: Build Work Darwin Home Manager
-        run: |
-          nix build ".#homeConfigurations.mgengarelli.activationPackage"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-26' }}
-      - name: Build Mithrandir System Configuration
-        run: |
-          nix build ".#darwinConfigurations.mithrandir.config.system.build.toplevel"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-26' }}
-      - name: Build Mithrandir Home Manager
-        run: |
-          nix build ".#homeConfigurations.massi@mithrandir.activationPackage"
-          cachix push surface-zen result
-        if: ${{ matrix.os_version == 'macos-26' }}
+        if: runner.os == 'macOS'
+      - run: just build '${{ matrix.target }}'
+      - run: cachix push surface-zen 'result-${{ matrix.target }}'

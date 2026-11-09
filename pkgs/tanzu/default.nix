@@ -5,7 +5,8 @@ let
     aarch64-darwin = "darwin-arm64";
   };
   inherit (pkgs) stdenv;
-  fetchPkg = version: system: hash:
+  fetchPkg =
+    version: system: hash:
     let
       s = systemsMap.${system};
       tarball = "tanzu-cli-${s}.tar.gz";
@@ -25,11 +26,16 @@ in
 pkgs.stdenv.mkDerivation {
   inherit pname version src;
 
-  nativeBuildInputs = with pkgs; if stdenv.hostPlatform.isLinux then [
-    stdenv.cc.cc.lib
-    installShellFiles
-    autoPatchelfHook
-  ] else [ installShellFiles ];
+  nativeBuildInputs =
+    with pkgs;
+    if stdenv.hostPlatform.isLinux then
+      [
+        stdenv.cc.cc.lib
+        installShellFiles
+        autoPatchelfHook
+      ]
+    else
+      [ installShellFiles ];
 
   dontConfigure = true;
 

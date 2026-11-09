@@ -124,7 +124,9 @@ in
       winprops =
         let
           boolToString = bool: if bool then "true" else "false";
-          mkWinProp = class: title: scratch: ''{"wm_class": "${class}", "title": "${title}", "scratch_layer": ${boolToString scratch}}'';
+          mkWinProp =
+            class: title: scratch:
+            ''{"wm_class": "${class}", "title": "${title}", "scratch_layer": ${boolToString scratch}}'';
         in
         [
           (mkWinProp "" "Calculator" true)

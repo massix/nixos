@@ -1,10 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ pkgs
-, stateVersion
-, lib
-, ...
+{
+  pkgs,
+  stateVersion,
+  lib,
+  ...
 }:
 {
   imports = [
@@ -13,7 +14,12 @@
 
   # NVD Diffing tool
   system.activationScripts.report-changes = ''
-    PATH=$PATH:${lib.makeBinPath [pkgs.nix pkgs.nvd]}
+    PATH=$PATH:${
+      lib.makeBinPath [
+        pkgs.nix
+        pkgs.nvd
+      ]
+    }
     ${lib.getExe pkgs.nvd} diff $(ls -dv /nix/var/nix/profiles/system-*-link | tail -2)
   '';
 
@@ -24,7 +30,11 @@
   # Enable networking
   networking = {
     hostName = "elendil";
-    nameservers = [ "1.1.1.1" "8.8.4.4" "8.8.8.8" ];
+    nameservers = [
+      "1.1.1.1"
+      "8.8.4.4"
+      "8.8.8.8"
+    ];
     networkmanager = {
       enable = true;
       plugins = with pkgs; [
@@ -312,12 +322,21 @@
   virtualisation = {
     docker = {
       enable = true;
-      listenOptions = [ "unix:///var/run/docker.sock" "tcp://0.0.0.0:2375" ];
+      listenOptions = [
+        "unix:///var/run/docker.sock"
+        "tcp://0.0.0.0:2375"
+      ];
       daemon.settings = {
         bip = "172.29.0.1/24";
         default-address-pools = [
-          { base = "172.30.0.0/16"; size = 24; }
-          { base = "172.31.0.0/16"; size = 24; }
+          {
+            base = "172.30.0.0/16";
+            size = 24;
+          }
+          {
+            base = "172.31.0.0/16";
+            size = 24;
+          }
         ];
       };
     };

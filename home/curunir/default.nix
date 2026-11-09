@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, username
-, ...
+{
+  pkgs,
+  config,
+  username,
+  ...
 }:
 let
   inherit (config.home) homeDirectory;
@@ -78,6 +79,7 @@ in
         exit 1
       '';
       claudeAuth.enable = false;
+      agents.enable = true;
     };
   };
   programs = {
@@ -107,12 +109,11 @@ in
   };
 
   # Packages from nixpkgs — GUI apps are managed by Homebrew via nix-darwin.
-  home.packages =
-    with pkgs; [
-      # This does not come installed by default on MacOS
-      gcc
-      sleepwatcher
-    ];
+  home.packages = with pkgs; [
+    # This does not come installed by default on MacOS
+    gcc
+    sleepwatcher
+  ];
 
   # Skip the nixpkgs release compatibility check — this config intentionally
   # uses a pinned (nixos-26.05) nixpkgs that will diverge from the flake's
@@ -149,11 +150,17 @@ in
     gc.options = "--delete-older-than 10d";
     settings = {
       auto-optimise-store = false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-outputs = true;
       keep-derivations = true;
       warn-dirty = true;
-      trusted-users = [ "root" username ];
+      trusted-users = [
+        "root"
+        username
+      ];
       cores = 2;
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

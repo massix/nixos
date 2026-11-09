@@ -1,7 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.massix.fish;
-  inherit (lib) mkEnableOption mkOption mkIf types concatMapStrings;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    types
+    concatMapStrings
+    ;
 in
 {
   options.massix.fish = {
@@ -30,7 +41,10 @@ in
       type = types.listOf types.str;
       default = [ ];
       description = "Extra init options for fish";
-      example = [ "source ~/file" "echo 'Hello World'" ];
+      example = [
+        "source ~/file"
+        "echo 'Hello World'"
+      ];
     };
   };
 
@@ -44,7 +58,9 @@ in
       settings = {
         modal = true;
         special_paths = {
-          "~/OneDrive" = { list = "never"; };
+          "~/OneDrive" = {
+            list = "never";
+          };
         };
       };
     };
@@ -68,7 +84,8 @@ in
         nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
         nrs = "sudo nixos-rebuild switch";
         hms = "home-manager switch";
-      } // cfg.configuration.extraShellAbbrs;
+      }
+      // cfg.configuration.extraShellAbbrs;
 
       plugins =
         let
@@ -101,7 +118,8 @@ in
         ps = "procs";
         ls = "eza --icons always";
         iftop = "bmon";
-      } // cfg.configuration.extraShellAliases;
+      }
+      // cfg.configuration.extraShellAliases;
 
       interactiveShellInit = ''
         set fish_greeting
