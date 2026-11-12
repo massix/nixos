@@ -50,7 +50,6 @@
       "Pages" = 361309726;
       "Keynote" = 361285480;
       "Numbers" = 361304891;
-      "Magic Switch" = 6816653452;
     };
   };
   nix.settings.ssl-cert-file = "/etc/ssl/certs/combined-ca-bundle.crt";

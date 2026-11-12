@@ -58,7 +58,6 @@
     ];
     masApps = {
       "Proton Pass for Safari" = 6502835663;
-      "Magic Switch" = 6816653452;
       "DaVinci Resolve" = 571213070;
     };
   };
