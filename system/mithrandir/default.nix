@@ -15,7 +15,7 @@
 
   massix.darwin-common = {
     iconStyle = "RegularAutomatic";
-    tap-to-click = true;
+    tap-to-click = false;
     common-safari-extensions = true;
 
     dock = {
@@ -50,6 +50,7 @@
       "proton-mail"
       "proton-pass"
       "protonvpn"
+      "sanesidebuttons"
       "shottr"
       "spotify"
       "steam"
