@@ -41,6 +41,7 @@
       "netnewswire"
       "opendisplay"
       "proton-pass"
+      "sanesidebuttons"
       "shottr"
       "spotify"
       "whatsapp"
