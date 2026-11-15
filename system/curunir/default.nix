@@ -31,7 +31,6 @@
   system.defaults = {
     WindowManager.AppWindowGroupingBehavior = false;
     WindowManager.EnableTopTilingByEdgeDrag = false;
-    controlcenter.BatteryShowPercentage = lib.mkForce true;
     loginwindow.LoginwindowText = "Courtesy of OpenCore";
     dock = {
       enable-spring-load-actions-on-all-items = true;
