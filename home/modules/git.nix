@@ -87,7 +87,7 @@ in
       ];
     };
 
-    massix.fish.configuration.extraShellAbbrs = mkIf config.massix.fish.enable {
+    massix.cli-tools.abbreviations = {
       g = "git";
       gco = "git checkout";
       gcl = "git clone";

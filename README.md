@@ -37,7 +37,8 @@ This flake uses Home Manager to manage per-user configurations across systems.
 
 ### Shells & Terminals
 
-- **fish** — Fish shell with plugins and modern Unix utilities
+- **cli-tools** — shared CLI tool set + alias/abbreviation catalogue (rendered by fish when installed)
+- **fish** — Fish shell with plugins (renders the shared cli-tools catalogue)
 - **ghostty** — Ghostty terminal emulator with custom keybindings
 
 ### Editors & IDEs

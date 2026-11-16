@@ -14,6 +14,7 @@ in
 
   massix = {
     gleeter.enable = true;
+    cli-tools.enable = true;
     firefox.enable = false;
     fonts = {
       enable = true;
@@ -53,16 +54,17 @@ in
           ];
         };
       };
-    fish = {
-      enable = true;
-      configuration.extraShellAbbrs = {
-        j = "just";
-        drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
-      };
-      configuration.extraInit = [
-        "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"
-      ];
+    cli-tools.abbreviations = {
+      j = "just";
+      drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
     };
+    cli-tools.environment.secretFiles = [
+      {
+        name = "GITLAB_MCP_TOKEN";
+        file = "~/.gitlab-token";
+      }
+    ];
+    fish.enable = true;
     git = {
       enable = true;
       workRepository = {
