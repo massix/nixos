@@ -152,7 +152,6 @@
     dconf-editor
     gnome-tweaks
     spotify
-    tana
     proton-vpn
     hypnotix
     inkscape-with-extensions
