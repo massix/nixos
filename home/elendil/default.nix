@@ -8,6 +8,11 @@
   imports = [ ];
 
   massix = {
+    cli-tools.enable = true;
+    cli-tools.abbreviations = {
+      j = "just";
+      mk = "make";
+    };
     firefox = {
       enable = true;
       enableGnomeExtensions = true;
@@ -29,15 +34,7 @@
       };
     };
 
-    fish = {
-      enable = true;
-      configuration = {
-        extraShellAbbrs = {
-          j = "just";
-          mk = "make";
-        };
-      };
-    };
+    fish.enable = true;
 
     neovim = {
       enable = true;

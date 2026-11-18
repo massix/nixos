@@ -83,7 +83,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ gleeter ];
 
-    massix.fish.configuration.extraShellAbbrs = {
+    massix.cli-tools.abbreviations = {
       gl = "gleeter";
       glr = "gleeter random";
       gll = "gleeter latest";

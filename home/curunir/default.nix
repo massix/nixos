@@ -14,6 +14,7 @@ in
     devops.enable = false;
     claude-code.enable = false;
     gleeter.enable = true;
+    cli-tools.enable = true;
 
     fonts = {
       enable = true;
@@ -51,16 +52,17 @@ in
           ];
         };
       };
-    fish = {
-      enable = true;
-      configuration.extraShellAbbrs = {
-        j = "just";
-        drs = "sudo darwin-rebuild switch";
-      };
-      configuration.extraInit = [
-        "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"
-      ];
+    cli-tools.abbreviations = {
+      j = "just";
+      drs = "sudo darwin-rebuild switch";
     };
+    cli-tools.environment.secretFiles = [
+      {
+        name = "GITLAB_MCP_TOKEN";
+        file = "~/.gitlab-token";
+      }
+    ];
+    fish.enable = true;
     git = {
       enable = true;
       workRepository.enabled = false;

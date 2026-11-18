@@ -14,6 +14,7 @@ in
 
   massix = {
     gleeter.enable = true;
+    cli-tools.enable = true;
     firefox.enable = false;
     fonts = {
       enable = true;
@@ -38,35 +39,32 @@ in
           monaspace
         ];
         extraSettings = {
-          font-family = "Monaspace Krypton";
+          font-family = "Lilex";
           font-size = "13";
           window-height = "65";
           window-width = "190";
           font-feature = to-font-feature [
-            "calt"
-            "liga"
-            "ss01" # !=, ===
-            "ss02" # <=, >=
-            "ss03" # ->, ~>
-            "ss04" # </, />
-            "ss05" # |>
-            "ss06" # &&, ##, ++, __, ==
-            "ss07" # ::
-            "ss09" # <=>, >>, <<, =<<
-            "ss10" # #[ #(
+            "cv01" # stylish "a"
+            "cv06" # longer tilde ~
+            "cv09" # barless units $
+            "cv11" # connected bar |> <|
+            "cv13" # () curvier parens
+            "cv14" # top-left, bottom-right 0 bar
+            "ss01" # restore arrows ==> <== <<= >>=
           ];
         };
       };
-    fish = {
-      enable = true;
-      configuration.extraShellAbbrs = {
-        j = "just";
-        drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
-      };
-      configuration.extraInit = [
-        "test -f ~/.gitlab-token; and set -gx GITLAB_TOKEN (cat ~/.gitlab-token)"
-      ];
+    cli-tools.abbreviations = {
+      j = "just";
+      drs = "sudo darwin-rebuild switch --flake ~/.config/nixos#work-darwin";
     };
+    cli-tools.environment.secretFiles = [
+      {
+        name = "GITLAB_MCP_TOKEN";
+        file = "~/.gitlab-token";
+      }
+    ];
+    fish.enable = true;
     git = {
       enable = true;
       workRepository = {

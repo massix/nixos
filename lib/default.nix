@@ -64,6 +64,11 @@
               '';
             };
 
+            # Fish is the interactive shell everywhere; the other shells are
+            # disabled globally so no module has to care about them.
+            programs.bash.enable = false;
+            programs.zsh.enable = false;
+
             homeage = {
               pkg = pkgs.rage;
               identityPaths = [ "${homeDirectory}/.age/key.txt" ];
@@ -74,6 +79,7 @@
           homeage.homeManagerModules.homeage
           ../home/modules/secrets
           ../home/modules/neovim
+          ../home/modules/cli-tools.nix
           ../home/modules/fish.nix
           ../home/modules/fonts.nix
           ../home/modules/git.nix

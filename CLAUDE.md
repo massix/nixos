@@ -118,10 +118,11 @@ assembled:
 ### `lib/default.nix` — `mkHome` / `mkSystem`
 Every configuration goes through one of these two factory functions.
 - `mkHome` injects a **base module list** shared by both home configs
-  (`secrets`, `neovim`, `fish.nix`, `fonts.nix`, `git.nix`, `devops.nix`,
-  `firefox.nix`, `ghostty.nix`, `opencode`, `claude-code`), then appends per-host
-  `extraModules`. **To add a home module globally, add it to this list.** It also
-  sets home-level `nix`/`homeage`/`home` defaults and an `nvd diff` activation report.
+  (`secrets`, `neovim`, `cli-tools.nix`, `fish.nix`, `fonts.nix`, `git.nix`,
+  `devops.nix`, `firefox.nix`, `ghostty.nix`, `opencode`, `claude-code`), then
+  appends per-host `extraModules`. **To add a home module globally, add it to
+  this list.** It also sets home-level `nix`/`homeage`/`home` defaults and an
+  `nvd diff` activation report.
 - `mkSystem` wraps `nixpkgs.lib.nixosSystem` with shared `nix` GC/cache settings.
 
 ### The `massix.*` module convention
@@ -133,15 +134,17 @@ the host entrypoints — `home/work-darwin/default.nix` (macOS work),
 (macOS curunir), and `home/elendil/default.nix` (Linux) — *enable & configure*
 them via the `massix.<name>` namespace.
 
-### Secrets pipeline (`homeage` + fish)
+### Secrets pipeline (`homeage` + shell catalogue)
 Secrets are age-encrypted `.age` files decrypted at activation by **homeage**
 (configured in `lib/default.nix`; identity at `~/.age/key.txt`, mount differs
 darwin vs linux). A module declares
 `homeage.file.<name> = { source = ./secrets/x.age; symlinks = [ "~/.x" ]; }`.
 For values a program needs as an **environment variable** (e.g. MCP tokens),
-`home/modules/fish.nix` `interactiveShellInit` reads the decrypted token files
-and `set -gx`s them (`GH_MCP_TOKEN`, `GITLAB_MCP_TOKEN`, `JIRA_MCP_TOKEN`).
-Consequently those MCP secrets exist only in an **interactive fish session**.
+the shell-agnostic catalogue `massix.cli-tools.environment.secretFiles`
+(`home/modules/cli-tools.nix`) lists `{ name, file; }` pairs — currently
+`GH_MCP_TOKEN` and `JIRA_MCP_TOKEN`. The fish module renders that catalogue
+with `set -gx` in `interactiveShellInit`; a future shell module can render the
+same catalogue without any change to the catalogue itself.
 
 ### AI assistant / MCP module pattern
 `opencode`, `claude-code` (and the `gemini` placeholder) share a pattern: a
@@ -178,9 +181,10 @@ full rights plus `gitAskRules` (destructive git ops prompt via `ask`).
 `claude-code` is special in *how* it loads config: Claude Code mutates
 `~/.claude.json` and `~/.claude/settings.json`, so neither can be a read-only
 nix symlink. The module instead writes `~/.claude/mcp.json` +
-`~/.claude/nix-settings.json` and wires them in through a **fish alias** that
-runs `command claude --mcp-config … --settings …`
-(`home/modules/claude-code/default.nix`).
+`~/.claude/nix-settings.json` and ships a `claudeWrapped` `writeShellApplication`
+installed as `claude`, which bakes `--mcp-config … --settings …` (plus
+`--strict-mcp-config` when enabled) into every invocation — no shell alias, so
+Neovim plugins and scripts get the same config (`home/modules/claude-code/default.nix`).
 
 ### Neovim configuration (module loading + symlinking)
 `home/modules/neovim/default.nix` is the module; it also `imports = [ ./languages ]`,
@@ -228,7 +232,7 @@ justfile             # task runner: every CI command is a recipe here
 lib/                 # mkHome / mkSystem factories + shared utilities
 pkgs/                # custom derivations (kernel, tanzu, tridentctl)
 home/
-  modules/           # massix.* home modules (neovim, fish, opencode, claude-code, ...)
+  modules/           # massix.* home modules (neovim, cli-tools, fish, opencode, claude-code, ...)
   work-darwin/       # macOS (mgengarelli) host config
   mithrandir/        # macOS (massi@mithrandir) host config
   curunir/           # macOS (mgengarelli@curunir) host config

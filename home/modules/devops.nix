@@ -149,7 +149,7 @@ in
       ++ kubernetesPackages
       ++ vaultPackages;
 
-    massix.fish.configuration.extraShellAbbrs =
+    massix.cli-tools.abbreviations =
       let
         orEmpty = bool: attrs: if bool then attrs else { };
         kubernetesAbbrs = orEmpty cfg.kubernetes.enable {
@@ -184,7 +184,7 @@ in
       in
       kubernetesAbbrs // tanzuAbbrs // k9sAbbrs // terraformAbbrs // ansibleAbbrs;
 
-    massix.fish.configuration.extraShellAliases = mkIf cfg.kubernetes.colored {
+    massix.cli-tools.aliases = mkIf cfg.kubernetes.colored {
       kubectl = "kubecolor";
     };
 

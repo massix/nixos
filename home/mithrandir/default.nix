@@ -13,6 +13,7 @@ in
     devops.enable = false;
     claude-code.enable = false;
     gleeter.enable = true;
+    cli-tools.enable = true;
 
     fonts = {
       enable = true;
@@ -50,13 +51,11 @@ in
           ];
         };
       };
-    fish = {
-      enable = true;
-      configuration.extraShellAbbrs = {
-        j = "just";
-        drs = "sudo darwin-rebuild switch";
-      };
+    cli-tools.abbreviations = {
+      j = "just";
+      drs = "sudo darwin-rebuild switch";
     };
+    fish.enable = true;
     git = {
       enable = true;
       workRepository.enabled = false;
