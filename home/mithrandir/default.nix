@@ -40,14 +40,18 @@ in
         extraSettings = {
           background-blur = "false";
           background-opacity = "1.0";
-          font-family = "Kode Mono";
+          font-family = "Lilex";
           font-size = "12";
           window-height = "65";
           window-width = "190";
           font-feature = to-font-feature [
-            "calt"
-            "ss01"
-            "lig"
+            "cv01" # stylish "a"
+            "cv06" # longer tilde ~
+            "cv09" # barless units $
+            "cv11" # connected bar |> <|
+            "cv13" # () curvier parens
+            "cv14" # top-left, bottom-right 0 bar
+            "ss01" # restore arrows ==> <== <<= >>=
           ];
         };
       };

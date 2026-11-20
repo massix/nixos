@@ -19,7 +19,7 @@
     common-safari-extensions = true;
 
     dock = {
-      position = "bottom";
+      position = "right";
       largeSize = 96;
       tileSize = 48;
     };
