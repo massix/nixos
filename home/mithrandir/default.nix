@@ -76,8 +76,12 @@ in
         "gh-grep"
       ];
       claudeAuth.enable = false;
-      defaultAgent = "plan";
+      defaultAgent = "zeus";
       model = "opencode/deepseek-v4.1-flash-free";
+      agents = {
+        enable = true;
+        hideBuiltins = true;
+      };
     };
   };
   programs = {
