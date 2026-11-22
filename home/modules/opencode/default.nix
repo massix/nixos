@@ -396,6 +396,18 @@ let
 
   agentModel = cfg.agents;
 
+  # Every `openrouter/*` model in an agent chain must be a free-tier one:
+  # OpenRouter is pay-per-token, so a non-`:free` id would let a fallback reach
+  # a paid model (including Anthropic/OpenAI/Google models proxied by OpenRouter).
+  agentChains = [
+    cfg.agents.zeus.models
+    cfg.agents.athena.models
+    cfg.agents.poseidon.models
+    cfg.agents.hades.models
+  ];
+  paidOpenrouterModels = builtins.filter (
+    m: lib.hasPrefix "openrouter/" m && !(lib.hasSuffix ":free" m)
+  ) (lib.concatLists agentChains);
   # Markdown section appended to Zeus's prompt, listing every agent's fallback
   # chain (OpenCode has no native fallback: Zeus re-launches a failed subagent
   # with the `model` parameter of the `subagent` tool).
@@ -409,6 +421,11 @@ let
       (chainLine "**poseidon**" agentModel.poseidon.models)
       (chainLine "**hades**" agentModel.hades.models)
     ]}
+
+    Every `openrouter/*` entry above is a free-tier model. Any other `openrouter/*`
+    model — `openrouter/anthropic/*`, `openrouter/openai/*`, `openrouter/google/*`,
+    `openrouter/x-ai/*`, and every id without a `:free` suffix — is pay-per-token
+    and must never be launched, passed as a `model`, or suggested.
   '';
 
   agentsConfig = {
@@ -588,32 +605,38 @@ in
           agents.enable.
         '';
       };
-      # INFO: the opencode/* free entries were chosen as privacy-safe only (no
-      # training on data): Beam Free, DeepSeek V4.1 Flash Free and GLM-5.3-Flash
-      # Free. Big Pickle, Pulse, Crouton, Flint, MiMo and Nemotron are excluded.
-      # Free models are time-limited, so these IDs may need updating.
+      # INFO: each chain is ordered subscription heads first (anthropic, then
+      # gitlab), then the privacy-safe `opencode/*` free picks, then OpenRouter
+      # free-tier models as a last resort. INVARIANT: every `openrouter/*` entry
+      # MUST end in `:free` — any other OpenRouter id is pay-per-token and is
+      # rejected by the assertion below. Free-tier ids are time-limited and do
+      # need periodic refreshing.
       zeus.models = mkAgentModelsOption [
         "anthropic/claude-opus-5-5"
         "gitlab/duo-chat-opus-5-5"
         "opencode/beam-free"
+        "openrouter/inclusionai/ling-3.2-flash:free"
       ] "Models for Zeus, the orchestrator. Should have a context window of at least 1M tokens.";
       athena.models = mkAgentModelsOption [
         "anthropic/claude-sonnet-5-5"
         "gitlab/duo-chat-sonnet-5-5"
         "opencode/beam-free"
         "opencode/deepseek-v4.1-flash-free"
+        "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free"
       ] "Models for Athena, the configuration executor.";
       poseidon.models = mkAgentModelsOption [
         "anthropic/claude-sonnet-5-5"
         "gitlab/duo-chat-sonnet-5-5"
         "opencode/beam-free"
         "opencode/deepseek-v4.1-flash-free"
+        "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free"
       ] "Models for Poseidon, the code executor.";
       hades.models = mkAgentModelsOption [
         "anthropic/claude-haiku-5-5"
         "gitlab/duo-chat-haiku-5-5"
         "opencode/deepseek-v4.1-flash-free"
-        "opencode/glm-5.3-flash-free"
+        "opencode/beam-free"
+        "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
       ] "Models for Hades, the quick read-only helper.";
     };
 
@@ -664,6 +687,16 @@ in
         message = ''
           massix.opencode.defaultAgent must not be "build" or "plan" when
           massix.opencode.agents.hideBuiltins = true (those agents are disabled).
+        '';
+      }
+      {
+        assertion = paidOpenrouterModels == [ ];
+        message = ''
+          Paid OpenRouter models are not allowed in agent fallback chains:
+          ${lib.concatStringsSep ", " paidOpenrouterModels}
+          Every `openrouter/...` entry must end in `:free`: any other OpenRouter
+          id is pay-per-token, including OpenRouter's anthropic, openai and
+          google models.
         '';
       }
     ];

@@ -32,13 +32,30 @@ The `subagent` tool accepts `background: true`: the call returns immediately wit
 
 Each agent has an ordered fallback chain, listed under "Model fallback chains" at the end of this prompt. A subagent normally runs on the first model of its chain, so do not set `model` when launching it.
 
-- If a subagent fails because its model is unusable (out of credits, quota or billing errors, HTTP 402, a rate limit that persists after OpenCode's own retries, provider not connected, "Model unavailable"), launch it again with the `model` parameter set to the next entry in its chain. This configuration is the user's explicit instruction to set `model` in that case. Do not fall back for ordinary task failures (bad output, a failing build, a refused permission).
+## Session-start availability check
+
+At the very beginning of every session, before the first delegation, run `opencode models` (a read-only inspection command) and record the set it reports. A model is **usable** in this session only if both hold:
+
+1. it appears in that output (providers without credentials are absent), and
+2. it is free: either its provider is `opencode`, or its id ends in `:free`.
+
+**Paid OpenRouter models are forbidden.** `opencode models` lists every OpenRouter model your key can reach, and almost all of them are pay-per-token: `openrouter/anthropic/*`, `openrouter/openai/*`, `openrouter/google/*`, `openrouter/x-ai/*`, `openrouter/deepseek/*`, and every other `openrouter/*` id that does not end in `:free`. Never launch one, never pass one as a `model`, never suggest one, and never let a fallback land on one. Only `openrouter/*:free` ids are acceptable.
+
+Treat any model that is not usable as already failed for this session: never attempt it. Start each agent's chain from the first usable entry. Re-check only if the user asks or a provider error suggests availability changed; otherwise the recorded set stands for the whole session. If `opencode models` itself fails, assume only `opencode/*` and `:free` entries are usable.
+
+## Fallback rules
+
+- If a subagent fails because its model is unusable (out of credits, quota or billing errors, HTTP 402, a rate limit that persists after OpenCode's own retries, provider not connected, "Model unavailable"), launch it again with the `model` parameter set to the next entry in its chain that is usable in this session. Never use a model id outside the chain, and never a paid `openrouter/*` model. This configuration is the user's explicit instruction to set `model` in that case. Do not fall back for ordinary task failures (bad output, a failing build, a refused permission).
 - Before re-launching a `PHASE: EXECUTE` task, check what the failed run already changed (`git status`, `git diff`) and tell the new run to continue from that state rather than start over. Keep the same PHASE header, branch and ticket.
 - Once a model has failed this way, skip it for the rest of the session for every agent whose chain contains it, and start from the next working entry.
 - Tell the user every time you fall back: which agent, which model failed, which one you used.
-- If every model in a chain fails, stop and report to the user.
-- You cannot switch your own model. If your requests fail for these reasons, the user will see the error; when you can still answer, suggest the next model from your chain and tell the user to select it with `/models`.
-- `explore` and `general` have no chain; they inherit your session's model.
+- If every model in a chain fails (or none of them is available), stop and report to the user.
+- You cannot switch your own model. If your requests fail for these reasons, the user will see the error; when you can still answer, suggest the next available model from your chain and tell the user to select it with `/models`.
+- `explore` and `general` have no chain; they inherit your session's model. If your own model is unavailable, tell the user to switch with `/models`.
+
+# Session start
+
+Before doing anything else in a new session (including answering the first request), run `opencode models` and compute the usable set per the "Session-start availability check" above. That set gates which models you may attempt for the entire session. It is a cost rule, not only an availability rule: attempting a paid OpenRouter model is a failure even if it would work.
 
 # Mandatory workflow
 
