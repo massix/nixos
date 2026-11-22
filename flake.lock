@@ -157,11 +157,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1795011946,
-        "narHash": "sha256-1bhQv5XnhtfZvF8lnnrCHOR+wtNHl59i1f6rIgbJars=",
+        "lastModified": 1795217899,
+        "narHash": "sha256-MUGMPUhVf5DfhcqKaQGctSecTdywXty8/5RygQbUi50=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "3f2fe1472882349ca140a83deca150573a7018fb",
+        "rev": "9ad3c422222e45b32c5f9ab9f4cd32e0e3694ef7",
         "type": "github"
       },
       "original": {
@@ -389,11 +389,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1794890597,
-        "narHash": "sha256-lME2lHoDHAaSHP3/okgiVoJ0icVEvsQH8LeU3We7tcc=",
+        "lastModified": 1795085501,
+        "narHash": "sha256-S5keGWzaKpuXo9MNoIC2FfTIuTyTnx8P4NhYJMEsTLI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "04906337b6d53e8bb0eaf0470ae9f070a4d4eb55",
+        "rev": "0bb8272318b4ca41bf0edc6224df3e3e3046b70d",
         "type": "github"
       },
       "original": {
@@ -411,11 +411,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795081770,
-        "narHash": "sha256-ntbslFrMKuDUP7YWlc0mapIDpOeMQrmtiAgyHv3cccA=",
+        "lastModified": 1795260721,
+        "narHash": "sha256-4EvrYrL2I05LuBMecfYlVnoLQu7jfKS9uiDsefVHrJM=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "caafbdc20a016542d913eece20de30e1749697aa",
+        "rev": "fca82736192e9b9c00a6e815e671d3ab84e7b995",
         "type": "github"
       },
       "original": {
@@ -426,11 +426,11 @@
     },
     "pinned": {
       "locked": {
-        "lastModified": 1794872590,
-        "narHash": "sha256-E+XLAfnC7+bdr4qlEgRv6cdGmiqTU5oeFNKCha7epqQ=",
+        "lastModified": 1795137884,
+        "narHash": "sha256-iKXCN36qYfBni+3nH4vAd98/kshoIsPB2S9mYWhma30=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f68407657ad294471eb4b2e65d193df26edf729f",
+        "rev": "ab5c18fdedfc8f9bbc9d773f10a540790e2787a7",
         "type": "github"
       },
       "original": {
@@ -510,11 +510,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795016592,
-        "narHash": "sha256-vgdlt+1bxYxSBSpBU2vtTQPc4H1zf/SgJd2SRjv98Nw=",
+        "lastModified": 1795256894,
+        "narHash": "sha256-hE8BXO1jIpkv0mOyLM60JCHiTNeFlu0XCTXzMJAvtOQ=",
         "owner": "nklmilojevic",
         "repo": "sofka",
-        "rev": "b0c7e75b4925b3a4882ff1fc885287974f878b18",
+        "rev": "ea36c6dbd9ec4e3c2c63af558a04fe2abfabff5d",
         "type": "github"
       },
       "original": {
