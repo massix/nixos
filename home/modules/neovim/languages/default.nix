@@ -6,57 +6,69 @@
 let
   yamlGenerator = lib.generators.toYAML { };
 
-  language-servers = with pkgs; [
-    ansible-language-server
-    gleam
-    gopls
-    bash-language-server
-    fish-lsp
-    nixd
-    terraform-ls
-    typescript-language-server
-    lua-language-server
-    vscode-langservers-extracted
-    dockerfile-language-server
-    helm-ls
-    nginx-language-server
-    tinymist
-    yaml-language-server
-    gitlab-ci-ls
-    pyright
-    nushell
-  ];
+  # clojure-lsp and cljfmt are GraalVM native-image builds and clj-kondo is a
+  # Go build; nixpkgs does not provide them for x86_64-darwin, so each is only
+  # installed where available (curunir is x86_64-darwin and built in CI).
+  language-servers =
+    with pkgs;
+    [
+      ansible-language-server
+      gleam
+      gopls
+      bash-language-server
+      fish-lsp
+      nixd
+      terraform-ls
+      typescript-language-server
+      lua-language-server
+      vscode-langservers-extracted
+      dockerfile-language-server
+      helm-ls
+      nginx-language-server
+      tinymist
+      yaml-language-server
+      gitlab-ci-ls
+      pyright
+      nushell
+    ]
+    ++ lib.optional (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.clojure-lsp) pkgs.clojure-lsp;
 
-  formatters = with pkgs; [
-    gofumpt
-    deadnix
-    nixfmt
-    prettier
-    (stylua.override {
-      features = [
-        "lua54"
-        "luau"
-      ];
-    })
-    yamlfmt
-    typstyle
-    ruff
-    shellcheck
-  ];
+  formatters =
+    with pkgs;
+    [
+      gofumpt
+      deadnix
+      nixfmt
+      prettier
+      (stylua.override {
+        features = [
+          "lua54"
+          "luau"
+        ];
+      })
+      yamlfmt
+      typstyle
+      ruff
+      shellcheck
+    ]
+    ++ lib.optional (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.cljfmt) pkgs.cljfmt;
 
-  linters = with pkgs; [
-    ansible-lint
-    golangci-lint
-    statix
-    lua54Packages.luacheck
-    yamllint
-    hadolint
-    commitlint
-    actionlint
-    dotenv-linter
-    editorconfig-checker
-    pylint
-  ];
+  linters =
+    with pkgs;
+    [
+      ansible-lint
+      golangci-lint
+      statix
+      lua54Packages.luacheck
+      yamllint
+      hadolint
+      commitlint
+      actionlint
+      dotenv-linter
+      editorconfig-checker
+      pylint
+    ]
+    ++ lib.optional (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.clj-kondo) pkgs.clj-kondo;
 
   misc = with pkgs; [
     # NOTE: gcc is needed for Treesitter

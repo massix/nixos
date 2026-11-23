@@ -148,6 +148,7 @@ M.lspconfig = function()
   vim.lsp.enable("gitlab_ci_ls")
   vim.lsp.enable("pyright")
   vim.lsp.enable("gleam")
+  vim.lsp.enable("clojure_lsp")
 
   vim.lsp.enable("gopls")
   vim.lsp.config("gopls", {

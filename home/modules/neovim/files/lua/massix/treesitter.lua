@@ -3,6 +3,7 @@ local M = {}
 local needed_parsers = {
   "bash",
   "c_sharp",
+  "clojure",
   "dhall",
   "dockerfile",
   "elvish",
